@@ -1,3 +1,5 @@
+import errors from '../errors';
+
 /**
  * TicTacToe board implementation
  * Players must be indicated with 1 or 2
@@ -6,15 +8,18 @@
 export default class TicTacToe {
   constructor(size = 3){
     this.size = size;
-    this.board = [];
-    this.reset();
-    this.moves = 0;
-    this.winner = -1;
+    this.init();
+
+    this.maxMoves = Math.pow(this.size, 2);
 
     return this;
   }
 
-  reset(){
+  init(){
+    this.board = [];
+    this.moves = 0;
+    this.winner = -1;
+
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
       for(let y = 0; y < this.size; y++){
@@ -23,38 +28,33 @@ export default class TicTacToe {
     }
   }
 
-  getBoard(){
-    return this.board;
-  }
-
   /**
    * Returns true if the game is over
-   * The winner() method can be used after this is true to get the winning player
    */
   isFinished(){
-    return (this.winner > -1 || this.moves === this.size * this.size);
+    return (this.winner > -1 || this.moves === this.maxMoves);
   }
 
   /**
-   * Player is the player identifier (1 || 2), and move is a position array [x, y]
-   * @param player
-   * @param move
+   * Execute a move
+   * @param player Player identifier (1 || 2)
+   * @param move Move coordinates as an array [x, y]
    */
   move(player, move){
     if(this.isFinished()) {
-      throw new Error("Board already finished", 1);
+      throw new Error(errors.boardFinished, 1);
     }
 
     if (!this.isValidPlayer(player)) {
-      throw new Error("Invalid player", 2);
+      throw new Error(errors.player, 2);
     }
 
     if (!this.isValidMove(move)) {
-      throw new Error("Invalid move coordinates", 3);
+      throw new Error(errors.move, 3);
     }
 
     if (this.board[move[0]][move[1]] > 0) {
-      throw new Error("Position already played", 4);
+      throw new Error(errors.repeat, 4);
     }
 
     this.board[move[0]][move[1]] = player;
@@ -73,7 +73,7 @@ export default class TicTacToe {
 
   /**
    * Validates a player
-   * @param player
+   * @param player Player identifier (1 || 2)
    * @returns {boolean}
    */
   isValidPlayer(player){
@@ -82,7 +82,7 @@ export default class TicTacToe {
 
   /**
    * Validates a move
-   * @param move
+   * @param move Move coordinates as an array [x, y]
    * @returns {boolean}
    */
   isValidMove(move){

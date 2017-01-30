@@ -1,13 +1,7 @@
 import test from 'ava';
 
 import TicTacToe from '../model/TicTacToe';
-
-const errors = {
-  player: 'Invalid player',
-  move: 'Invalid move coordinates',
-  repeat: 'Position already played',
-  finished: 'Board already finished'
-};
+import errors from '../errors';
 
 function validateBoard(board, t){
   t.true(Array.isArray(board));
@@ -26,7 +20,7 @@ test('Returns a valid TicTacToe model', t => {
 
   t.is(typeof(tic), 'object');
   t.is(typeof(tic.move), 'function');
-  validateBoard(tic.getBoard(), t);
+  validateBoard(tic.board, t);
 });
 
 test('Move correctly updates the board', t => {
@@ -84,7 +78,7 @@ test('Move rejects moves after finishing the game', t => {
   t.notThrows(() => {tic.move(1, [2, 1])});
   t.notThrows(() => {tic.move(2, [2, 2])});
 
-  t.throws(() => {tic.move(2, [1, 1])}, errors.finished);
+  t.throws(() => {tic.move(2, [1, 1])}, errors.boardFinished);
 });
 
 test('Can pretty print a board', t => {
