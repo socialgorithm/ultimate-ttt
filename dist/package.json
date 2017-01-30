@@ -3,10 +3,6 @@
   "version": "1.0.1",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "index.js",
-  "scripts": {
-    "test": "nyc ava",
-    "build": "node tools/build.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aurbano/ultimate-ttt.git"
@@ -23,26 +19,8 @@
     "url": "https://github.com/aurbano/ultimate-ttt/issues"
   },
   "homepage": "https://github.com/aurbano/ultimate-ttt#readme",
-  "devDependencies": {
-    "@ava/babel-preset-stage-4": "^1.0.0",
-    "ava": "^0.17.0",
-    "babel": "^6.5.2",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "babel-preset-stage-1": "^6.22.0",
-    "coveralls": "^2.11.15",
-    "del": "^2.2.2",
-    "nyc": "^10.1.2",
-    "rollup": "^0.41.4",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-uglify": "^1.0.1"
-  },
   "ava": {
     "require": "babel-register",
     "babel": "inherit"
-  },
-  "babel": {
-    "presets": [
-      "@ava/stage-4"
-    ]
   }
 }
