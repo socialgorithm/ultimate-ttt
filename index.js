@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./src/UTTT');
+module.exports = require('./dist/UTTT');
