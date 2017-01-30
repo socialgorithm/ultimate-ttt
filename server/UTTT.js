@@ -1,4 +1,4 @@
-import TicTacToe from 'model/TicTacToe';
+import TicTacToe from './model/TicTacToe';
 import errors from './errors';
 
 /**
@@ -24,6 +24,9 @@ export default class UTTT {
     this.winner = -1;
     this.board = [];
 
+    // The state board holds the ultimate game state
+    this.stateBoard = new TicTacToe(this.size);
+
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
       for(let y = 0; y < this.size; y++){
@@ -36,7 +39,7 @@ export default class UTTT {
    * Returns true if the game is over
    */
   isFinished(){
-    return (this.winner > -1 || this.moves === this.maxMoves);
+    return (this.stateBoard.isFinished() || this.moves === this.maxMoves);
   }
 
   /**
@@ -45,38 +48,84 @@ export default class UTTT {
    * @param board Board coordinates as an array [x, y]
    * @param move Move coordinates as an array [x, y]
    */
-  move(player, board, move){
+  move(board, player, move){
     if(this.isFinished()) {
       throw new Error(errors.gameFinished, 1);
     }
 
-    if (!this.isValidPlayer(player)) {
-      throw new Error(errors.player, 2);
-    }
-
-    if(this.nextBoard && this.nextBoard !== board){
+    if(!this.isValidBoard(board)){
       throw new Error(errors.board, 6);
     }
 
-    if (!this.isValidMove(move)) {
-      throw new Error(errors.move, 3);
-    }
-
-    if (this.board[move[0]][move[1]] > 0) {
-      throw new Error(errors.repeat, 4);
-    }
-
-    this.board[move[0]][move[1]] = player;
+    this.board[board[0]][board[1]].move(player, move);
     this.moves++;
 
-    this.checkRow(move[0]);
-    this.checkColumn(move[1]);
+    this.nextBoard = move;
 
-    this.checkLtRDiagonal();
-    this.checkRtLDiagonal();
-
-    if (this.isFinished() && this.winner < 0){
-      this.winner = 0;
+    // Update the game board state
+    if(this.board[board[0]][board[1]].isFinished()){
+      this.stateBoard.move(
+        this.board[board[0]][board[1]].winner,
+        board
+      );
     }
+
+    this.winner = this.stateBoard.winner;
+  }
+
+  /**
+   * Validates a board
+   * @param board Board coordinates as an array [x, y]
+   * @returns {boolean}
+   */
+  isValidBoard(board){
+    if(!this.nextBoard){
+      return !(
+        !Array.isArray(board) ||
+        board.length !== 2 ||
+        board[0] < 0 ||
+        board[0] > this.size ||
+        board[1] < 0 ||
+        board[1] > this.size ||
+        typeof(this.board[board[0]][board[1]]) === 'undefined'
+      );
+    }else{
+      return this.nextBoard[0] === board[0] &&
+             this.nextBoard[1] === board[1];
+    }
+  }
+
+  prettyPrint(){
+    let rows = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const small = this.board[x][y].prettyPrint().split("\n");
+
+        for(let row = 0; row < this.size; row++){
+          const xCoord = x * this.size + row;
+          if(!rows[xCoord]){
+            rows[xCoord] = [];
+          }
+          rows[xCoord][y] = small[row];
+        }
+      }
+    }
+    let ret = [];
+    for(let x = 0; x < rows.length; x++){
+      ret.push(rows[x].join('| '));
+      if((x + 1) % this.size === 0) {
+        let sepChars = '';
+        for(let i = 0; i < this.size * 2; i++){
+          sepChars += '-';
+        }
+        sepChars += '+';
+        let sep = sepChars;
+        for(let i = 1; i < this.size; i++){
+          sep += '-' + sepChars;
+        }
+        ret.push(sep.substr(0, sep.length - 1));
+      }
+    }
+    return ret.join("\n");
   }
 }
