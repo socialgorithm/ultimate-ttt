@@ -1,0 +1,40 @@
+{
+  "name": "ultimate-ttt",
+  "version": "1.0.0",
+  "description": "Nodejs implementation of Ultimate Tic Tac Toe",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurbano/ultimate-ttt.git"
+  },
+  "keywords": [
+    "tic",
+    "tac",
+    "toe",
+    "ultimate"
+  ],
+  "author": "Alejandro U. Alvarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aurbano/ultimate-ttt/issues"
+  },
+  "homepage": "https://github.com/aurbano/ultimate-ttt#readme",
+  "devDependencies": {
+    "@ava/babel-preset-stage-4": "^1.0.0",
+    "ava": "^0.17.0",
+    "babel": "^6.5.2",
+    "nyc": "^10.1.2"
+  },
+  "ava": {
+    "require": "babel-register",
+    "babel": "inherit"
+  },
+  "babel": {
+    "presets": [
+      "@ava/stage-4"
+    ]
+  }
+}
