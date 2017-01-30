@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const errors = {
+var errors = {
   player: 'Invalid player, it must be either 1 or 2',
   move: 'Invalid move coordinates, they must be an array in the form [x, y]',
   repeat: 'Position already played',
@@ -13,3 +13,5 @@ const errors = {
 };
 
 exports.default = errors;
+module.exports = exports['default'];
+//# sourceMappingURL=errors.js.map
