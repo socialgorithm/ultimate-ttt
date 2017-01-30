@@ -54,6 +54,10 @@ export default class UTTT {
       throw new Error(errors.player, 2);
     }
 
+    if(this.nextBoard && this.nextBoard !== board){
+      throw new Error(errors.board, 6);
+    }
+
     if (!this.isValidMove(move)) {
       throw new Error(errors.move, 3);
     }
