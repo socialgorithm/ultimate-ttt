@@ -1,1 +1,0 @@
-{"version":3,"file":"main.browser.js","sources":["../index.js"],"sourcesContent":["'use strict';\n\nmodule.exports = require('./src/UTTT');"],"names":["module","exports","require"],"mappings":";;AAEAA,OAAOC,OAAP,GAAiBC,QAAQ,YAAR,CAAjB"}
