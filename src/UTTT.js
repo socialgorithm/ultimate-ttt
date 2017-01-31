@@ -91,8 +91,7 @@ export default class UTTT {
         board[0] > this.size ||
         board[1] < 0 ||
         board[1] > this.size ||
-        typeof(this.board[board[0]][board[1]]) === 'undefined' ||
-        this.board[board[0]][board[1]].isFinished()
+        typeof(this.board[board[0]][board[1]]) === 'undefined'
       );
     }else{
       return this.nextBoard[0] === board[0] &&
