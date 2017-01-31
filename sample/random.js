@@ -29,22 +29,8 @@ class Random{
     this.game.move(board, this.player, move);
   }
 
-  findRandomPosition(board){
-    let valid = false;
-    while(!valid){
-      let move = [
-        Math.round(Math.random() * (this.size - 1)),
-        Math.round(Math.random() * (this.size - 1)),
-      ];
-      if(board.isValidMove(move) && board.board[move[0]][move[1]] === 0){
-        valid = move;
-      }
-    }
-    return valid;
-  }
-
   getMove(){
-    const boardCoords = this.game.nextBoard || [0, 0];
+    const boardCoords = this.chooseBoard();
     const board = this.game.board[boardCoords[0]][boardCoords[1]];
     const move = this.findRandomPosition(board);
 
@@ -52,6 +38,36 @@ class Random{
       board: boardCoords,
       move: move
     };
+  }
+
+  /* ---- Non required methods ----- */
+
+  chooseBoard(){
+    let board = this.game.nextBoard || [0, 0];
+
+    while(this.game.board[board[0]][board[1]].isFinished()){
+      board = [this.getRandomCoordinate(), this.getRandomCoordinate()];
+    }
+
+    return board;
+  }
+
+  getRandomCoordinate(){
+    return Math.round(Math.random() * (this.size - 1));
+  }
+
+  findRandomPosition(board){
+    let valid = false;
+    while(!valid){
+      let move = [
+        this.getRandomCoordinate(),
+        this.getRandomCoordinate(),
+      ];
+      if(board.isValidMove(move) && board.board[move[0]][move[1]] === 0){
+        valid = move;
+      }
+    }
+    return valid;
   }
 }
 

@@ -32,7 +32,7 @@
   "dependencies": {
     "command-line-args": "^3.0.5",
     "command-line-usage": "^4.0.0",
-    "ultimate-ttt": "^1.1.1"
+    "ultimate-ttt": "^2.1.0"
   },
   "devDependencies": {
     "ava": "^0.17.0",

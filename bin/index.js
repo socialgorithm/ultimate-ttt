@@ -133,25 +133,33 @@ const game = new UTTT();
 
 let currentPlayer = 0;
 let iterations = 0;
-while(!game.isFinished()){
-  const nextStep = player[currentPlayer].getMove();
-  game.move(
-    nextStep.board,
-    currentPlayer + 1,
-    nextStep.move
-  );
-  player[currentPlayer].addMove(nextStep.board, nextStep.move);
+try {
+  while (!game.isFinished()) {
+    const nextStep = player[currentPlayer].getMove();
+    const playerNumber = currentPlayer + 1;
 
-  currentPlayer = 1 - currentPlayer;
+    game.move(
+      nextStep.board,
+      playerNumber,
+      nextStep.move
+    );
+    player[currentPlayer].addMove(nextStep.board, nextStep.move);
 
-  player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
-  iterations++;
+    currentPlayer = 1 - currentPlayer;
 
-  if(iterations > 100){
-    console.log('Limit reached');
-    console.log(game.prettyPrint());
-    return;
+    player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
+    iterations++;
+
+    if (iterations > 100) {
+      console.log('Limit reached');
+      console.log(game.prettyPrint());
+      return;
+    }
   }
+}catch(e){
+  console.log(game.prettyPrint());
+  console.error('Error during game, played %s iterations', iterations, e);
+  return;
 }
 
 console.log('Game Finished!');
@@ -161,3 +169,7 @@ console.log('Moves: ' + game.moves);
 console.log('');
 
 console.log(game.prettyPrint());
+
+console.log('');
+
+console.log(game.stateBoard.prettyPrint());
