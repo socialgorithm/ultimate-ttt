@@ -1,4 +1,5 @@
-import errors from '../errors';
+import errors from './errors';
+import error from '../error';
 
 /**
  * TicTacToe board implementation
@@ -46,19 +47,19 @@ export default class TicTacToe {
    */
   move(player, move){
     if(this.isFull()) {
-      throw new Error(errors.boardFinished, 1);
+      throw error(errors.boardFinished);
     }
 
     if (!this.isValidPlayer(player)) {
-      throw new Error(errors.player, 2);
+      throw error(errors.player, player);
     }
 
     if (!this.isValidMove(move)) {
-      throw new Error(errors.move, 3);
+      throw error(errors.move, move);
     }
 
     if (this.isPlayedMove(move)) {
-      throw new Error(errors.repeat, 4);
+      throw error(errors.repeat, move);
     }
 
     this.board[move[0]][move[1]] = player;

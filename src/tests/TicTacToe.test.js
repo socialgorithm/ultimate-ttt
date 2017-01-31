@@ -1,7 +1,8 @@
 import test from 'ava';
 
 import TicTacToe from '../model/TicTacToe';
-import errors from '../errors';
+import errors from '../model/errors';
+import error from '../error';
 
 function validateBoard(board, t){
   t.true(Array.isArray(board));
@@ -39,30 +40,30 @@ test('Move correctly updates the board', t => {
 test('Move rejects invalid player', t => {
   const tic = new TicTacToe();
 
-  t.throws(() => {tic.move(-1, 1)}, errors.player);
-  t.throws(() => {tic.move('abc', 1)}, errors.player);
-  t.throws(() => {tic.move(0, 1)}, errors.player);
-  t.throws(() => {tic.move(3, 1)}, errors.player);
+  t.throws(() => {tic.move(-1, 1)}, error(errors.player, '-1').message);
+  t.throws(() => {tic.move('abc', 1)}, error(errors.player, 'abc').message);
+  t.throws(() => {tic.move(0, 1)}, error(errors.player, '0').message);
+  t.throws(() => {tic.move(3, 1)}, error(errors.player, '3').message);
 });
 
 test('Move rejects invalid moves', t => {
   const tic = new TicTacToe();
 
-  t.throws(() => {tic.move(1)}, errors.move);
-  t.throws(() => {tic.move(1, 1)}, errors.move);
-  t.throws(() => {tic.move(1, 'abc')}, errors.move);
-  t.throws(() => {tic.move(1, [])}, errors.move);
-  t.throws(() => {tic.move(1, [1])}, errors.move);
-  t.throws(() => {tic.move(1, [1, 4])}, errors.move);
-  t.throws(() => {tic.move(1, [-1, 4])}, errors.move);
-  t.throws(() => {tic.move(1, [1, 1, 1])}, errors.move);
+  t.throws(() => {tic.move(1)}, error(errors.move).message);
+  t.throws(() => {tic.move(1, 1)}, error(errors.move, 1).message);
+  t.throws(() => {tic.move(1, 'abc')}, error(errors.move, 'abc').message);
+  t.throws(() => {tic.move(1, [])}, error(errors.move, []).message);
+  t.throws(() => {tic.move(1, [1])}, error(errors.move, [1]).message);
+  t.throws(() => {tic.move(1, [1, 4])}, error(errors.move, [1, 4]).message);
+  t.throws(() => {tic.move(1, [-1, 4])}, error(errors.move, [-1, 4]).message);
+  t.throws(() => {tic.move(1, [1, 1, 1])}, error(errors.move, [1, 1, 1]).message);
 });
 
 test('Move rejects repeated moves', t => {
   const tic = new TicTacToe();
 
   t.notThrows(() => {tic.move(1, [1, 1])});
-  t.throws(() => {tic.move(1, [1, 1])}, errors.repeat);
+  t.throws(() => {tic.move(1, [1, 1])}, error(errors.repeat, [1, 1]).message);
 });
 
 test('Move rejects moves after finishing the game', t => {
@@ -78,7 +79,7 @@ test('Move rejects moves after finishing the game', t => {
   t.notThrows(() => {tic.move(1, [2, 1])});
   t.notThrows(() => {tic.move(2, [2, 2])});
 
-  t.throws(() => {tic.move(2, [1, 1])}, errors.boardFinished);
+  t.throws(() => {tic.move(2, [1, 1])}, error(errors.boardFinished).message);
 });
 
 test('Can pretty print a board', t => {
