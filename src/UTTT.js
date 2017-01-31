@@ -1,5 +1,6 @@
 import TicTacToe from './model/TicTacToe';
-import errors from './errors';
+import errors from './model/errors';
+import error from './error';
 
 /**
  * Ultimate Tic Tac Game
@@ -50,11 +51,11 @@ export default class UTTT {
    */
   move(board, player, move){
     if(this.isFinished()) {
-      throw new Error(errors.gameFinished, 1);
+      throw error(errors.gameFinished);
     }
 
     if(!this.isValidBoard(board)){
-      throw new Error(errors.board, 6);
+      throw error(errors.board, board);
     }
 
     this.board[board[0]][board[1]].move(player, move);

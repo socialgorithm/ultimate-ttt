@@ -1,7 +1,8 @@
 import test from 'ava';
 
 import UTTT from '../UTTT';
-import errors from '../errors';
+import errors from '../model/errors';
+import error from '../error';
 
 function validateBoard(board, t){
   t.true(Array.isArray(board));
@@ -39,7 +40,7 @@ test('Move rejects moves to the wrong board', t => {
 
   t.throws(() => {
     tic.move([2, 0], 2, [2, 1])
-  }, errors.board);
+  }, error(errors.board, [2, 0]).message);
 });
 
 test('Detect game ending', t => {
@@ -62,7 +63,7 @@ test('Detect game ending', t => {
 
   t.throws(() => {
     tic.move([0, 0], 1, [1, 1]);
-  }, errors.gameFinished);
+  }, error(errors.gameFinished).message);
 
   t.notThrows(() => {
     tic.prettyPrint();

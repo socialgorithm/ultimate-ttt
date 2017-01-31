@@ -10,9 +10,13 @@ var _TicTacToe = require('../model/TicTacToe');
 
 var _TicTacToe2 = _interopRequireDefault(_TicTacToe);
 
-var _errors = require('../errors');
+var _errors = require('../model/errors');
 
 var _errors2 = _interopRequireDefault(_errors);
+
+var _error = require('../error');
+
+var _error2 = _interopRequireDefault(_error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50,16 +54,16 @@ function validateBoard(board, t) {
 
   t.throws(function () {
     tic.move(-1, 1);
-  }, _errors2.default.player);
+  }, (0, _error2.default)(_errors2.default.player, '-1').message);
   t.throws(function () {
     tic.move('abc', 1);
-  }, _errors2.default.player);
+  }, (0, _error2.default)(_errors2.default.player, 'abc').message);
   t.throws(function () {
     tic.move(0, 1);
-  }, _errors2.default.player);
+  }, (0, _error2.default)(_errors2.default.player, '0').message);
   t.throws(function () {
     tic.move(3, 1);
-  }, _errors2.default.player);
+  }, (0, _error2.default)(_errors2.default.player, '3').message);
 });
 
 (0, _ava2.default)('Move rejects invalid moves', function (t) {
@@ -67,28 +71,28 @@ function validateBoard(board, t) {
 
   t.throws(function () {
     tic.move(1);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move).message);
   t.throws(function () {
     tic.move(1, 1);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, 1).message);
   t.throws(function () {
     tic.move(1, 'abc');
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, 'abc').message);
   t.throws(function () {
     tic.move(1, []);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, []).message);
   t.throws(function () {
     tic.move(1, [1]);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, [1]).message);
   t.throws(function () {
     tic.move(1, [1, 4]);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, [1, 4]).message);
   t.throws(function () {
     tic.move(1, [-1, 4]);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, [-1, 4]).message);
   t.throws(function () {
     tic.move(1, [1, 1, 1]);
-  }, _errors2.default.move);
+  }, (0, _error2.default)(_errors2.default.move, [1, 1, 1]).message);
 });
 
 (0, _ava2.default)('Move rejects repeated moves', function (t) {
@@ -99,7 +103,7 @@ function validateBoard(board, t) {
   });
   t.throws(function () {
     tic.move(1, [1, 1]);
-  }, _errors2.default.repeat);
+  }, (0, _error2.default)(_errors2.default.repeat, [1, 1]).message);
 });
 
 (0, _ava2.default)('Move rejects moves after finishing the game', function (t) {
@@ -135,7 +139,7 @@ function validateBoard(board, t) {
 
   t.throws(function () {
     tic.move(2, [1, 1]);
-  }, _errors2.default.boardFinished);
+  }, (0, _error2.default)(_errors2.default.boardFinished).message);
 });
 
 (0, _ava2.default)('Can pretty print a board', function (t) {

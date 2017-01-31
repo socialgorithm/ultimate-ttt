@@ -10,9 +10,13 @@ var _TicTacToe = require('./model/TicTacToe');
 
 var _TicTacToe2 = _interopRequireDefault(_TicTacToe);
 
-var _errors = require('./errors');
+var _errors = require('./model/errors');
 
 var _errors2 = _interopRequireDefault(_errors);
+
+var _error = require('./error');
+
+var _error2 = _interopRequireDefault(_error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81,11 +85,11 @@ var UTTT = function () {
     key: 'move',
     value: function move(board, player, _move) {
       if (this.isFinished()) {
-        throw new Error(_errors2.default.gameFinished, 1);
+        throw (0, _error2.default)(_errors2.default.gameFinished);
       }
 
       if (!this.isValidBoard(board)) {
-        throw new Error(_errors2.default.board, 6);
+        throw (0, _error2.default)(_errors2.default.board, board);
       }
 
       this.board[board[0]][board[1]].move(player, _move);

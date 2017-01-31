@@ -6,9 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _errors = require('../errors');
+var _errors = require('./errors');
 
 var _errors2 = _interopRequireDefault(_errors);
+
+var _error = require('../error');
+
+var _error2 = _interopRequireDefault(_error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73,19 +77,19 @@ var TicTacToe = function () {
     key: 'move',
     value: function move(player, _move) {
       if (this.isFull()) {
-        throw new Error(_errors2.default.boardFinished, 1);
+        throw (0, _error2.default)(_errors2.default.boardFinished);
       }
 
       if (!this.isValidPlayer(player)) {
-        throw new Error(_errors2.default.player, 2);
+        throw (0, _error2.default)(_errors2.default.player, player);
       }
 
       if (!this.isValidMove(_move)) {
-        throw new Error(_errors2.default.move, 3);
+        throw (0, _error2.default)(_errors2.default.move, _move);
       }
 
       if (this.isPlayedMove(_move)) {
-        throw new Error(_errors2.default.repeat, 4);
+        throw (0, _error2.default)(_errors2.default.repeat, _move);
       }
 
       this.board[_move[0]][_move[1]] = player;

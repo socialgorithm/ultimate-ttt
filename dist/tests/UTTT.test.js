@@ -10,9 +10,13 @@ var _UTTT = require('../UTTT');
 
 var _UTTT2 = _interopRequireDefault(_UTTT);
 
-var _errors = require('../errors');
+var _errors = require('../model/errors');
 
 var _errors2 = _interopRequireDefault(_errors);
+
+var _error = require('../error');
+
+var _error2 = _interopRequireDefault(_error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52,7 +56,7 @@ function validateBoard(board, t) {
 
   t.throws(function () {
     tic.move([2, 0], 2, [2, 1]);
-  }, _errors2.default.board);
+  }, (0, _error2.default)(_errors2.default.board, [2, 0]).message);
 });
 
 (0, _ava2.default)('Detect game ending', function (t) {
@@ -75,7 +79,7 @@ function validateBoard(board, t) {
 
   t.throws(function () {
     tic.move([0, 0], 1, [1, 1]);
-  }, _errors2.default.gameFinished);
+  }, (0, _error2.default)(_errors2.default.gameFinished).message);
 
   t.notThrows(function () {
     tic.prettyPrint();
