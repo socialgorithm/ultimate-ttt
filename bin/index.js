@@ -105,7 +105,7 @@ function validatePlayer(player){
   validateMethod(player, 'init');
   validateMethod(player, 'getMove');
   validateMethod(player, 'addMove');
-  validateMethod(player, 'addOponentMove');
+  validateMethod(player, 'addOpponentMove');
 }
 
 const player = [];
