@@ -94,7 +94,8 @@ export default class UTTT {
         typeof(this.board[board[0]][board[1]]) === 'undefined'
       );
     }else{
-      return this.nextBoard[0] === board[0] &&
+      return Array.isArray(board) &&
+             this.nextBoard[0] === board[0] &&
              this.nextBoard[1] === board[1];
     }
   }
