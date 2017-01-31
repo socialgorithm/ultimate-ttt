@@ -91,14 +91,21 @@ function loadPlayer(path, player) {
   }
 }
 
+function validateMethod(player, method){
+  if(typeof(player[method]) !== 'function'){
+    throw new Error(`Player is missing the ${method}() method`);
+  }
+}
+
 function validatePlayer(player){
   if(!player || typeof(player) !== 'object'){
     throw new Error('Invalid player object');
   }
 
-  if(typeof(player.getMove) !== 'function'){
-    throw new Error('Player is missing the move method');
-  }
+  validateMethod(player, 'init');
+  validateMethod(player, 'getMove');
+  validateMethod(player, 'addMove');
+  validateMethod(player, 'addOponentMove');
 }
 
 const player = [];
@@ -129,7 +136,7 @@ console.info("|   Ultimate TTT Algorithm Fight   |");
 console.info("+----------------------------------+");
 
 const timeout = 100;
-const games = 5;
+const games = 1000;
 
 const state = {
   games: 0,
@@ -153,6 +160,13 @@ function round(time){
 
 function convertExecTime(nanosecs){
   return round(nanosecs/1000000);
+}
+
+function getPercentage(num, total){
+  if(total < 1){
+    return '0%';
+  }
+  return (num * 100 / total) + '%';
 }
 
 function printState(){
@@ -186,9 +200,9 @@ function printState(){
   console.log('Games played: %d', state.games);
   console.log('Winner: %d', winner);
   console.log('');
-  console.log('Player 1 wins: %d', state.wins[0]);
-  console.log('Player 2 wins: %d', state.wins[1]);
-  console.log('Ties: %d', state.ties);
+  console.log('Player 1 wins: %d (%s)', state.wins[0], getPercentage(state.wins[0], state.games));
+  console.log('Player 2 wins: %d (%s)', state.wins[1], getPercentage(state.wins[1], state.games));
+  console.log('Ties: %d (%s)', state.ties, getPercentage(state.ties, state.games));
   console.log('');
   console.log('Player 1 timeouts: %d', state.timeouts[0]);
   console.log('Player 2 timeouts: %d', state.timeouts[1]);
@@ -217,14 +231,14 @@ while(state.games < games){
   player[0].init();
   player[1].init();
 
-  tripwire.resetTripwire(timeout);
-
   state.games++;
 
   const game = new UTTT();
 
   try {
     while (!game.isFinished()) {
+      tripwire.resetTripwire(timeout);
+
       const nextStep = player[currentPlayer].getMove();
       const playerNumber = currentPlayer + 1;
 
@@ -237,7 +251,7 @@ while(state.games < games){
 
       currentPlayer = 1 - currentPlayer;
 
-      player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
+      player[currentPlayer].addOpponentMove(nextStep.board, nextStep.move);
       iterations++;
 
       if (iterations > 100) {

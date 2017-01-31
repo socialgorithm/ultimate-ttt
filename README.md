@@ -27,20 +27,20 @@ Sample output:
 |   Ultimate TTT Algorithm Fight   |
 +----------------------------------+
 
-Games played: 5
-Winner: 2
+Games played: 1000
+Winner: 1
 
-Player 1 wins: 2
-Player 2 wins: 3
-Ties: 0
+Player 1 wins: 495 (49.5%)
+Player 2 wins: 448 (44.8%)
+Ties: 57 (5.7%)
 
 Player 1 timeouts: 0
 Player 2 timeouts: 0
 
-Total time: 10.95ms
-Avg game: 2.19ms
-Max game: 3.54ms
-Min game: 0.32ms
+Total time: 154.96ms
+Avg game: 0.15ms
+Max game: 5.21ms
+Min game: 0.04ms
 ```
 
 The server uses the [`ultimate-ttt`](https://github.com/aurbano/ultimate-ttt) Nodejs implementation of the game to validate and verify game states.
@@ -62,3 +62,8 @@ For local executions only JS clients can work. They must be a constructor class 
 * Setup a server so clients can play over a socket
 * Setup a DB so players can use a token to identify
 * Create a web frontend to see stats and manage the competition
+
+## Testing a client
+
+This repository includes a test file that can be run against a custom client to verify that it does the basics right.
+Simply copy [`tests/client.test.js`](https://github.com/aurbano/ultimate-ttt-server/blob/master/tests/client.test.js) and point it to your implementation. The tests can be run by installing `ava` and then adding it as the test runner in your `package.json` file.
