@@ -56,6 +56,10 @@ import UTTT from 'ultimate-ttt';
 const game = new UTTT();
 ```
 
+## Examples
+
+* [**Ultimate-ttt-server**](https://github.com/aurbano/ultimate-ttt-server): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
+
 ## API
 
 ### `UTTT([size])`
