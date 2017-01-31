@@ -20,23 +20,24 @@ $ uttt -a sample/random -b sample/random
 Sample output:
 
 ```
-Starting game!
-Game Finished!
-Winner: Player 1
-Moves: 69
++----------------------------------+
+|   Ultimate TTT Algorithm Fight   |
++----------------------------------+
 
-1 2 1 | 1 2 2 | 1 1 2
-2 2 2 | 2 1 2 | 2 2 0
-2 1 2 | 0 1 2 | 1 1 1
-------+-------+-------
-1 1 0 | 2 2 1 | 2 1 1
-1 1 2 | 1 2 1 | 0 1 1
-0 2 2 | 2 1 1 | 2 2 0
-------+-------+-------
-1 1 0 | 2 1 2 | 0 1 2
-0 1 0 | 2 2 1 | 1 2 2
-0 0 1 | 2 2 1 | 2 1 1
-------+-------+-------
+Games played: 5
+Winner: 0
+
+Player 1 wins: 2
+Player 2 wins: 2
+Ties: 1
+
+Player 1 timeouts: 0
+Player 2 timeouts: 0
+
+Total exec time: 10.68ms
+Avg exec time: 2.14ms
+Max exec time: 4.12ms
+Min exec time: 0.64ms
 ```
 
 The server uses the [`ultimate-ttt`](https://github.com/aurbano/ultimate-ttt) Nodejs implementation of the game to validate and verify game states.
@@ -54,7 +55,7 @@ For local executions only JS clients can work. They must be a constructor class 
 
 ## Roadmap
 
-* Execute X number of games and display stats
+* <del>Execute X number of games and display stats</del>
 * Setup a server so clients can play over a socket
 * Setup a DB so players can use a token to identify
 * Create a web frontend to see stats and manage the competition

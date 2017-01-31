@@ -101,10 +101,6 @@ function validatePlayer(player){
   }
 }
 
-console.info('Ultimate Tic Tac Toe');
-
-console.log('');
-
 const player = [];
 player.push(loadPlayer(options.a, 1));
 player.push(loadPlayer(options.b, 2));
@@ -126,50 +122,144 @@ try{
 // ------------------------------------------- //
 
 const UTTT = require('ultimate-ttt');
+const tripwire = require('tripwire');
 
-console.info("Starting game!");
+console.info("+----------------------------------+");
+console.info("|   Ultimate TTT Algorithm Fight   |");
+console.info("+----------------------------------+");
 
-const game = new UTTT();
+const timeout = 100;
+const games = 5;
 
-let currentPlayer = 0;
-let iterations = 0;
-try {
-  while (!game.isFinished()) {
-    const nextStep = player[currentPlayer].getMove();
-    const playerNumber = currentPlayer + 1;
+const state = {
+  games: 0,
+  ties: 0,
+  wins: [
+    0,
+    0
+  ],
+  times: [],
+  timeouts: [
+    0,
+    0
+  ]
+};
 
-    game.move(
-      nextStep.board,
-      playerNumber,
-      nextStep.move
-    );
-    player[currentPlayer].addMove(nextStep.board, nextStep.move);
+let currentPlayer;
 
-    currentPlayer = 1 - currentPlayer;
-
-    player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
-    iterations++;
-
-    if (iterations > 100) {
-      console.log('Limit reached');
-      console.log(game.prettyPrint());
-      return;
-    }
-  }
-}catch(e){
-  console.log(game.prettyPrint());
-  console.error('Error during game, played %s iterations', iterations, e);
-  return;
+function round(time){
+  return Math.round(time * 100) / 100;
 }
 
-console.log('Game Finished!');
-console.log('Winner: Player ' + game.winner);
-console.log('Moves: ' + game.moves);
+function convertExecTime(nanosecs){
+  return round(nanosecs/1000000);
+}
 
-console.log('');
+function printState(){
+  // Get winner
+  let winner = -1;
+  if(state.wins[0] === state.wins[1]){
+    winner = 0;
+  }else if(state.wins[0] > state.wins[1]){
+    winner = 1;
+  }else{
+    winner = 2;
+  }
 
-console.log(game.prettyPrint());
+  // Get avg exec time
+  let sum = 0;
+  let total = 0;
+  let max = 0;
+  let avg = 0;
+  let min = 1000;
+  if(state.times.length > 0){
+    for(let i = 0; i < state.times.length; i++ ){
+      total += state.times[i];
+      sum += state.times[i];
+      max = Math.max(max, state.times[i]);
+      min = Math.min(min, state.times[i]);
+    }
+    avg = sum/state.times.length;
+  }
 
-console.log('');
+  console.log('');
+  console.log('Games played: %d', state.games);
+  console.log('Winner: %d', winner);
+  console.log('');
+  console.log('Player 1 wins: %d', state.wins[0]);
+  console.log('Player 2 wins: %d', state.wins[1]);
+  console.log('Ties: %d', state.ties);
+  console.log('');
+  console.log('Player 1 timeouts: %d', state.timeouts[0]);
+  console.log('Player 2 timeouts: %d', state.timeouts[1]);
+  console.log('');
+  console.log('Total exec time: %dms', round(total));
+  console.log('Avg exec time: %dms', round(avg));
+  console.log('Max exec time: %dms', round(max));
+  console.log('Min exec time: %dms', round(min));
+}
 
-console.log(game.stateBoard.prettyPrint());
+// Setup timeout processor
+process.on('uncaughtException', function (e) {
+  state.wins[1 - currentPlayer]++;
+  state.timeouts[currentPlayer]++;
+
+  console.log('Player %d timed out', currentPlayer + 1);
+
+  printState();
+});
+
+while(state.games < games){
+  const hrstart = process.hrtime();
+  let iterations = 0;
+  currentPlayer = 0;
+
+  player[0].init();
+  player[1].init();
+
+  tripwire.resetTripwire(timeout);
+
+  state.games++;
+
+  const game = new UTTT();
+
+  try {
+    while (!game.isFinished()) {
+      const nextStep = player[currentPlayer].getMove();
+      const playerNumber = currentPlayer + 1;
+
+      game.move(
+        nextStep.board,
+        playerNumber,
+        nextStep.move
+      );
+      player[currentPlayer].addMove(nextStep.board, nextStep.move);
+
+      currentPlayer = 1 - currentPlayer;
+
+      player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
+      iterations++;
+
+      if (iterations > 100) {
+        console.error('Limit reached');
+        console.error(game.prettyPrint());
+        return;
+      }
+    }
+
+    // Store winner
+    if(game.winner > 0){
+      state.wins[game.winner - 1]++;
+    }else{
+      state.ties++;
+    }
+  }catch(e){
+    state.wins[1 - currentPlayer]++;
+  }finally{
+    tripwire.clearTripwire();
+    const hrend = process.hrtime(hrstart);
+    state.times.push(convertExecTime(hrend[1]));
+  }
+}
+
+printState();
