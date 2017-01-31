@@ -6,7 +6,7 @@ const UTTT = require('ultimate-ttt');
 
 class Random{
   constructor(player, size = 3){
-    if(!player || player < 1 || player > 2){
+    if(!player || !Number.isInteger(player) || player < 1 || player > 2){
       throw new Error('Invalid player');
     }
 
