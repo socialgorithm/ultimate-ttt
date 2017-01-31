@@ -120,4 +120,28 @@ function validateBoard(board, t) {
     tic.move([2, 0], 1, [0, 0]);
   });
 });
+
+(0, _ava2.default)('A tie in a board works properly', function (t) {
+  var tic = new _UTTT2.default();
+
+  // Fill [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [2, 0]);
+  tic.move([2, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [0, 1]);
+  tic.move([0, 1], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 1]);
+  tic.move([1, 1], 2, [0, 0]);
+  tic.move([0, 0], 1, [1, 2]);
+  tic.move([1, 2], 2, [0, 0]);
+  tic.move([0, 0], 1, [2, 1]);
+  tic.move([2, 1], 2, [0, 0]);
+  tic.move([0, 0], 2, [0, 2]);
+  tic.move([0, 2], 1, [0, 0]);
+  tic.move([0, 0], 2, [2, 2]);
+
+  tic.move([2, 2], 1, [1, 2]);
+});
 //# sourceMappingURL=UTTT.test.js.map

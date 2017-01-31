@@ -68,7 +68,9 @@ export default class UTTT {
     }
 
     // Update the game board state
-    if(this.board[board[0]][board[1]].isFinished() && !this.stateBoard.isPlayedMove(board)){
+    if(this.board[board[0]][board[1]].isFinished() &&
+      !this.stateBoard.isPlayedMove(board) &&
+      this.board[board[0]][board[1]].winner > 0){
       this.stateBoard.move(
         this.board[board[0]][board[1]].winner,
         board

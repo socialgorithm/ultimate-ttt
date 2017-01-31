@@ -104,3 +104,27 @@ test('Move allows any board after being sent to one that is won', t => {
     tic.move([2, 0], 1, [0, 0]);
   });
 });
+
+test('A tie in a board works properly', t => {
+  const tic = new UTTT();
+
+  // Fill [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [2, 0]);
+  tic.move([2, 0], 1, [0, 0]);
+  tic.move([0, 0], 2, [0, 1]);
+  tic.move([0, 1], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 1]);
+  tic.move([1, 1], 2, [0, 0]);
+  tic.move([0, 0], 1, [1, 2]);
+  tic.move([1, 2], 2, [0, 0]);
+  tic.move([0, 0], 1, [2, 1]);
+  tic.move([2, 1], 2, [0, 0]);
+  tic.move([0, 0], 2, [0, 2]);
+  tic.move([0, 2], 1, [0, 0]);
+  tic.move([0, 0], 2, [2, 2]);
+
+  tic.move([2, 2], 1, [1, 2]);
+});
