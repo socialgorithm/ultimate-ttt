@@ -58,12 +58,16 @@ export default class UTTT {
     }
 
     this.board[board[0]][board[1]].move(player, move);
+
     this.moves++;
 
     this.nextBoard = move;
+    if(this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished()){
+      this.nextBoard = false;
+    }
 
     // Update the game board state
-    if(this.board[board[0]][board[1]].isFinished()){
+    if(this.board[board[0]][board[1]].isFinished() && !this.stateBoard.isPlayedMove(board)){
       this.stateBoard.move(
         this.board[board[0]][board[1]].winner,
         board

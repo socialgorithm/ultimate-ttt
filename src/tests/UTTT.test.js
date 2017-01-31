@@ -70,3 +70,36 @@ test('Detect game ending', t => {
 
   t.is(tic.winner, 1);
 });
+
+test('Move allows playing on already won boards', t => {
+  const tic = new UTTT();
+
+  // Win [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [2, 0]);
+  tic.move([2, 0], 1, [0, 0]);
+
+  t.notThrows(() => {
+    tic.move([0, 0], 1, [1, 1]);
+  });
+
+  t.notThrows(() => {
+    tic.prettyPrint();
+  });
+});
+
+test('Move allows any board after being sent to one that is won', t => {
+  const tic = new UTTT();
+
+  // Fill [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [2, 0]);
+
+  t.notThrows(() => {
+    tic.move([2, 0], 1, [0, 0]);
+  });
+});
