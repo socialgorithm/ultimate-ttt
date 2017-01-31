@@ -193,10 +193,10 @@ function printState(){
   console.log('Player 1 timeouts: %d', state.timeouts[0]);
   console.log('Player 2 timeouts: %d', state.timeouts[1]);
   console.log('');
-  console.log('Total exec time: %dms', round(total));
-  console.log('Avg exec time: %dms', round(avg));
-  console.log('Max exec time: %dms', round(max));
-  console.log('Min exec time: %dms', round(min));
+  console.log('Total time: %dms', round(total));
+  console.log('Avg game: %dms', round(avg));
+  console.log('Max game: %dms', round(max));
+  console.log('Min game: %dms', round(min));
 }
 
 // Setup timeout processor

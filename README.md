@@ -28,19 +28,19 @@ Sample output:
 +----------------------------------+
 
 Games played: 5
-Winner: 0
+Winner: 2
 
 Player 1 wins: 2
-Player 2 wins: 2
-Ties: 1
+Player 2 wins: 3
+Ties: 0
 
 Player 1 timeouts: 0
 Player 2 timeouts: 0
 
-Total exec time: 10.68ms
-Avg exec time: 2.14ms
-Max exec time: 4.12ms
-Min exec time: 0.64ms
+Total time: 10.95ms
+Avg game: 2.19ms
+Max game: 3.54ms
+Min game: 0.32ms
 ```
 
 The server uses the [`ultimate-ttt`](https://github.com/aurbano/ultimate-ttt) Nodejs implementation of the game to validate and verify game states.
