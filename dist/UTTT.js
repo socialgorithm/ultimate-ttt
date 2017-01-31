@@ -89,12 +89,16 @@ var UTTT = function () {
       }
 
       this.board[board[0]][board[1]].move(player, _move);
+
       this.moves++;
 
       this.nextBoard = _move;
+      if (this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished()) {
+        this.nextBoard = false;
+      }
 
       // Update the game board state
-      if (this.board[board[0]][board[1]].isFinished()) {
+      if (this.board[board[0]][board[1]].isFinished() && !this.stateBoard.isPlayedMove(board)) {
         this.stateBoard.move(this.board[board[0]][board[1]].winner, board);
       }
 
@@ -102,9 +106,9 @@ var UTTT = function () {
     }
 
     /**
-     * Validates a board
+     * Validates a board before playing it
      * @param board Board coordinates as an array [x, y]
-     * @returns {boolean}
+     * @returns {boolean} true if the board is playable
      */
 
   }, {
@@ -113,7 +117,7 @@ var UTTT = function () {
       if (!this.nextBoard) {
         return !(!Array.isArray(board) || board.length !== 2 || board[0] < 0 || board[0] > this.size || board[1] < 0 || board[1] > this.size || typeof this.board[board[0]][board[1]] === 'undefined');
       } else {
-        return this.nextBoard[0] === board[0] && this.nextBoard[1] === board[1];
+        return Array.isArray(board) && this.nextBoard[0] === board[0] && this.nextBoard[1] === board[1];
       }
     }
   }, {

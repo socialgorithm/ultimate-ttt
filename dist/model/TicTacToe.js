@@ -47,6 +47,11 @@ var TicTacToe = function () {
         }
       }
     }
+  }, {
+    key: 'isFull',
+    value: function isFull() {
+      return this.moves === this.maxMoves;
+    }
 
     /**
      * Returns true if the game is over
@@ -55,7 +60,7 @@ var TicTacToe = function () {
   }, {
     key: 'isFinished',
     value: function isFinished() {
-      return this.winner > -1 || this.moves === this.maxMoves;
+      return this.winner > -1 || this.isFull();
     }
 
     /**
@@ -67,7 +72,7 @@ var TicTacToe = function () {
   }, {
     key: 'move',
     value: function move(player, _move) {
-      if (this.isFinished()) {
+      if (this.isFull()) {
         throw new Error(_errors2.default.boardFinished, 1);
       }
 
@@ -79,7 +84,7 @@ var TicTacToe = function () {
         throw new Error(_errors2.default.move, 3);
       }
 
-      if (this.board[_move[0]][_move[1]] > 0) {
+      if (this.isPlayedMove(_move)) {
         throw new Error(_errors2.default.repeat, 4);
       }
 
@@ -107,6 +112,11 @@ var TicTacToe = function () {
     key: 'isValidPlayer',
     value: function isValidPlayer(player) {
       return !(!player || !Number.isInteger(player) || player < 1 || player > 2);
+    }
+  }, {
+    key: 'isPlayedMove',
+    value: function isPlayedMove(move) {
+      return this.board[move[0]][move[1]] > 0;
     }
 
     /**

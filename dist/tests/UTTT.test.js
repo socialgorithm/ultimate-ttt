@@ -83,4 +83,37 @@ function validateBoard(board, t) {
 
   t.is(tic.winner, 1);
 });
+
+(0, _ava2.default)('Move allows playing on already won boards', function (t) {
+  var tic = new _UTTT2.default();
+
+  // Win [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [2, 0]);
+  tic.move([2, 0], 1, [0, 0]);
+
+  t.notThrows(function () {
+    tic.move([0, 0], 1, [1, 1]);
+  });
+
+  t.notThrows(function () {
+    tic.prettyPrint();
+  });
+});
+
+(0, _ava2.default)('Move allows any board after being sent to one that is won', function (t) {
+  var tic = new _UTTT2.default();
+
+  // Fill [0, 0]
+  tic.move([0, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [1, 0]);
+  tic.move([1, 0], 1, [0, 0]);
+  tic.move([0, 0], 1, [2, 0]);
+
+  t.notThrows(function () {
+    tic.move([2, 0], 1, [0, 0]);
+  });
+});
 //# sourceMappingURL=UTTT.test.js.map
