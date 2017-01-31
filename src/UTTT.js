@@ -78,9 +78,9 @@ export default class UTTT {
   }
 
   /**
-   * Validates a board
+   * Validates a board before playing it
    * @param board Board coordinates as an array [x, y]
-   * @returns {boolean}
+   * @returns {boolean} true if the board is playable
    */
   isValidBoard(board){
     if(!this.nextBoard){
@@ -91,7 +91,8 @@ export default class UTTT {
         board[0] > this.size ||
         board[1] < 0 ||
         board[1] > this.size ||
-        typeof(this.board[board[0]][board[1]]) === 'undefined'
+        typeof(this.board[board[0]][board[1]]) === 'undefined' ||
+        this.board[board[0]][board[1]].isFinished()
       );
     }else{
       return this.nextBoard[0] === board[0] &&
