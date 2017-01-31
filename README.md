@@ -1,5 +1,11 @@
 # Ultimate Tic Tac Toe
-> Ultimate Tick Tack Toe implementation for algorithmic battles & hackathons :)````
+> Ultimate Tick Tack Toe implementation for algorithmic battles & hackathons :)
+
+[![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt.svg)](https://travis-ci.org/aurbano/ultimate-ttt)
+[![npm](https://img.shields.io/npm/v/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
+[![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt?branch=master)
+[![npm](https://img.shields.io/npm/dm/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
+[![npm](https://img.shields.io/npm/l/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
 
 This is a JavaScript implementation of the [Ultimate Tic Tac Toe](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/) game.
 
