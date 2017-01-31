@@ -56,7 +56,7 @@ For local executions only JS clients are supported. They must be a constructor c
 * `addMove(board, move)` - Add a player move (to maintain this client in sync)
 * `getMove()` - Return a move proposal to send to the game engine. It must be in the form `{board: [row, col], move: [row, col]}`
 
-You can check the [sample implementation](https://github.com/aurbano/ultimate-ttt-server/blob/master/tests/client.test.js) provided, that plays at random.
+You can check the [sample implementation](https://github.com/aurbano/ultimate-ttt-server/blob/master/sample/random.js) provided, that plays at random.
 
 ## Roadmap
 
@@ -68,4 +68,4 @@ You can check the [sample implementation](https://github.com/aurbano/ultimate-tt
 ## Testing a client
 
 This repository includes a test file that can be run against a custom client to verify that it does the basics right.
-Simply copy [`tests/client.test.js`](https://github.com/aurbano/ultimate-ttt-server/blob/master/sample/random.js) and point it to your implementation. The tests can be run by installing `ava` and then adding it as the test runner in your `package.json` file.
+Simply copy [`tests/client.test.js`](https://github.com/aurbano/ultimate-ttt-server/blob/master/tests/client.test.js) and point it to your implementation. The tests can be run by installing `ava` and then adding it as the test runner in your `package.json` file.
