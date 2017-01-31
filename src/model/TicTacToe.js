@@ -28,11 +28,15 @@ export default class TicTacToe {
     }
   }
 
+  isFull(){
+    return this.moves === this.maxMoves;
+  }
+
   /**
    * Returns true if the game is over
    */
   isFinished(){
-    return (this.winner > -1 || this.moves === this.maxMoves);
+    return (this.winner > -1 || this.isFull());
   }
 
   /**
@@ -41,7 +45,7 @@ export default class TicTacToe {
    * @param move Move coordinates as an array [x, y]
    */
   move(player, move){
-    if(this.isFinished()) {
+    if(this.isFull()) {
       throw new Error(errors.boardFinished, 1);
     }
 
@@ -53,7 +57,7 @@ export default class TicTacToe {
       throw new Error(errors.move, 3);
     }
 
-    if (this.board[move[0]][move[1]] > 0) {
+    if (this.isPlayedMove(move)) {
       throw new Error(errors.repeat, 4);
     }
 
@@ -78,6 +82,10 @@ export default class TicTacToe {
    */
   isValidPlayer(player){
     return !(!player || !Number.isInteger(player) || player < 1 || player > 2);
+  }
+
+  isPlayedMove(move){
+    return this.board[move[0]][move[1]] > 0;
   }
 
   /**
