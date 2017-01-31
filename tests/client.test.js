@@ -7,4 +7,9 @@ test('Contains move method', t => {
 
   t.is(typeof(tic), 'object');
   t.is(typeof(tic.move), 'function');
+
+  const move = tic.move();
+
+  t.is(move.board.length, 2);
+  t.is(move.move.length, 2);
 });

@@ -76,10 +76,11 @@ if (options.help || isEmpty(options) || !options.a || !options.b) {
 
 const resolve = require('path').resolve;
 
-function loadPlayer(path) {
+function loadPlayer(path, player) {
   try{
     const name = resolve(path);
-    return require.main.require(name);
+    const Player = require.main.require(name);
+    return new Player(player);
   }catch(e){
     if (e.code === 'MODULE_NOT_FOUND' && e.message.indexOf(name) !== -1) {
       console.warn('Cannot find player "%s".\n  Did you forget to install it?\n', name);
@@ -90,14 +91,12 @@ function loadPlayer(path) {
   }
 }
 
-function validatePlayer(Player){
-  if(!Player || typeof(Player) !== 'function'){
+function validatePlayer(player){
+  if(!player || typeof(player) !== 'object'){
     throw new Error('Invalid player object');
   }
 
-  const testPlayer = new Player();
-
-  if(typeof(testPlayer.move) === 'undefined'){
+  if(typeof(player.getMove) !== 'function'){
     throw new Error('Player is missing the move method');
   }
 }
@@ -107,8 +106,8 @@ console.info('Ultimate Tic Tac Toe');
 console.log('');
 
 const player = [];
-player.push(loadPlayer(options.a));
-player.push(loadPlayer(options.b));
+player.push(loadPlayer(options.a, 1));
+player.push(loadPlayer(options.b, 2));
 
 try{
   validatePlayer(player[0]);
@@ -131,5 +130,34 @@ const UTTT = require('ultimate-ttt');
 console.info("Starting game!");
 
 const game = new UTTT();
+
+let currentPlayer = 0;
+let iterations = 0;
+while(!game.isFinished()){
+  const nextStep = player[currentPlayer].getMove();
+  game.move(
+    nextStep.board,
+    currentPlayer + 1,
+    nextStep.move
+  );
+  player[currentPlayer].addMove(nextStep.board, nextStep.move);
+
+  currentPlayer = 1 - currentPlayer;
+
+  player[currentPlayer].addOponentMove(nextStep.board, nextStep.move);
+  iterations++;
+
+  if(iterations > 100){
+    console.log('Limit reached');
+    console.log(game.prettyPrint());
+    return;
+  }
+}
+
+console.log('Game Finished!');
+console.log('Winner: Player ' + game.winner);
+console.log('Moves: ' + game.moves);
+
+console.log('');
 
 console.log(game.prettyPrint());
