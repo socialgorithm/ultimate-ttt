@@ -1,6 +1,9 @@
 # Ultimate TTT - Server
 > Ultimate Tic Tac Toe Algorithm - Game Server
 
+[![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt-server.svg)](https://travis-ci.org/aurbano/ultimate-ttt-server)
+[![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt-server/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt-server?branch=master)
+
 This is a system intended for games & hackathons mainly, for teams to write their own bot and compete against other bots.
 
 They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/), which provides a great opportunity for learning, predicting moves...
