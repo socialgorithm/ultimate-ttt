@@ -10,7 +10,19 @@ They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawin
 
 ### Online mode
 
+By default, the server will start in online mode and listen for players on port `3141`:
 
+```bash
+$ uttt
+```
+
+```
++-----------------------------------+
+|   Ultimate TTT Algorithm Battle   |
++-----------------------------------+
+
+Server started on: http://localhost:3141
+```
 
 ### Local mode
 
