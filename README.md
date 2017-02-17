@@ -8,16 +8,22 @@ This is a system intended for games & hackathons mainly, for teams to write thei
 
 They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/), which provides a great opportunity for learning, predicting moves...
 
-For now only local "battles" can be performed, using the cli version:
+### Online mode
+
+
+
+### Local mode
+
+The game server can run games locally, if the players have been written in JavaScript and are reachable from the server.
 
 ```bash
-$ uttt -a path/to/programOne -b path/to/programTwo
+$ uttt --local -a path/to/programOne -b path/to/programTwo
 ```
 
 To run a quick test you can use the sample implementation provided:
 
 ```bash
-$ uttt -a sample/random -b sample/random
+$ uttt --local -a sample/random -b sample/random
 ```
 
 Sample output:
