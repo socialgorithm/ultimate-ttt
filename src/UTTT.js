@@ -54,6 +54,12 @@ export default class UTTT {
       throw error(errors.gameFinished);
     }
 
+    board[0] = parseInt(board[0], 10);
+    board[1] = parseInt(board[1], 10);
+
+    move[0] = parseInt(move[0], 10);
+    move[1] = parseInt(move[1], 10);
+
     if(!this.isValidBoard(board)){
       throw error(errors.board, board);
     }
