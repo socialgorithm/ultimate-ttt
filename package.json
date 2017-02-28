@@ -1,6 +1,6 @@
 {
   "name": "ultimate-ttt",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "index.js",
   "scripts": {
