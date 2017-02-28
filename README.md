@@ -24,6 +24,34 @@ $ uttt
 Server started on: http://localhost:3141
 ```
 
+Options:
+
+```
+uttt
+
+  Ultimate Tic Tac Toe - Game Server
+
+Options
+
+  --verbose           The input to process.
+  -v, --version       Display the server version
+  -p, --port 3141     Port on which the server should be started (defaults to 3141)
+  -l, --local         Play games locally executing the players code directly (not recommended)
+  -a, --a file        Client 1 for the algorithm competition (for local games only)
+  -b, --b file        Client 2 for the algorithm competition (for local games only)
+  -g, --games 1000    Number of games to play, defaults to 1000
+  -t, --timeout 100   Milliseconds after which a player loses (defaults to 100)
+  -h, --help          Print this guide
+
+Synopsis
+
+  $ uttt
+  $ uttt --games 100
+  $ uttt --port 5000
+  $ uttt --local -a path/to/programOne -b path/to/programTwo
+  $ uttt --help
+```
+
 ### Local mode
 
 The game server can run games locally, if the players have been written in JavaScript and are reachable from the server.
