@@ -88,6 +88,12 @@ var UTTT = function () {
         throw (0, _error2.default)(_errors2.default.gameFinished);
       }
 
+      board[0] = parseInt(board[0], 10);
+      board[1] = parseInt(board[1], 10);
+
+      _move[0] = parseInt(_move[0], 10);
+      _move[1] = parseInt(_move[1], 10);
+
       if (!this.isValidBoard(board)) {
         throw (0, _error2.default)(_errors2.default.board, board);
       }
