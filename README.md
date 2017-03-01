@@ -106,7 +106,7 @@ You can check the [sample implementation](https://github.com/aurbano/ultimate-tt
 ## Roadmap
 
 * <del>Execute X number of games and display stats</del>
-* Setup a server so clients can play over a socket
+* <del>Setup a server so clients can play over a socket</del>
 * Setup a DB so players can use a token to identify
 * Create a web frontend to see stats and manage the competition
 
