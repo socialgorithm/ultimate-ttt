@@ -2,9 +2,9 @@
 > Ultimate Tic Tac Toe Algorithm - Game Server
 
 [![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt-server.svg)](https://travis-ci.org/aurbano/ultimate-ttt-server)
-[![npm](https://img.shields.io/npm/v/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
+[![npm](https://img.shields.io/npm/v/ultimate-ttt-server.svg)](https://www.npmjs.com/package/ultimate-ttt-server)
 [![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt-server/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt-server?branch=master)
-[![npm](https://img.shields.io/npm/l/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
+[![npm](https://img.shields.io/npm/l/ultimate-ttt-server.svg)](https://www.npmjs.com/package/ultimate-ttt-server)
 
 This is a system intended for games & hackathons mainly, for teams to write their own bot and compete against other bots.
 
