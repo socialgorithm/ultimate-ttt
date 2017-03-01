@@ -10,19 +10,18 @@ They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawin
 
 ### Online mode
 
-By default, the server will start in online mode and listen for players on port `3141`:
+By default, the server will start in online mode and listen for players on port `3141`.
+The server starts up a terminal GUI displaying the current online players and game stats. Players are paired automatically as soon as there are two available players.
+
+By default the server will have players play 1000 games per session.
+
+You can launch the server using:
 
 ```bash
 $ uttt
 ```
 
-```
-+-----------------------------------+
-|   Ultimate TTT Algorithm Battle   |
-+-----------------------------------+
-
-Server started on: http://localhost:3141
-```
+[![Online demo](https://github.com/aurbano/ultimate-ttt-server/raw/master/demos/online.gif "Online demo")](https://asciinema.org/a/105087)
 
 Options:
 
