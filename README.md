@@ -10,6 +10,23 @@ This is a system intended for games & hackathons mainly, for teams to write thei
 
 They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/), which provides a great opportunity for learning, predicting moves...
 
+### Getting started
+
+To run the server as a standalone program, install globally:
+ 
+```bash
+ $ npm install -g ultimate-ttt-server
+```
+
+Alternatively, clone this repository, cd into it, and run `npm link`:
+
+```bash
+$ git clone git@github.com:aurbano/ultimate-ttt-server.git
+$ cd ultimate-ttt-server
+$ npm link
+
+```
+
 ### Online mode
 
 By default, the server will start in online mode and listen for players on port `3141`.
