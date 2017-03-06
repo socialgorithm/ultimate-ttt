@@ -15,7 +15,7 @@ They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawin
 To run the server as a standalone program, install globally:
  
 ```bash
- $ npm install -g ultimate-ttt-server
+ $ npm install -g uttt
 ```
 
 Alternatively, clone this repository, cd into it, and run `npm link`:
