@@ -2,25 +2,31 @@
 > Ultimate Tic Tac Toe Algorithm - Game Server
 
 [![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt-server.svg)](https://travis-ci.org/aurbano/ultimate-ttt-server)
-[![npm](https://img.shields.io/npm/v/ultimate-ttt-server.svg)](https://www.npmjs.com/package/ultimate-ttt-server)
+[![npm](https://img.shields.io/npm/v/uttt.svg)](https://www.npmjs.com/package/uttt)
 [![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt-server/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt-server?branch=master)
-[![npm](https://img.shields.io/npm/l/ultimate-ttt-server.svg)](https://www.npmjs.com/package/ultimate-ttt-server)
+[![npm](https://img.shields.io/npm/l/uttt.svg)](https://www.npmjs.com/package/uttt)
 
 This is a system intended for games & hackathons mainly, for teams to write their own bot and compete against other bots.
 
 They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/), which provides a great opportunity for learning, predicting moves...
 
-### Getting started
+## Getting started
+
+### Deploy online
+
+You can directly deploy the server to Heroku for a quick start:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/socialgorithm/ultimate-ttt-server/tree/master)
 
-To run the server as a standalone program, install globally:
+
+### Run locally
+Install the server using the following command:
  
 ```bash
  $ npm install -g uttt
 ```
 
-Alternatively, clone this repository, cd into it, and run `npm link`:
+Alternatively, clone this repository, cd into it, and run `npm link` to make the executable available:
 
 ```bash
 $ git clone git@github.com:aurbano/ultimate-ttt-server.git
@@ -39,7 +45,7 @@ By default the server will have players play 1000 games per session.
 You can launch the server using:
 
 ```bash
-$ uttt
+$ uttt --gui
 ```
 
 [![Online demo](https://github.com/aurbano/ultimate-ttt-server/raw/master/demos/online.gif "Online demo")](https://asciinema.org/a/105087)
@@ -56,6 +62,7 @@ Options
   --verbose           The input to process.
   -v, --version       Display the server version
   -p, --port 3141     Port on which the server should be started (defaults to 3141)
+  -u, --gui           Display a fancy GUI in the terminal (only available in online mode)
   -l, --local         Play games locally executing the players code directly (not recommended)
   -a, --a file        Client 1 for the algorithm competition (for local games only)
   -b, --b file        Client 2 for the algorithm competition (for local games only)
@@ -65,12 +72,18 @@ Options
 
 Synopsis
 
-  $ uttt
+  $ uttt --gui
   $ uttt --games 100
   $ uttt --port 5000
   $ uttt --local -a path/to/programOne -b path/to/programTwo
   $ uttt --help
 ```
+
+When running in online mode you can also use env variables to override the settings (which is very useful when deploying to a server for example)
+
+- `TTT_PORT` overrides the port
+- `TTT_TIMEOUT` overrides the timeout
+- `TTT_GAMES` overrides the number of games that are played per round
 
 ### Local mode
 
