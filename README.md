@@ -18,6 +18,9 @@ You can directly deploy the server to Heroku for a quick start:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/socialgorithm/ultimate-ttt-server/tree/master)
 
+When deploying, choose any available App Name (or let Heroku decide for you), and click on Deploy. Once it's finished browse to `https://{app-name}.herokuapp.com` and you should see the server welcome message.
+
+If you open our [web client](https://uttt.socialgorithm.org), you can then connect it to the server by clicking on "Connect" and entering `https://{app-name}.herokuapp.com` as the server host.
 
 ### Run locally
 Install the server using the following command:
