@@ -27,7 +27,7 @@ function onlineGame(options) {
     }
   };
 
-  const host = 'localhost';
+  const host = options.host;
   const port = options.port || 3141;
   const title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
 
@@ -129,12 +129,13 @@ function onlineGame(options) {
     });
   } else {
     log(title);
+    log('Listening on ' + host + ':' + port);
   }
 
   log('Server started', true);
 
   function handler (req, res) {
-    fs.readFile(__dirname + '/../public/index.html',
+    fs.readFile(__dirname + '/../../public/index.html',
       function (err, data) {
         if (err) {
           res.writeHead(500);

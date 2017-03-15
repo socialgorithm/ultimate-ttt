@@ -5,10 +5,6 @@
   "logo": "https://socialgorithm.org/assets/avatar.png",
   "keywords": ["ultimate", "ttt", "socialgorithm"],
   "env": {
-    "TTT_PORT": {
-      "description": "Port for game socket",
-      "value": "3141"
-    },
     "TTT_GAMES": {
       "description": "Number of games to play per round",
       "value": "100"
