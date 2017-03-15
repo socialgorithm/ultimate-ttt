@@ -1,9 +1,9 @@
 # Ultimate Tic Tac Toe
 > Ultimate Tick Tack Toe implementation for algorithmic battles & hackathons :)
 
-[![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt.svg)](https://travis-ci.org/aurbano/ultimate-ttt)
+[![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-js.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-js)
 [![npm](https://img.shields.io/npm/v/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
-[![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/socialgorithm/ultimate-ttt-js/badge.svg?branch=master)](https://coveralls.io/github/socialgorithm/ultimate-ttt-js?branch=master)
 [![npm](https://img.shields.io/npm/dm/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
 [![npm](https://img.shields.io/npm/l/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
 
