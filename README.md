@@ -1,7 +1,7 @@
 # Ultimate TTT - Server
 > Ultimate Tic Tac Toe Algorithm - Game Server
 
-[![Travis](https://img.shields.io/travis/aurbano/ultimate-ttt-server.svg)](https://travis-ci.org/aurbano/ultimate-ttt-server)
+[![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-server.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-server)
 [![npm](https://img.shields.io/npm/v/uttt.svg)](https://www.npmjs.com/package/uttt)
 [![Coverage Status](https://coveralls.io/repos/github/aurbano/ultimate-ttt-server/badge.svg?branch=master)](https://coveralls.io/github/aurbano/ultimate-ttt-server?branch=master)
 [![npm](https://img.shields.io/npm/l/uttt.svg)](https://www.npmjs.com/package/uttt)
