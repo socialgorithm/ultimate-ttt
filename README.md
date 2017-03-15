@@ -22,8 +22,7 @@ When deploying, choose any available App Name (or let Heroku decide for you), an
 
 If you open our [web client](https://uttt.socialgorithm.org), you can then connect it to the server by clicking on "Connect" and entering `https://{app-name}.herokuapp.com` as the server host.
 
-### Run locally
-Install the server using the following command:
+### Install locally
  
 ```bash
  $ npm install -g uttt
@@ -38,7 +37,7 @@ $ npm link
 
 ```
 
-### Online mode
+### Run in online mode
 
 By default, the server will start in online mode and listen for players on port `3141`.
 The server starts up a terminal GUI displaying the current online players and game stats. Players are paired automatically as soon as there are two available players.
@@ -90,7 +89,7 @@ When running in online mode you can also use env variables to override the setti
 
 ### Local mode
 
-The game server can run games locally, if the players have been written in JavaScript and are reachable from the server.
+The game server can run JavaScript games locally, if the players have been written in JavaScript and are reachable from the server.
 
 ```bash
 $ uttt --local -a path/to/programOne -b path/to/programTwo
@@ -145,7 +144,7 @@ You can check the [sample implementation](https://github.com/aurbano/ultimate-tt
 * <del>Execute X number of games and display stats</del>
 * <del>Setup a server so clients can play over a socket</del>
 * Setup a DB so players can use a token to identify
-* Create a web frontend to see stats and manage the competition
+* <del>Create a web frontend to see stats and manage the competition</del> ([ultimate-ttt-web](https://github.com/socialgorithm/ultimate-ttt-web))
 
 ## Testing a client
 
