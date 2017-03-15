@@ -1,6 +1,6 @@
 {
   "name": "uttt",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
   "main": "index.js",
   "scripts": {
