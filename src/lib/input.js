@@ -1,6 +1,6 @@
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
-const info = require('../package.json');
+const info = require('../../package.json');
 
 const optionDefinitions = [
   {

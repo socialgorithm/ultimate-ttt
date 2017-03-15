@@ -1,7 +1,7 @@
 const UTTT = require('ultimate-ttt');
 const ip = require('ip');
 const blessed = require('blessed');
-const pjson = require('../package.json');
+const pjson = require('../../package.json');
 
 const funcs = require('./funcs');
 const State = require('./state');
@@ -29,6 +29,7 @@ function onlineGame(options) {
 
   const host = 'localhost';
   const port = options.port || 3141;
+  const title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
 
   const app = require('http').createServer(handler);
   const io = require('socket.io')(app);
@@ -45,7 +46,7 @@ function onlineGame(options) {
       warnings: true
     });
 
-    screen.title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
+    screen.title = title;
 
     const header = blessed.box({
       parent: screen,
@@ -126,6 +127,8 @@ function onlineGame(options) {
         }
       }
     });
+  } else {
+    log(title);
   }
 
   log('Server started', true);

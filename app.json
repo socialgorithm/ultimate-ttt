@@ -7,15 +7,15 @@
   "env": {
     "TTT_PORT": {
       "description": "Port for game socket",
-      "value": 3141
+      "value": "3141"
     },
     "TTT_GAMES": {
       "description": "Number of games to play per round",
-      "value": 100
+      "value": "100"
     },
     "TTT_TIMEOUT": {
       "description": "Timeout for player moves, in milliseconds",
-      "value": 100
+      "value": "100"
     }
   }
 }
