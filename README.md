@@ -81,7 +81,7 @@ Synopsis
 
 When running in online mode you can also use env variables to override the settings (which is very useful when deploying to a server for example)
 
-- `TTT_PORT` overrides the port
+- `PORT` overrides the port
 - `TTT_TIMEOUT` overrides the timeout
 - `TTT_GAMES` overrides the number of games that are played per round
 
