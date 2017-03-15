@@ -12,6 +12,8 @@ They will be playing games of ["Ultimate Tic Tac Toe"](https://mathwithbaddrawin
 
 ### Getting started
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/socialgorithm/ultimate-ttt-server/tree/master)
+
 To run the server as a standalone program, install globally:
  
 ```bash
