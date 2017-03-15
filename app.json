@@ -1,0 +1,13 @@
+{
+  "name": "Ultimate TTT Server",
+  "description": "Game server for Ultimate TTT games",
+  "repository": "https://github.com/socialgorithm/ultimate-ttt-server",
+  "logo": "https://socialgorithm.org/assets/avatar.png",
+  "keywords": ["ultimate", "ttt", "socialgorithm"],
+  "env": {
+    "TTT_MODE": {
+      "description": "Ultimate TTT Server mode",
+      "value": "online"
+    }
+  }
+}
