@@ -67,20 +67,22 @@ export default class SubBoard {
 
   /**
    * Adds your move to the board, throws exception if move is invalid or board is already finished.
-   * @param move
+   * @param move move coordinates
+   * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  addMyMove(move) {
-    return this._move(ME, move);
+  addMyMove(move, index = -1) {
+    return this._move(ME, move, index);
   }
 
   /**
    * Adds an opponent move to the board, throws exception if move is invalid or board is already finished.
    * @param move
+   * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  addOpponentMove(move) {
-    return this._move(OPPONENT, move)
+  addOpponentMove(move, index = -1) {
+    return this._move(OPPONENT, move, index)
   }
 
   /**
@@ -141,10 +143,11 @@ export default class SubBoard {
    * new SubBoard.
    * @param player Player identifier (0 || 1)
    * @param move Move coordinates as an array [x, y]
+   * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    * @private
    */
-  _move(player, move){
+  _move(player, move, index = -1){
     if(this._isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
@@ -159,7 +162,8 @@ export default class SubBoard {
     const game = this._copy();
 
     game.board[move[0]][move[1]].player = player;
-    game.board[move[0]][move[1]].index = this.moves;
+    game.board[move[0]][move[1]].subBoardIndex = game.moves;
+    game.board[move[0]][move[1]].mainIndex = index;
     game.moves++;
 
     // Check if the board has been won
