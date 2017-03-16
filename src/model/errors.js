@@ -4,12 +4,8 @@ const errors = {
     code: 1
   },
   move: {
-    message: 'Invalid move coordinates (%s), they must be an array in the form [x, y]',
+    message: 'Invalid move coordinates (%s)',
     code: 2
-  },
-  repeat: {
-    message: 'Position already played (%s)',
-    code: 3
   },
   board: {
     message: 'Invalid next board (%s), it must be the same as the last valid move\'s coordinates',
@@ -22,6 +18,10 @@ const errors = {
   gameFinished: {
     message: 'Game already finished',
     code: 6
+  },
+  gameNotFinished: {
+    message: 'Game not finished',
+    code: 7
   }
 };
 
