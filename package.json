@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc ava",
-    "build": "babel -w src/ -d dist -s"
+    "test:watch": "nyc ava --watch",
+    "build": "babel src/ -d dist -s",
+    "build:watch": "babel -w src/ -d dist -s"
   },
   "repository": {
     "type": "git",
