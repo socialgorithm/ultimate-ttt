@@ -163,6 +163,14 @@ function onlineGame(options) {
   io.on('connection', function (socket) {
     if (socket.handshake.query.client) {
       // a client (observer) has connected, don't add to player list
+      // send a summary of the server
+      socket.emit('stats', {
+        type: 'stats',
+        payload: {
+          players: serverInfo.players,
+          games: [],
+        },
+      });
       return true;
     }
 
@@ -217,7 +225,7 @@ function addPlayer(player) {
     index = serverInfo.players.push(player) - 1;
   }
   log('Connected "' + player + '"', true);
-  serverInfo.io.emit('status', {
+  serverInfo.io.emit('stats', {
     type: 'connect',
     payload: player,
   });
@@ -231,7 +239,7 @@ function removePlayer(player) {
     serverInfo.players.splice(index, 1);
   }
   log('Disconnected "' + player + '"', true);
-  serverInfo.io.emit('status', {
+  serverInfo.io.emit('stats', {
     type: 'disconnect',
     payload: player,
   });
@@ -265,7 +273,7 @@ function startSession(session, settings){
     '"'
   );
 
-  serverInfo.io.emit('status', {
+  serverInfo.io.emit('stats', {
     type: 'session-start',
     payload: {
       players: [
@@ -275,19 +283,20 @@ function startSession(session, settings){
     },
   });
 
+  const server = {
+    timeout: options.timeout || 100,
+    maxGames: options.games || 1000,
+    state: new State(),
+    session: session,
+    currentPlayer: 0,
+    firstPlayer: 0,
+    game: new UTTT(),
+    gameStart: null,
+    progressBar: null,
+  };
+
   if (serverInfo.ui.enabled) {
-    const server = {
-      timeout: options.timeout || 100,
-      maxGames: options.games || 1000,
-      state: new State(),
-      session: session,
-      currentPlayer: 0,
-      firstPlayer: 0,
-      game: new UTTT(),
-      gameStart: null,
-      ui: getGameBox(),
-      progressBar: null,
-    };
+    server.ui = getGameBox();
 
     server.ui.append(blessed.text({
       top: 0,
@@ -380,7 +389,7 @@ function startSession(session, settings){
     }
 
 
-    serverInfo.io.emit('status', {
+    serverInfo.io.emit('stats', {
       type: 'session-end',
       payload: {
         players: [
@@ -441,7 +450,7 @@ function startSession(session, settings){
     server.currentPlayer = server.firstPlayer;
     server.game.init();
 
-    serverInfo.io.emit('status', {
+    serverInfo.io.emit('stats', {
       type: 'game-start',
       payload: {
         players: [
