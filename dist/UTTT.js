@@ -240,6 +240,10 @@ var UTTT = function () {
         throw (0, _error2.default)(_errors2.default.board, board);
       }
 
+      if (!this.isValidMove(board, move)) {
+        throw (0, _error2.default)(_errors2.default.move, move);
+      }
+
       var game = this._copy();
       var updatedBoard = void 0;
 

@@ -51,6 +51,14 @@ function validateBoard(board, t) {
   validateBoard(subBoard.board, t);
 });
 
+(0, _ava2.default)('getResult fails if unfinished', function (t) {
+  var subBoard = new _SubBoard2.default();
+
+  t.throws(function () {
+    subBoard.getResult();
+  }, (0, _error2.default)(_errors2.default.gameNotFinished).message);
+});
+
 (0, _ava2.default)('Move correctly updates the board', function (t) {
   var subBoard = new _SubBoard2.default();
   subBoard = subBoard.addMyMove([0, 0]);
@@ -192,7 +200,7 @@ function validateBoard(board, t) {
   });
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, _SubBoard.ME);
+  t.is(subBoard.getResult(), _SubBoard.ME);
 });
 
 (0, _ava2.default)('Detect winning column', function (t) {
@@ -215,7 +223,7 @@ function validateBoard(board, t) {
   });
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, _SubBoard.ME);
+  t.is(subBoard.getResult(), _SubBoard.ME);
 });
 
 (0, _ava2.default)('Detect winning RtL diagonal', function (t) {
@@ -238,7 +246,7 @@ function validateBoard(board, t) {
   });
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, _SubBoard.ME);
+  t.is(subBoard.getResult(), _SubBoard.ME);
 });
 
 (0, _ava2.default)('Detect winning LtR diagonal', function (t) {
@@ -261,6 +269,6 @@ function validateBoard(board, t) {
   });
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, _SubBoard.ME);
+  t.is(subBoard.getResult(), _SubBoard.ME);
 });
 //# sourceMappingURL=SubBoard.test.js.map
