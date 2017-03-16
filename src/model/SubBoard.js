@@ -93,7 +93,8 @@ export default class SubBoard {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        line += this.board[x][y] + ' ';
+        const player = (this.board[x][y].player < 0)? '-' : this.board[x][y].player;
+        line += player + ' ';
       }
       ret.push(line);
     }
@@ -163,13 +164,21 @@ export default class SubBoard {
 
     // Check if the board has been won
     game._checkRow(move[0]);
-    game._checkColumn(move[1]);
 
-    game._checkLtRDiagonal();
-    game._checkRtLDiagonal();
+    if (!game.isFinished()) {
+      game._checkColumn(move[1]);
+    }
+
+    if (!game.isFinished()) {
+      game._checkLtRDiagonal();
+    }
+
+    if (!game.isFinished()) {
+      game._checkRtLDiagonal();
+    }
 
     // check for a tie
-    if (game._isFull() && game.winner < -1){
+    if (game._isFull() && game.winner < RESULT_TIE){
       game.winner = RESULT_TIE;
     }
 
@@ -178,12 +187,12 @@ export default class SubBoard {
 
   /**
    * Validates a player
-   * @param player Player identifier (1 || 2)
+   * @param player Player identifier (0 || 1)
    * @returns {boolean}
    * @private
    */
-  static _isValidPlayer(player){
-    return !(!player || !Number.isInteger(player) || (player !== ME && player !== OPPONENT));
+  _isValidPlayer(player){
+    return [ ME, OPPONENT ].indexOf(player) > -1;
   }
 
   /**
@@ -193,7 +202,7 @@ export default class SubBoard {
    */
   _checkRow(row){
     const player = this.board[row][0].player;
-    if(player === 0){
+    if(player < ME){
       return;
     }
     for(let i = 1; i < this.size; i++){
@@ -201,7 +210,9 @@ export default class SubBoard {
         return;
       }
     }
-    this.winner = player;
+    if (player >= ME) {
+      this.winner = player;
+    }
   }
 
   /**
@@ -211,7 +222,7 @@ export default class SubBoard {
    */
   _checkColumn(col){
     const player = this.board[0][col].player;
-    if(player === 0){
+    if(player < ME){
       return;
     }
     for(let i = 1; i < this.size; i++){
@@ -219,7 +230,9 @@ export default class SubBoard {
         return;
       }
     }
-    this.winner = player;
+    if (player >= ME) {
+      this.winner = player;
+    }
   }
 
   /**
@@ -228,7 +241,7 @@ export default class SubBoard {
    */
   _checkLtRDiagonal(){
     const player = this.board[0][0].player;
-    if(player === 0){
+    if(player < ME){
       return;
     }
     for(let i = 1; i < this.size; i++){
@@ -236,7 +249,9 @@ export default class SubBoard {
         return;
       }
     }
-    this.winner = player;
+    if (player >= ME) {
+      this.winner = player;
+    }
   }
 
   /**
@@ -245,7 +260,7 @@ export default class SubBoard {
    */
   _checkRtLDiagonal(){
     const player = this.board[0][this.size - 1].player;
-    if(player === 0){
+    if(player < ME){
       return;
     }
     for(let i = this.size - 1; i >= 0; i--){
@@ -253,7 +268,9 @@ export default class SubBoard {
         return;
       }
     }
-    this.winner = player;
+    if (player >= ME) {
+      this.winner = player;
+    }
   }
 
   /**

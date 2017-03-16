@@ -1,6 +1,6 @@
 const errors = {
   player: {
-    message: 'Invalid player (%s), it must be either 1 or 2',
+    message: 'Invalid player (%s), it must be either 0 or 1',
     code: 1
   },
   move: {

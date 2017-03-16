@@ -222,7 +222,7 @@ export default class UTTT {
         game.board[board[0]][board[1]].isFinished() &&
         game.board[board[0]][board[1]].winner >= RESULT_TIE
     ){
-      game.stateBoard._move(
+      game.stateBoard = game.stateBoard._move(
         game.board[board[0]][board[1]].winner,
         board
       );
