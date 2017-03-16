@@ -248,9 +248,9 @@ var UTTT = function () {
       var updatedBoard = void 0;
 
       if (player === _SubBoard.ME) {
-        updatedBoard = this.board[board[0]][board[1]].addMyMove(move);
+        updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
       } else if (player === _SubBoard.OPPONENT) {
-        updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move);
+        updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
       } else {
         throw (0, _error2.default)(_errors2.default.player, player);
       }

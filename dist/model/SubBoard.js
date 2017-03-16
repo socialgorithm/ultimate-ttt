@@ -94,26 +94,32 @@ var SubBoard = function () {
 
     /**
      * Adds your move to the board, throws exception if move is invalid or board is already finished.
-     * @param move
+     * @param move move coordinates
+     * @param index which turn this was (to enable replaying UTTT games)
      * @returns {SubBoard}
      */
 
   }, {
     key: 'addMyMove',
     value: function addMyMove(move) {
-      return this._move(ME, move);
+      var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+
+      return this._move(ME, move, index);
     }
 
     /**
      * Adds an opponent move to the board, throws exception if move is invalid or board is already finished.
      * @param move
+     * @param index which turn this was (to enable replaying UTTT games)
      * @returns {SubBoard}
      */
 
   }, {
     key: 'addOpponentMove',
     value: function addOpponentMove(move) {
-      return this._move(OPPONENT, move);
+      var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+
+      return this._move(OPPONENT, move, index);
     }
 
     /**
@@ -183,6 +189,7 @@ var SubBoard = function () {
      * new SubBoard.
      * @param player Player identifier (0 || 1)
      * @param move Move coordinates as an array [x, y]
+     * @param index which turn this was (to enable replaying UTTT games)
      * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
      * @private
      */
@@ -190,6 +197,8 @@ var SubBoard = function () {
   }, {
     key: '_move',
     value: function _move(player, move) {
+      var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
+
       if (this._isFull() || this.isFinished()) {
         throw (0, _error2.default)(_errors2.default.boardFinished);
       }
@@ -204,7 +213,8 @@ var SubBoard = function () {
       var game = this._copy();
 
       game.board[move[0]][move[1]].player = player;
-      game.board[move[0]][move[1]].index = this.moves;
+      game.board[move[0]][move[1]].subBoardIndex = game.moves;
+      game.board[move[0]][move[1]].mainIndex = index;
       game.moves++;
 
       // Check if the board has been won

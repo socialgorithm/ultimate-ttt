@@ -14,7 +14,8 @@ function validateBoard(board, t){
     row.forEach((cell) => {
       t.true(cell.player >= -1);
       t.true(cell.player <= 2);
-      t.true(cell.index >= -1);
+      t.true(cell.subBoardIndex >= -1);
+      t.true(cell.mainIndex >= -1);
     });
   });
 }

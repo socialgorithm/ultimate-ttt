@@ -205,9 +205,9 @@ export default class UTTT {
     let updatedBoard;
 
     if (player === ME) {
-      updatedBoard = this.board[board[0]][board[1]].addMyMove(move);
+      updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
     } else if (player === OPPONENT) {
-      updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move);
+      updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
     } else {
       throw error(errors.player, player);
     }
