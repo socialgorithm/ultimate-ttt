@@ -10,9 +10,10 @@ export const RESULT_WIN = 0;
 export const RESULT_LOSE = 1;
 
 /**
- * TicTacToe board implementation
- * Players must be indicated with 1 or 2
- * Moves with an array of [x, y]
+ * SubBoard for TicTacToe games
+ * This class implements the traditional game of TicTacToe
+ *
+ * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class SubBoard {
   constructor(size = 3){
@@ -35,7 +36,7 @@ export default class SubBoard {
   }
 
   /**
-   * Returns the winner for the board, throws an exception if the game hasn't finished yet.
+   * Returns the winner for the game, throws an exception if the game hasn't finished yet.
    * @returns {number} -1 for a tie, 0 you won, 1 opponent won
    */
   getResult() {
@@ -64,10 +65,20 @@ export default class SubBoard {
     );
   }
 
+  /**
+   * Adds your move to the board, throws exception if move is invalid or board is already finished.
+   * @param move
+   * @returns {SubBoard}
+   */
   addMyMove(move) {
     return this._move(ME, move);
   }
 
+  /**
+   * Adds an opponent move to the board, throws exception if move is invalid or board is already finished.
+   * @param move
+   * @returns {SubBoard}
+   */
   addOpponentMove(move) {
     return this._move(OPPONENT, move)
   }
@@ -112,7 +123,7 @@ export default class SubBoard {
 
   /**
    * Return a new SubBoard as a copy of this one
-   * @returns {SubBoard} Copy of the current board
+   * @returns {SubBoard} Copy of the current game
    * @private
    */
   _copy() {
@@ -129,7 +140,7 @@ export default class SubBoard {
    * new SubBoard.
    * @param player Player identifier (0 || 1)
    * @param move Move coordinates as an array [x, y]
-   * @returns {SubBoard} Updated copy of the current board with the move added and the state updated
+   * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    * @private
    */
   _move(player, move){
