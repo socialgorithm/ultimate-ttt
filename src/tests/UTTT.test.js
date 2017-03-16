@@ -50,6 +50,34 @@ test('Move rejects moves to the wrong board', t => {
   }, error(errors.board, [2, 0]).message);
 });
 
+test('Move rejects invalid moves', t => {
+  let game = new UTTT();
+
+  t.throws(() => {
+    game.addMyMove([0, 0], [-1, 0])
+  }, error(errors.move, [-1, 0]).message);
+
+  t.throws(() => {
+    game.addMyMove([-1, 0], [-1, 1])
+  }, error(errors.board, [-1, 0]).message);
+});
+
+test('isValidMove returns false on invalid board/move', t => {
+  let game = new UTTT();
+
+  t.true(game.isValidMove([0, 0], [0, 0]));
+  t.false(game.isValidMove([-1, 0], [0, 0]));
+  t.false(game.isValidMove([1, 0], [-1, 0]));
+});
+
+test('_move fails on invalid player', t => {
+  let game = new UTTT();
+
+  t.throws(() => {
+    game._move([0, 0], -1, [1, 0])
+  }, error(errors.player, -1).message);
+});
+
 test('Detect game ending', t => {
   let game = new UTTT();
 
@@ -74,7 +102,7 @@ test('Detect game ending', t => {
     game.addMyMove([0, 0], [1, 1]);
   }, error(errors.gameFinished).message);
 
-  t.is(game.winner, ME);
+  t.is(game.getResult(), ME);
 });
 
 test('Move doesn\'t allow playing on already won boards', t => {
@@ -128,5 +156,9 @@ test('A tie in a board works properly', t => {
   game = game.addOpponentMove([2, 2], [0, 2]);
   game = game.addMyMove([0, 2], [1, 1]);
   game = game.addOpponentMove([1, 1], [2, 2]);
-  game.addMyMove([2, 2], [1, 2]);
+  game = game.addMyMove([2, 2], [1, 2]);
+
+  t.notThrows(() => {
+    game.prettyPrint();
+  });
 });

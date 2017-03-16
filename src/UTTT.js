@@ -197,6 +197,10 @@ export default class UTTT {
       throw error(errors.board, board);
     }
 
+    if(!this.isValidMove(board, move)){
+      throw error(errors.move, move);
+    }
+
     const game = this._copy();
     let updatedBoard;
 

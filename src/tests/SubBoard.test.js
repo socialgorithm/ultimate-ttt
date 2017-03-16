@@ -33,6 +33,14 @@ test('Returns a valid SubBoard model', t => {
   validateBoard(subBoard.board, t);
 });
 
+test('getResult fails if unfinished', t => {
+  const subBoard = new SubBoard();
+
+  t.throws(() => {
+    subBoard.getResult()
+  }, error(errors.gameNotFinished).message);
+});
+
 test('Move correctly updates the board', t => {
   let subBoard = new SubBoard();
   subBoard = subBoard.addMyMove([0, 0]);
@@ -118,7 +126,7 @@ test('Detect winning row', t => {
   t.notThrows(() => {subBoard = subBoard.addMyMove([0, 1])});
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, ME);
+  t.is(subBoard.getResult(), ME);
 });
 
 test('Detect winning column', t => {
@@ -131,7 +139,7 @@ test('Detect winning column', t => {
   t.notThrows(() => {subBoard = subBoard.addMyMove([1, 0])});
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, ME);
+  t.is(subBoard.getResult(), ME);
 });
 
 test('Detect winning RtL diagonal', t => {
@@ -144,7 +152,7 @@ test('Detect winning RtL diagonal', t => {
   t.notThrows(() => {subBoard = subBoard.addMyMove([2, 2])});
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, ME);
+  t.is(subBoard.getResult(), ME);
 });
 
 test('Detect winning LtR diagonal', t => {
@@ -157,5 +165,5 @@ test('Detect winning LtR diagonal', t => {
   t.notThrows(() => {subBoard = subBoard.addMyMove([0, 2])});
 
   t.true(subBoard.isFinished());
-  t.is(subBoard.winner, ME);
+  t.is(subBoard.getResult(), ME);
 });
