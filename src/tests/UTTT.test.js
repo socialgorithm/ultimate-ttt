@@ -35,9 +35,24 @@ test('Moves correctly update the board', t => {
 
   game = game.addMyMove([1, 0], [0, 0]);
   game = game.addOpponentMove([0, 0], [2, 1]);
+  game = game.addMyMove([2, 1], [1, 0]);
+  game = game.addOpponentMove([1, 0], [0, 1]);
 
   t.is(game.board[1][0].board[0][0].player, ME);
+  t.is(game.board[1][0].board[0][0].mainIndex, 0);
+  t.is(game.board[1][0].board[0][0].subBoardIndex, 0);
+
   t.is(game.board[0][0].board[2][1].player, OPPONENT);
+  t.is(game.board[0][0].board[2][1].mainIndex, 1);
+  t.is(game.board[0][0].board[2][1].subBoardIndex, 0);
+
+  t.is(game.board[2][1].board[1][0].player, ME);
+  t.is(game.board[2][1].board[1][0].mainIndex, 2);
+  t.is(game.board[2][1].board[1][0].subBoardIndex, 0);
+
+  t.is(game.board[1][0].board[0][1].player, OPPONENT);
+  t.is(game.board[1][0].board[0][1].mainIndex, 3);
+  t.is(game.board[1][0].board[0][1].subBoardIndex, 1);
 });
 
 test('Move rejects moves to the wrong board', t => {
