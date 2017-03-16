@@ -1,9 +1,12 @@
-import TicTacToe from './model/TicTacToe';
+import SubBoard from './model/SubBoard';
 import errors from './model/errors';
 import error from './error';
 
 /**
- * Ultimate Tic Tac Game
+ * UTTT MainBoard Class
+ * Implements a functional/immutable API
+ *
+ * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class UTTT {
   constructor(size = 3){
@@ -26,12 +29,12 @@ export default class UTTT {
     this.board = [];
 
     // The state board holds the ultimate game state
-    this.stateBoard = new TicTacToe(this.size);
+    this.stateBoard = new SubBoard(this.size);
 
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
       for(let y = 0; y < this.size; y++){
-        this.board[x][y] = new TicTacToe(this.size);
+        this.board[x][y] = new SubBoard(this.size);
       }
     }
   }
