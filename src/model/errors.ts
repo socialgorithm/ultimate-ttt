@@ -1,4 +1,4 @@
-const errors = {
+export default {
   player: {
     message: 'Invalid player (%s), it must be either 0 or 1',
     code: 1
@@ -24,5 +24,3 @@ const errors = {
     code: 7
   }
 };
-
-export default errors;
