@@ -74,6 +74,8 @@ export default class GUI {
             }
         });
 
+        // The definitions for blessed are wrong here
+        // will submit a PR to fix them
         this.logger = blessed.log({
             parent: this.screen,
             bottom: 0,
