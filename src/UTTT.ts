@@ -4,6 +4,13 @@ import error from './error';
 
 import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
 
+export type Coord = [number, number];
+
+export interface Coords {
+  board: Coord;
+  move: Coord
+}
+
 /**
  * UTTT MainBoard Class
  * Implements a functional/immutable API
@@ -12,7 +19,7 @@ import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
  */
 export default class UTTT {
   public board: Array<Array<SubBoard>>;
-  public nextBoard: Array<number>;
+  public nextBoard: Coord;
 
   private size: number;
   private maxMoves: number;
@@ -51,7 +58,7 @@ export default class UTTT {
    * @param boardRowCol Board coordinates as an array [row, col]
    * @returns {boolean} true if the board is playable
    */
-  public isValidBoardRowCol(boardRowCol: Array<number>): boolean {
+  public isValidBoardRowCol(boardRowCol: Coord): boolean {
     if(!this.nextBoard){
       return !(
         !Array.isArray(boardRowCol) ||
@@ -76,7 +83,7 @@ export default class UTTT {
    * @param move Move coordinates [row, col]
    * @returns {boolean} true if the move is valid
    */
-  public isValidMove(boardRowCol: Array<number>, move: Array<number>): boolean {
+  public isValidMove(boardRowCol: Coord, move: Coord): boolean {
     if(!this.isValidBoardRowCol(boardRowCol)){
       return false;
     }
@@ -89,7 +96,7 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  public addMyMove(boardRowCol: Array<number>, move: Array<number>): UTTT {
+  public addMyMove(boardRowCol: Coord, move: Coord): UTTT {
     return this.move(boardRowCol, ME, move);
   }
 
@@ -99,7 +106,7 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  public addOpponentMove(boardRowCol: Array<number>, move: Array<number>): UTTT {
+  public addOpponentMove(boardRowCol: Coord, move: Coord): UTTT {
     return this.move(boardRowCol, OPPONENT, move);
   }
 
@@ -190,7 +197,7 @@ export default class UTTT {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    * @private
    */
-  private move(board: Array<number >, player: number, move: Array<number>): UTTT {
+  private move(board: Coord, player: number, move: Coord): UTTT {
     if(this.isFinished()) {
       throw error(errors.gameFinished);
     }
