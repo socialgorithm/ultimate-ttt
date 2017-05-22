@@ -14,7 +14,7 @@ export default class UTTT {
     addMyMove(boardRowCol: Array<number>, move: Array<number>): UTTT;
     addOpponentMove(boardRowCol: Array<number>, move: Array<number>): UTTT;
     prettyPrint(): string;
-    _init(): void;
-    _copy(): UTTT;
-    _move(board: Array<number>, player: number, move: Array<number>): UTTT;
+    private init();
+    copy(): UTTT;
+    private move(board, player, move);
 }

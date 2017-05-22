@@ -12,7 +12,7 @@ var SubBoard = (function () {
     function SubBoard(size) {
         if (size === void 0) { size = 3; }
         this.size = size;
-        this._init();
+        this.init();
         this.maxMoves = Math.pow(this.size, 2);
         return this;
     }
@@ -37,11 +37,42 @@ var SubBoard = (function () {
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this._move(exports.ME, move, index);
+        return this.move(exports.ME, move, index);
     };
     SubBoard.prototype.addOpponentMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this._move(exports.OPPONENT, move, index);
+        return this.move(exports.OPPONENT, move, index);
+    };
+    SubBoard.prototype.move = function (player, move, index) {
+        if (index === void 0) { index = -1; }
+        if (this.isFull() || this.isFinished()) {
+            throw error_1["default"](errors_1["default"].boardFinished);
+        }
+        if (!this.isValidPlayer(player)) {
+            throw error_1["default"](errors_1["default"].player, player);
+        }
+        if (!this.isValidMove(move)) {
+            throw error_1["default"](errors_1["default"].move, move.toString());
+        }
+        var game = this.copy();
+        game.board[move[0]][move[1]].player = player;
+        game.board[move[0]][move[1]].subBoardIndex = game.moves;
+        game.board[move[0]][move[1]].mainIndex = index;
+        game.moves++;
+        game.checkRow(move[0]);
+        if (!game.isFinished()) {
+            game.checkColumn(move[1]);
+        }
+        if (!game.isFinished()) {
+            game.checkLtRDiagonal();
+        }
+        if (!game.isFinished()) {
+            game.checkRtLDiagonal();
+        }
+        if (game.isFull() && game.winner < exports.RESULT_TIE) {
+            game.winner = exports.RESULT_TIE;
+        }
+        return game;
     };
     SubBoard.prototype.prettyPrint = function () {
         var ret = [];
@@ -55,7 +86,7 @@ var SubBoard = (function () {
         }
         return ret.join("\n");
     };
-    SubBoard.prototype._init = function () {
+    SubBoard.prototype.init = function () {
         this.board = [];
         this.moves = 0;
         this.winner = exports.RESULT_TIE - 1;
@@ -66,49 +97,18 @@ var SubBoard = (function () {
             }
         }
     };
-    SubBoard.prototype._copy = function () {
+    SubBoard.prototype.copy = function () {
         var copy = new SubBoard(this.size);
-        copy._init();
+        copy.init();
         copy.board = this.board;
         copy.moves = this.moves;
         copy.winner = this.winner;
         return copy;
     };
-    SubBoard.prototype._move = function (player, move, index) {
-        if (index === void 0) { index = -1; }
-        if (this._isFull() || this.isFinished()) {
-            throw error_1["default"](errors_1["default"].boardFinished);
-        }
-        if (!this._isValidPlayer(player)) {
-            throw error_1["default"](errors_1["default"].player, player);
-        }
-        if (!this.isValidMove(move)) {
-            throw error_1["default"](errors_1["default"].move, move);
-        }
-        var game = this._copy();
-        game.board[move[0]][move[1]].player = player;
-        game.board[move[0]][move[1]].subBoardIndex = game.moves;
-        game.board[move[0]][move[1]].mainIndex = index;
-        game.moves++;
-        game._checkRow(move[0]);
-        if (!game.isFinished()) {
-            game._checkColumn(move[1]);
-        }
-        if (!game.isFinished()) {
-            game._checkLtRDiagonal();
-        }
-        if (!game.isFinished()) {
-            game._checkRtLDiagonal();
-        }
-        if (game._isFull() && game.winner < exports.RESULT_TIE) {
-            game.winner = exports.RESULT_TIE;
-        }
-        return game;
-    };
-    SubBoard.prototype._isValidPlayer = function (player) {
+    SubBoard.prototype.isValidPlayer = function (player) {
         return [exports.ME, exports.OPPONENT].indexOf(player) > -1;
     };
-    SubBoard.prototype._checkRow = function (row) {
+    SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;
         if (player < exports.ME) {
             return;
@@ -122,7 +122,7 @@ var SubBoard = (function () {
             this.winner = player;
         }
     };
-    SubBoard.prototype._checkColumn = function (col) {
+    SubBoard.prototype.checkColumn = function (col) {
         var player = this.board[0][col].player;
         if (player < exports.ME) {
             return;
@@ -136,7 +136,7 @@ var SubBoard = (function () {
             this.winner = player;
         }
     };
-    SubBoard.prototype._checkLtRDiagonal = function () {
+    SubBoard.prototype.checkLtRDiagonal = function () {
         var player = this.board[0][0].player;
         if (player < exports.ME) {
             return;
@@ -150,7 +150,7 @@ var SubBoard = (function () {
             this.winner = player;
         }
     };
-    SubBoard.prototype._checkRtLDiagonal = function () {
+    SubBoard.prototype.checkRtLDiagonal = function () {
         var player = this.board[0][this.size - 1].player;
         if (player < exports.ME) {
             return;
@@ -164,7 +164,7 @@ var SubBoard = (function () {
             this.winner = player;
         }
     };
-    SubBoard.prototype._isFull = function () {
+    SubBoard.prototype.isFull = function () {
         return this.moves === this.maxMoves;
     };
     return SubBoard;

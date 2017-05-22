@@ -9,7 +9,7 @@ var UTTT = (function () {
         if (size === void 0) { size = 3; }
         this.size = size;
         this.maxMoves = Math.pow(this.size, 4);
-        this._init();
+        this.init();
         return this;
     }
     UTTT.prototype.isFinished = function () {
@@ -41,10 +41,10 @@ var UTTT = (function () {
         return this.board[boardRowCol[0]][boardRowCol[1]].isValidMove(move);
     };
     UTTT.prototype.addMyMove = function (boardRowCol, move) {
-        return this._move(boardRowCol, SubBoard_2.ME, move);
+        return this.move(boardRowCol, SubBoard_2.ME, move);
     };
     UTTT.prototype.addOpponentMove = function (boardRowCol, move) {
-        return this._move(boardRowCol, SubBoard_2.OPPONENT, move);
+        return this.move(boardRowCol, SubBoard_2.OPPONENT, move);
     };
     UTTT.prototype.prettyPrint = function () {
         var rows = [];
@@ -78,7 +78,7 @@ var UTTT = (function () {
         }
         return ret.join("\n");
     };
-    UTTT.prototype._init = function () {
+    UTTT.prototype.init = function () {
         this.board = [];
         this.moves = 0;
         this.winner = SubBoard_2.RESULT_TIE - 1;
@@ -91,9 +91,9 @@ var UTTT = (function () {
             }
         }
     };
-    UTTT.prototype._copy = function () {
+    UTTT.prototype.copy = function () {
         var copy = new UTTT(this.size);
-        copy._init();
+        copy.init();
         copy.board = this.board;
         copy.moves = this.moves;
         copy.winner = this.winner;
@@ -101,7 +101,7 @@ var UTTT = (function () {
         copy.stateBoard = this.stateBoard;
         return copy;
     };
-    UTTT.prototype._move = function (board, player, move) {
+    UTTT.prototype.move = function (board, player, move) {
         if (this.isFinished()) {
             throw error_1["default"](errors_1["default"].gameFinished);
         }
@@ -111,7 +111,7 @@ var UTTT = (function () {
         if (!this.isValidMove(board, move)) {
             throw error_1["default"](errors_1["default"].move, move.toString());
         }
-        var game = this._copy();
+        var game = this.copy();
         var updatedBoard;
         if (player === SubBoard_2.ME) {
             updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
@@ -130,7 +130,7 @@ var UTTT = (function () {
         }
         if (game.board[board[0]][board[1]].isFinished() &&
             game.board[board[0]][board[1]].winner >= SubBoard_2.RESULT_TIE) {
-            game.stateBoard = game.stateBoard._move(game.board[board[0]][board[1]].winner, board);
+            game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
         }
         game.winner = game.stateBoard.winner;
         return game;

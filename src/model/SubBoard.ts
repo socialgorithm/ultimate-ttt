@@ -19,10 +19,12 @@ export default class SubBoard {
   private size: number;
   private maxMoves: number;
   public winner: number;
+  private board: Array<Array<Cell>>;
+  private moves: number;
 
   constructor(size = 3){
     this.size = size;
-    this._init();
+    this.init();
 
     // the maximum number of moves before filling up the board
     this.maxMoves = Math.pow(this.size, 2);
@@ -35,7 +37,7 @@ export default class SubBoard {
   /**
    * Returns true if the game is over
    */
-  isFinished(){
+  public isFinished(): boolean {
     return this.winner >= RESULT_TIE;
   }
 
@@ -43,7 +45,7 @@ export default class SubBoard {
    * Returns the winner for the game, throws an exception if the game hasn't finished yet.
    * @returns {number} -1 for a tie, 0 you won, 1 opponent won
    */
-  getResult() {
+  public getResult(): number {
     if (!this.isFinished()) {
       throw error(errors.gameNotFinished);
     }
@@ -56,7 +58,7 @@ export default class SubBoard {
    * @param move Move coordinates as an array [x, y]
    * @returns {boolean} true if the move is valid
    */
-  isValidMove(move){
+  public isValidMove(move: Array<number>): boolean {
     return !(
       !Array.isArray(move) ||
       move.length !== 2 ||
@@ -75,8 +77,8 @@ export default class SubBoard {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  addMyMove(move, index = -1) {
-    return this._move(ME, move, index);
+  public addMyMove(move: Array<number>, index = -1): SubBoard{
+    return this.move(ME, move, index);
   }
 
   /**
@@ -85,8 +87,58 @@ export default class SubBoard {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  addOpponentMove(move, index = -1) {
-    return this._move(OPPONENT, move, index)
+  public addOpponentMove(move: Array<number>, index = -1): SubBoard {
+    return this.move(OPPONENT, move, index)
+  }
+
+  /**
+   * Execute a move. This is an immutable method, that returns a
+   * new SubBoard. It may be easier and more clear to use the addOpponentMove and addMyMove methods instead.
+   * @param player Player identifier (0 || 1)
+   * @param move Move coordinates as an array [x, y]
+   * @param index which turn this was (to enable replaying UTTT games)
+   * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
+   */
+  public move(player: number, move: Array<number>, index = -1): SubBoard {
+    if(this.isFull() || this.isFinished()) {
+      throw error(errors.boardFinished);
+    }
+
+    if (!this.isValidPlayer(player)) {
+      throw error(errors.player, player);
+    }
+
+    if (!this.isValidMove(move)) {
+      throw error(errors.move, move.toString());
+    }
+    const game = this.copy();
+
+    game.board[move[0]][move[1]].player = player;
+    game.board[move[0]][move[1]].subBoardIndex = game.moves;
+    game.board[move[0]][move[1]].mainIndex = index;
+    game.moves++;
+
+    // Check if the board has been won
+    game.checkRow(move[0]);
+
+    if (!game.isFinished()) {
+      game.checkColumn(move[1]);
+    }
+
+    if (!game.isFinished()) {
+      game.checkLtRDiagonal();
+    }
+
+    if (!game.isFinished()) {
+      game.checkRtLDiagonal();
+    }
+
+    // check for a tie
+    if (game.isFull() && game.winner < RESULT_TIE){
+      game.winner = RESULT_TIE;
+    }
+
+    return game;
   }
 
   /**
@@ -94,7 +146,7 @@ export default class SubBoard {
    * including new lines.
    * @returns {string}
    */
-  prettyPrint(){
+  public prettyPrint(): string {
     let ret = [];
     for(let x = 0; x < this.size; x++) {
       let line = '';
@@ -115,7 +167,7 @@ export default class SubBoard {
    * but sometimes it may be useful to reset the current instance.
    * @private
    */
-  _init(){
+  private init(): void {
     this.board = [];
     this.moves = 0;
     this.winner = RESULT_TIE - 1;
@@ -133,64 +185,13 @@ export default class SubBoard {
    * @returns {SubBoard} Copy of the current game
    * @private
    */
-  _copy() {
+  private copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    copy._init();
+    copy.init();
     copy.board = this.board;
     copy.moves = this.moves;
     copy.winner = this.winner;
     return copy;
-  }
-
-  /**
-   * Execute a move. This is an immutable method, that returns a
-   * new SubBoard.
-   * @param player Player identifier (0 || 1)
-   * @param move Move coordinates as an array [x, y]
-   * @param index which turn this was (to enable replaying UTTT games)
-   * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
-   * @private
-   */
-  _move(player, move, index = -1){
-    if(this._isFull() || this.isFinished()) {
-      throw error(errors.boardFinished);
-    }
-
-    if (!this._isValidPlayer(player)) {
-      throw error(errors.player, player);
-    }
-
-    if (!this.isValidMove(move)) {
-      throw error(errors.move, move);
-    }
-    const game = this._copy();
-
-    game.board[move[0]][move[1]].player = player;
-    game.board[move[0]][move[1]].subBoardIndex = game.moves;
-    game.board[move[0]][move[1]].mainIndex = index;
-    game.moves++;
-
-    // Check if the board has been won
-    game._checkRow(move[0]);
-
-    if (!game.isFinished()) {
-      game._checkColumn(move[1]);
-    }
-
-    if (!game.isFinished()) {
-      game._checkLtRDiagonal();
-    }
-
-    if (!game.isFinished()) {
-      game._checkRtLDiagonal();
-    }
-
-    // check for a tie
-    if (game._isFull() && game.winner < RESULT_TIE){
-      game.winner = RESULT_TIE;
-    }
-
-    return game;
   }
 
   /**
@@ -199,7 +200,7 @@ export default class SubBoard {
    * @returns {boolean}
    * @private
    */
-  _isValidPlayer(player){
+  private isValidPlayer(player: number): boolean {
     return [ ME, OPPONENT ].indexOf(player) > -1;
   }
 
@@ -208,7 +209,7 @@ export default class SubBoard {
    * @param row Row index
    * @private
    */
-  _checkRow(row){
+  private checkRow(row: number): void {
     const player = this.board[row][0].player;
     if(player < ME){
       return;
@@ -228,7 +229,7 @@ export default class SubBoard {
    * @param col Column index
    * @private
    */
-  _checkColumn(col){
+  private checkColumn(col: number): void {
     const player = this.board[0][col].player;
     if(player < ME){
       return;
@@ -247,7 +248,7 @@ export default class SubBoard {
    * Check if the left to right diagonal has been won
    * @private
    */
-  _checkLtRDiagonal(){
+  private checkLtRDiagonal(): void {
     const player = this.board[0][0].player;
     if(player < ME){
       return;
@@ -266,7 +267,7 @@ export default class SubBoard {
    * Check if the right to left diagonal has been won
    * @private
    */
-  _checkRtLDiagonal(){
+  private checkRtLDiagonal(): void {
     const player = this.board[0][this.size - 1].player;
     if(player < ME){
       return;
@@ -286,7 +287,7 @@ export default class SubBoard {
    * @returns {boolean}
    * @private
    */
-  _isFull(){
+  private isFull(): boolean {
     return this.moves === this.maxMoves;
   }
 }

@@ -23,7 +23,7 @@ export default class UTTT {
     this.size = size;
     this.maxMoves = Math.pow(this.size, 4);
 
-    this._init();
+    this.init();
 
     return this;
   }
@@ -33,7 +33,7 @@ export default class UTTT {
   /**
    * Returns true if the game is over
    */
-  isFinished(){
+  public isFinished(): boolean {
     return (this.stateBoard.isFinished() || this.moves === this.maxMoves);
   }
 
@@ -41,7 +41,7 @@ export default class UTTT {
    * Returns the winner for the game, throws an exception if the game hasn't finished yet.
    * @returns {number} -1 for a tie, 0 you won, 1 opponent won
    */
-  getResult(){
+  public getResult(): number {
     return this.stateBoard.getResult();
   }
 
@@ -50,7 +50,7 @@ export default class UTTT {
    * @param boardRowCol Board coordinates as an array [row, col]
    * @returns {boolean} true if the board is playable
    */
-  isValidBoardRowCol(boardRowCol: Array<number>){
+  public isValidBoardRowCol(boardRowCol: Array<number>): boolean {
     if(!this.nextBoard){
       return !(
         !Array.isArray(boardRowCol) ||
@@ -75,7 +75,7 @@ export default class UTTT {
    * @param move Move coordinates [row, col]
    * @returns {boolean} true if the move is valid
    */
-  isValidMove(boardRowCol: Array<number>, move: Array<number>){
+  public isValidMove(boardRowCol: Array<number>, move: Array<number>): boolean {
     if(!this.isValidBoardRowCol(boardRowCol)){
       return false;
     }
@@ -88,8 +88,8 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  addMyMove(boardRowCol: Array<number>, move: Array<number>){
-    return this._move(boardRowCol, ME, move);
+  public addMyMove(boardRowCol: Array<number>, move: Array<number>): UTTT {
+    return this.move(boardRowCol, ME, move);
   }
 
   /**
@@ -98,8 +98,8 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  addOpponentMove(boardRowCol: Array<number>, move: Array<number>){
-    return this._move(boardRowCol, OPPONENT, move);
+  public addOpponentMove(boardRowCol: Array<number>, move: Array<number>): UTTT {
+    return this.move(boardRowCol, OPPONENT, move);
   }
 
   /**
@@ -107,7 +107,7 @@ export default class UTTT {
    * including new lines.
    * @returns {string}
    */
-  prettyPrint(){
+  public prettyPrint(): string {
     let rows: Array<Array<string>> = [];
     for(let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
@@ -147,7 +147,7 @@ export default class UTTT {
    * Initialize the game
    * @private
    */
-  _init() {
+  private init(): void {
     // Game state
     this.board = [];
     this.moves = 0;
@@ -170,9 +170,9 @@ export default class UTTT {
    * @returns {UTTT} Copy of the current game
    * @private
    */
-  _copy() {
+  public copy(): UTTT {
     const copy = new UTTT(this.size);
-    copy._init();
+    copy.init();
     copy.board = this.board;
     copy.moves = this.moves;
     copy.winner = this.winner;
@@ -189,7 +189,7 @@ export default class UTTT {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    * @private
    */
-  _move(board: Array<number >, player: number, move: Array<number>){
+  private move(board: Array<number >, player: number, move: Array<number>): UTTT {
     if(this.isFinished()) {
       throw error(errors.gameFinished);
     }
@@ -202,7 +202,7 @@ export default class UTTT {
       throw error(errors.move, move.toString());
     }
 
-    const game = this._copy();
+    const game = this.copy();
     let updatedBoard;
 
     if (player === ME) {
@@ -227,7 +227,7 @@ export default class UTTT {
         game.board[board[0]][board[1]].isFinished() &&
         game.board[board[0]][board[1]].winner >= RESULT_TIE
     ){
-      game.stateBoard = game.stateBoard._move(
+      game.stateBoard = game.stateBoard.move(
         game.board[board[0]][board[1]].winner,
         board
       );
