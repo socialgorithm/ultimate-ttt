@@ -11,11 +11,12 @@ import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
  * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class UTTT {
+  public board: Array<Array<SubBoard>>;
+  public nextBoard: Array<number>;
+
   private size: number;
   private maxMoves: number;
   private stateBoard: SubBoard;
-  private board: Array<Array<SubBoard>>;
-  private nextBoard: Array<number>;
   private moves: number;
   private winner: number;
 
