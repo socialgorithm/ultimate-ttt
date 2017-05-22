@@ -20,23 +20,35 @@ export interface Coords {
 export default class UTTT {
   public board: Array<Array<SubBoard>>;
   public nextBoard: Coord;
+  public winner: number;
 
   private size: number;
   private maxMoves: number;
   private stateBoard: SubBoard;
   private moves: number;
-  private winner: number;
 
   constructor(size: number = 3){
     this.size = size;
     this.maxMoves = Math.pow(this.size, 4);
 
-    this.init();
+    // Game state
+    this.board = [];
+    this.moves = 0;
+    this.winner = RESULT_TIE - 1;
+    this.nextBoard = null;
+
+    // The state board holds the ultimate game state
+    this.stateBoard = new SubBoard(this.size);
+
+    for(let x = 0; x < this.size; x++){
+      this.board[x] = [];
+      for(let y = 0; y < this.size; y++){
+        this.board[x][y] = new SubBoard(this.size);
+      }
+    }
 
     return this;
   }
-
-  /* --------- Public API --------- */
 
   /**
    * Returns true if the game is over
@@ -111,85 +123,6 @@ export default class UTTT {
   }
 
   /**
-   * Returns a string with the board formatted for display
-   * including new lines.
-   * @returns {string}
-   */
-  public prettyPrint(): string {
-    let rows: Array<Array<string>> = [];
-    for(let x = 0; x < this.size; x++) {
-      for (let y = 0; y < this.size; y++) {
-        const small = this.board[x][y].prettyPrint().split("\n");
-
-        for(let row = 0; row < this.size; row++){
-          const xCoord = x * this.size + row;
-          if(!rows[xCoord]){
-            rows[xCoord] = [];
-          }
-          rows[xCoord][y] = small[row];
-        }
-      }
-    }
-    let ret = [];
-    for(let x = 0; x < rows.length; x++){
-      ret.push(rows[x].join('| '));
-      if((x + 1) % this.size === 0) {
-        let sepChars = '';
-        for(let i = 0; i < this.size * 2; i++){
-          sepChars += '-';
-        }
-        sepChars += '+';
-        let sep = sepChars;
-        for(let i = 1; i < this.size; i++){
-          sep += '-' + sepChars;
-        }
-        ret.push(sep.substr(0, sep.length - 1));
-      }
-    }
-    return ret.join("\n");
-  }
-
-  /* --------- Private API --------- */
-
-  /**
-   * Initialize the game
-   * @private
-   */
-  private init(): void {
-    // Game state
-    this.board = [];
-    this.moves = 0;
-    this.winner = RESULT_TIE - 1;
-    this.nextBoard = null;
-
-    // The state board holds the ultimate game state
-    this.stateBoard = new SubBoard(this.size);
-
-    for(let x = 0; x < this.size; x++){
-      this.board[x] = [];
-      for(let y = 0; y < this.size; y++){
-        this.board[x][y] = new SubBoard(this.size);
-      }
-    }
-  }
-
-  /**
-   * Return a new UTTT board as a copy of this one
-   * @returns {UTTT} Copy of the current game
-   * @private
-   */
-  public copy(): UTTT {
-    const copy = new UTTT(this.size);
-    copy.init();
-    copy.board = this.board;
-    copy.moves = this.moves;
-    copy.winner = this.winner;
-    copy.nextBoard = this.nextBoard;
-    copy.stateBoard = this.stateBoard;
-    return copy;
-  }
-
-  /**
    * Execute a move
    * @param player Player identifier (1 || 2)
    * @param board Board coordinates as an array [x, y]
@@ -197,7 +130,7 @@ export default class UTTT {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    * @private
    */
-  private move(board: Coord, player: number, move: Coord): UTTT {
+  public move(board: Coord, player: number, move: Coord): UTTT {
     if(this.isFinished()) {
       throw error(errors.gameFinished);
     }
@@ -236,12 +169,66 @@ export default class UTTT {
         game.board[board[0]][board[1]].winner >= RESULT_TIE
     ){
       game.stateBoard = game.stateBoard.move(
-        game.board[board[0]][board[1]].winner,
-        board
+          game.board[board[0]][board[1]].winner,
+          board
       );
     }
 
     game.winner = game.stateBoard.winner;
     return game;
+  }
+
+  /**
+   * Returns a string with the board formatted for display
+   * including new lines.
+   * @returns {string}
+   */
+  public prettyPrint(): string {
+    let rows: Array<Array<string>> = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const small = this.board[x][y].prettyPrint().split("\n");
+
+        for(let row = 0; row < this.size; row++){
+          const xCoord = x * this.size + row;
+          if(!rows[xCoord]){
+            rows[xCoord] = [];
+          }
+          rows[xCoord][y] = small[row];
+        }
+      }
+    }
+    let ret = [];
+    for(let x = 0; x < rows.length; x++){
+      ret.push(rows[x].join('| '));
+      if((x + 1) % this.size === 0) {
+        let sepChars = '';
+        for(let i = 0; i < this.size * 2; i++){
+          sepChars += '-';
+        }
+        sepChars += '+';
+        let sep = sepChars;
+        for(let i = 1; i < this.size; i++){
+          sep += '-' + sepChars;
+        }
+        ret.push(sep.substr(0, sep.length - 1));
+      }
+    }
+    return ret.join("\n");
+  }
+
+  /**
+   * Return a new UTTT board as a copy of this one
+   * @returns {UTTT} Copy of the current game
+   * @private
+   */
+  public copy(): UTTT {
+    const copy = new UTTT(this.size);
+    copy.board = this.board;
+    copy.moves = this.moves;
+    copy.winner = this.winner;
+    copy.nextBoard = this.nextBoard;
+    copy.stateBoard = this.stateBoard;
+    return copy;
   }
 }
