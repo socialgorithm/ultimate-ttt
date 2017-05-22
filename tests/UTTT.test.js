@@ -85,11 +85,11 @@ test('isValidMove returns false on invalid board/move', t => {
   t.false(game.isValidMove([1, 0], [-1, 0]));
 });
 
-test('_move fails on invalid player', t => {
+test('move fails on invalid player', t => {
   let game = new UTTT();
 
   t.throws(() => {
-    game._move([0, 0], -1, [1, 0])
+    game.move([0, 0], -1, [1, 0])
   }, error(errors.player, -1).message);
 });
 

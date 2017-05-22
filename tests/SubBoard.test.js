@@ -65,22 +65,22 @@ test('Move correctly updates the board', t => {
 test('Move rejects invalid player', t => {
   const subBoard = new SubBoard();
 
-  t.throws(() => {subBoard._move(-1, 1)}, error(errors.player, '-1').message);
-  t.throws(() => {subBoard._move('abc', 1)}, error(errors.player, 'abc').message);
-  t.throws(() => {subBoard._move(3, 1)}, error(errors.player, '3').message);
+  t.throws(() => {subBoard.move(-1, 1)}, error(errors.player, '-1').message);
+  t.throws(() => {subBoard.move('abc', 1)}, error(errors.player, 'abc').message);
+  t.throws(() => {subBoard.move(3, 1)}, error(errors.player, '3').message);
 });
 
 test('Move rejects invalid moves', t => {
   const subBoard = new SubBoard();
 
-  t.throws(() => {subBoard._move(1)}, error(errors.move).message);
-  t.throws(() => {subBoard._move(1, 1)}, error(errors.move, 1).message);
-  t.throws(() => {subBoard._move(1, 'abc')}, error(errors.move, 'abc').message);
-  t.throws(() => {subBoard._move(1, [])}, error(errors.move, []).message);
-  t.throws(() => {subBoard._move(1, [1])}, error(errors.move, [1]).message);
-  t.throws(() => {subBoard._move(1, [1, 4])}, error(errors.move, [1, 4]).message);
-  t.throws(() => {subBoard._move(1, [-1, 4])}, error(errors.move, [-1, 4]).message);
-  t.throws(() => {subBoard._move(1, [1, 1, 1])}, error(errors.move, [1, 1, 1]).message);
+  t.throws(() => {subBoard.move(1)}, error(errors.move).message);
+  t.throws(() => {subBoard.move(1, 1)}, error(errors.move, 1).message);
+  t.throws(() => {subBoard.move(1, 'abc')}, error(errors.move, 'abc').message);
+  t.throws(() => {subBoard.move(1, [])}, error(errors.move, []).message);
+  t.throws(() => {subBoard.move(1, [1])}, error(errors.move, [1]).message);
+  t.throws(() => {subBoard.move(1, [1, 4])}, error(errors.move, [1, 4]).message);
+  t.throws(() => {subBoard.move(1, [-1, 4])}, error(errors.move, [-1, 4]).message);
+  t.throws(() => {subBoard.move(1, [1, 1, 1])}, error(errors.move, [1, 1, 1]).message);
 });
 
 test('Move rejects repeated moves', t => {

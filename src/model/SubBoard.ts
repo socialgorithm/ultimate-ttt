@@ -1,6 +1,7 @@
 import errors from './errors';
 import error from '../error';
 import Cell from './Cell';
+import {Coord} from "../UTTT";
 
 export const ME = 0;
 export const OPPONENT = 1;
@@ -59,7 +60,7 @@ export default class SubBoard {
    * @param move Move coordinates as an array [x, y]
    * @returns {boolean} true if the move is valid
    */
-  public isValidMove(move: Array<number>): boolean {
+  public isValidMove(move: Coord): boolean {
     return !(
       !Array.isArray(move) ||
       move.length !== 2 ||
@@ -78,7 +79,7 @@ export default class SubBoard {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  public addMyMove(move: Array<number>, index = -1): SubBoard{
+  public addMyMove(move: Coord, index = -1): SubBoard{
     return this.move(ME, move, index);
   }
 
@@ -88,7 +89,7 @@ export default class SubBoard {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  public addOpponentMove(move: Array<number>, index = -1): SubBoard {
+  public addOpponentMove(move: Coord, index = -1): SubBoard {
     return this.move(OPPONENT, move, index)
   }
 
@@ -100,7 +101,7 @@ export default class SubBoard {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: number, move: Array<number>, index = -1): SubBoard {
+  public move(player: number, move: Coord, index = -1): SubBoard {
     if(this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
@@ -110,7 +111,10 @@ export default class SubBoard {
     }
 
     if (!this.isValidMove(move)) {
-      throw error(errors.move, move.toString());
+      if (move) {
+        throw error(errors.move, move.toString());
+      }
+      throw error(errors.move);
     }
     const game = this.copy();
 

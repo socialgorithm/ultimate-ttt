@@ -52,7 +52,10 @@ var SubBoard = (function () {
             throw error_1["default"](errors_1["default"].player, player);
         }
         if (!this.isValidMove(move)) {
-            throw error_1["default"](errors_1["default"].move, move.toString());
+            if (move) {
+                throw error_1["default"](errors_1["default"].move, move.toString());
+            }
+            throw error_1["default"](errors_1["default"].move);
         }
         var game = this.copy();
         game.board[move[0]][move[1]].player = player;
