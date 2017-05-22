@@ -25,23 +25,6 @@ var optionDefinitions = [
         description: 'Display a fancy GUI in the terminal (only available in online mode)'
     },
     {
-        name: 'local',
-        alias: 'l',
-        description: 'Play games locally executing the players code directly (not recommended)'
-    },
-    {
-        name: 'a',
-        alias: 'a',
-        typeLabel: '[underline]{file}',
-        description: 'Client 1 for the algorithm competition (for local games only)'
-    },
-    {
-        name: 'b',
-        alias: 'b',
-        typeLabel: '[underline]{file}',
-        description: 'Client 2 for the algorithm competition (for local games only)'
-    },
-    {
         name: 'games',
         alias: 'g',
         typeLabel: '[underline]{1000}',
@@ -74,7 +57,6 @@ var sections = [
             '$ uttt --gui',
             '$ uttt --games 100',
             '$ uttt --port 5000',
-            '$ uttt --local [bold]{-a} [underline]{path/to/programOne} [bold]{-b} [underline]{path/to/programTwo}',
             '$ uttt [bold]{--help}'
         ]
     }
