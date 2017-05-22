@@ -2,6 +2,17 @@ const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const info = require('../../package.json');
 
+export interface Options {
+  version?: boolean;
+  verbose?: boolean;
+  port?: string;
+  gui?: boolean;
+  host?: string;
+  games?: string;
+  timeout?: string;
+  help?: number;
+}
+
 const optionDefinitions = [
   {
     name: 'verbose',
@@ -22,23 +33,6 @@ const optionDefinitions = [
     name: 'gui',
     alias: 'u',
     description: 'Display a fancy GUI in the terminal (only available in online mode)'
-  },
-  {
-    name: 'local',
-    alias: 'l',
-    description: 'Play games locally executing the players code directly (not recommended)'
-  },
-  {
-    name: 'a',
-    alias: 'a',
-    typeLabel: '[underline]{file}',
-    description: 'Client 1 for the algorithm competition (for local games only)'
-  },
-  {
-    name: 'b',
-    alias: 'b',
-    typeLabel: '[underline]{file}',
-    description: 'Client 2 for the algorithm competition (for local games only)'
   },
   {
     name: 'games',
@@ -74,7 +68,6 @@ const sections = [
       '$ uttt --gui',
       '$ uttt --games 100',
       '$ uttt --port 5000',
-      '$ uttt --local [bold]{-a} [underline]{path/to/programOne} [bold]{-b} [underline]{path/to/programTwo}',
       '$ uttt [bold]{--help}'
     ]
   }
@@ -82,8 +75,14 @@ const sections = [
 
 // ------------------------------------------- //
 
-function parseInput() {
+export default (): Options => {
   const options = commandLineArgs(optionDefinitions);
+
+  Object.keys(options).map((key: string) => {
+    if (options[key] === null) {
+      options[key] = true;
+    }
+  });
 
   if (options.version) {
     console.log(info.version);
@@ -97,7 +96,5 @@ function parseInput() {
 
   return options;
 }
-
-module.exports = parseInput;
 
 // ------------------------------------------- //

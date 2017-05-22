@@ -1,8 +1,8 @@
 {
   "name": "uttt",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node index.js",
     "test": "nyc ava"
@@ -30,22 +30,26 @@
   },
   "homepage": "https://github.com/aurbano/ultimate-ttt-server#readme",
   "dependencies": {
+    "@types/blessed": "^0.1.5",
+    "@types/ip": "^0.0.29",
+    "@types/node": "^7.0.21",
+    "@types/socket.io": "^1.4.29",
     "blessed": "^0.1.81",
-    "command-line-args": "^3.0.5",
+    "command-line-args": "^4.0.4",
     "command-line-usage": "^4.0.0",
-    "ip": "^1.1.4",
-    "socket.io": "^1.7.3",
-    "ultimate-ttt": "^2.1.2"
+    "ip": "^1.1.5",
+    "socket.io": "^2.0.1",
+    "ultimate-ttt": "^4.3.0"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
-    "babel": "^6.5.2",
+    "ava": "^0.19.1",
+    "babel": "^6.23.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-latest": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "coveralls": "^2.11.15",
-    "nyc": "^10.1.2"
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "coveralls": "^2.13.1",
+    "nyc": "^10.3.2"
   },
   "ava": {
     "require": "babel-register",
