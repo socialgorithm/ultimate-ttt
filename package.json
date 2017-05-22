@@ -2,7 +2,7 @@
   "name": "ultimate-ttt",
   "version": "4.0.0",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
-  "main": "index.js",
+  "main": "dist/UTTT.js",
   "scripts": {
     "test": "nyc ava",
     "test:watch": "nyc ava --watch"
