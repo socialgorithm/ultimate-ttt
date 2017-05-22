@@ -2,6 +2,20 @@ const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const info = require('../../package.json');
 
+export interface Options {
+  version?: boolean;
+  verbose?: boolean;
+  port?: string;
+  gui?: boolean;
+  local?: boolean;
+  host?: string;
+  a?: string;
+  b?: string;
+  games?: string;
+  timeout?: string;
+  help?: number;
+}
+
 const optionDefinitions = [
   {
     name: 'verbose',
@@ -82,7 +96,7 @@ const sections = [
 
 // ------------------------------------------- //
 
-function parseInput() {
+export default function parseInput(): Options {
   const options = commandLineArgs(optionDefinitions);
 
   if (options.version) {
@@ -97,7 +111,5 @@ function parseInput() {
 
   return options;
 }
-
-module.exports = parseInput;
 
 // ------------------------------------------- //

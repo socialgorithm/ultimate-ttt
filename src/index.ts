@@ -3,10 +3,11 @@
  * Ultimate Tic Tac Toe Algorithm Battle - Game Server
  */
 
-const localGame = require('./lib/local');
-const onlineGame = require('./lib/online');
+import localGame from './lib/local';
+import OnlineServer from './lib/OnlineServer';
+import { Options } from "./lib/input";
 
-function server(options) {
+export default function server(options: Options) {
   // env overrides
   options.host = process.env.HOST || options.host || 'localhost';
   options.port = process.env.PORT || options.port;
@@ -18,8 +19,6 @@ function server(options) {
   } else if (options.a || options.b) {
     console.error('Error: Player files may only be specified for local games (use --local with -a and -b)');
   } else {
-    onlineGame(options);
+    new OnlineServer(options);
   }
 }
-
-module.exports = server;

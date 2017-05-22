@@ -1,10 +1,11 @@
-const UTTT = require('ultimate-ttt');
+import {Options} from "./input";
+import UTTT from 'ultimate-ttt';
 //const tripwire = require('tripwire');
 
 const funcs = require('./funcs');
-const State = require('./state');
+const State = require('./State');
 
-function localGame(options) {
+export default function localGame(options: Options) {
   const player = [];
   player.push(funcs.loadPlayer(options.a, 1));
   player.push(funcs.loadPlayer(options.b, 2));
@@ -28,7 +29,7 @@ function localGame(options) {
 
   const state = new State();
 
-  let currentPlayer;
+  let currentPlayer: number;
 
   // Setup timeout processor
   process.on('uncaughtException', function () {
@@ -95,5 +96,3 @@ function localGame(options) {
 
   funcs.printState(state);
 }
-
-module.exports = localGame;
