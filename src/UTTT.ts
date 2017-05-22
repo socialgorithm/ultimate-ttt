@@ -11,7 +11,15 @@ import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
  * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class UTTT {
-  constructor(size = 3){
+  private size: number;
+  private maxMoves: number;
+  private stateBoard: SubBoard;
+  private board: Array<Array<SubBoard>>;
+  private nextBoard: Array<number>;
+  private moves: number;
+  private winner: number;
+
+  constructor(size: number = 3){
     this.size = size;
     this.maxMoves = Math.pow(this.size, 4);
 
@@ -42,7 +50,7 @@ export default class UTTT {
    * @param boardRowCol Board coordinates as an array [row, col]
    * @returns {boolean} true if the board is playable
    */
-  isValidBoardRowCol(boardRowCol){
+  isValidBoardRowCol(boardRowCol: Array<number>){
     if(!this.nextBoard){
       return !(
         !Array.isArray(boardRowCol) ||
@@ -67,7 +75,7 @@ export default class UTTT {
    * @param move Move coordinates [row, col]
    * @returns {boolean} true if the move is valid
    */
-  isValidMove(boardRowCol, move){
+  isValidMove(boardRowCol: Array<number>, move: Array<number>){
     if(!this.isValidBoardRowCol(boardRowCol)){
       return false;
     }
@@ -80,7 +88,7 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  addMyMove(boardRowCol, move){
+  addMyMove(boardRowCol: Array<number>, move: Array<number>){
     return this._move(boardRowCol, ME, move);
   }
 
@@ -90,7 +98,7 @@ export default class UTTT {
    * @param move
    * @returns {UTTT}
    */
-  addOpponentMove(boardRowCol, move){
+  addOpponentMove(boardRowCol: Array<number>, move: Array<number>){
     return this._move(boardRowCol, OPPONENT, move);
   }
 
@@ -100,7 +108,7 @@ export default class UTTT {
    * @returns {string}
    */
   prettyPrint(){
-    let rows = [];
+    let rows: Array<Array<string>> = [];
     for(let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         const small = this.board[x][y].prettyPrint().split("\n");
@@ -181,24 +189,17 @@ export default class UTTT {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    * @private
    */
-  _move(board, player, move){
+  _move(board: Array<number >, player: number, move: Array<number>){
     if(this.isFinished()) {
       throw error(errors.gameFinished);
     }
 
-    // Make sure we're dealing with ints
-    board[0] = parseInt(board[0], 10);
-    board[1] = parseInt(board[1], 10);
-
-    move[0] = parseInt(move[0], 10);
-    move[1] = parseInt(move[1], 10);
-
     if(!this.isValidBoardRowCol(board)){
-      throw error(errors.board, board);
+      throw error(errors.board, board.toString());
     }
 
     if(!this.isValidMove(board, move)){
-      throw error(errors.move, move);
+      throw error(errors.move, move.toString());
     }
 
     const game = this._copy();
@@ -218,7 +219,7 @@ export default class UTTT {
 
     game.nextBoard = move;
     if(game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()){
-      game.nextBoard = false;
+      game.nextBoard = null;
     }
 
     // Update the game board state

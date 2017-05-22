@@ -1,9 +1,9 @@
 import test from 'ava';
 
-import UTTT from '../UTTT';
-import errors from '../model/errors';
-import { ME, OPPONENT, RESULT_TIE, RESULT_WIN, RESULT_LOSE } from '../model/SubBoard';
-import error from '../error';
+import UTTT from '../dist/UTTT';
+import errors from '../dist/model/errors';
+import { ME, OPPONENT, RESULT_TIE, RESULT_WIN, RESULT_LOSE } from '../dist/model/SubBoard';
+import error from '../dist/error';
 
 function validateBoard(board, t){
   t.true(Array.isArray(board));
