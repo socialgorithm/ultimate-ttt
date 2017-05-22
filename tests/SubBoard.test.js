@@ -1,10 +1,10 @@
 import test from 'ava';
 
-import SubBoard from '../model/SubBoard';
-import Cell from '../model/Cell';
-import { ME, OPPONENT } from '../model/SubBoard';
-import errors from '../model/errors';
-import error from '../error';
+import SubBoard from '../dist/model/SubBoard';
+import Cell from '../dist/model/Cell';
+import { ME, OPPONENT } from '../dist/model/SubBoard';
+import errors from '../dist/model/errors';
+import error from '../dist/error';
 
 function validateBoard(board, t){
   t.true(Array.isArray(board));
