@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/aurbano/ultimate-ttt.git"
   },
+  "typings": "dist/UTTT",
   "keywords": [
     "tic",
     "tac",
