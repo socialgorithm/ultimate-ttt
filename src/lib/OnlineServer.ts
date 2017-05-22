@@ -20,7 +20,7 @@ export default class OnlineServer {
     private players: Array<string>;
     private games: Array<Game>;
     private nextGame: number;
-    private ui: GUI;
+    private ui?: GUI;
     private io: SocketIO.Server;
     private host: string;
     private port: number;
@@ -104,7 +104,9 @@ export default class OnlineServer {
         });
       });
 
-      this.ui.render();
+      if (this.ui) {
+        this.ui.render();
+      }
     }
 
     /**

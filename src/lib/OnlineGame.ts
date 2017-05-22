@@ -35,7 +35,7 @@ export default class OnlineGame {
         this.firstPlayer = 0;
         this.game = new UTTT();
 
-        if (options.gui) {
+        if (this.ui) {
             this.gameUIId = this.ui.addGameBox(
                 this.players[session.players[0].playerIndex],
                 this.players[session.players[0].playerIndex]

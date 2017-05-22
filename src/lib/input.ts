@@ -96,8 +96,14 @@ const sections = [
 
 // ------------------------------------------- //
 
-export default function parseInput(): Options {
+export default (): Options => {
   const options = commandLineArgs(optionDefinitions);
+
+  Object.keys(options).map((key: string) => {
+    if (options[key] === null) {
+      options[key] = true;
+    }
+  });
 
   if (options.version) {
     console.log(info.version);

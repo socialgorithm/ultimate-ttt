@@ -75,7 +75,9 @@ var OnlineServer = (function () {
                 action: 'waiting'
             });
         });
-        this.ui.render();
+        if (this.ui) {
+            this.ui.render();
+        }
     }
     OnlineServer.prototype.startSession = function (session, settings) {
         if (settings === void 0) { settings = {}; }

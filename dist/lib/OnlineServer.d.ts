@@ -11,7 +11,7 @@ export default class OnlineServer {
     private players;
     private games;
     private nextGame;
-    private ui;
+    private ui?;
     private io;
     private host;
     private port;

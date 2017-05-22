@@ -15,7 +15,7 @@ var OnlineGame = (function () {
         this.currentPlayer = 0;
         this.firstPlayer = 0;
         this.game = new ultimate_ttt_1["default"]();
-        if (options.gui) {
+        if (this.ui) {
             this.gameUIId = this.ui.addGameBox(this.players[session.players[0].playerIndex], this.players[session.players[0].playerIndex]);
         }
     }

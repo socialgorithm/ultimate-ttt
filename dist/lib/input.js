@@ -79,8 +79,13 @@ var sections = [
         ]
     }
 ];
-function parseInput() {
+exports["default"] = function () {
     var options = commandLineArgs(optionDefinitions);
+    Object.keys(options).map(function (key) {
+        if (options[key] === null) {
+            options[key] = true;
+        }
+    });
     if (options.version) {
         console.log(info.version);
         process.exit(0);
@@ -90,6 +95,5 @@ function parseInput() {
         process.exit(0);
     }
     return options;
-}
-exports["default"] = parseInput;
+};
 //# sourceMappingURL=input.js.map
