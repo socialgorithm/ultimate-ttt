@@ -16,6 +16,10 @@ export const RESULT_LOSE = 1;
  * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class SubBoard {
+  private size: number;
+  private maxMoves: number;
+  public winner: number;
+
   constructor(size = 3){
     this.size = size;
     this._init();
