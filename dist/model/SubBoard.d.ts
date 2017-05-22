@@ -1,13 +1,14 @@
+import Cell from './Cell';
 export declare const ME = 0;
 export declare const OPPONENT = 1;
 export declare const RESULT_TIE = -1;
 export declare const RESULT_WIN = 0;
 export declare const RESULT_LOSE = 1;
 export default class SubBoard {
+    board: Array<Array<Cell>>;
     private size;
     private maxMoves;
     winner: number;
-    private board;
     private moves;
     constructor(size?: number);
     isFinished(): boolean;

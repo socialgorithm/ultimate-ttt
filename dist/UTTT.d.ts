@@ -1,9 +1,10 @@
+import SubBoard from './model/SubBoard';
 export default class UTTT {
+    board: Array<Array<SubBoard>>;
+    nextBoard: Array<number>;
     private size;
     private maxMoves;
     private stateBoard;
-    private board;
-    private nextBoard;
     private moves;
     private winner;
     constructor(size?: number);
