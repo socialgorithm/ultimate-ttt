@@ -19,8 +19,7 @@ export default class SubBoard {
     addOpponentMove(move: Coord, index?: number): SubBoard;
     move(player: number, move: Coord, index?: number): SubBoard;
     prettyPrint(): string;
-    private init();
-    private copy();
+    copy(): SubBoard;
     private isValidPlayer(player);
     private checkRow(row);
     private checkColumn(col);

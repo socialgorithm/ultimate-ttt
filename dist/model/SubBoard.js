@@ -12,7 +12,15 @@ var SubBoard = (function () {
     function SubBoard(size) {
         if (size === void 0) { size = 3; }
         this.size = size;
-        this.init();
+        this.board = [];
+        this.moves = 0;
+        this.winner = exports.RESULT_TIE - 1;
+        for (var x = 0; x < this.size; x++) {
+            this.board[x] = [];
+            for (var y = 0; y < this.size; y++) {
+                this.board[x][y] = new Cell_1["default"]();
+            }
+        }
         this.maxMoves = Math.pow(this.size, 2);
         return this;
     }
@@ -89,20 +97,8 @@ var SubBoard = (function () {
         }
         return ret.join("\n");
     };
-    SubBoard.prototype.init = function () {
-        this.board = [];
-        this.moves = 0;
-        this.winner = exports.RESULT_TIE - 1;
-        for (var x = 0; x < this.size; x++) {
-            this.board[x] = [];
-            for (var y = 0; y < this.size; y++) {
-                this.board[x][y] = new Cell_1["default"]();
-            }
-        }
-    };
     SubBoard.prototype.copy = function () {
         var copy = new SubBoard(this.size);
-        copy.init();
         copy.board = this.board;
         copy.moves = this.moves;
         copy.winner = this.winner;

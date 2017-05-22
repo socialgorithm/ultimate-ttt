@@ -26,15 +26,24 @@ export default class SubBoard {
 
   constructor(size = 3){
     this.size = size;
-    this.init();
+
+    // Game state
+    this.board = [];
+    this.moves = 0;
+    this.winner = RESULT_TIE - 1;
+
+    for(let x = 0; x < this.size; x++){
+      this.board[x] = [];
+      for(let y = 0; y < this.size; y++){
+        this.board[x][y] = new Cell();
+      }
+    }
 
     // the maximum number of moves before filling up the board
     this.maxMoves = Math.pow(this.size, 2);
 
     return this;
   }
-
-  /* --------- Public API --------- */
 
   /**
    * Returns true if the game is over
@@ -164,35 +173,13 @@ export default class SubBoard {
     return ret.join("\n");
   }
 
-  /* --------- Private API --------- */
-
-  /**
-   * Initialise the game
-   * In normal usage you should create a new SubBoard object for this
-   * but sometimes it may be useful to reset the current instance.
-   * @private
-   */
-  private init(): void {
-    this.board = [];
-    this.moves = 0;
-    this.winner = RESULT_TIE - 1;
-
-    for(let x = 0; x < this.size; x++){
-      this.board[x] = [];
-      for(let y = 0; y < this.size; y++){
-        this.board[x][y] = new Cell();
-      }
-    }
-  }
-
   /**
    * Return a new SubBoard as a copy of this one
    * @returns {SubBoard} Copy of the current game
    * @private
    */
-  private copy(): SubBoard {
+  public copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    copy.init();
     copy.board = this.board;
     copy.moves = this.moves;
     copy.winner = this.winner;

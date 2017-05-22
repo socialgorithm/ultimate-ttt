@@ -9,7 +9,17 @@ var UTTT = (function () {
         if (size === void 0) { size = 3; }
         this.size = size;
         this.maxMoves = Math.pow(this.size, 4);
-        this.init();
+        this.board = [];
+        this.moves = 0;
+        this.winner = SubBoard_2.RESULT_TIE - 1;
+        this.nextBoard = null;
+        this.stateBoard = new SubBoard_1["default"](this.size);
+        for (var x = 0; x < this.size; x++) {
+            this.board[x] = [];
+            for (var y = 0; y < this.size; y++) {
+                this.board[x][y] = new SubBoard_1["default"](this.size);
+            }
+        }
         return this;
     }
     UTTT.prototype.isFinished = function () {
@@ -46,61 +56,6 @@ var UTTT = (function () {
     UTTT.prototype.addOpponentMove = function (boardRowCol, move) {
         return this.move(boardRowCol, SubBoard_2.OPPONENT, move);
     };
-    UTTT.prototype.prettyPrint = function () {
-        var rows = [];
-        for (var x = 0; x < this.size; x++) {
-            for (var y = 0; y < this.size; y++) {
-                var small = this.board[x][y].prettyPrint().split("\n");
-                for (var row = 0; row < this.size; row++) {
-                    var xCoord = x * this.size + row;
-                    if (!rows[xCoord]) {
-                        rows[xCoord] = [];
-                    }
-                    rows[xCoord][y] = small[row];
-                }
-            }
-        }
-        var ret = [];
-        for (var x = 0; x < rows.length; x++) {
-            ret.push(rows[x].join('| '));
-            if ((x + 1) % this.size === 0) {
-                var sepChars = '';
-                for (var i = 0; i < this.size * 2; i++) {
-                    sepChars += '-';
-                }
-                sepChars += '+';
-                var sep = sepChars;
-                for (var i = 1; i < this.size; i++) {
-                    sep += '-' + sepChars;
-                }
-                ret.push(sep.substr(0, sep.length - 1));
-            }
-        }
-        return ret.join("\n");
-    };
-    UTTT.prototype.init = function () {
-        this.board = [];
-        this.moves = 0;
-        this.winner = SubBoard_2.RESULT_TIE - 1;
-        this.nextBoard = null;
-        this.stateBoard = new SubBoard_1["default"](this.size);
-        for (var x = 0; x < this.size; x++) {
-            this.board[x] = [];
-            for (var y = 0; y < this.size; y++) {
-                this.board[x][y] = new SubBoard_1["default"](this.size);
-            }
-        }
-    };
-    UTTT.prototype.copy = function () {
-        var copy = new UTTT(this.size);
-        copy.init();
-        copy.board = this.board;
-        copy.moves = this.moves;
-        copy.winner = this.winner;
-        copy.nextBoard = this.nextBoard;
-        copy.stateBoard = this.stateBoard;
-        return copy;
-    };
     UTTT.prototype.move = function (board, player, move) {
         if (this.isFinished()) {
             throw error_1["default"](errors_1["default"].gameFinished);
@@ -134,6 +89,47 @@ var UTTT = (function () {
         }
         game.winner = game.stateBoard.winner;
         return game;
+    };
+    UTTT.prototype.prettyPrint = function () {
+        var rows = [];
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                var small = this.board[x][y].prettyPrint().split("\n");
+                for (var row = 0; row < this.size; row++) {
+                    var xCoord = x * this.size + row;
+                    if (!rows[xCoord]) {
+                        rows[xCoord] = [];
+                    }
+                    rows[xCoord][y] = small[row];
+                }
+            }
+        }
+        var ret = [];
+        for (var x = 0; x < rows.length; x++) {
+            ret.push(rows[x].join('| '));
+            if ((x + 1) % this.size === 0) {
+                var sepChars = '';
+                for (var i = 0; i < this.size * 2; i++) {
+                    sepChars += '-';
+                }
+                sepChars += '+';
+                var sep = sepChars;
+                for (var i = 1; i < this.size; i++) {
+                    sep += '-' + sepChars;
+                }
+                ret.push(sep.substr(0, sep.length - 1));
+            }
+        }
+        return ret.join("\n");
+    };
+    UTTT.prototype.copy = function () {
+        var copy = new UTTT(this.size);
+        copy.board = this.board;
+        copy.moves = this.moves;
+        copy.winner = this.winner;
+        copy.nextBoard = this.nextBoard;
+        copy.stateBoard = this.stateBoard;
+        return copy;
     };
     return UTTT;
 }());
