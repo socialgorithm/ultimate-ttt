@@ -1,21 +1,51 @@
+/// <reference path="../../custom-types/blessed/index.d.ts" />
 import * as blessed from 'blessed';
 import * as ip from "ip";
 import State from "./State";
 const pjson = require('../../package.json');
 
+/**
+ * UI Holder for each game in the server
+ */
 export interface GameUI {
     box: blessed.Widgets.BoxElement;
     progressBar: blessed.Widgets.ProgressBarElement;
     players: [string, string];
 }
 
+/**
+ * Terminal GUI manager using ncurses
+ * All GUI references and interactions are handled through this so the server is
+ * independent from it.
+ */
 export default class GUI {
+    /**
+     * Main screen UI reference
+     */
     public screen: blessed.Widgets.Screen;
+    /**
+     * Online users box UI reference
+     */
     public onlineUsers: blessed.Widgets.BoxElement;
+    /**
+     * Game list UI reference
+     */
     public gameArea: blessed.Widgets.BoxElement;
+    /**
+     * Log box UI reference
+     */
     public logger: blessed.Widgets.Log;
+    /**
+     * List of games currently being played
+     */
     public games: Array<GameUI>;
 
+    /**
+     * Start a GUI for the server
+     * @param title Window title
+     * @param host Server host
+     * @param port Server port
+     */
     constructor(title: string, host: string, port: number) {
         this.screen = blessed.screen({
             smartCSR: true,
@@ -105,6 +135,10 @@ export default class GUI {
         });
     }
 
+    /**
+     * Render the given list of player tokens
+     * @param players Player list
+     */
     public renderOnlinePlayers(players: Array<string>) {
         this.onlineUsers.content = '{bold}Online players{/bold}';
         this.onlineUsers.render();
@@ -115,6 +149,12 @@ export default class GUI {
         this.render();
     }
 
+    /**
+     * Add a new game UI
+     * @param playerOne Token of player 1
+     * @param playerTwo Token of player 2
+     * @returns {number} Game Box ID
+     */
     public addGameBox(playerOne: string, playerTwo: string): number {
         const height = 3;
         const gameUI: GameUI = {
@@ -179,6 +219,11 @@ export default class GUI {
         return this.games.push(gameUI);
     }
 
+    /**
+     * Update the game progress between two players
+     * @param gameIndex Game Box ID
+     * @param progress Progress from 0 o 100
+     */
     public setGameProgress(gameIndex: number, progress: number): void {
         if (this.games[gameIndex]) {
             this.games[gameIndex].progressBar.setProgress(progress);
@@ -186,6 +231,12 @@ export default class GUI {
         }
     }
 
+    /**
+     * Change a game UI to finished mode
+     * @param gameIndex Game Box ID
+     * @param winner Winner token
+     * @param state Game state
+     */
     public setGameEnd(gameIndex: number, winner: string, state: State): void {
         const game = this.games[gameIndex];
         const stats = state.getStats();
@@ -222,6 +273,11 @@ export default class GUI {
         this.render();
     }
 
+    /**
+     * Log a message to the log box
+     * @param message Message
+     * @param skipRender Avoid rendering, useful if multiple messages will be logged
+     */
     public log (message: string, skipRender: boolean = false): void {
         const time = (new Date()).toTimeString().substr(0,5);
         this.logger.log('{blue-fg}[' + time + ']{/blue-fg} ' + message);
@@ -230,6 +286,9 @@ export default class GUI {
         }
     }
 
+    /**
+     * Render the UI
+     */
     public render() {
         this.screen.render();
     }

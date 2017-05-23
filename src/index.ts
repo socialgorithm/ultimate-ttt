@@ -6,6 +6,10 @@
 import OnlineServer from './lib/OnlineServer';
 import { Options } from "./lib/input";
 
+/**
+ * Start a server with the given options
+ * @param options Server options
+ */
 export default function server(options: Options) {
   // env overrides
   options.host = process.env.HOST || options.host || 'localhost';

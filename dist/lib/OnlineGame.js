@@ -38,6 +38,7 @@ var OnlineGame = (function () {
         this.sendAction('move', this.firstPlayer);
     };
     OnlineGame.prototype.handleGameEnd = function (winner, playerDisconnected) {
+        if (playerDisconnected === void 0) { playerDisconnected = false; }
         var hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
         if (winner > -1) {

@@ -1,13 +1,14 @@
-import UTTT, {Coords} from 'ultimate-ttt';
+import UTTT from 'ultimate-ttt';
 
 import State from "./State";
 import { Game } from "./OnlineServer";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
+import {Coords} from "ultimate-ttt/dist/model/constants";
 
 /**
- * State holder for each online game
+ * Online game manager between two players
  */
 export default class OnlineGame {
     private timeout: number;
@@ -23,6 +24,14 @@ export default class OnlineGame {
     private ui: GUI;
     private io: SocketIO.Server;
 
+    /**
+     * Build a new game manager
+     * @param session game information
+     * @param io Server socket reference
+     * @param players Array of player tokens that will play this game
+     * @param ui Optional GUI reference
+     * @param options Server startup options
+     */
     constructor(session: Game, io: SocketIO.Server, players: Array<string>, ui: GUI, options: Options) {
         this.ui = ui;
         this.io = io;
@@ -68,7 +77,12 @@ export default class OnlineGame {
         this.sendAction('move', this.firstPlayer);
     }
 
-    public handleGameEnd(winner: number, playerDisconnected?: boolean) {
+    /**
+     * Handle each individual game
+     * @param winner Game's winner, used to update the state
+     * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
+     */
+    public handleGameEnd(winner: number, playerDisconnected: boolean = false) {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
 
@@ -133,7 +147,7 @@ export default class OnlineGame {
      * configured for the specified player, it's intended to be used
      * as the callback for the player socket.
      * @param player Player number (0-1)
-     * @returns {Function}
+     * @returns {Function} Move handler with the player number embedded for logging
      */
     public handlePlayerMove(player: number) {
         return (data: string) => {
@@ -234,7 +248,7 @@ export default class OnlineGame {
     /**
      * Log a message to the console or the GUI if it's enabled
      * @param message
-     * @param skipRender only for GUI mode, set to true to avoid rerendering
+     * @param skipRender only for GUI mode, set to true to avoid re-rendering
      */
     private log(message: string, skipRender: boolean = false): void {
         const time = (new Date()).toTimeString().substr(0,5);

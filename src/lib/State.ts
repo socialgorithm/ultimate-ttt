@@ -1,5 +1,8 @@
 import * as funcs from './funcs';
 
+/**
+ * Game stats calculated from a given state
+ */
 export interface Stats {
   winner?: number;
   total?: number;
@@ -10,6 +13,10 @@ export interface Stats {
   tiePercentage?: string;
 }
 
+/**
+ * Games State holder
+ * Used to track the state across multiple games between two players
+ */
 export default class State {
   public games: number;
   public ties: number;

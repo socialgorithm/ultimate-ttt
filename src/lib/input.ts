@@ -2,6 +2,10 @@ const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const info = require('../../package.json');
 
+/**
+ * Server Options
+ * If launching from the terminal these options can be set as `--{option name}[ value]`
+ */
 export interface Options {
   version?: boolean;
   verbose?: boolean;
@@ -75,6 +79,10 @@ const sections = [
 
 // ------------------------------------------- //
 
+/**
+ * Parse the options from the command line and then return the options object
+ * @returns {any}
+ */
 export default (): Options => {
   const options = commandLineArgs(optionDefinitions);
 
