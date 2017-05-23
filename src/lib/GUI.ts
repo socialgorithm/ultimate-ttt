@@ -52,6 +52,8 @@ export default class GUI {
             warnings: true
         });
 
+        this.games = [];
+
         this.screen.title = title;
 
         const header = blessed.box({

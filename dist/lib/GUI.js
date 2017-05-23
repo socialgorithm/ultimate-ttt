@@ -9,6 +9,7 @@ var GUI = (function () {
             smartCSR: true,
             warnings: true
         });
+        this.games = [];
         this.screen.title = title;
         var header = blessed.box({
             parent: this.screen,
