@@ -167,7 +167,6 @@ export default class SubBoard extends TTT<Cell> {
   /**
    * Return a new SubBoard as a copy of this one
    * @returns {SubBoard} Copy of the current game
-   * @private
    */
   public copy(): SubBoard {
     const copy = new SubBoard(this.size);
@@ -181,7 +180,6 @@ export default class SubBoard extends TTT<Cell> {
    * Validates a player
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
-   * @private
    */
   private isValidPlayer(player: number): boolean {
     return [ ME, OPPONENT ].indexOf(player) > -1;
@@ -210,7 +208,6 @@ export default class SubBoard extends TTT<Cell> {
   /**
    * Check if a given column has been won
    * @param col Column index
-   * @private
    */
   private checkColumn(col: number): void {
     const player = this.board[0][col].player;
@@ -229,7 +226,6 @@ export default class SubBoard extends TTT<Cell> {
 
   /**
    * Check if the left to right diagonal has been won
-   * @private
    */
   private checkLtRDiagonal(): void {
     const player = this.board[0][0].player;
@@ -248,7 +244,6 @@ export default class SubBoard extends TTT<Cell> {
 
   /**
    * Check if the right to left diagonal has been won
-   * @private
    */
   private checkRtLDiagonal(): void {
     const player = this.board[0][this.size - 1].player;
