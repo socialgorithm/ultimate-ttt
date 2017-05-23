@@ -129,7 +129,6 @@ export default class UTTT extends TTT<SubBoard> {
    * @param board Board coordinates as an array [x, y]
    * @param move Move coordinates as an array [x, y]
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
-   * @private
    */
   public move(board: Coord, player: number, move: Coord): UTTT {
     if(this.isFinished()) {
@@ -221,7 +220,6 @@ export default class UTTT extends TTT<SubBoard> {
   /**
    * Return a new UTTT board as a copy of this one
    * @returns {UTTT} Copy of the current game
-   * @private
    */
   public copy(): UTTT {
     const copy = new UTTT(this.size);
