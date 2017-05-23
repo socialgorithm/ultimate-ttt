@@ -37,3 +37,6 @@ export interface Coords {
     board: Coord;
     move: Coord
 }
+
+export type PlayerNumber = 0 | 1;
+export type PlayerOrTie = -1 | PlayerNumber;

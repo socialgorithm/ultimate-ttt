@@ -1,4 +1,4 @@
-import {Coord} from "./constants";
+import {Coord, PlayerOrTie} from "./constants";
 abstract class TTT<CellType> {
     /**
      * Holds the state of the game board as a two dimensional array
@@ -12,9 +12,9 @@ abstract class TTT<CellType> {
      */
     public nextBoard: Coord;
     /**
-     * Game winner, will be -1 if no one has won yet, 0 or 1.
+     * Game winner, will be null if no one has won yet, -1 in a tie, 0 if player 1 won or 1 if player 2 won.
      */
-    public winner: number;
+    public winner: PlayerOrTie;
     /**
      * Indicates the size of Ultimate TTT we're dealing with
      * typically this will be 3 for a 3x3 board.
