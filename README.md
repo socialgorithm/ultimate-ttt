@@ -57,7 +57,7 @@ import UTTT from 'ultimate-ttt';
 const game = new UTTT();
 ```
 
-## [API Documentation](https://github.com/socialgorithm/ultimate-ttt-js/wiki)
+## [API Documentation](https://socialgorithm.org/ultimate-ttt-js/)
 
 ## Projects using this
 
