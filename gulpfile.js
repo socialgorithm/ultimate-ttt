@@ -11,8 +11,12 @@ gulp.task('typedoc', function() {
       target: 'es5',
       out: 'docs/',
       name: 'Ultimate TTT JavaScript Engine'
-    }))
-    ;
+    }));
+});
+
+gulp.task('noJekyll', function() {
+  return $.file('.nojekyll', '', { src: true })
+    .pipe(gulp.dest('docs/'));
 });
 
 // Publishes the site to GitHub Pages
