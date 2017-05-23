@@ -4,27 +4,63 @@ import error from './error';
 
 import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
 
+/**
+ * Coordinate in the form [x, y]
+ */
 export type Coord = [number, number];
 
+/**
+ * Coordinates for moves on the big board
+ */
 export interface Coords {
   board: Coord;
   move: Coord
 }
 
 /**
- * UTTT MainBoard Class
- * Implements a functional/immutable API
+ * Ultimate Tic Tac Toe Class
  *
- * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
+ * This holds a full game, with all the associated state, and exposes several methods to interact with it.
+ *
+ * All methods that modify the state have been implemented as a functional/immutable API, which means that
+ * they return a modified game, but don't change the original one.
+ * This has been done to make tree searching easier, since your root nodes at each step won't be accidentally modified.
  */
 export default class UTTT {
+  /**
+   * Holds the state of the game board as a two dimensional array
+   * each element of the inner array is a SubBoard
+   */
   public board: Array<Array<SubBoard>>;
+  /**
+   * Holds the coordinates of the board that should be played next
+   * If the last move sends you to a finished board, then this will be null
+   * and you may choose any.
+   */
   public nextBoard: Coord;
+  /**
+   * Game winner, will be -1 if no one has won yet, 0 or 1.
+   */
   public winner: number;
-
+  /**
+   * The state board is a typical 3x3 TTT board that holds the "state" of the big game
+   * so if a cell of the big game has been won, it will be 0 or 1 on this state board.
+   * This is very useful to easily see "the big picture" in the game.
+   */
+  public stateBoard: SubBoard;
+  /**
+   * Indicates the size of Ultimate TTT we're dealing with
+   * typically this will be 3 for a 3x3 board.
+   */
   private size: number;
+  /**
+   * Holds the maximum number of moves before the board is full
+   * this is here to avoid recalculating it every time its needed
+   */
   private maxMoves: number;
-  private stateBoard: SubBoard;
+  /**
+   * Counter of moves that have been played so far
+   */
   private moves: number;
 
   constructor(size: number = 3){
@@ -104,9 +140,9 @@ export default class UTTT {
 
   /**
    * Adds your move to the board, throws exception if move is invalid or board is already finished.
-   * @param boardRowCol
-   * @param move
-   * @returns {UTTT}
+   * @param boardRowCol Board coordinates [row, col]
+   * @param move Move coordinates [row, col]
+   * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
   public addMyMove(boardRowCol: Coord, move: Coord): UTTT {
     return this.move(boardRowCol, ME, move);
@@ -114,9 +150,9 @@ export default class UTTT {
 
   /**
    * Adds an opponent move to the board, throws exception if move is invalid or board is already finished.
-   * @param boardRowCol
-   * @param move
-   * @returns {UTTT}
+   * @param boardRowCol Board coordinates [row, col]
+   * @param move Move coordinates [row, col]
+   * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
   public addOpponentMove(boardRowCol: Coord, move: Coord): UTTT {
     return this.move(boardRowCol, OPPONENT, move);
@@ -181,7 +217,7 @@ export default class UTTT {
   /**
    * Returns a string with the board formatted for display
    * including new lines.
-   * @returns {string}
+   * @returns {string} Printable version of the game board
    */
   public prettyPrint(): string {
     let rows: Array<Array<string>> = [];
@@ -215,6 +251,14 @@ export default class UTTT {
       }
     }
     return ret.join("\n");
+  }
+
+  /**
+   * Getter for moves
+   * @returns {number}
+   */
+  public getMoves(): number {
+    return this.moves;
   }
 
   /**

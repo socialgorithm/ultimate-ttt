@@ -1,3 +1,6 @@
+/**
+ * Error definitions
+ */
 export default {
   player: {
     message: 'Invalid player (%s), it must be either 0 or 1',

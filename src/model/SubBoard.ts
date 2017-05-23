@@ -3,25 +3,60 @@ import error from '../error';
 import Cell from './Cell';
 import {Coord} from "../UTTT";
 
+/**
+ * Constant to represent player 1
+ * @type {number}
+ */
 export const ME = 0;
+/**
+ * Constant to represent player 2
+ * @type {number}
+ */
 export const OPPONENT = 1;
 
+/**
+ * Constant to represent a tie
+ * @type {number}
+ */
 export const RESULT_TIE = -1;
+/**
+ * Constant to represent player 1 winning
+ * @type {number}
+ */
 export const RESULT_WIN = 0;
+/**
+ * Constant to represent player 2 winning
+ * @type {number}
+ */
 export const RESULT_LOSE = 1;
 
 /**
  * SubBoard for TicTacToe games
  * This class implements the traditional game of TicTacToe
- *
- * Docs: https://github.com/socialgorithm/ultimate-ttt-js/wiki
  */
 export default class SubBoard {
+  /**
+   * Holds the state of the game board as a two dimensional array
+   * each element of the inner array is a Cell
+   */
   public board: Array<Array<Cell>>;
-
+  /**
+   * Indicates the size of Ultimate TTT we're dealing with
+   * typically this will be 3 for a 3x3 board.
+   */
   private size: number;
+  /**
+   * Holds the maximum number of moves before the board is full
+   * this is here to avoid recalculating it every time its needed
+   */
   private maxMoves: number;
+  /**
+   * Game winner, will be -1 if no one has won yet, 0 or 1.
+   */
   public winner: number;
+  /**
+   * Counter of moves that have been played so far
+   */
   private moves: number;
 
   constructor(size = 3){
@@ -184,6 +219,14 @@ export default class SubBoard {
     copy.moves = this.moves;
     copy.winner = this.winner;
     return copy;
+  }
+
+  /**
+   * Getter for moves
+   * @returns {number}
+   */
+  public getMoves(): number {
+    return this.moves;
   }
 
   /**
