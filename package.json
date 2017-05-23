@@ -2,9 +2,9 @@
   "name": "uttt",
   "version": "4.1.0",
   "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
-  "main": "dist/index.js",
+  "main": "dist/standalone.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node dist/standalone.js",
     "test": "nyc ava",
     "docs": "gulp typedoc && gulp noJekyll"
   },
