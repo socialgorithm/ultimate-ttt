@@ -5,7 +5,8 @@
   "main": "dist/UTTT.js",
   "scripts": {
     "test": "nyc ava",
-    "test:watch": "nyc ava --watch"
+    "test:watch": "nyc ava --watch",
+    "docs": "gulp typedoc"
   },
   "repository": {
     "type": "git",
