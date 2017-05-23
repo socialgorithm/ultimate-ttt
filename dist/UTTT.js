@@ -122,6 +122,9 @@ var UTTT = (function () {
         }
         return ret.join("\n");
     };
+    UTTT.prototype.getMoves = function () {
+        return this.moves;
+    };
     UTTT.prototype.copy = function () {
         var copy = new UTTT(this.size);
         copy.board = this.board;

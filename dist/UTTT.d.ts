@@ -8,9 +8,9 @@ export default class UTTT {
     board: Array<Array<SubBoard>>;
     nextBoard: Coord;
     winner: number;
+    stateBoard: SubBoard;
     private size;
     private maxMoves;
-    private stateBoard;
     private moves;
     constructor(size?: number);
     isFinished(): boolean;
@@ -21,5 +21,6 @@ export default class UTTT {
     addOpponentMove(boardRowCol: Coord, move: Coord): UTTT;
     move(board: Coord, player: number, move: Coord): UTTT;
     prettyPrint(): string;
+    getMoves(): number;
     copy(): UTTT;
 }

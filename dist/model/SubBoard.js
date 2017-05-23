@@ -104,6 +104,9 @@ var SubBoard = (function () {
         copy.winner = this.winner;
         return copy;
     };
+    SubBoard.prototype.getMoves = function () {
+        return this.moves;
+    };
     SubBoard.prototype.isValidPlayer = function (player) {
         return [exports.ME, exports.OPPONENT].indexOf(player) > -1;
     };

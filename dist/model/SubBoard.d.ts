@@ -20,6 +20,7 @@ export default class SubBoard {
     move(player: number, move: Coord, index?: number): SubBoard;
     prettyPrint(): string;
     copy(): SubBoard;
+    getMoves(): number;
     private isValidPlayer(player);
     private checkRow(row);
     private checkColumn(col);
