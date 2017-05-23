@@ -97,11 +97,15 @@ var OnlineServer = (function () {
         });
         var onlineGame = new OnlineGame_1["default"](session, this.io, this.players, this.ui, settings);
         session.players[0].socket.on('disconnect', function () {
-            this.removePlayer(this.players[session.players[0].playerIndex]);
+            if (session.players && session.players[0]) {
+                this.removePlayer(this.players[session.players[0].playerIndex]);
+            }
             onlineGame.handleGameEnd(1, true);
         });
         session.players[1].socket.on('disconnect', function () {
-            this.removePlayer(this.players[session.players[1].playerIndex]);
+            if (session.players && session.players[1]) {
+                this.removePlayer(this.players[session.players[1].playerIndex]);
+            }
             onlineGame.handleGameEnd(0, true);
         });
         session.players[0].socket.on('game', onlineGame.handlePlayerMove(0));
