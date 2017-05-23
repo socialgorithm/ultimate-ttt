@@ -1,6 +1,6 @@
 {
   "name": "ultimate-ttt",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
   "scripts": {
