@@ -36,7 +36,10 @@
     "del": "^2.2.2",
     "gulp-typedoc": "^2.0.2",
     "nyc": "^10.1.2",
-    "typedoc": "^0.7.1"
+    "typedoc": "^0.7.1",
+    "gulp": "^3.9.1",
+    "gulp-file": "^0.3.0",
+    "gulp-load-plugins": "^1.5.0"
   },
   "ava": {
     "require": "babel-register",
@@ -46,11 +49,5 @@
     "presets": [
       "@ava/stage-4"
     ]
-  },
-  "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-file": "^0.3.0",
-    "gulp-gh-pages": "^0.5.4",
-    "gulp-load-plugins": "^1.5.0"
   }
 }

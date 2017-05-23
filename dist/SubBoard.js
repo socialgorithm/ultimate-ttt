@@ -1,31 +1,40 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
-var errors_1 = require("./errors");
-var error_1 = require("../error");
-var Cell_1 = require("./Cell");
-exports.ME = 0;
-exports.OPPONENT = 1;
-exports.RESULT_TIE = -1;
-exports.RESULT_WIN = 0;
-exports.RESULT_LOSE = 1;
-var SubBoard = (function () {
+var errors_1 = require("./model/errors");
+var Cell_1 = require("./model/Cell");
+var error_1 = require("./error");
+var constants_1 = require("./model/constants");
+var TTT_1 = require("./model/TTT");
+var SubBoard = (function (_super) {
+    __extends(SubBoard, _super);
     function SubBoard(size) {
         if (size === void 0) { size = 3; }
-        this.size = size;
-        this.board = [];
-        this.moves = 0;
-        this.winner = exports.RESULT_TIE - 1;
-        for (var x = 0; x < this.size; x++) {
-            this.board[x] = [];
-            for (var y = 0; y < this.size; y++) {
-                this.board[x][y] = new Cell_1["default"]();
+        var _this = _super.call(this) || this;
+        _this.size = size;
+        _this.board = [];
+        _this.moves = 0;
+        _this.winner = constants_1.RESULT_TIE - 1;
+        for (var x = 0; x < _this.size; x++) {
+            _this.board[x] = [];
+            for (var y = 0; y < _this.size; y++) {
+                _this.board[x][y] = new Cell_1["default"]();
             }
         }
-        this.maxMoves = Math.pow(this.size, 2);
-        return this;
+        _this.maxMoves = Math.pow(_this.size, 2);
+        return _this;
     }
     SubBoard.prototype.isFinished = function () {
-        return this.winner >= exports.RESULT_TIE;
+        return this.winner >= constants_1.RESULT_TIE;
     };
     SubBoard.prototype.getResult = function () {
         if (!this.isFinished()) {
@@ -41,15 +50,15 @@ var SubBoard = (function () {
             move[1] < 0 ||
             move[1] > this.size ||
             typeof (this.board[move[0]][move[1]]) === 'undefined' ||
-            this.board[move[0]][move[1]].player >= exports.ME);
+            this.board[move[0]][move[1]].player >= constants_1.ME);
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this.move(exports.ME, move, index);
+        return this.move(constants_1.ME, move, index);
     };
     SubBoard.prototype.addOpponentMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this.move(exports.OPPONENT, move, index);
+        return this.move(constants_1.OPPONENT, move, index);
     };
     SubBoard.prototype.move = function (player, move, index) {
         if (index === void 0) { index = -1; }
@@ -80,8 +89,8 @@ var SubBoard = (function () {
         if (!game.isFinished()) {
             game.checkRtLDiagonal();
         }
-        if (game.isFull() && game.winner < exports.RESULT_TIE) {
-            game.winner = exports.RESULT_TIE;
+        if (game.isFull() && game.winner < constants_1.RESULT_TIE) {
+            game.winner = constants_1.RESULT_TIE;
         }
         return game;
     };
@@ -104,15 +113,12 @@ var SubBoard = (function () {
         copy.winner = this.winner;
         return copy;
     };
-    SubBoard.prototype.getMoves = function () {
-        return this.moves;
-    };
     SubBoard.prototype.isValidPlayer = function (player) {
-        return [exports.ME, exports.OPPONENT].indexOf(player) > -1;
+        return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
     };
     SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;
-        if (player < exports.ME) {
+        if (player < constants_1.ME) {
             return;
         }
         for (var i = 1; i < this.size; i++) {
@@ -120,13 +126,13 @@ var SubBoard = (function () {
                 return;
             }
         }
-        if (player >= exports.ME) {
+        if (player >= constants_1.ME) {
             this.winner = player;
         }
     };
     SubBoard.prototype.checkColumn = function (col) {
         var player = this.board[0][col].player;
-        if (player < exports.ME) {
+        if (player < constants_1.ME) {
             return;
         }
         for (var i = 1; i < this.size; i++) {
@@ -134,13 +140,13 @@ var SubBoard = (function () {
                 return;
             }
         }
-        if (player >= exports.ME) {
+        if (player >= constants_1.ME) {
             this.winner = player;
         }
     };
     SubBoard.prototype.checkLtRDiagonal = function () {
         var player = this.board[0][0].player;
-        if (player < exports.ME) {
+        if (player < constants_1.ME) {
             return;
         }
         for (var i = 1; i < this.size; i++) {
@@ -148,13 +154,13 @@ var SubBoard = (function () {
                 return;
             }
         }
-        if (player >= exports.ME) {
+        if (player >= constants_1.ME) {
             this.winner = player;
         }
     };
     SubBoard.prototype.checkRtLDiagonal = function () {
         var player = this.board[0][this.size - 1].player;
-        if (player < exports.ME) {
+        if (player < constants_1.ME) {
             return;
         }
         for (var i = this.size - 1; i >= 0; i--) {
@@ -162,14 +168,11 @@ var SubBoard = (function () {
                 return;
             }
         }
-        if (player >= exports.ME) {
+        if (player >= constants_1.ME) {
             this.winner = player;
         }
     };
-    SubBoard.prototype.isFull = function () {
-        return this.moves === this.maxMoves;
-    };
     return SubBoard;
-}());
+}(TTT_1["default"]));
 exports["default"] = SubBoard;
 //# sourceMappingURL=SubBoard.js.map

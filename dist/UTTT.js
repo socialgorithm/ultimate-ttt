@@ -1,26 +1,39 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
-var SubBoard_1 = require("./model/SubBoard");
+var SubBoard_1 = require("./SubBoard");
 var errors_1 = require("./model/errors");
 var error_1 = require("./error");
-var SubBoard_2 = require("./model/SubBoard");
-var UTTT = (function () {
+var constants_1 = require("./model/constants");
+var TTT_1 = require("./model/TTT");
+var UTTT = (function (_super) {
+    __extends(UTTT, _super);
     function UTTT(size) {
         if (size === void 0) { size = 3; }
-        this.size = size;
-        this.maxMoves = Math.pow(this.size, 4);
-        this.board = [];
-        this.moves = 0;
-        this.winner = SubBoard_2.RESULT_TIE - 1;
-        this.nextBoard = null;
-        this.stateBoard = new SubBoard_1["default"](this.size);
-        for (var x = 0; x < this.size; x++) {
-            this.board[x] = [];
-            for (var y = 0; y < this.size; y++) {
-                this.board[x][y] = new SubBoard_1["default"](this.size);
+        var _this = _super.call(this) || this;
+        _this.size = size;
+        _this.maxMoves = Math.pow(_this.size, 4);
+        _this.board = [];
+        _this.moves = 0;
+        _this.winner = constants_1.RESULT_TIE - 1;
+        _this.nextBoard = null;
+        _this.stateBoard = new SubBoard_1["default"](_this.size);
+        for (var x = 0; x < _this.size; x++) {
+            _this.board[x] = [];
+            for (var y = 0; y < _this.size; y++) {
+                _this.board[x][y] = new SubBoard_1["default"](_this.size);
             }
         }
-        return this;
+        return _this;
     }
     UTTT.prototype.isFinished = function () {
         return (this.stateBoard.isFinished() || this.moves === this.maxMoves);
@@ -51,10 +64,10 @@ var UTTT = (function () {
         return this.board[boardRowCol[0]][boardRowCol[1]].isValidMove(move);
     };
     UTTT.prototype.addMyMove = function (boardRowCol, move) {
-        return this.move(boardRowCol, SubBoard_2.ME, move);
+        return this.move(boardRowCol, constants_1.ME, move);
     };
     UTTT.prototype.addOpponentMove = function (boardRowCol, move) {
-        return this.move(boardRowCol, SubBoard_2.OPPONENT, move);
+        return this.move(boardRowCol, constants_1.OPPONENT, move);
     };
     UTTT.prototype.move = function (board, player, move) {
         if (this.isFinished()) {
@@ -68,10 +81,10 @@ var UTTT = (function () {
         }
         var game = this.copy();
         var updatedBoard;
-        if (player === SubBoard_2.ME) {
+        if (player === constants_1.ME) {
             updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
         }
-        else if (player === SubBoard_2.OPPONENT) {
+        else if (player === constants_1.OPPONENT) {
             updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
         }
         else {
@@ -84,7 +97,7 @@ var UTTT = (function () {
             game.nextBoard = null;
         }
         if (game.board[board[0]][board[1]].isFinished() &&
-            game.board[board[0]][board[1]].winner >= SubBoard_2.RESULT_TIE) {
+            game.board[board[0]][board[1]].winner >= constants_1.RESULT_TIE) {
             game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
         }
         game.winner = game.stateBoard.winner;
@@ -122,9 +135,6 @@ var UTTT = (function () {
         }
         return ret.join("\n");
     };
-    UTTT.prototype.getMoves = function () {
-        return this.moves;
-    };
     UTTT.prototype.copy = function () {
         var copy = new UTTT(this.size);
         copy.board = this.board;
@@ -135,6 +145,6 @@ var UTTT = (function () {
         return copy;
     };
     return UTTT;
-}());
+}(TTT_1["default"]));
 exports["default"] = UTTT;
 //# sourceMappingURL=UTTT.js.map

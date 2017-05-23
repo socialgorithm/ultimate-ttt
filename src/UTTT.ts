@@ -1,21 +1,9 @@
-import SubBoard from './model/SubBoard';
+import SubBoard from './SubBoard';
 import errors from './model/errors';
 import error from './error';
 
-import { ME, OPPONENT, RESULT_TIE } from './model/SubBoard';
-
-/**
- * Coordinate in the form [x, y]
- */
-export type Coord = [number, number];
-
-/**
- * Coordinates for moves on the big board
- */
-export interface Coords {
-  board: Coord;
-  move: Coord
-}
+import {Coord, ME, OPPONENT, RESULT_TIE} from './model/constants';
+import TTT from "./model/TTT";
 
 /**
  * Ultimate Tic Tac Toe Class
@@ -26,44 +14,21 @@ export interface Coords {
  * they return a modified game, but don't change the original one.
  * This has been done to make tree searching easier, since your root nodes at each step won't be accidentally modified.
  */
-export default class UTTT {
+export default class UTTT extends TTT<SubBoard> {
   /**
    * Holds the state of the game board as a two dimensional array
    * each element of the inner array is a SubBoard
    */
   public board: Array<Array<SubBoard>>;
   /**
-   * Holds the coordinates of the board that should be played next
-   * If the last move sends you to a finished board, then this will be null
-   * and you may choose any.
-   */
-  public nextBoard: Coord;
-  /**
-   * Game winner, will be -1 if no one has won yet, 0 or 1.
-   */
-  public winner: number;
-  /**
    * The state board is a typical 3x3 TTT board that holds the "state" of the big game
    * so if a cell of the big game has been won, it will be 0 or 1 on this state board.
    * This is very useful to easily see "the big picture" in the game.
    */
   public stateBoard: SubBoard;
-  /**
-   * Indicates the size of Ultimate TTT we're dealing with
-   * typically this will be 3 for a 3x3 board.
-   */
-  private size: number;
-  /**
-   * Holds the maximum number of moves before the board is full
-   * this is here to avoid recalculating it every time its needed
-   */
-  private maxMoves: number;
-  /**
-   * Counter of moves that have been played so far
-   */
-  private moves: number;
 
   constructor(size: number = 3){
+    super();
     this.size = size;
     this.maxMoves = Math.pow(this.size, 4);
 
@@ -251,14 +216,6 @@ export default class UTTT {
       }
     }
     return ret.join("\n");
-  }
-
-  /**
-   * Getter for moves
-   * @returns {number}
-   */
-  public getMoves(): number {
-    return this.moves;
   }
 
   /**

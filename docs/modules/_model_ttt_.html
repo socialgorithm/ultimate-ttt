@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;model/SubBoard&quot; | Ultimate TTT JavaScript Engine</title>
+	<title>&quot;model/TTT&quot; | Ultimate TTT JavaScript Engine</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_model_subboard_.html">&quot;model/SubBoard&quot;</a>
+					<a href="_model_ttt_.html">&quot;model/TTT&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;model/SubBoard&quot;</h1>
+			<h1>External module &quot;model/TTT&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -73,122 +73,9 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_model_subboard_.subboard.html" class="tsd-kind-icon">Sub<wbr>Board</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/_model_ttt_.ttt.html" class="tsd-kind-icon">TTT</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
-							<h3>Variables</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_subboard_.html#me" class="tsd-kind-icon">ME</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_subboard_.html#opponent" class="tsd-kind-icon">OPPONENT</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_subboard_.html#result_lose" class="tsd-kind-icon">RESULT_<wbr>LOSE</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_subboard_.html#result_tie" class="tsd-kind-icon">RESULT_<wbr>TIE</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_subboard_.html#result_win" class="tsd-kind-icon">RESULT_<wbr>WIN</a></li>
-							</ul>
-						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="me" class="tsd-anchor"></a>
-					<h3>ME</h3>
-					<div class="tsd-signature tsd-kind-icon">ME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/3471411/src/model/SubBoard.ts#L10">model/SubBoard.ts:10</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Constant to represent player 1</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{number}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="opponent" class="tsd-anchor"></a>
-					<h3>OPPONENT</h3>
-					<div class="tsd-signature tsd-kind-icon">OPPONENT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/3471411/src/model/SubBoard.ts#L15">model/SubBoard.ts:15</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Constant to represent player 2</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{number}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="result_lose" class="tsd-anchor"></a>
-					<h3>RESULT_<wbr>LOSE</h3>
-					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>LOSE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/3471411/src/model/SubBoard.ts#L31">model/SubBoard.ts:31</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Constant to represent player 2 winning</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{number}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="result_tie" class="tsd-anchor"></a>
-					<h3>RESULT_<wbr>TIE</h3>
-					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>TIE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/3471411/src/model/SubBoard.ts#L21">model/SubBoard.ts:21</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Constant to represent a tie</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{number}</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="result_win" class="tsd-anchor"></a>
-					<h3>RESULT_<wbr>WIN</h3>
-					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>WIN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/3471411/src/model/SubBoard.ts#L26">model/SubBoard.ts:26</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Constant to represent player 1 winning</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{number}</p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 			</section>
@@ -200,6 +87,9 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_subboard_.html">"<wbr>Sub<wbr>Board"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_uttt_.html">"UTTT"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -209,10 +99,13 @@
 						<a href="_model_cell_.html">"model/<wbr>Cell"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_model_subboard_.html">"model/<wbr>Sub<wbr>Board"</a>
+						<a href="_model_ttt_.html">"model/TTT"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_model_uttterror_.html">"model/UTTTError"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_model_constants_.html">"model/constants"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_model_errors_.html">"model/errors"</a>
@@ -221,23 +114,8 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_model_subboard_.subboard.html" class="tsd-kind-icon">Sub<wbr>Board</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_model_subboard_.html#me" class="tsd-kind-icon">ME</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_model_subboard_.html#opponent" class="tsd-kind-icon">OPPONENT</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_model_subboard_.html#result_lose" class="tsd-kind-icon">RESULT_<wbr>LOSE</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_model_subboard_.html#result_tie" class="tsd-kind-icon">RESULT_<wbr>TIE</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_model_subboard_.html#result_win" class="tsd-kind-icon">RESULT_<wbr>WIN</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../classes/_model_ttt_.ttt.html" class="tsd-kind-icon">TTT</a>
 					</li>
 				</ul>
 			</nav>

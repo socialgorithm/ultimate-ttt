@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import SubBoard from '../dist/model/SubBoard';
+import SubBoard from '../dist/SubBoard';
 import Cell from '../dist/model/Cell';
-import { ME, OPPONENT } from '../dist/model/SubBoard';
+import { ME, OPPONENT } from '../dist/model/constants';
 import errors from '../dist/model/errors';
 import error from '../dist/error';
 

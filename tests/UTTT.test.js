@@ -2,7 +2,7 @@ import test from 'ava';
 
 import UTTT from '../dist/UTTT';
 import errors from '../dist/model/errors';
-import { ME, OPPONENT, RESULT_TIE, RESULT_WIN, RESULT_LOSE } from '../dist/model/SubBoard';
+import { ME, OPPONENT, RESULT_TIE, RESULT_WIN, RESULT_LOSE } from '../dist/model/constants';
 import error from '../dist/error';
 
 function validateBoard(board, t){

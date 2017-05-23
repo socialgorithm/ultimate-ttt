@@ -1,17 +1,9 @@
-import SubBoard from './model/SubBoard';
-export declare type Coord = [number, number];
-export interface Coords {
-    board: Coord;
-    move: Coord;
-}
-export default class UTTT {
+import SubBoard from './SubBoard';
+import { Coord } from './model/constants';
+import TTT from "./model/TTT";
+export default class UTTT extends TTT<SubBoard> {
     board: Array<Array<SubBoard>>;
-    nextBoard: Coord;
-    winner: number;
     stateBoard: SubBoard;
-    private size;
-    private maxMoves;
-    private moves;
     constructor(size?: number);
     isFinished(): boolean;
     getResult(): number;
@@ -21,6 +13,5 @@ export default class UTTT {
     addOpponentMove(boardRowCol: Coord, move: Coord): UTTT;
     move(board: Coord, player: number, move: Coord): UTTT;
     prettyPrint(): string;
-    getMoves(): number;
     copy(): UTTT;
 }

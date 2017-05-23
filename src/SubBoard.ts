@@ -1,65 +1,21 @@
-import errors from './errors';
-import error from '../error';
-import Cell from './Cell';
-import {Coord} from "../UTTT";
-
-/**
- * Constant to represent player 1
- * @type {number}
- */
-export const ME = 0;
-/**
- * Constant to represent player 2
- * @type {number}
- */
-export const OPPONENT = 1;
-
-/**
- * Constant to represent a tie
- * @type {number}
- */
-export const RESULT_TIE = -1;
-/**
- * Constant to represent player 1 winning
- * @type {number}
- */
-export const RESULT_WIN = 0;
-/**
- * Constant to represent player 2 winning
- * @type {number}
- */
-export const RESULT_LOSE = 1;
-
+import errors from './model/errors';
+import Cell from './model/Cell';
+import error from './error';
+import {Coord, ME, OPPONENT, RESULT_TIE} from "./model/constants";
+import TTT from "./model/TTT";
 /**
  * SubBoard for TicTacToe games
  * This class implements the traditional game of TicTacToe
  */
-export default class SubBoard {
+export default class SubBoard extends TTT<Cell> {
   /**
    * Holds the state of the game board as a two dimensional array
    * each element of the inner array is a Cell
    */
   public board: Array<Array<Cell>>;
-  /**
-   * Indicates the size of Ultimate TTT we're dealing with
-   * typically this will be 3 for a 3x3 board.
-   */
-  private size: number;
-  /**
-   * Holds the maximum number of moves before the board is full
-   * this is here to avoid recalculating it every time its needed
-   */
-  private maxMoves: number;
-  /**
-   * Game winner, will be -1 if no one has won yet, 0 or 1.
-   */
-  public winner: number;
-  /**
-   * Counter of moves that have been played so far
-   */
-  private moves: number;
 
   constructor(size = 3){
+    super();
     this.size = size;
 
     // Game state
@@ -222,14 +178,6 @@ export default class SubBoard {
   }
 
   /**
-   * Getter for moves
-   * @returns {number}
-   */
-  public getMoves(): number {
-    return this.moves;
-  }
-
-  /**
    * Validates a player
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
@@ -315,14 +263,5 @@ export default class SubBoard {
     if (player >= ME) {
       this.winner = player;
     }
-  }
-
-  /**
-   * Check if the board is full
-   * @returns {boolean}
-   * @private
-   */
-  private isFull(): boolean {
-    return this.moves === this.maxMoves;
   }
 }
