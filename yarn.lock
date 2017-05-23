@@ -1318,13 +1318,13 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-command-line-args@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.4.tgz#6b9ab497cfe82d2c1ce1e47d6c18a85382f5d9fe"
+command-line-args@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.5.tgz#c7beccd6641f525ed6f292e17084ab3231b301be"
   dependencies:
     array-back "^1.0.4"
     find-replace "^1.0.3"
-    typical "^2.6.0"
+    typical "^2.6.1"
 
 command-line-usage@^4.0.0:
   version "4.0.0"
@@ -4550,7 +4550,7 @@ typescript@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.2.tgz#f0f045e196f69a72f06b25fd3bd39d01c3ce9984"
 
-typical@^2.6.0:
+typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/typical/-/typical-2.6.1.tgz#5c080e5d661cbbe38259d2e70a3c7253e873881d"
 
@@ -4575,9 +4575,9 @@ uid2@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.3.tgz#483126e11774df2f71b8b639dcd799c376162b82"
 
-ultimate-ttt@^4.3.0:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.4.1.tgz#b5cc7dfb0bfeae6b30927e34b42767723229c22b"
+ultimate-ttt@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#17ca615147ad38c984cb7b1e2fc65bce7ab98b9c"
 
 ultron@~1.1.0:
   version "1.1.0"

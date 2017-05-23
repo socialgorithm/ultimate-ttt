@@ -2,6 +2,7 @@
 import { Game } from "./OnlineServer";
 import { Options } from "./input";
 import GUI from "./GUI";
+import { PlayerNumber } from "ultimate-ttt/dist/model/constants";
 export default class OnlineGame {
     private timeout;
     private maxGames;
@@ -17,10 +18,11 @@ export default class OnlineGame {
     private io;
     constructor(session: Game, io: SocketIO.Server, players: Array<string>, ui: GUI, options: Options);
     playGame(): void;
-    handleGameEnd(winner: number, playerDisconnected?: boolean): void;
+    handleGameEnd(winner: PlayerNumber, playerDisconnected?: boolean): void;
     private parseMove(data);
     private writeMove(coords);
-    handlePlayerMove(player: number): (data: string) => void;
+    handlePlayerMove(player: PlayerNumber): (data: string) => void;
+    private switchPlayer(player);
     private sendAction(action, player);
     private sessionEnd();
     private log(message, skipRender?);

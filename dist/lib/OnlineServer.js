@@ -100,14 +100,14 @@ var OnlineServer = (function () {
         session.players[0].socket.on('disconnect', function () {
             if (session.players && session.players[0]) {
                 _this.removePlayer(_this.players[session.players[0].playerIndex]);
+                onlineGame.handleGameEnd(1, true);
             }
-            onlineGame.handleGameEnd(1, true);
         });
         session.players[1].socket.on('disconnect', function () {
             if (session.players && session.players[1]) {
                 _this.removePlayer(_this.players[session.players[1].playerIndex]);
+                onlineGame.handleGameEnd(0, true);
             }
-            onlineGame.handleGameEnd(0, true);
         });
         session.players[0].socket.on('game', onlineGame.handlePlayerMove(0));
         session.players[1].socket.on('game', onlineGame.handlePlayerMove(1));

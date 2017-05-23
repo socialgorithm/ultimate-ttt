@@ -47,7 +47,7 @@ var OnlineGame = (function () {
         else {
             this.state.ties++;
         }
-        this.firstPlayer = 1 - this.firstPlayer;
+        this.firstPlayer = (this.firstPlayer === 1) ? 0 : 1;
         if (this.ui) {
             var progress = Math.floor(this.state.games * 100 / this.maxGames);
             this.ui.setGameProgress(this.gameUIId, progress);
@@ -88,24 +88,27 @@ var OnlineGame = (function () {
                 return;
             }
             if (data === 'fail') {
-                _this.handleGameEnd(1 - _this.currentPlayer);
+                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer));
                 return;
             }
             try {
                 var coords = _this.parseMove(data);
                 _this.game.move(coords.board, _this.currentPlayer + 1, coords.move);
                 if (_this.game.isFinished()) {
-                    _this.handleGameEnd(_this.game.winner - 1);
+                    _this.handleGameEnd(_this.switchPlayer(_this.game.winner));
                     return;
                 }
-                _this.currentPlayer = 1 - _this.currentPlayer;
+                _this.currentPlayer = _this.switchPlayer(_this.currentPlayer);
                 _this.sendAction('opponent ' + _this.writeMove(coords), _this.currentPlayer);
             }
             catch (e) {
                 _this.log('Game ' + _this.state.games + ': Player ' + _this.currentPlayer + ' errored: ' + e.message);
-                _this.handleGameEnd(1 - _this.currentPlayer);
+                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer));
             }
         };
+    };
+    OnlineGame.prototype.switchPlayer = function (player) {
+        return (player === 0) ? 1 : 0;
     };
     OnlineGame.prototype.sendAction = function (action, player) {
         if (this.session.players[player]) {

@@ -1,11 +1,11 @@
 import UTTT from 'ultimate-ttt';
 
 import State from "./State";
-import { Game } from "./OnlineServer";
+import {Game} from "./OnlineServer";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
-import {Coords} from "ultimate-ttt/dist/model/constants";
+import {Coords, PlayerNumber, PlayerOrTie} from "ultimate-ttt/dist/model/constants";
 
 /**
  * Online game manager between two players
@@ -16,8 +16,8 @@ export default class OnlineGame {
     private state: State;
     private session: Game;
     private players: Array<string>;
-    private currentPlayer: number;
-    private firstPlayer: number;
+    private currentPlayer: PlayerNumber;
+    private firstPlayer: PlayerNumber;
     private game: UTTT;
     private gameStart: [number, number];
     private gameUIId: number;
@@ -82,7 +82,7 @@ export default class OnlineGame {
      * @param winner Game's winner, used to update the state
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
-    public handleGameEnd(winner: number, playerDisconnected: boolean = false) {
+    public handleGameEnd(winner: PlayerNumber, playerDisconnected: boolean = false) {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
 
@@ -94,7 +94,7 @@ export default class OnlineGame {
 
         // Swap the first player after each game to reduce
         // advantages from going first/second
-        this.firstPlayer = 1 - this.firstPlayer;
+        this.firstPlayer = (this.firstPlayer === 1) ? 0 : 1;
 
         if (this.ui) {
             const progress = Math.floor(this.state.games * 100 / this.maxGames);
@@ -149,7 +149,7 @@ export default class OnlineGame {
      * @param player Player number (0-1)
      * @returns {Function} Move handler with the player number embedded for logging
      */
-    public handlePlayerMove(player: number) {
+    public handlePlayerMove(player: PlayerNumber) {
         return (data: string) => {
             if (this.currentPlayer !== player) {
                 this.log(
@@ -160,23 +160,31 @@ export default class OnlineGame {
                 return;
             }
             if (data === 'fail') {
-                this.handleGameEnd(1 - this.currentPlayer);
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
                 return;
             }
             try {
                 const coords = this.parseMove(data);
                 this.game.move(coords.board, this.currentPlayer + 1, coords.move);
                 if (this.game.isFinished()) {
-                    this.handleGameEnd(this.game.winner - 1);
+                    this.handleGameEnd(this.switchPlayer(this.game.winner));
                     return;
                 }
-                this.currentPlayer = 1 - this.currentPlayer;
+                this.currentPlayer = this.switchPlayer(this.currentPlayer);
                 this.sendAction('opponent ' + this.writeMove(coords), this.currentPlayer);
-            } catch(e) {
+            } catch (e) {
                 this.log('Game ' + this.state.games + ': Player ' + this.currentPlayer + ' errored: ' + e.message);
-                this.handleGameEnd(1 - this.currentPlayer);
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
             }
         };
+    }
+
+    /**
+     * Type safe way of switching from one player to another
+     * @param player
+     */
+    private switchPlayer(player: PlayerOrTie): PlayerNumber {
+        return (player === 0) ? 1 : 0;
     }
 
     /**
@@ -204,7 +212,7 @@ export default class OnlineGame {
         this.log('Finished games between "' +
             players[0] +
             '" and "' +
-            players[1]  +
+            players[1] +
             '"'
         );
 
@@ -234,7 +242,7 @@ export default class OnlineGame {
         });
 
         let winner = '-';
-        if (stats.winner > -1){
+        if (stats.winner > -1) {
             winner = players[stats.winner];
         }
 
@@ -251,7 +259,7 @@ export default class OnlineGame {
      * @param skipRender only for GUI mode, set to true to avoid re-rendering
      */
     private log(message: string, skipRender: boolean = false): void {
-        const time = (new Date()).toTimeString().substr(0,5);
+        const time = (new Date()).toTimeString().substr(0, 5);
         if (this.ui) {
             this.ui.log(message, skipRender);
         } else {

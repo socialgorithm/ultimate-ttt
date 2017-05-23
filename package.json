@@ -35,11 +35,11 @@
     "@types/node": "^7.0.21",
     "@types/socket.io": "^1.4.29",
     "blessed": "^0.1.81",
-    "command-line-args": "^4.0.4",
+    "command-line-args": "^4.0.5",
     "command-line-usage": "^4.0.0",
     "ip": "^1.1.5",
     "socket.io": "^2.0.1",
-    "ultimate-ttt": "^4.3.0"
+    "ultimate-ttt": "^4.5.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",
