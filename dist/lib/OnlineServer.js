@@ -80,6 +80,7 @@ var OnlineServer = (function () {
         }
     }
     OnlineServer.prototype.startSession = function (session, settings) {
+        var _this = this;
         if (settings === void 0) { settings = {}; }
         this.log('Starting games between "' +
             this.players[session.players[0].playerIndex] +
@@ -98,13 +99,13 @@ var OnlineServer = (function () {
         var onlineGame = new OnlineGame_1["default"](session, this.io, this.players, this.ui, settings);
         session.players[0].socket.on('disconnect', function () {
             if (session.players && session.players[0]) {
-                this.removePlayer(this.players[session.players[0].playerIndex]);
+                _this.removePlayer(_this.players[session.players[0].playerIndex]);
             }
             onlineGame.handleGameEnd(1, true);
         });
         session.players[1].socket.on('disconnect', function () {
             if (session.players && session.players[1]) {
-                this.removePlayer(this.players[session.players[1].playerIndex]);
+                _this.removePlayer(_this.players[session.players[1].playerIndex]);
             }
             onlineGame.handleGameEnd(0, true);
         });

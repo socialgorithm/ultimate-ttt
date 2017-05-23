@@ -184,13 +184,13 @@ export default class OnlineServer {
         settings
     );
 
-    session.players[0].socket.on('disconnect', function () {
+    session.players[0].socket.on('disconnect', () => {
       if (session.players && session.players[0]) {
         this.removePlayer(this.players[session.players[0].playerIndex]);
       }
       onlineGame.handleGameEnd(1, true);
     });
-    session.players[1].socket.on('disconnect', function () {
+    session.players[1].socket.on('disconnect', () => {
       if (session.players && session.players[1]) {
         this.removePlayer(this.players[session.players[1].playerIndex]);
       }

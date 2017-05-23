@@ -1,2 +1,3 @@
 import { Options } from "./lib/input";
-export default function server(options: Options): void;
+declare var _default: (options: Options) => void;
+export default _default;

@@ -68,7 +68,7 @@ export default class GUI {
         header.insertBottom('{yellow-fg}Local address:{/yellow-fg}   http://' + host + ':' + port);
         header.insertBottom('{yellow-fg}Network address:{/yellow-fg} http://' + ip.address() + ':' + port);
 
-        this.screen.key(['escape', 'q', 'C-c'], function() {
+        this.screen.key(['escape', 'q', 'C-c'], () => {
             return process.exit(0);
         });
 
