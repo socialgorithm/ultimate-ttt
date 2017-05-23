@@ -1,7 +1,7 @@
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
-import {Coord, ME, OPPONENT, RESULT_TIE} from "./model/constants";
+import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE} from "./model/constants";
 import TTT from "./model/TTT";
 /**
  * SubBoard for TicTacToe games
@@ -21,7 +21,7 @@ export default class SubBoard extends TTT<Cell> {
     // Game state
     this.board = [];
     this.moves = 0;
-    this.winner = RESULT_TIE - 1;
+    this.winner = null;
 
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
@@ -37,10 +37,10 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
-   * Returns true if the game is over
+   * Returns true if the game is over, null if it hasn't finished yet
    */
   public isFinished(): boolean {
-    return this.winner >= RESULT_TIE;
+    return this.winner !== null;
   }
 
   /**
@@ -101,7 +101,7 @@ export default class SubBoard extends TTT<Cell> {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: number, move: Coord, index = -1): SubBoard {
+  public move(player: PlayerNumber, move: Coord, index = -1): SubBoard {
     if(this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
@@ -118,7 +118,7 @@ export default class SubBoard extends TTT<Cell> {
     }
     const game = this.copy();
 
-    game.board[move[0]][move[1]].player = player;
+    game.board[move[0]][move[1]].setPlayer(player);
     game.board[move[0]][move[1]].subBoardIndex = game.moves;
     game.board[move[0]][move[1]].mainIndex = index;
     game.moves++;
@@ -156,7 +156,7 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        const player = (this.board[x][y].player < 0)? '-' : this.board[x][y].player;
+        const player = (this.board[x][y].player === null || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
         line += player + ' ';
       }
       ret.push(line);
@@ -181,7 +181,7 @@ export default class SubBoard extends TTT<Cell> {
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
    */
-  private isValidPlayer(player: number): boolean {
+  private isValidPlayer(player: PlayerNumber): boolean {
     return [ ME, OPPONENT ].indexOf(player) > -1;
   }
 

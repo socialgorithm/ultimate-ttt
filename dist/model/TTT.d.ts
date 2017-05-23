@@ -1,8 +1,8 @@
-import { Coord } from "./constants";
+import { Coord, PlayerOrTie } from "./constants";
 declare abstract class TTT<CellType> {
     board: Array<Array<CellType>>;
     nextBoard: Coord;
-    winner: number;
+    winner: PlayerOrTie;
     protected size: number;
     protected maxMoves: number;
     protected moves: number;

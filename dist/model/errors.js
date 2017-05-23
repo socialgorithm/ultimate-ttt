@@ -1,6 +1,6 @@
 "use strict";
-exports.__esModule = true;
-exports["default"] = {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
     player: {
         message: 'Invalid player (%s), it must be either 0 or 1',
         code: 1

@@ -9,7 +9,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var errors_1 = require("./model/errors");
 var Cell_1 = require("./model/Cell");
 var error_1 = require("./error");
@@ -23,22 +23,22 @@ var SubBoard = (function (_super) {
         _this.size = size;
         _this.board = [];
         _this.moves = 0;
-        _this.winner = constants_1.RESULT_TIE - 1;
+        _this.winner = null;
         for (var x = 0; x < _this.size; x++) {
             _this.board[x] = [];
             for (var y = 0; y < _this.size; y++) {
-                _this.board[x][y] = new Cell_1["default"]();
+                _this.board[x][y] = new Cell_1.default();
             }
         }
         _this.maxMoves = Math.pow(_this.size, 2);
         return _this;
     }
     SubBoard.prototype.isFinished = function () {
-        return this.winner >= constants_1.RESULT_TIE;
+        return this.winner !== null;
     };
     SubBoard.prototype.getResult = function () {
         if (!this.isFinished()) {
-            throw error_1["default"](errors_1["default"].gameNotFinished);
+            throw error_1.default(errors_1.default.gameNotFinished);
         }
         return this.winner;
     };
@@ -63,19 +63,19 @@ var SubBoard = (function (_super) {
     SubBoard.prototype.move = function (player, move, index) {
         if (index === void 0) { index = -1; }
         if (this.isFull() || this.isFinished()) {
-            throw error_1["default"](errors_1["default"].boardFinished);
+            throw error_1.default(errors_1.default.boardFinished);
         }
         if (!this.isValidPlayer(player)) {
-            throw error_1["default"](errors_1["default"].player, player);
+            throw error_1.default(errors_1.default.player, player);
         }
         if (!this.isValidMove(move)) {
             if (move) {
-                throw error_1["default"](errors_1["default"].move, move.toString());
+                throw error_1.default(errors_1.default.move, move.toString());
             }
-            throw error_1["default"](errors_1["default"].move);
+            throw error_1.default(errors_1.default.move);
         }
         var game = this.copy();
-        game.board[move[0]][move[1]].player = player;
+        game.board[move[0]][move[1]].setPlayer(player);
         game.board[move[0]][move[1]].subBoardIndex = game.moves;
         game.board[move[0]][move[1]].mainIndex = index;
         game.moves++;
@@ -99,7 +99,7 @@ var SubBoard = (function (_super) {
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = (this.board[x][y].player < 0) ? '-' : this.board[x][y].player;
+                var player = (this.board[x][y].player === null || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
                 line += player + ' ';
             }
             ret.push(line);
@@ -173,6 +173,6 @@ var SubBoard = (function (_super) {
         }
     };
     return SubBoard;
-}(TTT_1["default"]));
-exports["default"] = SubBoard;
+}(TTT_1.default));
+exports.default = SubBoard;
 //# sourceMappingURL=SubBoard.js.map

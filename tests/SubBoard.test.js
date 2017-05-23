@@ -93,16 +93,11 @@ test('Move rejects repeated moves', t => {
 test('Move rejects moves after board is full', t => {
   let subBoard = new SubBoard();
 
-  t.notThrows(() => {subBoard = subBoard.addMyMove([0, 0])});
-  t.notThrows(() => {subBoard = subBoard.addOpponentMove([0, 1])});
-  t.notThrows(() => {subBoard = subBoard.addMyMove([0, 2])});
+  t.notThrows(() => {subBoard = subBoard.move(0, [0, 0])});
   t.notThrows(() => {subBoard = subBoard.addOpponentMove([1, 0])});
-  t.notThrows(() => {subBoard = subBoard.addMyMove([2, 0])});
-  t.notThrows(() => {subBoard = subBoard.addOpponentMove([1, 1])});
-  t.notThrows(() => {subBoard = subBoard.addMyMove([1, 2])});
-  t.notThrows(() => {subBoard = subBoard.addOpponentMove([2, 2])});
-  t.notThrows(() => {subBoard = subBoard.addMyMove([2, 1])});
-
+  t.notThrows(() => {subBoard = subBoard.move(0, [0, 1])});
+  t.notThrows(() => {subBoard = subBoard.move(0, [0, 2])});
+  console.log('winner', subBoard.winner);
   t.true(subBoard.isFinished());
 
   t.throws(() => {subBoard.addOpponentMove([1, 1])}, error(errors.boardFinished).message);

@@ -9,7 +9,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var SubBoard_1 = require("./SubBoard");
 var errors_1 = require("./model/errors");
 var error_1 = require("./error");
@@ -24,13 +24,13 @@ var UTTT = (function (_super) {
         _this.maxMoves = Math.pow(_this.size, 4);
         _this.board = [];
         _this.moves = 0;
-        _this.winner = constants_1.RESULT_TIE - 1;
+        _this.winner = null;
         _this.nextBoard = null;
-        _this.stateBoard = new SubBoard_1["default"](_this.size);
+        _this.stateBoard = new SubBoard_1.default(_this.size);
         for (var x = 0; x < _this.size; x++) {
             _this.board[x] = [];
             for (var y = 0; y < _this.size; y++) {
-                _this.board[x][y] = new SubBoard_1["default"](_this.size);
+                _this.board[x][y] = new SubBoard_1.default(_this.size);
             }
         }
         return _this;
@@ -71,13 +71,13 @@ var UTTT = (function (_super) {
     };
     UTTT.prototype.move = function (board, player, move) {
         if (this.isFinished()) {
-            throw error_1["default"](errors_1["default"].gameFinished);
+            throw error_1.default(errors_1.default.gameFinished);
         }
         if (!this.isValidBoardRowCol(board)) {
-            throw error_1["default"](errors_1["default"].board, board.toString());
+            throw error_1.default(errors_1.default.board, board.toString());
         }
         if (!this.isValidMove(board, move)) {
-            throw error_1["default"](errors_1["default"].move, move.toString());
+            throw error_1.default(errors_1.default.move, move.toString());
         }
         var game = this.copy();
         var updatedBoard;
@@ -88,7 +88,7 @@ var UTTT = (function (_super) {
             updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
         }
         else {
-            throw error_1["default"](errors_1["default"].player, player);
+            throw error_1.default(errors_1.default.player, player);
         }
         game.board[board[0]][board[1]] = updatedBoard;
         game.moves++;
@@ -97,8 +97,10 @@ var UTTT = (function (_super) {
             game.nextBoard = null;
         }
         if (game.board[board[0]][board[1]].isFinished() &&
-            game.board[board[0]][board[1]].winner >= constants_1.RESULT_TIE) {
-            game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
+            game.board[board[0]][board[1]].winner !== null &&
+            game.board[board[0]][board[1]].winner > constants_1.RESULT_TIE) {
+            var boardWinner = (game.board[board[0]][board[1]].winner === 1) ? 1 : 0;
+            game.stateBoard = game.stateBoard.move(boardWinner, board);
         }
         game.winner = game.stateBoard.winner;
         return game;
@@ -145,6 +147,6 @@ var UTTT = (function (_super) {
         return copy;
     };
     return UTTT;
-}(TTT_1["default"]));
-exports["default"] = UTTT;
+}(TTT_1.default));
+exports.default = UTTT;
 //# sourceMappingURL=UTTT.js.map

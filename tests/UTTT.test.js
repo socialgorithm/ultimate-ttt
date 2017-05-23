@@ -11,7 +11,7 @@ function validateBoard(board, t){
   board.forEach((row) => {
     t.true(Array.isArray(row));
     row.forEach((cell) => {
-      t.is(cell.winner, RESULT_TIE - 1);
+      t.is(cell.winner, null);
     });
   });
 }

@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.ME = 0;
 exports.OPPONENT = 1;
 exports.RESULT_TIE = -1;

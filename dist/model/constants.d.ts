@@ -8,3 +8,5 @@ export interface Coords {
     board: Coord;
     move: Coord;
 }
+export declare type PlayerNumber = 0 | 1;
+export declare type PlayerOrTie = -1 | PlayerNumber;

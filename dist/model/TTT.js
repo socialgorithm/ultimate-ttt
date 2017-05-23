@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var TTT = (function () {
     function TTT() {
     }
@@ -11,5 +11,5 @@ var TTT = (function () {
     };
     return TTT;
 }());
-exports["default"] = TTT;
+exports.default = TTT;
 //# sourceMappingURL=TTT.js.map
