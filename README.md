@@ -88,6 +88,8 @@ The server uses the [`ultimate-ttt`](https://github.com/aurbano/ultimate-ttt) No
 
 If you're developing a client in JavaScript you can also use that package to maintain your local state easily.
 
+## [Developer Docs](https://socialgorithm.org/ultimate-ttt-server/)
+
 ## Roadmap
 
 * <del>Execute X number of games and display stats</del>
