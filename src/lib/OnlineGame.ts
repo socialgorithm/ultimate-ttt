@@ -2,11 +2,12 @@ import UTTT from '@socialgorithm/ultimate-ttt';
 import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 import State from "./State";
-import {Game} from "./OnlineServer";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
-import Socket from "./Socket";
+import SocketServer from './SocketServer';
+import Player from './player';
+import Session from './Session';
 
 /**
  * Online game manager between two players
@@ -15,15 +16,11 @@ export default class OnlineGame {
     private timeout: number;
     private maxGames: number;
     private state: State;
-    private session: Game;
-    private players: Array<string>;
-    private currentPlayer: PlayerNumber;
-    private firstPlayer: PlayerNumber;
+    private currentPlayer: Player;
+    private firstPlayer: Player;
     private game: UTTT;
     private gameStart: [number, number];
-    private gameUIId: number;
-    private ui: GUI;
-    private socket: Socket;
+    private gameIDForUI: number;
 
     /**
      * Build a new game manager
@@ -33,23 +30,16 @@ export default class OnlineGame {
      * @param ui Optional GUI reference
      * @param options Server startup options
      */
-    constructor(session: Game, socket: Socket, players: Array<string>, ui: GUI, options: Options) {
-        this.ui = ui;
-        this.socket = socket;
-        this.session = session;
+    constructor(private session: Session, private socket: SocketServer, private ui: GUI, options: Options) {
         this.state = new State();
         this.timeout = parseInt(options.timeout, 10) || 100;
         this.maxGames = parseInt(options.games, 10) || 1000;
-        this.players = players;
-        this.currentPlayer = 0;
-        this.firstPlayer = 0;
+        this.currentPlayer = session.players[0];
+        this.firstPlayer = session.players[0];
         this.game = new UTTT();
 
         if (this.ui) {
-            this.gameUIId = this.ui.addGameBox(
-                this.players[session.players[0].playerIndex],
-                this.players[session.players[0].playerIndex]
-            );
+            this.gameIDForUI = this.ui.addGameBox.apply(this.ui, this.getPlayerTokens());
         }
     }
 
@@ -62,23 +52,11 @@ export default class OnlineGame {
         this.game = new UTTT();
         this.currentPlayer = this.firstPlayer;
 
-        this.socket.emit(
-            'stats',
-            {
-                type: 'game-start',
-                payload: {
-                    players: [
-                        this.players[this.session.players[0].playerIndex],
-                        this.players[this.session.players[1].playerIndex]
-                    ],
-                },
-            }
-        );
+        this.socket.emitPayload('stats', 'game-start', { players: this.getPlayerTokens() });
 
-        this.sendAction('init', 0);
-        this.sendAction('init', 1);
-
-        this.sendAction('move', this.firstPlayer);
+        this.session.players[0].deliverAction('init');
+        this.session.players[1].deliverAction('init');
+        this.firstPlayer.deliverAction('move');
     }
 
     /**
@@ -98,11 +76,11 @@ export default class OnlineGame {
 
         // Swap the first player after each game to reduce
         // advantages from going first/second
-        this.firstPlayer = (this.firstPlayer === 1) ? 0 : 1;
+        this.firstPlayer = this.session.players[this.firstPlayer.getIndexInSession() === 1 ? 0 : 1];
 
         if (this.ui) {
             const progress = Math.floor(this.state.games * 100 / this.maxGames);
-            this.ui.setGameProgress(this.gameUIId, progress);
+            this.ui.setGameProgress(this.gameIDForUI, progress);
         }
 
         if (!playerDisconnected && this.state.games < this.maxGames) {
@@ -121,19 +99,9 @@ export default class OnlineGame {
      * @returns {{board: Array, move: Array}}
      */
     private parseMove(data: string): Coords {
-        const parts = data.trim().split(';');
-        const board = parts[0].split(',').map((coord) => parseInt(coord, 10));
-        const move = parts[1].split(',').map((coord) => parseInt(coord, 10));
-        return {
-            board: [
-                board[0],
-                board[1],
-            ],
-            move: [
-                move[0],
-                move[1],
-            ]
-        };
+        const [board, move] = data.trim().split(';')
+            .map(part => part.split(',').slice(2).map(parseInt) as [number, number]);
+        return { board, move };
     }
 
     /**
@@ -142,8 +110,8 @@ export default class OnlineGame {
      * @returns {string}
      */
     private writeMove(coords: Coords) {
-        return coords.board[0] + ',' + coords.board[1] + ';' +
-            coords.move[0] + ',' + coords.move[1];
+        const {board, move} = coords;
+        return [board, move].map(p => p.join(',')).join(';');
     }
 
     /**
@@ -153,32 +121,30 @@ export default class OnlineGame {
      * @param player Player number (0-1)
      * @returns {Function} Move handler with the player number embedded for logging
      */
-    public handlePlayerMove(player: PlayerNumber) {
+    public handlePlayerMove(player: Player) {
         return (data: string) => {
             if (this.currentPlayer !== player) {
-                this.log(
-                    'Game ' + this.state.games +
-                    ': Player ' + player + ' played out of time (it was ' + this.currentPlayer + ' turn)'
-                );
-                this.handleGameEnd(this.currentPlayer);
+                this.log(`Game ${this.state.games}: Player ' + player + ' played out of time (it was ' + this.currentPlayer + ' turn)`);
+                this.handleGameEnd(this.currentPlayer.getIndexInSession());
                 return;
             }
             if (data === 'fail') {
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
                 return;
             }
             try {
                 const coords = this.parseMove(data);
-                this.game.move(coords.board, this.currentPlayer + 1, coords.move);
+                this.game.move(coords.board, this.currentPlayer.getIndexInSession() + 1, coords.move);
                 if (this.game.isFinished()) {
-                    this.handleGameEnd(this.switchPlayer(this.game.winner));
+                    this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]).getIndexInSession());
                     return;
                 }
                 this.currentPlayer = this.switchPlayer(this.currentPlayer);
-                this.sendAction('opponent ' + this.writeMove(coords), this.currentPlayer);
+                this.currentPlayer
+                this.currentPlayer.deliverAction(`opponent ${this.writeMove(coords)}`);
             } catch (e) {
-                this.log('Game ' + this.state.games + ': Player ' + this.currentPlayer + ' errored: ' + e.message);
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
+                this.log(`Game ${this.state.games}: Player ${this.currentPlayer} errored: ${e.message}`);
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
             }
         };
     }
@@ -187,66 +153,28 @@ export default class OnlineGame {
      * Type safe way of switching from one player to another
      * @param player
      */
-    private switchPlayer(player: PlayerOrTie): PlayerNumber {
-        return (player === 0) ? 1 : 0;
-    }
-
-    /**
-     * Send an action to a player
-     * @param session Session object
-     * @param action Action to send
-     * @param player Player number (0-1)
-     */
-    private sendAction(action: string, player: number): void {
-        if (this.session.players[player]) {
-            this.session.players[player].socket.emit('game', {
-                action,
-            });
-        }
+    private switchPlayer(player: Player): Player {
+        return this.session.players[this.session.players.indexOf(player) === 0 ? 1 : 0];
     }
 
     /**
      * Handle the end of a session between two players
      */
     private sessionEnd() {
-        const players = [
-            this.players[this.session.players[0].playerIndex],
-            this.players[this.session.players[1].playerIndex],
-        ];
-        this.log('Finished games between "' +
-            players[0] +
-            '" and "' +
-            players[1] +
-            '"'
-        );
+        const players = this.getPlayerTokens();
+        this.log(`Finished games between "${players[0]}" and "${players[1]}"`);
 
         const stats = this.state.getStats();
 
         if (stats.winner === -1) {
-            this.sendAction('end tie', 0);
-            this.sendAction('end tie', 1);
-        } else if (stats.winner === 0) {
-            this.sendAction('end win', 0);
-            this.sendAction('end lose', 1);
+            this.session.players.forEach(p => p.deliverAction('end tie'));
         } else {
-            this.sendAction('end lose', 0);
-            this.sendAction('end win', 1);
+            this.session.players[stats.winner].deliverAction('end win');
+            this.session.players[1 - stats.winner].deliverAction('end lose');
         }
 
 
-        this.socket.emit(
-            'stats',
-            {
-                type: 'session-end',
-                payload: {
-                    players: [
-                        this.players[this.session.players[0].playerIndex],
-                        this.players[this.session.players[1].playerIndex]
-                    ],
-                    stats: stats,
-                },
-            }
-        );
+        this.socket.emitPayload('stats', 'session-end', { players: this.getPlayerTokens(), stats: stats });
 
         let winner = '-';
         if (stats.winner > -1) {
@@ -254,10 +182,14 @@ export default class OnlineGame {
         }
 
         if (this.ui) {
-            this.ui.setGameEnd(this.gameUIId, winner, this.state);
+            this.ui.setGameEnd(this.gameIDForUI, winner, this.state);
         } else {
             this.log('Session ended between ' + players[0] + ' and ' + players[1] + '. Winner ' + winner);
         }
+    }
+
+    public getPlayerTokens(): [string, string] {
+        return this.session.players.map(p => p.token);
     }
 
     /**

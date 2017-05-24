@@ -9,7 +9,7 @@ export interface SocketEvents {
     updateStats(): void;
 }
 
-export default class Socket {
+export default class SocketServer {
     private io: SocketIO.Server;
     private socketEvents: SocketEvents;
 
@@ -25,7 +25,7 @@ export default class Socket {
             if (isClient) {
                 return next();
             }
-            const token = socket.request._query.token;
+            const { token } = socket.request._query;
             if (!token) {
                 return next(new Error('Missing token'));
             }
@@ -41,10 +41,7 @@ export default class Socket {
                 return true;
             }
 
-            const player = new Player(
-                socket.handshake.query.token,
-                socket
-            );
+            const player = new Player(socket.handshake.query.token, socket);
 
             socket.on('disconnect', () => {
                 this.socketEvents.onPlayerDisconnect(player);
@@ -61,6 +58,10 @@ export default class Socket {
      */
     public emit(type: string, data: { type: string, payload: any }): void {
         this.io.emit(type, data);
+    }
+
+    public emitPayload(emitType: string, type: string, payload: any): void {
+        this.emit(emitType, { type, payload });
     }
 
     /**
