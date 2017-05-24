@@ -25,16 +25,7 @@ If you open our [web client](https://uttt.socialgorithm.org), you can then conne
 ### Install locally
  
 ```bash
- $ npm install -g uttt
-```
-
-Alternatively, clone this repository, cd into it, and run `npm link` to make the executable available:
-
-```bash
-$ git clone git@github.com:aurbano/ultimate-ttt-server.git
-$ cd ultimate-ttt-server
-$ npm link
-
+ $ npm install -g @socialgorithm/uttt
 ```
 
 ### Run in online mode

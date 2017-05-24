@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/aurbano/ultimate-ttt-server#readme",
   "dependencies": {
+    "@socialgorithm/ultimate-ttt": "^4.5.1",
     "@types/ip": "^0.0.29",
     "@types/node": "^7.0.21",
     "@types/socket.io": "^1.4.29",
@@ -38,8 +39,7 @@
     "command-line-args": "^4.0.5",
     "command-line-usage": "^4.0.0",
     "ip": "^1.1.5",
-    "socket.io": "^2.0.1",
-    "ultimate-ttt": "^4.5.0"
+    "socket.io": "^2.0.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",

@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var ultimate_ttt_1 = require("ultimate-ttt");
+var ultimate_ttt_1 = require("@socialgorithm/ultimate-ttt");
 var State_1 = require("./State");
 var funcs = require("./funcs");
 var OnlineGame = (function () {

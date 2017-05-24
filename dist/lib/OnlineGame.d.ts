@@ -1,8 +1,8 @@
 /// <reference types="socket.io" />
+import { PlayerNumber } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import { Game } from "./OnlineServer";
 import { Options } from "./input";
 import GUI from "./GUI";
-import { PlayerNumber } from "ultimate-ttt/dist/model/constants";
 export default class OnlineGame {
     private timeout;
     private maxGames;

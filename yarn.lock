@@ -37,6 +37,10 @@
     ansi-styles "^2.2.1"
     esutils "^2.0.2"
 
+"@socialgorithm/ultimate-ttt@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.5.1.tgz#580670bc862a9de2cc43c1308cee2b9f525d1f3e"
+
 "@types/fs-extra@^3.0.0":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-3.0.2.tgz#00cbf48563f377f9ce5cf24237b21b3d9779e055"
@@ -4574,10 +4578,6 @@ uid-number@^0.0.6:
 uid2@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.3.tgz#483126e11774df2f71b8b639dcd799c376162b82"
-
-ultimate-ttt@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/ultimate-ttt/-/ultimate-ttt-4.5.0.tgz#17ca615147ad38c984cb7b1e2fc65bce7ab98b9c"
 
 ultron@~1.1.0:
   version "1.1.0"

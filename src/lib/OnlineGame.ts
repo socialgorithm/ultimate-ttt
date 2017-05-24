@@ -1,11 +1,11 @@
-import UTTT from 'ultimate-ttt';
+import UTTT from '@socialgorithm/ultimate-ttt';
+import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 import State from "./State";
 import {Game} from "./OnlineServer";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
-import {Coords, PlayerNumber, PlayerOrTie} from "ultimate-ttt/dist/model/constants";
 
 /**
  * Online game manager between two players
