@@ -241,6 +241,9 @@ export default class GUI {
      */
     public setGameEnd(gameIndex: number, winner: string, state: State): void {
         const game = this.games[gameIndex];
+        if (!game) {
+            return;
+        }
         const stats = state.getStats();
         game.progressBar.destroy();
 
@@ -281,7 +284,7 @@ export default class GUI {
      * @param skipRender Avoid rendering, useful if multiple messages will be logged
      */
     public log (message: string, skipRender: boolean = false): void {
-        const time = (new Date()).toTimeString().substr(0,5);
+        const time = (new Date()).toTimeString().substr(0,8);
         this.logger.log('{blue-fg}[' + time + ']{/blue-fg} ' + message);
         if (!skipRender) {
             this.render();

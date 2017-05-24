@@ -160,6 +160,9 @@ var GUI = (function () {
     };
     GUI.prototype.setGameEnd = function (gameIndex, winner, state) {
         var game = this.games[gameIndex];
+        if (!game) {
+            return;
+        }
         var stats = state.getStats();
         game.progressBar.destroy();
         game.box.append(blessed.text({
@@ -192,7 +195,7 @@ var GUI = (function () {
     };
     GUI.prototype.log = function (message, skipRender) {
         if (skipRender === void 0) { skipRender = false; }
-        var time = (new Date()).toTimeString().substr(0, 5);
+        var time = (new Date()).toTimeString().substr(0, 8);
         this.logger.log('{blue-fg}[' + time + ']{/blue-fg} ' + message);
         if (!skipRender) {
             this.render();
