@@ -76,6 +76,11 @@ exports["default"] = function () {
         console.log(getUsage(sections));
         process.exit(0);
     }
+    if (options.port) {
+        options.port = parseInt(options.port, 10);
+    }
+    options.host = options.host || 'localhost';
+    options.port = options.port || 3141;
     return options;
 };
 //# sourceMappingURL=input.js.map

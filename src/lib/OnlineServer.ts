@@ -1,28 +1,12 @@
-import * as http from 'http';
-import * as io from 'socket.io';
-import * as fs from 'fs';
-
 import {Options} from "./input";
 import GUI from "./GUI";
 import OnlineGame from "./OnlineGame";
+import Socket from "./Socket";
+import Player from "./Player";
 /**
  * Load the package.json to get the version number
  */
 const pjson = require('../../package.json');
-
-/**
- * Player object
- */
-export interface Player {
-  /**
-   * Index in the player list
-   */
-  playerIndex: number;
-  /**
-   * Socket to connect to this player directly
-   */
-  socket: SocketIO.Socket;
-}
 
 /**
  * Game object
@@ -58,98 +42,83 @@ export default class OnlineServer {
   /**
    * Socket.IO Server reference
    */
-  private io: SocketIO.Server;
+  private socket: Socket;
   /**
-   * Server host
+   * Server options
    */
-  private host: string;
-  /**
-   * Server port
-   */
-  private port: number;
+  private options: Options;
 
   constructor(options: Options) {
     this.players = [];
     this.games = [];
     this.nextGame = 0;
-    this.host = options.host;
-    this.port = parseInt(options.port, 10) || 3141;
+    this.options = options;
 
-    const app = http.createServer(this.handler);
-    this.io = io(app);
-    app.listen(this.port);
+    this.socket = new Socket(
+        this.options.port,
+        {
+          onPlayerConnect: this.onPlayerConnect,
+          onPlayerDisconnect: this.onPlayerDisconnect,
+          updateStats: this.updateStats,
+        }
+    );
 
     const title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
 
     if (options.gui) {
-      this.ui = new GUI(title, this.host, this.port);
+      this.ui = new GUI(title, this.options.host, this.options.port);
     } else {
       this.log(title);
-      this.log('Listening on ' + this.host + ':' + this.port);
+      this.log('Listening on ' + this.options.host + ':' + this.options.port);
     }
 
     this.log('Server started', true);
 
-    this.io.use((socket: SocketIO.Socket, next) => {
-      const isClient = socket.request._query.client || false;
-      if (isClient) {
-        return next();
-      }
-      const token = socket.request._query.token;
-      if (!token) {
-        return next(new Error('Missing token'));
-      }
-      socket.request.testToken = token;
-      next();
-    });
-
-    this.io.on('connection', (socket) => {
-      if (socket.handshake.query.client) {
-        // a client (observer) has connected, don't add to player list
-        // send a summary of the server
-        socket.emit('stats', {
-          type: 'stats',
-          payload: {
-            players: this.players,
-            games: [],
-          },
-        });
-        return true;
-      }
-
-      const playerIndex = this.addPlayer(socket.handshake.query.token);
-
-      if (!this.games[this.nextGame]) {
-        this.games[this.nextGame] = {
-          players: []
-        };
-      } else if (this.games[this.nextGame].players.length >= 2) {
-        this.nextGame++;
-        this.games[this.nextGame] = {
-          players: []
-        };
-      }
-
-      const session = this.games[this.nextGame];
-      const player = session.players.length;
-      session.players[player] = {
-        playerIndex: playerIndex,
-        socket: socket
-      };
-
-      if (session.players.length >= 2) {
-        this.startSession(session, options);
-        this.nextGame++;
-      }
-
-      socket.emit('game', {
-        action: 'waiting'
-      });
-    });
-
     if (this.ui) {
       this.ui.render();
     }
+  }
+
+  private onPlayerConnect(player: Player): void {
+    const playerIndex = this.addPlayer(player.token);
+
+    if (!this.games[this.nextGame]) {
+      this.games[this.nextGame] = {
+        players: []
+      };
+    } else if (this.games[this.nextGame].players.length >= 2) {
+      this.nextGame++;
+      this.games[this.nextGame] = {
+        players: []
+      };
+    }
+
+    const session = this.games[this.nextGame];
+    const sessionPlayer = session.players.length;
+    session.players[sessionPlayer] = player;
+
+    if (session.players.length >= 2) {
+      this.startSession(session, this.options);
+      this.nextGame++;
+    }
+
+    player.socket.emit('game', {
+      action: 'waiting'
+    });
+  }
+
+  private onPlayerDisconnect(player: Player): void {
+    console.log('handle player disconnect on his active games');
+  }
+
+  private updateStats(): void {
+    this.socket.emit('stats', {
+      type: 'stats',
+      payload: {
+        players: this.players,
+        games: [],
+      },
+    });
   }
 
   /**
@@ -166,19 +135,22 @@ export default class OnlineServer {
         '"'
     );
 
-    this.io.emit('stats', {
-      type: 'session-start',
-      payload: {
-        players: [
-          this.players[session.players[0].playerIndex],
-          this.players[session.players[1].playerIndex]
-        ],
-      },
-    });
+    this.socket.emit(
+      'stats',
+      {
+        type: 'session-start',
+        payload: {
+          players: [
+            this.players[session.players[0].playerIndex],
+            this.players[session.players[1].playerIndex]
+          ],
+        },
+      }
+    );
 
     const onlineGame = new OnlineGame(
         session,
-        this.io,
+        this.socket,
         this.players,
         this.ui,
         settings
@@ -206,25 +178,6 @@ export default class OnlineServer {
   }
 
   /**
-   * Handler for the WebSocket server. It returns a static HTML file for any request
-   * that links to the server documentation and Github page.
-   * @param req
-   * @param res
-   */
-  private handler(req: http.IncomingMessage, res: http.ServerResponse) {
-    fs.readFile(__dirname + '/../../public/index.html',
-      (err: any, data: any) => {
-        if (err) {
-          res.writeHead(500);
-          return res.end('Error loading index.html');
-        }
-
-        res.writeHead(200);
-        res.end(data);
-      });
-  }
-
-  /**
    * Add a player to the server
    * @param player Player token
    * @returns {number} Player index in the player list
@@ -235,7 +188,7 @@ export default class OnlineServer {
       index = this.players.push(player) - 1;
     }
     this.log('Connected "' + player + '"', true);
-    this.io.emit('stats', {
+    this.socket.emit('stats', {
       type: 'connect',
       payload: player,
     });
@@ -255,7 +208,7 @@ export default class OnlineServer {
       this.players.splice(index, 1);
     }
     this.log('Disconnected "' + player + '"', true);
-    this.io.emit('stats', {
+    this.socket.emit('stats', {
       type: 'disconnect',
       payload: player,
     });

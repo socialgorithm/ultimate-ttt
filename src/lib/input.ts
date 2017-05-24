@@ -9,7 +9,7 @@ const info = require('../../package.json');
 export interface Options {
   version?: boolean;
   verbose?: boolean;
-  port?: string;
+  port?: number;
   gui?: boolean;
   host?: string;
   games?: string;
@@ -101,6 +101,14 @@ export default (): Options => {
     console.log(getUsage(sections));
     process.exit(0);
   }
+
+  if (options.port) {
+    options.port = parseInt(options.port, 10);
+  }
+
+  // defaults
+  options.host = options.host || 'localhost';
+  options.port = options.port || 3141;
 
   return options;
 }

@@ -6,6 +6,7 @@ import {Game} from "./OnlineServer";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
+import Socket from "./Socket";
 
 /**
  * Online game manager between two players
@@ -22,19 +23,19 @@ export default class OnlineGame {
     private gameStart: [number, number];
     private gameUIId: number;
     private ui: GUI;
-    private io: SocketIO.Server;
+    private socket: Socket;
 
     /**
      * Build a new game manager
      * @param session game information
-     * @param io Server socket reference
+     * @param socket Server socket reference
      * @param players Array of player tokens that will play this game
      * @param ui Optional GUI reference
      * @param options Server startup options
      */
-    constructor(session: Game, io: SocketIO.Server, players: Array<string>, ui: GUI, options: Options) {
+    constructor(session: Game, socket: Socket, players: Array<string>, ui: GUI, options: Options) {
         this.ui = ui;
-        this.io = io;
+        this.socket = socket;
         this.session = session;
         this.state = new State();
         this.timeout = parseInt(options.timeout, 10) || 100;
@@ -61,15 +62,18 @@ export default class OnlineGame {
         this.game = new UTTT();
         this.currentPlayer = this.firstPlayer;
 
-        this.io.emit('stats', {
-            type: 'game-start',
-            payload: {
-                players: [
-                    this.players[this.session.players[0].playerIndex],
-                    this.players[this.session.players[1].playerIndex]
-                ],
-            },
-        });
+        this.socket.emit(
+            'stats',
+            {
+                type: 'game-start',
+                payload: {
+                    players: [
+                        this.players[this.session.players[0].playerIndex],
+                        this.players[this.session.players[1].playerIndex]
+                    ],
+                },
+            }
+        );
 
         this.sendAction('init', 0);
         this.sendAction('init', 1);
@@ -230,16 +234,19 @@ export default class OnlineGame {
         }
 
 
-        this.io.emit('stats', {
-            type: 'session-end',
-            payload: {
-                players: [
-                    this.players[this.session.players[0].playerIndex],
-                    this.players[this.session.players[1].playerIndex]
-                ],
-                stats: stats,
-            },
-        });
+        this.socket.emit(
+            'stats',
+            {
+                type: 'session-end',
+                payload: {
+                    players: [
+                        this.players[this.session.players[0].playerIndex],
+                        this.players[this.session.players[1].playerIndex]
+                    ],
+                    stats: stats,
+                },
+            }
+        );
 
         let winner = '-';
         if (stats.winner > -1) {

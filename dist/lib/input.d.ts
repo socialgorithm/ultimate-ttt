@@ -1,7 +1,7 @@
 export interface Options {
     version?: boolean;
     verbose?: boolean;
-    port?: string;
+    port?: number;
     gui?: boolean;
     host?: string;
     games?: string;
