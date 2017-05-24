@@ -15,7 +15,7 @@ What this package provides is a class that holds all game state and performs all
 Example state at a given point:
 
 ```js
-import UTTT from 'ultimate-ttt';
+import UTTT from '@socialgorithm/ultimate-ttt';
 
 const game = new UTTT();
 
@@ -47,13 +47,13 @@ Outputs the following:
 Install from npm:
 
 ```bash
-$ npm install --save ultimate-ttt
+$ npm install --save @socialgorithm/ultimate-ttt
 ```
 
 Import and use:
 
 ```js
-import UTTT from 'ultimate-ttt';
+import UTTT from '@socialgorithm/ultimate-ttt';
 const game = new UTTT();
 ```
 
