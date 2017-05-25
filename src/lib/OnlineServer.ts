@@ -119,13 +119,13 @@ export default class OnlineServer {
     session.players[0].socket.on('disconnect', () => {
       if (session.players && session.players[0]) {
         this.removePlayer(session.players[0]);
-        onlineGame.handleGameEnd(1, true);
+        onlineGame.handleGameEnd(session.players[1], true);
       }
     });
     session.players[1].socket.on('disconnect', () => {
       if (session.players && session.players[1]) {
         this.removePlayer(session.players[1]);
-        onlineGame.handleGameEnd(0, true);
+        onlineGame.handleGameEnd(session.players[0], true);
       }
     });
 

@@ -34,8 +34,8 @@ export default class OnlineGame {
         this.state = new State();
         this.timeout = parseInt(options.timeout, 10) || 100;
         this.maxGames = parseInt(options.games, 10) || 1000;
-        this.currentPlayer = session.players[0];
-        this.firstPlayer = session.players[0];
+        this.currentPlayer = this.playerZero();
+        this.firstPlayer = this.playerZero();
         this.game = new UTTT();
 
         if (this.ui) {
@@ -54,8 +54,8 @@ export default class OnlineGame {
 
         this.socket.emitPayload('stats', 'game-start', { players: this.getPlayerTokens() });
 
-        this.session.players[0].deliverAction('init');
-        this.session.players[1].deliverAction('init');
+        this.playerZero().deliverAction('init');
+        this.playerOne().deliverAction('init');
         this.firstPlayer.deliverAction('move');
     }
 
@@ -64,12 +64,12 @@ export default class OnlineGame {
      * @param winner Game's winner, used to update the state
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
-    public handleGameEnd(winner: PlayerNumber, playerDisconnected: boolean = false) {
+    public handleGameEnd(winner: Player, playerDisconnected: boolean = false) {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
 
-        if (winner > -1) {
-            this.state.wins[winner]++;
+        if (winner !== undefined && winner !== null) {
+            this.state.wins[winner.getIndexInSession()]++;
         } else {
             this.state.ties++;
         }
@@ -125,18 +125,18 @@ export default class OnlineGame {
         return (data: string) => {
             if (this.currentPlayer !== player) {
                 this.log(`Game ${this.state.games}: Player ' + player + ' played out of time (it was ' + this.currentPlayer + ' turn)`);
-                this.handleGameEnd(this.currentPlayer.getIndexInSession());
+                this.handleGameEnd(this.currentPlayer);
                 return;
             }
             if (data === 'fail') {
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
                 return;
             }
             try {
                 const coords = this.parseMove(data);
                 this.game.move(coords.board, this.currentPlayer.getIndexInSession() + 1, coords.move);
                 if (this.game.isFinished()) {
-                    this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]).getIndexInSession());
+                    this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]));
                     return;
                 }
                 this.currentPlayer = this.switchPlayer(this.currentPlayer);
@@ -144,7 +144,7 @@ export default class OnlineGame {
                 this.currentPlayer.deliverAction(`opponent ${this.writeMove(coords)}`);
             } catch (e) {
                 this.log(`Game ${this.state.games}: Player ${this.currentPlayer} errored: ${e.message}`);
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
             }
         };
     }
@@ -161,8 +161,7 @@ export default class OnlineGame {
      * Handle the end of a session between two players
      */
     private sessionEnd() {
-        const players = this.getPlayerTokens();
-        this.log(`Finished games between "${players[0]}" and "${players[1]}"`);
+        this.log(`Finished games between "${this.playerZero().token}" and "${this.playerOne().token}"`);
 
         const stats = this.state.getStats();
 
@@ -176,16 +175,24 @@ export default class OnlineGame {
 
         this.socket.emitPayload('stats', 'session-end', { players: this.getPlayerTokens(), stats: stats });
 
-        let winner = '-';
+        let winner: Player = undefined;
         if (stats.winner > -1) {
-            winner = players[stats.winner];
+            winner = this.session.players[stats.winner];
         }
 
         if (this.ui) {
-            this.ui.setGameEnd(this.gameIDForUI, winner, this.state);
+            this.ui.setGameEnd(this.gameIDForUI, winner.token, this.state);
         } else {
-            this.log('Session ended between ' + players[0] + ' and ' + players[1] + '. Winner ' + winner);
+            this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}. Winner ${winner.token}`);
         }
+    }
+
+    private playerZero() {
+        return this.session.players[0];
+    }
+
+    private playerOne() {
+        return this.session.players[1];
     }
 
     public getPlayerTokens(): [string, string] {
