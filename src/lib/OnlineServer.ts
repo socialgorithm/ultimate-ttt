@@ -1,22 +1,14 @@
 import {Options} from "./input";
 import GUI from "./GUI";
 import OnlineGame from "./OnlineGame";
-import Socket from "./Socket";
+import SocketServer from "./SocketServer";
 import Player from "./Player";
+import Session from './Session';
+
 /**
  * Load the package.json to get the version number
  */
 const pjson = require('../../package.json');
-
-/**
- * Game object
- */
-export interface Game {
-  /**
-   * Array of players in this game
-   */
-  players: Array<Player>;
-}
 
 /**
  * Online Server class
@@ -26,11 +18,11 @@ export default class OnlineServer {
   /**
    * List of players in the server
    */
-  private players: Array<string>;
+  private players: Array<Player>;
   /**
    * Current games being played
    */
-  private games: Array<Game>;
+  private games: Array<Session>;
   /**
    * Index of the next game that will be played
    */
@@ -42,34 +34,26 @@ export default class OnlineServer {
   /**
    * Socket.IO Server reference
    */
-  private socket: Socket;
-  /**
-   * Server options
-   */
-  private options: Options;
+  private socketServer: SocketServer;
 
-  constructor(options: Options) {
+  constructor(private options: Options) {
     this.players = [];
     this.games = [];
     this.nextGame = 0;
-    this.options = options;
 
-    this.socket = new Socket(
-        this.options.port,
-        {
-          onPlayerConnect: this.onPlayerConnect,
-          onPlayerDisconnect: this.onPlayerDisconnect,
-          updateStats: this.updateStats,
-        }
-    );
+    this.socketServer = new SocketServer(this.options.port, {
+      onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
+      onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
+      updateStats: () => this.updateStats()
+    });
 
-    const title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
+    const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
 
     if (options.gui) {
       this.ui = new GUI(title, this.options.host, this.options.port);
     } else {
       this.log(title);
-      this.log('Listening on ' + this.options.host + ':' + this.options.port);
+      this.log(`Listening on ${this.options.host}:${this.options.port}`);
     }
 
     this.log('Server started', true);
@@ -80,31 +64,26 @@ export default class OnlineServer {
   }
 
   private onPlayerConnect(player: Player): void {
-    const playerIndex = this.addPlayer(player.token);
+    const playerIndex = this.addPlayer(player);
 
+    let session = this.games[this.nextGame];
     if (!this.games[this.nextGame]) {
-      this.games[this.nextGame] = {
-        players: []
-      };
-    } else if (this.games[this.nextGame].players.length >= 2) {
+      this.games[this.nextGame] = new Session([undefined, undefined]);
+    } 
+    else if (session.players[0] !== undefined && session.players[1] !== undefined) {
       this.nextGame++;
-      this.games[this.nextGame] = {
-        players: []
-      };
+      this.games[this.nextGame] = new Session([undefined, undefined]);
     }
 
-    const session = this.games[this.nextGame];
-    const sessionPlayer = session.players.length;
-    session.players[sessionPlayer] = player;
+    session = this.games[this.nextGame];
+    session.players[session.players[0] === undefined ? 0 : 1] = player;
 
-    if (session.players.length >= 2) {
+    if (session.players[0] !== undefined && session.players[1] !== undefined) {
       this.startSession(session, this.options);
       this.nextGame++;
     }
 
-    player.socket.emit('game', {
-      action: 'waiting'
-    });
+    player.deliverAction('waiting');
   }
 
   private onPlayerDisconnect(player: Player): void {
@@ -112,13 +91,8 @@ export default class OnlineServer {
   }
 
   private updateStats(): void {
-    this.socket.emit('stats', {
-      type: 'stats',
-      payload: {
-        players: this.players,
-        games: [],
-      },
-    });
+    const payload = { players: this.players.map(p => p.token), games: [] as any[] };
+    this.socketServer.emitPayload('stats', 'stats', payload);
   }
 
   /**
@@ -127,51 +101,20 @@ export default class OnlineServer {
    * @param session Game session with two active players ready
    * @param settings Server options
    */
-  private startSession(session: Game, settings: Options = {}) {
-    this.log('Starting games between "' +
-        this.players[session.players[0].playerIndex] +
-        '" and "' +
-        this.players[session.players[1].playerIndex] +
-        '"'
-    );
+  private startSession(session: Session, settings: Options = {}) {
+    this.log(`Starting games between "${session.players[0].token}" and "${session.players[1].token}"`);
+    this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
 
-    this.socket.emit(
-      'stats',
-      {
-        type: 'session-start',
-        payload: {
-          players: [
-            this.players[session.players[0].playerIndex],
-            this.players[session.players[1].playerIndex]
-          ],
-        },
-      }
-    );
+    const onlineGame = new OnlineGame(session, this.socketServer, this.ui, settings);
 
-    const onlineGame = new OnlineGame(
-        session,
-        this.socket,
-        this.players,
-        this.ui,
-        settings
-    );
-
-    session.players[0].socket.on('disconnect', () => {
-      if (session.players && session.players[0]) {
-        this.removePlayer(this.players[session.players[0].playerIndex]);
-        onlineGame.handleGameEnd(1, true);
-      }
+    session.players.forEach(player => {
+      player.session = session;
+      player.socket.on('disconnect', () => {
+        this.removePlayer(player);
+        onlineGame.handleGameEnd(player.otherPlayerInSession(), true);
+      });
+      player.socket.on('game', onlineGame.handlePlayerMove(player));
     });
-    session.players[1].socket.on('disconnect', () => {
-      if (session.players && session.players[1]) {
-        this.removePlayer(this.players[session.players[1].playerIndex]);
-        onlineGame.handleGameEnd(0, true);
-      }
-    });
-
-    // Receive input from a player
-    session.players[0].socket.on('game', onlineGame.handlePlayerMove(0));
-    session.players[1].socket.on('game', onlineGame.handlePlayerMove(1));
 
     // Start game
     onlineGame.playGame();
@@ -182,18 +125,16 @@ export default class OnlineServer {
    * @param player Player token
    * @returns {number} Player index in the player list
    */
-  private addPlayer(player: string): number {
+  private addPlayer(player: Player): number {
     let index = -1;
     if (this.players.indexOf(player) < 0) {
       index = this.players.push(player) - 1;
     }
-    this.log('Connected "' + player + '"', true);
-    this.socket.emit('stats', {
-      type: 'connect',
-      payload: player,
-    });
+    this.log(`Connected "${player.token}"`, true);
+    // TODO : Causes call stack overflow if player.token is invalid
+    this.socketServer.emitPayload('stats', 'connect', player.token);
     if (this.ui) {
-      this.ui.renderOnlinePlayers(this.players);
+      this.ui.renderOnlinePlayers(this.players.map(p => p.token));
     }
     return index;
   }
@@ -202,18 +143,15 @@ export default class OnlineServer {
    * Remove a player from the server
    * @param player Player token
    */
-  private removePlayer(player: string): void {
+  private removePlayer(player: Player): void {
     const index = this.players.indexOf(player);
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    this.log('Disconnected "' + player + '"', true);
-    this.socket.emit('stats', {
-      type: 'disconnect',
-      payload: player,
-    });
+    this.log(`Disconnected ${player.token}`, true);
+    this.socketServer.emitPayload('stats', 'disconnect', player.token);
     if (this.ui) {
-      this.ui.renderOnlinePlayers(this.players);
+      this.ui.renderOnlinePlayers(this.players.map(p => p.token));
     }
   }
 
