@@ -53,7 +53,6 @@ var OnlineGame = (function () {
     OnlineGame.prototype.parseMove = function (data) {
         var _a = data.trim().split(';')
             .map(function (part) { return part.split(',').map(function (n) { return parseInt(n); }); }), board = _a[0], move = _a[1];
-        console.log(data.trim(), JSON.stringify(data.trim().split(';')), JSON.stringify({ board: board, move: move }));
         return { board: board, move: move };
     };
     OnlineGame.prototype.writeMove = function (coords) {

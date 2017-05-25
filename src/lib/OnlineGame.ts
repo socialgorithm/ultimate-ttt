@@ -101,7 +101,6 @@ export default class OnlineGame {
     private parseMove(data: string): Coords {
         const [board, move] = data.trim().split(';')
             .map(part => part.split(',').map(n => parseInt(n)) as [number, number]);
-        console.log(data.trim(), JSON.stringify(data.trim().split(';')),  JSON.stringify({ board, move }));
         return { board, move };
     }
 
