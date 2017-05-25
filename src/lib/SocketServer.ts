@@ -20,7 +20,7 @@ export default class SocketServer {
 
         this.socketEvents = socketEvents;
 
-        this.io.use((socket: SocketIO.Socket, next) => {
+        this.io.use((socket: SocketIO.Socket, next: Function) => {
             const isClient = socket.request._query.client || false;
             if (isClient) {
                 return next();

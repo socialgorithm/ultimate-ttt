@@ -35,25 +35,17 @@ export default class OnlineServer {
    * Socket.IO Server reference
    */
   private socketServer: SocketServer;
-  /**
-   * Server options
-   */
-  private options: Options;
 
-  constructor(options: Options) {
+  constructor(private options: Options) {
     this.players = [];
     this.games = [];
     this.nextGame = 0;
-    this.options = options;
-    
-    this.socketServer = new SocketServer(
-        this.options.port,
-        {
-          onPlayerConnect: this.onPlayerConnect,
-          onPlayerDisconnect: this.onPlayerDisconnect,
-          updateStats: this.updateStats,
-        }
-    );
+
+    this.socketServer = new SocketServer(this.options.port, {
+      onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
+      onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
+      updateStats: () => this.updateStats()
+    });
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
 
@@ -74,19 +66,19 @@ export default class OnlineServer {
   private onPlayerConnect(player: Player): void {
     const playerIndex = this.addPlayer(player);
 
+    let session = this.games[this.nextGame];
     if (!this.games[this.nextGame]) {
       this.games[this.nextGame] = new Session([undefined, undefined]);
     } 
-    // TODO : Check, can this ever actually happen given logic below?
-    else if (this.games[this.nextGame].players.length >= 2) {
+    else if (session.players[0] !== undefined && session.players[1] !== undefined) {
       this.nextGame++;
       this.games[this.nextGame] = new Session([undefined, undefined]);
     }
 
-    const session = this.games[this.nextGame];
+    session = this.games[this.nextGame];
     session.players[session.players[0] === undefined ? 0 : 1] = player;
 
-    if (session.players.length >= 2) {
+    if (session.players[0] !== undefined && session.players[1] !== undefined) {
       this.startSession(session, this.options);
       this.nextGame++;
     }
@@ -111,27 +103,18 @@ export default class OnlineServer {
    */
   private startSession(session: Session, settings: Options = {}) {
     this.log(`Starting games between "${session.players[0].token}" and "${session.players[1].token}"`);
-
     this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
 
     const onlineGame = new OnlineGame(session, this.socketServer, this.ui, settings);
 
-    session.players[0].socket.on('disconnect', () => {
-      if (session.players && session.players[0]) {
-        this.removePlayer(session.players[0]);
-        onlineGame.handleGameEnd(session.players[1], true);
-      }
+    session.players.forEach(player => {
+      player.session = session;
+      player.socket.on('disconnect', () => {
+        this.removePlayer(player);
+        onlineGame.handleGameEnd(player.otherPlayerInSession(), true);
+      });
+      player.socket.on('game', onlineGame.handlePlayerMove(player));
     });
-    session.players[1].socket.on('disconnect', () => {
-      if (session.players && session.players[1]) {
-        this.removePlayer(session.players[1]);
-        onlineGame.handleGameEnd(session.players[0], true);
-      }
-    });
-
-    // Receive input from a player
-    session.players[0].socket.on('game', onlineGame.handlePlayerMove(session.players[0]));
-    session.players[1].socket.on('game', onlineGame.handlePlayerMove(session.players[1]));
 
     // Start game
     onlineGame.playGame();
@@ -147,8 +130,9 @@ export default class OnlineServer {
     if (this.players.indexOf(player) < 0) {
       index = this.players.push(player) - 1;
     }
-    this.log('Connected "' + player + '"', true);
-    this.socketServer.emitPayload('stats', 'connect', player);
+    this.log(`Connected "${player.token}"`, true);
+    // TODO : Causes call stack overflow if player.token is invalid
+    this.socketServer.emitPayload('stats', 'connect', player.token);
     if (this.ui) {
       this.ui.renderOnlinePlayers(this.players.map(p => p.token));
     }
@@ -164,8 +148,8 @@ export default class OnlineServer {
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    this.log('Disconnected "' + player + '"', true);
-    this.socketServer.emitPayload('stats', 'disconnect', player);
+    this.log(`Disconnected ${player.token}`, true);
+    this.socketServer.emitPayload('stats', 'disconnect', player.token);
     if (this.ui) {
       this.ui.renderOnlinePlayers(this.players.map(p => p.token));
     }

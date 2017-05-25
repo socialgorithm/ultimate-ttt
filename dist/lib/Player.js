@@ -5,6 +5,15 @@ var Player = (function () {
         this.token = token;
         this.socket = socket;
     }
+    Player.prototype.getIndexInSession = function () {
+        return this.session.players.indexOf(this);
+    };
+    Player.prototype.deliverAction = function (action) {
+        this.socket.emit('game', { action: action });
+    };
+    Player.prototype.otherPlayerInSession = function () {
+        return this.session.players[1 - this.getIndexInSession()];
+    };
     return Player;
 }());
 exports["default"] = Player;

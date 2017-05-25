@@ -39,7 +39,7 @@ export default class OnlineGame {
         this.game = new UTTT();
 
         if (this.ui) {
-            this.gameIDForUI = this.ui.addGameBox.apply(this.ui, this.getPlayerTokens());
+            this.gameIDForUI = this.ui.addGameBox.apply(this.ui, this.session.playerTokens());
         }
     }
 
@@ -52,7 +52,7 @@ export default class OnlineGame {
         this.game = new UTTT();
         this.currentPlayer = this.firstPlayer;
 
-        this.socket.emitPayload('stats', 'game-start', { players: this.getPlayerTokens() });
+        this.socket.emitPayload('stats', 'game-start', { players: this.session.playerTokens() });
 
         this.playerZero().deliverAction('init');
         this.playerOne().deliverAction('init');
@@ -100,7 +100,8 @@ export default class OnlineGame {
      */
     private parseMove(data: string): Coords {
         const [board, move] = data.trim().split(';')
-            .map(part => part.split(',').slice(2).map(parseInt) as [number, number]);
+            .map(part => part.split(',').map(n => parseInt(n)) as [number, number]);
+        console.log(data.trim(), JSON.stringify(data.trim().split(';')),  JSON.stringify({ board, move }));
         return { board, move };
     }
 
@@ -122,9 +123,10 @@ export default class OnlineGame {
      * @returns {Function} Move handler with the player number embedded for logging
      */
     public handlePlayerMove(player: Player) {
+        let i = 0;
         return (data: string) => {
             if (this.currentPlayer !== player) {
-                this.log(`Game ${this.state.games}: Player ' + player + ' played out of time (it was ' + this.currentPlayer + ' turn)`);
+                this.log(`Game ${this.state.games}: Player ${player.token} played out of time (it was ${this.currentPlayer.token}'s turn)`);
                 this.handleGameEnd(this.currentPlayer);
                 return;
             }
@@ -134,16 +136,15 @@ export default class OnlineGame {
             }
             try {
                 const coords = this.parseMove(data);
-                this.game.move(coords.board, this.currentPlayer.getIndexInSession() + 1, coords.move);
+                this.game.move(coords.board, this.currentPlayer.getIndexInSession(), coords.move);
                 if (this.game.isFinished()) {
                     this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]));
                     return;
                 }
                 this.currentPlayer = this.switchPlayer(this.currentPlayer);
-                this.currentPlayer
                 this.currentPlayer.deliverAction(`opponent ${this.writeMove(coords)}`);
             } catch (e) {
-                this.log(`Game ${this.state.games}: Player ${this.currentPlayer} errored: ${e.message}`);
+                this.log(`Game ${this.state.games}: Player ${this.currentPlayer.token} errored: ${e.message}`);
                 this.handleGameEnd(this.switchPlayer(this.currentPlayer));
             }
         };
@@ -173,7 +174,7 @@ export default class OnlineGame {
         }
 
 
-        this.socket.emitPayload('stats', 'session-end', { players: this.getPlayerTokens(), stats: stats });
+        this.socket.emitPayload('stats', 'session-end', { players: this.session.playerTokens(), stats: stats });
 
         let winner: Player = undefined;
         if (stats.winner > -1) {
@@ -183,7 +184,7 @@ export default class OnlineGame {
         if (this.ui) {
             this.ui.setGameEnd(this.gameIDForUI, winner.token, this.state);
         } else {
-            this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}. Winner ${winner.token}`);
+            this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}; ${winner ? `${winner.token} won` : 'the players tied'}`);
         }
     }
 
@@ -193,10 +194,6 @@ export default class OnlineGame {
 
     private playerOne() {
         return this.session.players[1];
-    }
-
-    public getPlayerTokens(): [string, string] {
-        return this.session.players.map(p => p.token);
     }
 
     /**
