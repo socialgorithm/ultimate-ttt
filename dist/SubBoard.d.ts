@@ -10,6 +10,7 @@ export default class SubBoard extends TTT<Cell> {
     addMyMove(move: Coord, index?: number): SubBoard;
     addOpponentMove(move: Coord, index?: number): SubBoard;
     move(player: PlayerNumber, move: Coord, index?: number): SubBoard;
+    getValidMoves(): Array<Coord>;
     prettyPrint(): string;
     copy(): SubBoard;
     private isValidPlayer(player);

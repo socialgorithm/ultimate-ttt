@@ -105,6 +105,17 @@ var UTTT = (function (_super) {
         game.winner = game.stateBoard.winner;
         return game;
     };
+    UTTT.prototype.getValidBoards = function () {
+        var boards = [];
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                if (!this.board[x][y].isFinished()) {
+                    boards.push([x, y]);
+                }
+            }
+        }
+        return boards;
+    };
     UTTT.prototype.prettyPrint = function () {
         var rows = [];
         for (var x = 0; x < this.size; x++) {

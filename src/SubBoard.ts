@@ -1,7 +1,7 @@
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
-import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE} from "./model/constants";
+import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE, UNPLAYED} from "./model/constants";
 import TTT from "./model/TTT";
 /**
  * SubBoard for TicTacToe games
@@ -69,7 +69,7 @@ export default class SubBoard extends TTT<Cell> {
       move[1] < 0 ||
       move[1] > this.size ||
       typeof(this.board[move[0]][move[1]]) === 'undefined' ||
-      this.board[move[0]][move[1]].player >= ME
+      this.board[move[0]][move[1]].player !== UNPLAYED
     );
   }
 
@@ -147,6 +147,21 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
+   * Get a list of all the valid moves in the board
+   */
+  public getValidMoves(): Array<Coord> {
+    const moves: Array<Coord> = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        if (this.board[x][y].player === null ) {
+          moves.push([x, y]);
+        }
+      }
+    }
+    return moves;
+  }
+
+  /**
    * Returns a string with the board formatted for display
    * including new lines.
    * @returns {string}
@@ -156,7 +171,7 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        const player = (this.board[x][y].player === null || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
+        const player = (this.board[x][y].player === UNPLAYED || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
         line += player + ' ';
       }
       ret.push(line);

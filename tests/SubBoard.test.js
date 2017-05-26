@@ -112,6 +112,22 @@ test('Can pretty print a board', t => {
   });
 });
 
+test('getValidMoves returns all valid moves', t => {
+  let subBoard = new SubBoard();
+  subBoard = subBoard.addMyMove([0, 0]);
+  subBoard = subBoard.addOpponentMove([2, 1]);
+
+  t.is(JSON.stringify(subBoard.getValidMoves()), JSON.stringify([
+    [0,1],
+    [0,2],
+    [1,0],
+    [1,1],
+    [1,2],
+    [2,0],
+    [2,2]
+  ]));
+});
+
 test('Detect winning row', t => {
   let subBoard = new SubBoard();
 

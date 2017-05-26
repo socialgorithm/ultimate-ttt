@@ -50,7 +50,7 @@ var SubBoard = (function (_super) {
             move[1] < 0 ||
             move[1] > this.size ||
             typeof (this.board[move[0]][move[1]]) === 'undefined' ||
-            this.board[move[0]][move[1]].player >= constants_1.ME);
+            this.board[move[0]][move[1]].player !== constants_1.UNPLAYED);
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
@@ -94,12 +94,23 @@ var SubBoard = (function (_super) {
         }
         return game;
     };
+    SubBoard.prototype.getValidMoves = function () {
+        var moves = [];
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                if (this.board[x][y].player === null) {
+                    moves.push([x, y]);
+                }
+            }
+        }
+        return moves;
+    };
     SubBoard.prototype.prettyPrint = function () {
         var ret = [];
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = (this.board[x][y].player === null || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
+                var player = (this.board[x][y].player === constants_1.UNPLAYED || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
                 line += player + ' ';
             }
             ret.push(line);

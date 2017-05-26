@@ -10,7 +10,7 @@ declare abstract class TTT<CellType> {
     abstract getResult(): number;
     abstract prettyPrint(): string;
     getMoves(): number;
-    isFull(): boolean;
+    protected isFull(): boolean;
     abstract copy(): TTT<CellType>;
 }
 export default TTT;

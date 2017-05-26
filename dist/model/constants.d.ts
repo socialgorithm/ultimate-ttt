@@ -1,3 +1,4 @@
+export declare const UNPLAYED: PlayerOrTie;
 export declare const ME = 0;
 export declare const OPPONENT = 1;
 export declare const RESULT_TIE = -1;
