@@ -136,11 +136,11 @@ export default class UTTT extends TTT<SubBoard> {
     }
 
     if(!this.isValidBoardRowCol(board)){
-      throw error(errors.board, board.toString());
+      throw error(errors.board, board);
     }
 
     if(!this.isValidMove(board, move)){
-      throw error(errors.move, move.toString());
+      throw error(errors.move, move);
     }
 
     const game = this.copy();

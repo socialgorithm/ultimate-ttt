@@ -70,7 +70,7 @@ var SubBoard = (function (_super) {
         }
         if (!this.isValidMove(move)) {
             if (move) {
-                throw error_1.default(errors_1.default.move, move.toString());
+                throw error_1.default(errors_1.default.move, move);
             }
             throw error_1.default(errors_1.default.move);
         }

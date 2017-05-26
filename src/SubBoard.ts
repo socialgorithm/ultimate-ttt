@@ -112,7 +112,7 @@ export default class SubBoard extends TTT<Cell> {
 
     if (!this.isValidMove(move)) {
       if (move) {
-        throw error(errors.move, move.toString());
+        throw error(errors.move, move);
       }
       throw error(errors.move);
     }

@@ -74,10 +74,10 @@ var UTTT = (function (_super) {
             throw error_1.default(errors_1.default.gameFinished);
         }
         if (!this.isValidBoardRowCol(board)) {
-            throw error_1.default(errors_1.default.board, board.toString());
+            throw error_1.default(errors_1.default.board, board);
         }
         if (!this.isValidMove(board, move)) {
-            throw error_1.default(errors_1.default.move, move.toString());
+            throw error_1.default(errors_1.default.move, move);
         }
         var game = this.copy();
         var updatedBoard;
