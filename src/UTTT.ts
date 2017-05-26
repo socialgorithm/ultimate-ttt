@@ -2,7 +2,7 @@ import SubBoard from './SubBoard';
 import errors from './model/errors';
 import error from './error';
 
-import {Coord, ME, OPPONENT, RESULT_TIE} from './model/constants';
+import {Coord, Coords, ME, OPPONENT, RESULT_TIE} from './model/constants';
 import TTT from "./model/TTT";
 
 /**
@@ -179,6 +179,21 @@ export default class UTTT extends TTT<SubBoard> {
 
     game.winner = game.stateBoard.winner;
     return game;
+  }
+
+  /**
+   * Get a list of all the valid sub-boards in the main board
+   */
+  public getValidBoards(): Array<Coord> {
+    const boards: Array<Coord> = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        if (!this.board[x][y].isFinished()) {
+          boards.push([x, y]);
+        }
+      }
+    }
+    return boards;
   }
 
   /**
