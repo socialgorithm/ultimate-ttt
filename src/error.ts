@@ -6,7 +6,7 @@ import UTTTError from "./model/UTTTError";
  * @param data Extra information to replace inside the error object
  * @returns {UTTTError} Game error
  */
-export default function(error: any, data?: string | number): UTTTError {
+export default function(error: any, data?: any): UTTTError {
   return new UTTTError(
     error.message.replace('%s', data),
     error.code
