@@ -60,7 +60,7 @@ abstract class TTT<CellType> {
      * Same as isFinished()
      * @returns {boolean}
      */
-    protected isFull(): boolean {
+    public isFull(): boolean {
         return this.moves === this.maxMoves;
     }
 
