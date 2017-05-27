@@ -171,9 +171,9 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        let player = (printTies) ? ' ' : '-';
+        let player = '-';
         if (this.board[x][y].player === RESULT_TIE) {
-          player = '-';
+          player = (printTies) ? '+' : '-';
         } else if(this.board[x][y].player !== UNPLAYED && this.board[x][y].player > RESULT_TIE) {
           player = `${this.board[x][y].player}`;
         }
