@@ -2,7 +2,7 @@
  * Constant to represent an unplayed cell
  * @type {number}
  */
-export const UNPLAYED: PlayerOrTie = null;
+export const UNPLAYED: PlayerOrTie = undefined;
 
 /**
  * Constant to represent player 1

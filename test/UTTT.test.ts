@@ -21,6 +21,15 @@ describe('UTTT', () => {
 
   let subject: UTTT;
 
+  const runWinningSequence = (player: PlayerNumber) => {
+    sequenceOfPairs(
+      [0, 0], [0, 0], [1, 0], [0, 0], [2, 0], 
+      [1, 0], [1, 0], [2, 0], [2, 0], [0, 0]
+    ).forEach(([board, move]) => {
+      subject = subject.move(player, board, move);
+    });
+  };
+
   beforeEach(() => {
     subject = new UTTT();
   })
@@ -125,7 +134,17 @@ describe('UTTT', () => {
         expect(() => subject.move(player, [0, 0], [1, 1]));
       });
 
+      it(`will throw if ${label} tries to move and the game is over`, () => {
+        runWinningSequence(opponent);
+
+        expect(() => subject.move(player, [0, 0], [0, 0])).to.throw();
+      });
+
     });
+
+    it(`will throw if an invalid player attempts to move`, () => {
+      expect(() => subject.move(3, [0, 0], [0, 0])).to.throw();
+    })
 
   });
 
@@ -154,12 +173,7 @@ describe('UTTT', () => {
       const opponent = player - 1 as PlayerNumber;
 
       it(`will correctly report when ${label} has won`, () => {
-        sequenceOfPairs(
-          [0, 0], [0, 0], [1, 0], [0, 0], [2, 0], 
-          [1, 0], [1, 0], [2, 0], [2, 0], [0, 0]
-        ).forEach(([board, move]) => {
-          subject = subject.move(player, board, move);
-        });
+        runWinningSequence(player);
 
         expect(subject.isFinished()).to.be.true;
         expect(subject.getResult()).to.equal(player);
@@ -186,6 +200,16 @@ describe('UTTT', () => {
 
     it('will yield the expected string', () => {
       expect(subject.prettyPrint()).to.be.a('string');
+    });
+
+  });
+
+  describe('#getMoves()', () => {
+
+    it('will yield the expected count', () => {
+      expect(subject.getMoves()).to.equal(0);
+      subject.move(ME, [0, 0], [0, 0]);
+      expect(subject.getMoves()).to.equal(1);
     });
 
   });
