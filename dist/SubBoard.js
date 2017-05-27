@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var clone = require("clone");
 var errors_1 = require("./model/errors");
 var Cell_1 = require("./model/Cell");
 var error_1 = require("./error");
@@ -50,7 +51,7 @@ var SubBoard = (function (_super) {
             move[1] < 0 ||
             move[1] > this.size ||
             typeof (this.board[move[0]][move[1]]) === 'undefined' ||
-            this.board[move[0]][move[1]].player >= constants_1.ME);
+            this.board[move[0]][move[1]].player !== constants_1.UNPLAYED);
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
@@ -70,12 +71,12 @@ var SubBoard = (function (_super) {
         }
         if (!this.isValidMove(move)) {
             if (move) {
-                throw error_1.default(errors_1.default.move, move.toString());
+                throw error_1.default(errors_1.default.move, move);
             }
             throw error_1.default(errors_1.default.move);
         }
         var game = this.copy();
-        game.board[move[0]][move[1]].setPlayer(player);
+        game.board[move[0]][move[1]].player = player;
         game.board[move[0]][move[1]].subBoardIndex = game.moves;
         game.board[move[0]][move[1]].mainIndex = index;
         game.moves++;
@@ -89,17 +90,35 @@ var SubBoard = (function (_super) {
         if (!game.isFinished()) {
             game.checkRtLDiagonal();
         }
-        if (game.isFull() && game.winner < constants_1.RESULT_TIE) {
+        if (game.isFull() && game.winner !== constants_1.ME && game.winner !== constants_1.OPPONENT) {
             game.winner = constants_1.RESULT_TIE;
         }
         return game;
     };
-    SubBoard.prototype.prettyPrint = function () {
+    SubBoard.prototype.getValidMoves = function () {
+        var moves = [];
+        for (var x = 0; x < this.size; x++) {
+            for (var y = 0; y < this.size; y++) {
+                if (this.board[x][y].player === null) {
+                    moves.push([x, y]);
+                }
+            }
+        }
+        return moves;
+    };
+    SubBoard.prototype.prettyPrint = function (printTies) {
+        if (printTies === void 0) { printTies = false; }
         var ret = [];
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = (this.board[x][y].player === null || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
+                var player = '-';
+                if (this.board[x][y].player === constants_1.RESULT_TIE) {
+                    player = (printTies) ? '+' : '-';
+                }
+                else if (this.board[x][y].player !== constants_1.UNPLAYED && this.board[x][y].player > constants_1.RESULT_TIE) {
+                    player = "" + this.board[x][y].player;
+                }
                 line += player + ' ';
             }
             ret.push(line);
@@ -108,13 +127,13 @@ var SubBoard = (function (_super) {
     };
     SubBoard.prototype.copy = function () {
         var copy = new SubBoard(this.size);
-        copy.board = this.board;
+        copy.board = clone(this.board);
         copy.moves = this.moves;
         copy.winner = this.winner;
         return copy;
     };
     SubBoard.prototype.isValidPlayer = function (player) {
-        return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
+        return [constants_1.RESULT_TIE, constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
     };
     SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;

@@ -1,4 +1,4 @@
-import {PlayerNumber, PlayerOrTie} from "./constants";
+import {PlayerNumber, PlayerOrTie, UNPLAYED} from "./constants";
 /**
  * Definition of each Cell on a SubBoard
  */
@@ -8,6 +8,10 @@ export default class Cell {
 
   copy() {
     return new Cell(this.player, this.subBoardIndex, this.mainIndex);
+  }
+
+  isPlayed() {
+    return this.player !== UNPLAYED;
   }
   
 }

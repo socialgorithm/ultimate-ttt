@@ -1,7 +1,7 @@
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
-import {Coord, ME, OPPONENT, RESULT_TIE, PlayerOrTie, PlayerNumber} from "./model/constants";
+import {Coord, ME, OPPONENT, PlayerNumber, PlayerOrTie, RESULT_TIE, UNPLAYED} from "./model/constants";
 import TTT from "./model/TTT";
 import { isInteger } from './utility';
 
@@ -101,7 +101,7 @@ export default class SubBoard extends TTT<Cell> {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: PlayerNumber, move: Coord, index = -1): SubBoard {
+  public move(player: PlayerOrTie, move: Coord, index = -1): SubBoard {
     if(this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
@@ -112,7 +112,7 @@ export default class SubBoard extends TTT<Cell> {
 
     if (!this.isValidMove(move)) {
       if (move) {
-        throw error(errors.move, move.toString());
+        throw error(errors.move, move);
       }
       throw error(errors.move);
     }
@@ -147,11 +147,26 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
+   * Get a list of all the valid moves in the board
+   */
+  public getValidMoves(): Array<Coord> {
+    const moves: Array<Coord> = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        if (this.board[x][y].player === null ) {
+          moves.push([x, y]);
+        }
+      }
+    }
+    return moves;
+  }
+
+  /**
    * Returns a string with the board formatted for display
    * including new lines.
    * @returns {string}
    */
-  public prettyPrint(): string {
+  public prettyPrint(printTies: boolean = false): string {
     let ret = [];
     for(let x = 0; x < this.size; x++) {
       let line = '';
@@ -170,7 +185,6 @@ export default class SubBoard extends TTT<Cell> {
    */
   public copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    
     copy.board = this.board.map(copyRow => copyRow.map(c => c.copy()));
     copy.moves = this.moves;
     
@@ -186,8 +200,8 @@ export default class SubBoard extends TTT<Cell> {
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
    */
-  private isValidPlayer(player: PlayerNumber): boolean {
-    return [ ME, OPPONENT ].indexOf(player) > -1;
+  private isValidPlayer(player: PlayerOrTie): boolean {
+    return [ RESULT_TIE, ME, OPPONENT ].indexOf(player) > -1;
   }
 
   /**

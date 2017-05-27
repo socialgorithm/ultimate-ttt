@@ -151,6 +151,27 @@ test('Move allows any board after being sent to one that is won', t => {
   });
 });
 
+test('getValidBoards returns all valid moves', t => {
+  let game = new UTTT();
+
+  // Fill [0, 0]
+  game = game.addMyMove([0, 0], [0, 0]);
+  game = game.addMyMove([0, 0], [1, 0]);
+  game = game.addMyMove([1, 0], [0, 0]);
+  game = game.addMyMove([0, 0], [2, 0]);
+
+  t.is(JSON.stringify(game.getValidBoards()), JSON.stringify([
+    [0,1],
+    [0,2],
+    [1,0],
+    [1,1],
+    [1,2],
+    [2,0],
+    [2,1],
+    [2,2]
+  ]));
+});
+
 test('A tie in a board works properly', t => {
   let game = new UTTT();
 

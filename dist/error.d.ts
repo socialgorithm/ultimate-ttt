@@ -1,2 +1,2 @@
 import UTTTError from "./model/UTTTError";
-export default function (error: any, data?: string | number): UTTTError;
+export default function (error: any, data?: any): UTTTError;

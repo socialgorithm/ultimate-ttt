@@ -12,6 +12,7 @@ export default class UTTT extends TTT<SubBoard> {
     addMyMove(boardRowCol: Coord, move: Coord): UTTT;
     addOpponentMove(boardRowCol: Coord, move: Coord): UTTT;
     move(board: Coord, player: number, move: Coord): UTTT;
+    getValidBoards(): Array<Coord>;
     prettyPrint(): string;
     copy(): UTTT;
 }

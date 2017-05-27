@@ -137,12 +137,12 @@ export default class UTTT extends TTT<SubBoard> {
     }
 
     const game = this.copy();
-    let updatedBoard;
+    let updatedBoard = game.board[board[0]][board[1]];
 
     if (player === ME) {
-      updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
+      updatedBoard = updatedBoard.addMyMove(move, game.moves);
     } else if (player === OPPONENT) {
-      updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
+      updatedBoard = updatedBoard.addOpponentMove(move, game.moves);
     } else {
       throw error(errors.player, player);
     }
@@ -160,18 +160,31 @@ export default class UTTT extends TTT<SubBoard> {
     if(
         game.board[board[0]][board[1]].isFinished() &&
         game.board[board[0]][board[1]].winner !== undefined &&
-        game.board[board[0]][board[1]].winner > RESULT_TIE
+        game.board[board[0]][board[1]].winner !== RESULT_TIE
     ){
-      // little trick to make typescript happy
-      const boardWinner = (game.board[board[0]][board[1]].winner === 1) ? 1 : 0;
       game.stateBoard = game.stateBoard.move(
-          boardWinner,
+          game.board[board[0]][board[1]].winner,
           board
       );
     }
 
     game.winner = game.stateBoard.winner;
     return game;
+  }
+
+  /**
+   * Get a list of all the valid sub-boards in the main board
+   */
+  public getValidBoards(): Array<Coord> {
+    const boards: Array<Coord> = [];
+    for(let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        if (!this.board[x][y].isFinished()) {
+          boards.push([x, y]);
+        }
+      }
+    }
+    return boards;
   }
 
   /**

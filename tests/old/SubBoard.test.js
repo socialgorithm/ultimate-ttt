@@ -65,7 +65,7 @@ test('Move correctly updates the board', t => {
 test('Move rejects invalid player', t => {
   const subBoard = new SubBoard();
 
-  t.throws(() => {subBoard.move(-1, 1)}, error(errors.player, '-1').message);
+  t.throws(() => {subBoard.move(-2, 1)}, error(errors.player, '-2').message);
   t.throws(() => {subBoard.move('abc', 1)}, error(errors.player, 'abc').message);
   t.throws(() => {subBoard.move(3, 1)}, error(errors.player, '3').message);
 });
@@ -84,9 +84,9 @@ test('Move rejects invalid moves', t => {
 });
 
 test('Move rejects repeated moves', t => {
-  const subBoard = new SubBoard();
+  let subBoard = new SubBoard();
 
-  t.notThrows(() => {subBoard.addMyMove([1, 1])});
+  t.notThrows(() => {subBoard = subBoard.addMyMove([1, 1])});
   t.throws(() => {subBoard.addOpponentMove([1, 1])}, error(errors.move, [1, 1]).message);
 });
 
@@ -97,7 +97,6 @@ test('Move rejects moves after board is full', t => {
   t.notThrows(() => {subBoard = subBoard.addOpponentMove([1, 0])});
   t.notThrows(() => {subBoard = subBoard.move(0, [0, 1])});
   t.notThrows(() => {subBoard = subBoard.move(0, [0, 2])});
-  console.log('winner', subBoard.winner);
   t.true(subBoard.isFinished());
 
   t.throws(() => {subBoard.addOpponentMove([1, 1])}, error(errors.boardFinished).message);
@@ -110,6 +109,22 @@ test('Can pretty print a board', t => {
     subBoard.prettyPrint();
     t.is(typeof subBoard.prettyPrint(), 'string');
   });
+});
+
+test('getValidMoves returns all valid moves', t => {
+  let subBoard = new SubBoard();
+  subBoard = subBoard.addMyMove([0, 0]);
+  subBoard = subBoard.addOpponentMove([2, 1]);
+
+  t.is(JSON.stringify(subBoard.getValidMoves()), JSON.stringify([
+    [0,1],
+    [0,2],
+    [1,0],
+    [1,1],
+    [1,2],
+    [2,0],
+    [2,2]
+  ]));
 });
 
 test('Detect winning row', t => {
