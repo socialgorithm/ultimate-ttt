@@ -167,4 +167,15 @@ describe('SubBoard', () => {
 
   });
 
+  describe('#getValidMoves', () => {
+
+    it('will list all valid moves', () => {
+      subject = subject.move(ME, [0, 0]);
+      
+      const remaining = coordinates.slice().filter(m => !(m[0] === 0 && m[1] === 0));
+      expect(subject.getValidMoves()).to.have.deep.members(remaining);
+    });
+
+  });
+
 });

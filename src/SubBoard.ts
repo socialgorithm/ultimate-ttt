@@ -70,7 +70,7 @@ export default class SubBoard extends TTT<Cell> {
       move[1] > -1 &&
       move[0] < this.size &&
       move[1] < this.size && 
-      this.board[move[0]][move[1]].player === -1;
+      !this.board[move[0]][move[1]].isPlayed();
   }
 
   /**
@@ -153,7 +153,7 @@ export default class SubBoard extends TTT<Cell> {
     const moves: Array<Coord> = [];
     for(let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
-        if (this.board[x][y].player === null ) {
+        if (!this.board[x][y].isPlayed()) {
           moves.push([x, y]);
         }
       }

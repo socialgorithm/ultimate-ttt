@@ -11,7 +11,7 @@ export default class Cell {
   }
 
   isPlayed() {
-    return this.player !== UNPLAYED;
+    return this.player > -1;
   }
   
 }
