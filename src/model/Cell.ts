@@ -32,11 +32,7 @@ export default class Cell {
     return this.player !== UNPLAYED;
   }
 
-  /**
-   * Set a player for this cell
-   * @param value
-   */
-  public setPlayer(value: PlayerNumber) {
+  set player(value: PlayerOrTie) {
     this._player = value;
   }
 

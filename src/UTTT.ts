@@ -166,13 +166,10 @@ export default class UTTT extends TTT<SubBoard> {
     // Update the game board state
     if(
         game.board[board[0]][board[1]].isFinished() &&
-        game.board[board[0]][board[1]].winner !== null &&
-        game.board[board[0]][board[1]].winner > RESULT_TIE
+        game.board[board[0]][board[1]].winner !== null
     ){
-      // little trick to make typescript happy
-      const boardWinner = (game.board[board[0]][board[1]].winner === 1) ? 1 : 0;
       game.stateBoard = game.stateBoard.move(
-          boardWinner,
+          game.board[board[0]][board[1]].winner,
           board
       );
     }
