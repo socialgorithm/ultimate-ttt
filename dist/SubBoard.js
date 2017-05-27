@@ -75,7 +75,7 @@ var SubBoard = (function (_super) {
             throw error_1.default(errors_1.default.move);
         }
         var game = this.copy();
-        game.board[move[0]][move[1]].setPlayer(player);
+        game.board[move[0]][move[1]].player = player;
         game.board[move[0]][move[1]].subBoardIndex = game.moves;
         game.board[move[0]][move[1]].mainIndex = index;
         game.moves++;
@@ -125,7 +125,7 @@ var SubBoard = (function (_super) {
         return copy;
     };
     SubBoard.prototype.isValidPlayer = function (player) {
-        return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
+        return [constants_1.RESULT_TIE, constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
     };
     SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;

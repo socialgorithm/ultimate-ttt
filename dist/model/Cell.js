@@ -14,12 +14,12 @@ var Cell = (function () {
     Cell.prototype.isPlayed = function () {
         return this.player !== constants_1.UNPLAYED;
     };
-    Cell.prototype.setPlayer = function (value) {
-        this._player = value;
-    };
     Object.defineProperty(Cell.prototype, "player", {
         get: function () {
             return this._player;
+        },
+        set: function (value) {
+            this._player = value;
         },
         enumerable: true,
         configurable: true

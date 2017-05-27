@@ -1,7 +1,7 @@
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
-import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE, UNPLAYED} from "./model/constants";
+import {Coord, ME, OPPONENT, PlayerNumber, PlayerOrTie, RESULT_TIE, UNPLAYED} from "./model/constants";
 import TTT from "./model/TTT";
 /**
  * SubBoard for TicTacToe games
@@ -101,7 +101,7 @@ export default class SubBoard extends TTT<Cell> {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: PlayerNumber, move: Coord, index = -1): SubBoard {
+  public move(player: PlayerOrTie, move: Coord, index = -1): SubBoard {
     if(this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
@@ -118,7 +118,7 @@ export default class SubBoard extends TTT<Cell> {
     }
     const game = this.copy();
 
-    game.board[move[0]][move[1]].setPlayer(player);
+    game.board[move[0]][move[1]].player = player;
     game.board[move[0]][move[1]].subBoardIndex = game.moves;
     game.board[move[0]][move[1]].mainIndex = index;
     game.moves++;
@@ -196,8 +196,8 @@ export default class SubBoard extends TTT<Cell> {
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
    */
-  private isValidPlayer(player: PlayerNumber): boolean {
-    return [ ME, OPPONENT ].indexOf(player) > -1;
+  private isValidPlayer(player: PlayerOrTie): boolean {
+    return [ RESULT_TIE, ME, OPPONENT ].indexOf(player) > -1;
   }
 
   /**

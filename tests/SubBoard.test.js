@@ -65,7 +65,7 @@ test('Move correctly updates the board', t => {
 test('Move rejects invalid player', t => {
   const subBoard = new SubBoard();
 
-  t.throws(() => {subBoard.move(-1, 1)}, error(errors.player, '-1').message);
+  t.throws(() => {subBoard.move(-2, 1)}, error(errors.player, '-2').message);
   t.throws(() => {subBoard.move('abc', 1)}, error(errors.player, 'abc').message);
   t.throws(() => {subBoard.move(3, 1)}, error(errors.player, '3').message);
 });
