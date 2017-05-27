@@ -115,7 +115,7 @@ var SubBoard = (function (_super) {
                 if (!printTies || this.board[x][y].player === constants_1.RESULT_TIE) {
                     player = '-';
                 }
-                else if (this.board[x][y].player > constants_1.RESULT_TIE) {
+                else if (this.board[x][y].player && this.board[x][y].player > constants_1.RESULT_TIE) {
                     player = "" + this.board[x][y].player;
                 }
                 line += player + ' ';

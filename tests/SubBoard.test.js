@@ -97,7 +97,6 @@ test('Move rejects moves after board is full', t => {
   t.notThrows(() => {subBoard = subBoard.addOpponentMove([1, 0])});
   t.notThrows(() => {subBoard = subBoard.move(0, [0, 1])});
   t.notThrows(() => {subBoard = subBoard.move(0, [0, 2])});
-  console.log('winner', subBoard.winner);
   t.true(subBoard.isFinished());
 
   t.throws(() => {subBoard.addOpponentMove([1, 1])}, error(errors.boardFinished).message);
