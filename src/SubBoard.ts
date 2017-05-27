@@ -139,7 +139,7 @@ export default class SubBoard extends TTT<Cell> {
     }
 
     // check for a tie
-    if (game.isFull() && !game.winner){
+    if (game.isFull() && game.winner !== ME && game.winner !== OPPONENT){
       game.winner = RESULT_TIE;
     }
 
