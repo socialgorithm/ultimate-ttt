@@ -4,9 +4,8 @@
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
   "scripts": {
-    "old-test": "nyc ava",
-    "test:watch": "nyc ava --watch",
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts",
+    "test": "mocha --recursive --compilers ts:ts-node/register --bail",
+    "coverage": "nyc npm test",
     "docs": "gulp typedoc && gulp noJekyll"
   },
   "repository": {
@@ -44,6 +43,7 @@
     "gulp-typedoc": "^2.0.2",
     "mocha": "^3.4.2",
     "nyc": "^10.1.2",
+    "source-map-support": "^0.4.15",
     "ts-node": "^3.0.4",
     "typedoc": "^0.7.1",
     "typescript": "^2.3.3"
@@ -51,6 +51,23 @@
   "ava": {
     "require": "babel-register",
     "babel": "inherit"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.js",
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "all": true
   },
   "babel": {
     "presets": [
