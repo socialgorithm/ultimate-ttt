@@ -208,7 +208,7 @@ describe('UTTT', () => {
 
     it('will yield the expected count', () => {
       expect(subject.getMoves()).to.equal(0);
-      subject.move(ME, [0, 0], [0, 0]);
+      subject = subject.move(ME, [0, 0], [0, 0]);
       expect(subject.getMoves()).to.equal(1);
     });
 
