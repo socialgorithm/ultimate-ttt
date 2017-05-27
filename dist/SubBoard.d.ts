@@ -11,7 +11,7 @@ export default class SubBoard extends TTT<Cell> {
     addOpponentMove(move: Coord, index?: number): SubBoard;
     move(player: PlayerOrTie, move: Coord, index?: number): SubBoard;
     getValidMoves(): Array<Coord>;
-    prettyPrint(): string;
+    prettyPrint(printTies?: boolean): string;
     copy(): SubBoard;
     private isValidPlayer(player);
     private checkRow(row);

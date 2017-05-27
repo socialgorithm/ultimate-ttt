@@ -105,12 +105,19 @@ var SubBoard = (function (_super) {
         }
         return moves;
     };
-    SubBoard.prototype.prettyPrint = function () {
+    SubBoard.prototype.prettyPrint = function (printTies) {
+        if (printTies === void 0) { printTies = false; }
         var ret = [];
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = (this.board[x][y].player === constants_1.UNPLAYED || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
+                var player = ' ';
+                if (!printTies || this.board[x][y].player === constants_1.RESULT_TIE) {
+                    player = '-';
+                }
+                else if (this.board[x][y].player > constants_1.RESULT_TIE) {
+                    player = "" + this.board[x][y].player;
+                }
                 line += player + ' ';
             }
             ret.push(line);

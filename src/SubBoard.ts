@@ -166,12 +166,17 @@ export default class SubBoard extends TTT<Cell> {
    * including new lines.
    * @returns {string}
    */
-  public prettyPrint(): string {
+  public prettyPrint(printTies: boolean = false): string {
     let ret = [];
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        const player = (this.board[x][y].player === UNPLAYED || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
+        let player = ' ';
+        if (!printTies || this.board[x][y].player === RESULT_TIE) {
+          player = '-';
+        } else if(this.board[x][y].player > RESULT_TIE) {
+          player = `${this.board[x][y].player}`;
+        }
         line += player + ' ';
       }
       ret.push(line);
