@@ -5,26 +5,41 @@ abstract class TTT<CellType> {
      * each element of the inner array is a SubBoard
      */
     public board: Array<Array<CellType>>;
+
     /**
      * Holds the coordinates of the board that should be played next
      * If the last move sends you to a finished board, then this will be null
      * and you may choose any.
      */
     public nextBoard: Coord;
+
+    private _winner: PlayerOrTie = undefined;
+
+    set winner(value: PlayerOrTie) {
+        if (value !== undefined && value !== null) {
+            this._winner = value;
+        }
+    }
+
     /**
      * Game winner, will be null if no one has won yet, -1 in a tie, 0 if player 1 won or 1 if player 2 won.
      */
-    public winner: PlayerOrTie;
+    get winner() {
+        return this._winner;
+    }
+
     /**
      * Indicates the size of Ultimate TTT we're dealing with
      * typically this will be 3 for a 3x3 board.
      */
     protected size: number;
+
     /**
      * Holds the maximum number of moves before the board is full
      * this is here to avoid recalculating it every time its needed
      */
     protected maxMoves: number;
+
     /**
      * Counter of moves that have been played so far
      */
