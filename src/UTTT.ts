@@ -2,7 +2,7 @@ import SubBoard from './SubBoard';
 import errors from './model/errors';
 import error from './error';
 
-import {Coord, Coords, ME, OPPONENT, RESULT_TIE} from './model/constants';
+import {Coord, Coords, ME, OPPONENT, RESULT_TIE, UNPLAYED} from './model/constants';
 import TTT from "./model/TTT";
 
 /**
@@ -144,12 +144,12 @@ export default class UTTT extends TTT<SubBoard> {
     }
 
     const game = this.copy();
-    let updatedBoard;
+    let updatedBoard = game.board[board[0]][board[1]];
 
     if (player === ME) {
-      updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
+      updatedBoard = updatedBoard.addMyMove(move, game.moves);
     } else if (player === OPPONENT) {
-      updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
+      updatedBoard = updatedBoard.addOpponentMove(move, game.moves);
     } else {
       throw error(errors.player, player);
     }
@@ -165,8 +165,7 @@ export default class UTTT extends TTT<SubBoard> {
 
     // Update the game board state
     if(
-        game.board[board[0]][board[1]].isFinished() &&
-        game.board[board[0]][board[1]].winner !== null
+        game.board[board[0]][board[1]].isFinished()
     ){
       game.stateBoard = game.stateBoard.move(
           game.board[board[0]][board[1]].winner,

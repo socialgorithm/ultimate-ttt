@@ -80,12 +80,12 @@ var UTTT = (function (_super) {
             throw error_1.default(errors_1.default.move, move);
         }
         var game = this.copy();
-        var updatedBoard;
+        var updatedBoard = game.board[board[0]][board[1]];
         if (player === constants_1.ME) {
-            updatedBoard = this.board[board[0]][board[1]].addMyMove(move, game.moves);
+            updatedBoard = updatedBoard.addMyMove(move, game.moves);
         }
         else if (player === constants_1.OPPONENT) {
-            updatedBoard = this.board[board[0]][board[1]].addOpponentMove(move, game.moves);
+            updatedBoard = updatedBoard.addOpponentMove(move, game.moves);
         }
         else {
             throw error_1.default(errors_1.default.player, player);
@@ -96,8 +96,7 @@ var UTTT = (function (_super) {
         if (game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()) {
             game.nextBoard = null;
         }
-        if (game.board[board[0]][board[1]].isFinished() &&
-            game.board[board[0]][board[1]].winner !== null) {
+        if (game.board[board[0]][board[1]].isFinished()) {
             game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
         }
         game.winner = game.stateBoard.winner;
