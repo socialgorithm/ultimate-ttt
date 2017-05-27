@@ -70,25 +70,23 @@ describe('UTTT', () => {
       it(`will correctly update when the second move of ${label} is in a different board`, () => {
         testSequence();
         const target = subject.board[2][1].board[1][0];
-        expect(target.player).to.equal(ME);
+        expect(target.player).to.equal(player);
         expect(target.mainIndex).to.equal(2);
-        expect(target.subBoardIndex).to.equal(0);
+        expect(target.subBoardIndex).to.equal(0); //
       });
 
       it(`will correctly update when ${label} returns to move in the same board`, () => {
         testSequence();
         const target = subject.board[1][0].board[0][1];
-        expect(target.player).to.equal(OPPONENT);
+        expect(target.player).to.equal(opponent);
         expect(target.mainIndex).to.equal(3);
         expect(target.subBoardIndex).to.equal(1);
       });
 
-      /*
       it(`will reject a move by ${label} in the wrong board`, () => {
-        subject.move(opponent, [0, 0], [-1, 0]);
+        subject = subject.move(opponent, [1, 0], [0, 0]);
         expect(() => subject.move(player, [2, 0], [2, 1])).to.throw();
       });
-      */
 
     });
 
