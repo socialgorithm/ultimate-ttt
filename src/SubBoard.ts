@@ -1,8 +1,10 @@
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
-import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE} from "./model/constants";
+import {Coord, ME, OPPONENT, RESULT_TIE, PlayerOrTie, PlayerNumber} from "./model/constants";
 import TTT from "./model/TTT";
+import { isInteger } from './utility';
+
 /**
  * SubBoard for TicTacToe games
  * This class implements the traditional game of TicTacToe
@@ -21,7 +23,6 @@ export default class SubBoard extends TTT<Cell> {
     // Game state
     this.board = [];
     this.moves = 0;
-    this.winner = null;
 
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
@@ -37,10 +38,10 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
-   * Returns true if the game is over, null if it hasn't finished yet
+   * Returns true if the game is over, undefined if it hasn't finished yet
    */
   public isFinished(): boolean {
-    return this.winner !== null;
+    return this.winner !== undefined;
   }
 
   /**
@@ -61,16 +62,15 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {boolean} true if the move is valid
    */
   public isValidMove(move: Coord): boolean {
-    return !(
-      !Array.isArray(move) ||
-      move.length !== 2 ||
-      move[0] < 0 ||
-      move[0] > this.size ||
-      move[1] < 0 ||
-      move[1] > this.size ||
-      typeof(this.board[move[0]][move[1]]) === 'undefined' ||
-      this.board[move[0]][move[1]].player >= ME
-    );
+    return Array.isArray(move) &&
+      move.length === 2 &&
+      isInteger(move[0]) &&
+      isInteger(move[1]) &&
+      move[0] > -1 &&
+      move[1] > -1 &&
+      move[0] < this.size &&
+      move[1] < this.size && 
+      this.board[move[0]][move[1]].player === -1;
   }
 
   /**
@@ -118,7 +118,7 @@ export default class SubBoard extends TTT<Cell> {
     }
     const game = this.copy();
 
-    game.board[move[0]][move[1]].setPlayer(player);
+    game.board[move[0]][move[1]].player = player;
     game.board[move[0]][move[1]].subBoardIndex = game.moves;
     game.board[move[0]][move[1]].mainIndex = index;
     game.moves++;
@@ -139,7 +139,7 @@ export default class SubBoard extends TTT<Cell> {
     }
 
     // check for a tie
-    if (game.isFull() && game.winner < RESULT_TIE){
+    if (game.isFull() && game.winner === undefined) {
       game.winner = RESULT_TIE;
     }
 
@@ -156,7 +156,7 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        const player = (this.board[x][y].player === null || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
+        const player = (this.board[x][y].player === undefined || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
         line += player + ' ';
       }
       ret.push(line);
@@ -170,9 +170,14 @@ export default class SubBoard extends TTT<Cell> {
    */
   public copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    copy.board = this.board;
+    
+    copy.board = this.board.map(copyRow => copyRow.map(c => c.copy()));
     copy.moves = this.moves;
-    copy.winner = this.winner;
+    
+    if (this.winner !== undefined) {
+      copy.winner = this.winner;
+    }
+
     return copy;
   }
 

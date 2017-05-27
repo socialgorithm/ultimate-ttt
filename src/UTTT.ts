@@ -4,6 +4,7 @@ import error from './error';
 
 import {Coord, ME, OPPONENT, RESULT_TIE} from './model/constants';
 import TTT from "./model/TTT";
+import { isInteger } from './utility';
 
 /**
  * Ultimate Tic Tac Toe Class
@@ -34,9 +35,7 @@ export default class UTTT extends TTT<SubBoard> {
 
     // Game state
     this.board = [];
-    this.moves = 0;
-    this.winner = null;
-    this.nextBoard = null;
+    this.nextBoard = undefined;
 
     // The state board holds the ultimate game state
     this.stateBoard = new SubBoard(this.size);
@@ -68,24 +67,22 @@ export default class UTTT extends TTT<SubBoard> {
 
   /**
    * Validates a board selection before playing it
-   * @param boardRowCol Board coordinates as an array [row, col]
+   * @param board Board coordinates as an array [row, col]
    * @returns {boolean} true if the board is playable
    */
-  public isValidBoardRowCol(boardRowCol: Coord): boolean {
-    if(!this.nextBoard){
-      return !(
-        !Array.isArray(boardRowCol) ||
-        boardRowCol.length !== 2 ||
-        boardRowCol[0] < 0 ||
-        boardRowCol[0] > this.size ||
-        boardRowCol[1] < 0 ||
-        boardRowCol[1] > this.size ||
-        typeof(this.board[boardRowCol[0]][boardRowCol[1]]) === 'undefined'
-      );
-    }else{
-      return Array.isArray(boardRowCol) &&
-        this.nextBoard[0] === boardRowCol[0] &&
-        this.nextBoard[1] === boardRowCol[1];
+  public isValidBoardRowCol(board: Coord): boolean {
+    if(this.nextBoard === undefined){
+      return Array.isArray(board) &&
+        board.length === 2 &&
+        isInteger(board[0]) &&
+        isInteger(board[1]) &&
+        board[0] > -1 &&
+        board[1] > -1 &&
+        board[1] < this.size &&
+        board[1] < this.size;
+    } else {
+      console.log(this.nextBoard, board);
+      return Array.isArray(board) && this.nextBoard[0] === board[0] && this.nextBoard[1] === board[1];
     }
   }
 
@@ -97,7 +94,7 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {boolean} true if the move is valid
    */
   public isValidMove(boardRowCol: Coord, move: Coord): boolean {
-    if(!this.isValidBoardRowCol(boardRowCol)){
+    if (!this.isValidBoardRowCol(boardRowCol)) {
       return false;
     }
     return this.board[boardRowCol[0]][boardRowCol[1]].isValidMove(move);
@@ -110,7 +107,7 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
   public addMyMove(boardRowCol: Coord, move: Coord): UTTT {
-    return this.move(boardRowCol, ME, move);
+    return this.move(ME, boardRowCol, move);
   }
 
   /**
@@ -120,7 +117,7 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
   public addOpponentMove(boardRowCol: Coord, move: Coord): UTTT {
-    return this.move(boardRowCol, OPPONENT, move);
+    return this.move(OPPONENT, boardRowCol, move);
   }
 
   /**
@@ -130,17 +127,13 @@ export default class UTTT extends TTT<SubBoard> {
    * @param move Move coordinates as an array [x, y]
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
-  public move(board: Coord, player: number, move: Coord): UTTT {
+  public move(player: number, board: Coord, move: Coord): UTTT {
     if(this.isFinished()) {
       throw error(errors.gameFinished);
     }
 
-    if(!this.isValidBoardRowCol(board)){
+    if (!this.isValidBoardRowCol(board)) {
       throw error(errors.board, board.toString());
-    }
-
-    if(!this.isValidMove(board, move)){
-      throw error(errors.move, move.toString());
     }
 
     const game = this.copy();
@@ -160,13 +153,13 @@ export default class UTTT extends TTT<SubBoard> {
 
     game.nextBoard = move;
     if(game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()){
-      game.nextBoard = null;
+      game.nextBoard = undefined;
     }
 
     // Update the game board state
     if(
         game.board[board[0]][board[1]].isFinished() &&
-        game.board[board[0]][board[1]].winner !== null &&
+        game.board[board[0]][board[1]].winner !== undefined &&
         game.board[board[0]][board[1]].winner > RESULT_TIE
     ){
       // little trick to make typescript happy
@@ -226,11 +219,11 @@ export default class UTTT extends TTT<SubBoard> {
    */
   public copy(): UTTT {
     const copy = new UTTT(this.size);
-    copy.board = this.board;
+    copy.board = this.board.map(row => row.map(subBoard => subBoard.copy()));
     copy.moves = this.moves;
     copy.winner = this.winner;
-    copy.nextBoard = this.nextBoard;
-    copy.stateBoard = this.stateBoard;
+    copy.nextBoard = this.nextBoard === undefined ? undefined : this.nextBoard.slice() as [number, number];
+    copy.stateBoard = this.stateBoard.copy();
     return copy;
   }
 }
