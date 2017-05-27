@@ -111,8 +111,8 @@ var SubBoard = (function (_super) {
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = ' ';
-                if (!printTies || this.board[x][y].player === constants_1.RESULT_TIE) {
+                var player = (printTies) ? ' ' : '-';
+                if (this.board[x][y].player === constants_1.RESULT_TIE) {
                     player = '-';
                 }
                 else if (this.board[x][y].player && this.board[x][y].player > constants_1.RESULT_TIE) {
