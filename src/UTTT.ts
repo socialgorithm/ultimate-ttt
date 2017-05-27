@@ -31,6 +31,7 @@ export default class UTTT extends TTT<SubBoard> {
   constructor(size: number = 3){
     super();
     this.size = size;
+    this.moves = 0;
     this.maxMoves = Math.pow(this.size, 4);
 
     // Game state
@@ -81,7 +82,6 @@ export default class UTTT extends TTT<SubBoard> {
         board[1] < this.size &&
         board[1] < this.size;
     } else {
-      console.log(this.nextBoard, board);
       return Array.isArray(board) && this.nextBoard[0] === board[0] && this.nextBoard[1] === board[1];
     }
   }
@@ -157,11 +157,11 @@ export default class UTTT extends TTT<SubBoard> {
     }
 
     // Update the game board state
-    if(
+    if (
         game.board[board[0]][board[1]].isFinished() &&
         game.board[board[0]][board[1]].winner !== undefined &&
         game.board[board[0]][board[1]].winner !== RESULT_TIE
-    ){
+    ) {
       game.stateBoard = game.stateBoard.move(
           game.board[board[0]][board[1]].winner,
           board
