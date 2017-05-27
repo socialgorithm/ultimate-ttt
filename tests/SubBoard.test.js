@@ -84,9 +84,9 @@ test('Move rejects invalid moves', t => {
 });
 
 test('Move rejects repeated moves', t => {
-  const subBoard = new SubBoard();
+  let subBoard = new SubBoard();
 
-  t.notThrows(() => {subBoard.addMyMove([1, 1])});
+  t.notThrows(() => {subBoard = subBoard.addMyMove([1, 1])});
   t.throws(() => {subBoard.addOpponentMove([1, 1])}, error(errors.move, [1, 1]).message);
 });
 

@@ -27,6 +27,7 @@
   "homepage": "https://github.com/aurbano/ultimate-ttt#readme",
   "devDependencies": {
     "@ava/babel-preset-stage-4": "^1.0.0",
+    "@types/clone": "^0.1.30",
     "ava": "^0.17.0",
     "babel-cli": "^6.22.2",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -49,5 +50,8 @@
     "presets": [
       "@ava/stage-4"
     ]
+  },
+  "dependencies": {
+    "clone": "^2.1.1"
   }
 }

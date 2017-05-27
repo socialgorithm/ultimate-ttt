@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var clone = require("clone");
 var errors_1 = require("./model/errors");
 var Cell_1 = require("./model/Cell");
 var error_1 = require("./error");
@@ -126,7 +127,7 @@ var SubBoard = (function (_super) {
     };
     SubBoard.prototype.copy = function () {
         var copy = new SubBoard(this.size);
-        copy.board = this.board;
+        copy.board = clone(this.board);
         copy.moves = this.moves;
         copy.winner = this.winner;
         return copy;

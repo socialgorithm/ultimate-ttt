@@ -1,3 +1,4 @@
+import * as clone from 'clone';
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
@@ -190,7 +191,7 @@ export default class SubBoard extends TTT<Cell> {
    */
   public copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    copy.board = this.board;
+    copy.board = clone(this.board);
     copy.moves = this.moves;
     copy.winner = this.winner;
     return copy;

@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var clone = require("clone");
 var SubBoard_1 = require("./SubBoard");
 var errors_1 = require("./model/errors");
 var error_1 = require("./error");
@@ -147,11 +148,11 @@ var UTTT = (function (_super) {
     };
     UTTT.prototype.copy = function () {
         var copy = new UTTT(this.size);
-        copy.board = this.board;
+        copy.board = clone(this.board);
         copy.moves = this.moves;
         copy.winner = this.winner;
         copy.nextBoard = this.nextBoard;
-        copy.stateBoard = this.stateBoard;
+        copy.stateBoard = clone(this.stateBoard);
         return copy;
     };
     return UTTT;

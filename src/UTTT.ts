@@ -1,8 +1,9 @@
+import * as clone from 'clone';
 import SubBoard from './SubBoard';
 import errors from './model/errors';
 import error from './error';
 
-import {Coord, Coords, ME, OPPONENT, RESULT_TIE, UNPLAYED} from './model/constants';
+import {Coord, ME, OPPONENT} from './model/constants';
 import TTT from "./model/TTT";
 
 /**
@@ -237,11 +238,11 @@ export default class UTTT extends TTT<SubBoard> {
    */
   public copy(): UTTT {
     const copy = new UTTT(this.size);
-    copy.board = this.board;
+    copy.board = clone(this.board);
     copy.moves = this.moves;
     copy.winner = this.winner;
     copy.nextBoard = this.nextBoard;
-    copy.stateBoard = this.stateBoard;
+    copy.stateBoard = clone(this.stateBoard);
     return copy;
   }
 }
