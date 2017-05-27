@@ -89,7 +89,7 @@ var SubBoard = (function (_super) {
         if (!game.isFinished()) {
             game.checkRtLDiagonal();
         }
-        if (game.isFull() && !game.winner) {
+        if (game.isFull() && game.winner !== constants_1.ME && game.winner !== constants_1.OPPONENT) {
             game.winner = constants_1.RESULT_TIE;
         }
         return game;
