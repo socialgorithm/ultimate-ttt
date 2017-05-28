@@ -1,7 +1,7 @@
 import { Options } from './input';
 import OnlineServer from './OnlineServer';
 import OnlineGame from './OnlineGame';
-import SocketServer from './SocketServer';
+import { SocketServer } from './SocketServer';
 import Session from './Session';
 import { Player } from './Player';
 import GUI from './GUI';

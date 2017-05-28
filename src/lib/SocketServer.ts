@@ -1,7 +1,7 @@
 import * as http from 'http';
 import * as io from 'socket.io';
 import * as fs from 'fs';
-import { Player } from "./Player";
+import { Player, PlayerImpl } from "./Player";
 
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
@@ -10,7 +10,12 @@ export interface SocketEvents {
     onTournamentStart(): void;
 }
 
-export default class SocketServer {
+export interface SocketServer {
+    emit(type: string, data: { type: string, payload: any }): void;
+    emitPayload(emitType: string, type: string, payload: any): void;
+}
+
+export class SocketServerImpl implements SocketServer {
     private io: SocketIO.Server;
     private socketEvents: SocketEvents;
 
@@ -45,7 +50,7 @@ export default class SocketServer {
                 return true;
             }
 
-            const player = new Player(socket.handshake.query.token, socket);
+            const player = new PlayerImpl(socket.handshake.query.token, socket);
 
             socket.on('disconnect', () => {
                 this.socketEvents.onPlayerDisconnect(player);

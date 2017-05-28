@@ -4,7 +4,17 @@ import OnlineServer from './OnlineServer';
 import { Tournament } from './Tournament';
 import {PlayerNumber} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-export class Player {
+export interface Player {
+    session: Session;
+    token: string;
+    socket: SocketIO.Socket;
+    getIndexInSession(): PlayerNumber;
+    deliverAction(action: string): void;
+    otherPlayerInSession(): Player;
+    alive(): boolean;
+}
+
+export class PlayerImpl implements Player {
 
     public session: Session;
 

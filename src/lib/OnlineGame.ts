@@ -5,7 +5,7 @@ import State from "./State";
 import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
-import SocketServer from './SocketServer';
+import { SocketServer } from './SocketServer';
 import { Player } from './player';
 import Session from './Session';
 

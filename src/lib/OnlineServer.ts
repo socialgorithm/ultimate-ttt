@@ -1,7 +1,7 @@
 import {Options} from "./input";
 import GUI from "./GUI";
 import OnlineGame from "./OnlineGame";
-import SocketServer from "./SocketServer";
+import { SocketServer, SocketServerImpl } from "./SocketServer";
 import { Player } from "./Player";
 import Session from './Session';
 
@@ -46,7 +46,7 @@ export default class OnlineServer {
     this.games = [];
     this.nextGame = 0;
 
-    this.socketServer = new SocketServer(this.options.port, {
+    this.socketServer = new SocketServerImpl(this.options.port, {
       onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
       onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
       updateStats: () => this.updateStats(),
@@ -70,12 +70,13 @@ export default class OnlineServer {
   }
 
   private onTournamentStart(): void {
-
+    // TODO: start a tournament
   }
 
   private onPlayerConnect(player: Player): void {
     const playerIndex = this.addPlayer(player);
 
+    // TODO: should be swapped with tournament logic
     let session = this.games[this.nextGame];
     if (!this.games[this.nextGame]) {
       this.games[this.nextGame] = new Session([undefined, undefined]);
