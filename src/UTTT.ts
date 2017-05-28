@@ -163,7 +163,8 @@ export default class UTTT extends TTT<SubBoard> {
     ) {
       game.stateBoard = game.stateBoard.move(
           game.board[board[0]][board[1]].winner,
-          board
+          board,
+          true
       );
     }
 
