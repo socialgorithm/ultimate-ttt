@@ -80,6 +80,8 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_model_constants_.html#coord" class="tsd-kind-icon">Coord</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_model_constants_.html#playernumber" class="tsd-kind-icon">Player<wbr>Number</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_model_constants_.html#playerortie" class="tsd-kind-icon">Player<wbr>OrTie</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -90,6 +92,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_constants_.html#result_lose" class="tsd-kind-icon">RESULT_<wbr>LOSE</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_constants_.html#result_tie" class="tsd-kind-icon">RESULT_<wbr>TIE</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_constants_.html#result_win" class="tsd-kind-icon">RESULT_<wbr>WIN</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_model_constants_.html#unplayed" class="tsd-kind-icon">UNPLAYED</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,12 +106,42 @@
 					<div class="tsd-signature tsd-kind-icon">Coord<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L31">model/constants.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L40">model/constants.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Coordinate in the form [x, y]</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="playernumber" class="tsd-anchor"></a>
+					<h3>Player<wbr>Number</h3>
+					<div class="tsd-signature tsd-kind-icon">Player<wbr>Number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L53">model/constants.ts:53</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Represent a player value (0 || 1)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="playerortie" class="tsd-anchor"></a>
+					<h3>Player<wbr>OrTie</h3>
+					<div class="tsd-signature tsd-kind-icon">Player<wbr>OrTie<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> | </span><a href="_model_constants_.html#playernumber" class="tsd-signature-type">PlayerNumber</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L58">model/constants.ts:58</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Store a player or a tie</p>
 						</div>
 					</div>
 				</section>
@@ -121,7 +154,7 @@
 					<div class="tsd-signature tsd-kind-icon">ME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L5">model/constants.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L11">model/constants.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -141,7 +174,7 @@
 					<div class="tsd-signature tsd-kind-icon">OPPONENT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L10">model/constants.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L17">model/constants.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -161,7 +194,7 @@
 					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>LOSE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L26">model/constants.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L35">model/constants.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -181,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>TIE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">-1</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L16">model/constants.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L23">model/constants.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,12 +234,32 @@
 					<div class="tsd-signature tsd-kind-icon">RESULT_<wbr>WIN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/constants.ts#L21">model/constants.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L29">model/constants.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Constant to represent player 1 winning</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{number}</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="unplayed" class="tsd-anchor"></a>
+					<h3>UNPLAYED</h3>
+					<div class="tsd-signature tsd-kind-icon">UNPLAYED<span class="tsd-signature-symbol">:</span> <a href="_model_constants_.html#playerortie" class="tsd-signature-type">PlayerOrTie</a><span class="tsd-signature-symbol"> =&nbsp;undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/constants.ts#L5">model/constants.ts:5</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Constant to represent an unplayed cell</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -247,6 +300,9 @@
 					<li class=" tsd-kind-external-module">
 						<a href="_model_errors_.html">"model/errors"</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_utility_.html">"utility"</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
@@ -256,6 +312,12 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_model_constants_.html#coord" class="tsd-kind-icon">Coord</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_model_constants_.html#playernumber" class="tsd-kind-icon">Player<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_model_constants_.html#playerortie" class="tsd-kind-icon">Player<wbr>OrTie</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_model_constants_.html#me" class="tsd-kind-icon">ME</a>
@@ -271,6 +333,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="_model_constants_.html#result_win" class="tsd-kind-icon">RESULT_<wbr>WIN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="_model_constants_.html#unplayed" class="tsd-kind-icon">UNPLAYED</a>
 					</li>
 				</ul>
 			</nav>

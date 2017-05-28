@@ -97,9 +97,17 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_model_cell_.cell.html#coordinates" class="tsd-kind-icon">coordinates</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_model_cell_.cell.html#mainindex" class="tsd-kind-icon">main<wbr>Index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_model_cell_.cell.html#player" class="tsd-kind-icon">player</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_model_cell_.cell.html#subboardindex" class="tsd-kind-icon">sub<wbr>Board<wbr>Index</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_model_cell_.cell.html#copy" class="tsd-kind-icon">copy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_model_cell_.cell.html#isplayed" class="tsd-kind-icon">is<wbr>Played</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,19 +119,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Cell<span class="tsd-signature-symbol">(</span>player<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, subBoardIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, mainIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_model_cell_.cell.html" class="tsd-signature-type">Cell</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Cell<span class="tsd-signature-symbol">(</span>coordinates<span class="tsd-signature-symbol">?: </span><a href="../modules/_model_constants_.html#coord" class="tsd-signature-type">Coord</a>, player<span class="tsd-signature-symbol">?: </span><a href="../modules/_model_constants_.html#playerortie" class="tsd-signature-type">PlayerOrTie</a>, subBoardIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, mainIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_model_cell_.cell.html" class="tsd-signature-type">Cell</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L5">model/Cell.ts:5</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> player: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> coordinates: <a href="../modules/_model_constants_.html#coord" class="tsd-signature-type">Coord</a><span class="tsd-signature-symbol"> =&nbsp;[0, 0]</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> player: <a href="../modules/_model_constants_.html#playerortie" class="tsd-signature-type">PlayerOrTie</a><span class="tsd-signature-symbol"> =&nbsp;-1</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> subBoardIndex: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></h5>
@@ -140,22 +151,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="coordinates" class="tsd-anchor"></a>
+					<h3>coordinates</h3>
+					<div class="tsd-signature tsd-kind-icon">coordinates<span class="tsd-signature-symbol">:</span> <a href="../modules/_model_constants_.html#coord" class="tsd-signature-type">Coord</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="mainindex" class="tsd-anchor"></a>
 					<h3>main<wbr>Index</h3>
 					<div class="tsd-signature tsd-kind-icon">main<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="player" class="tsd-anchor"></a>
 					<h3>player</h3>
-					<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">player<span class="tsd-signature-symbol">:</span> <a href="../modules/_model_constants_.html#playerortie" class="tsd-signature-type">PlayerOrTie</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/Cell.ts#L5">model/Cell.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -165,9 +186,46 @@
 					<div class="tsd-signature tsd-kind-icon">sub<wbr>Board<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/4aa122d/src/model/Cell.ts#L6">model/Cell.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L7">model/Cell.ts:7</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="copy" class="tsd-anchor"></a>
+					<h3>copy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_model_cell_.cell.html" class="tsd-signature-type">Cell</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L9">model/Cell.ts:9</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_model_cell_.cell.html" class="tsd-signature-type">Cell</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isplayed" class="tsd-anchor"></a>
+					<h3>is<wbr>Played</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Played<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-js/blob/ef354f3/src/model/Cell.ts#L13">model/Cell.ts:13</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -201,6 +259,9 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_model_errors_.html">"model/errors"</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_utility_.html">"utility"</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
@@ -214,6 +275,9 @@
 								<a href="_model_cell_.cell.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_model_cell_.cell.html#coordinates" class="tsd-kind-icon">coordinates</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_model_cell_.cell.html#mainindex" class="tsd-kind-icon">main<wbr>Index</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -221,6 +285,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_model_cell_.cell.html#subboardindex" class="tsd-kind-icon">sub<wbr>Board<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_model_cell_.cell.html#copy" class="tsd-kind-icon">copy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_model_cell_.cell.html#isplayed" class="tsd-kind-icon">is<wbr>Played</a>
 							</li>
 						</ul>
 					</li>
