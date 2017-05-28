@@ -175,6 +175,12 @@ export default class UTTT extends TTT<SubBoard> {
    * Get a list of all the valid sub-boards in the main board
    */
   public getValidBoards(): Array<Coord> {
+    // Short-circuit if the board is already decided
+    if ((this.nextBoard) && (!this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished()))
+    {
+        return [this.nextBoard];
+    }
+
     const boards: Array<Coord> = [];
     for(let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {

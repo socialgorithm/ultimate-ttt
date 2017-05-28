@@ -100,6 +100,9 @@ var UTTT = (function (_super) {
         return game;
     };
     UTTT.prototype.getValidBoards = function () {
+        if ((this.nextBoard) && (!this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished())) {
+            return [this.nextBoard];
+        }
         var boards = [];
         for (var x = 0; x < this.size; x++) {
             for (var y = 0; y < this.size; y++) {
