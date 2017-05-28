@@ -27,7 +27,7 @@ var SubBoard = (function (_super) {
         for (var x = 0; x < _this.size; x++) {
             _this.board[x] = [];
             for (var y = 0; y < _this.size; y++) {
-                _this.board[x][y] = new Cell_1.default();
+                _this.board[x][y] = new Cell_1.default([x, y]);
             }
         }
         _this.maxMoves = Math.pow(_this.size, 2);
