@@ -107,7 +107,7 @@ export default class SubBoard extends TTT<Cell> {
       throw error(errors.boardFinished);
     }
 
-    if (!this.isValidPlayer(player as PlayerNumber) || (allowTies && player !== RESULT_TIE)) {
+    if (!this.isValidPlayer(player as PlayerNumber, allowTies)) {
       throw error(errors.player, player);
     }
 
@@ -199,10 +199,15 @@ export default class SubBoard extends TTT<Cell> {
   /**
    * Validates a player
    * @param player Player identifier (0 || 1)
+   * @param allowTies Whether we should allow adding a TIE (-1) as a player
    * @returns {boolean}
    */
-  private isValidPlayer(player: PlayerNumber): boolean {
-    return [ ME, OPPONENT ].indexOf(player) > -1;
+  private isValidPlayer(player: PlayerNumber, allowTies: boolean = false): boolean {
+    const validPlayers = [ ME, OPPONENT ];
+    if (allowTies) {
+      validPlayers.push(RESULT_TIE);
+    }
+    return validPlayers.indexOf(player) > -1;
   }
 
   /**
