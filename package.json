@@ -59,7 +59,8 @@
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
     "ts-node": "^3.0.4",
-    "typedoc": "^0.7.1"
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.3"
   },
   "ava": {
     "require": "babel-register",
