@@ -6,12 +6,12 @@
     "preserveConstEnums": true,
     "declaration": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "target": "es5",
     "moduleResolution": "node"
   },
   "exclude": [
-    "node_modules/**/*",
-    "test/**/*"
+    "./node_modules/**/*",
+    "./test/**/*"
   ]
 }
