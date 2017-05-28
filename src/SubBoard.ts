@@ -1,9 +1,10 @@
-import * as clone from 'clone';
 import errors from './model/errors';
 import Cell from './model/Cell';
 import error from './error';
 import {Coord, ME, OPPONENT, PlayerNumber, PlayerOrTie, RESULT_TIE, UNPLAYED} from "./model/constants";
 import TTT from "./model/TTT";
+import { isInteger } from './utility';
+
 /**
  * SubBoard for TicTacToe games
  * This class implements the traditional game of TicTacToe
@@ -22,7 +23,6 @@ export default class SubBoard extends TTT<Cell> {
     // Game state
     this.board = [];
     this.moves = 0;
-    this.winner = null;
 
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
@@ -38,10 +38,10 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
-   * Returns true if the game is over, null if it hasn't finished yet
+   * Returns true if the game is over, undefined if it hasn't finished yet
    */
   public isFinished(): boolean {
-    return this.winner !== null;
+    return this.winner !== undefined;
   }
 
   /**
@@ -62,16 +62,15 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {boolean} true if the move is valid
    */
   public isValidMove(move: Coord): boolean {
-    return !(
-      !Array.isArray(move) ||
-      move.length !== 2 ||
-      move[0] < 0 ||
-      move[0] > this.size ||
-      move[1] < 0 ||
-      move[1] > this.size ||
-      typeof(this.board[move[0]][move[1]]) === 'undefined' ||
-      this.board[move[0]][move[1]].player !== UNPLAYED
-    );
+    return Array.isArray(move) &&
+      move.length === 2 &&
+      isInteger(move[0]) &&
+      isInteger(move[1]) &&
+      move[0] > -1 &&
+      move[1] > -1 &&
+      move[0] < this.size &&
+      move[1] < this.size && 
+      !this.board[move[0]][move[1]].isPlayed();
   }
 
   /**
@@ -107,7 +106,7 @@ export default class SubBoard extends TTT<Cell> {
       throw error(errors.boardFinished);
     }
 
-    if (!this.isValidPlayer(player)) {
+    if (!this.isValidPlayer(player as PlayerNumber)) {
       throw error(errors.player, player);
     }
 
@@ -140,7 +139,7 @@ export default class SubBoard extends TTT<Cell> {
     }
 
     // check for a tie
-    if (game.isFull() && game.winner !== ME && game.winner !== OPPONENT){
+    if (game.isFull() && game.winner === undefined) {
       game.winner = RESULT_TIE;
     }
 
@@ -154,7 +153,7 @@ export default class SubBoard extends TTT<Cell> {
     const moves: Array<Coord> = [];
     for(let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
-        if (this.board[x][y].player === null ) {
+        if (!this.board[x][y].isPlayed()) {
           moves.push([x, y]);
         }
       }
@@ -172,12 +171,7 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++) {
       let line = '';
       for (let y = 0; y < this.size; y++) {
-        let player = '-';
-        if (this.board[x][y].player === RESULT_TIE) {
-          player = (printTies) ? '+' : '-';
-        } else if(this.board[x][y].player !== UNPLAYED && this.board[x][y].player > RESULT_TIE) {
-          player = `${this.board[x][y].player}`;
-        }
+        const player = (this.board[x][y].player === undefined || this.board[x][y].player < ME)? '-' : this.board[x][y].player;
         line += player + ' ';
       }
       ret.push(line);
@@ -191,9 +185,13 @@ export default class SubBoard extends TTT<Cell> {
    */
   public copy(): SubBoard {
     const copy = new SubBoard(this.size);
-    copy.board = clone(this.board);
+    copy.board = this.board.map(copyRow => copyRow.map(c => c.copy()));
     copy.moves = this.moves;
-    copy.winner = this.winner;
+    
+    if (this.winner !== undefined) {
+      copy.winner = this.winner;
+    }
+
     return copy;
   }
 
@@ -202,8 +200,8 @@ export default class SubBoard extends TTT<Cell> {
    * @param player Player identifier (0 || 1)
    * @returns {boolean}
    */
-  private isValidPlayer(player: PlayerOrTie): boolean {
-    return [ RESULT_TIE, ME, OPPONENT ].indexOf(player) > -1;
+  private isValidPlayer(player: PlayerNumber): boolean {
+    return [ ME, OPPONENT ].indexOf(player) > -1;
   }
 
   /**
