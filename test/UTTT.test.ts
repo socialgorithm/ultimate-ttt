@@ -21,18 +21,28 @@ describe('UTTT', () => {
 
   let subject: UTTT;
 
-  const runWinningSequence = (player: PlayerNumber) => {
-    sequenceOfPairs(
-      [0, 0], [0, 0], [1, 0], [0, 0], [2, 0], 
+  const gameWinningSequence = sequenceOfPairs(
+      [0, 0], [0, 0], [1, 0], [0, 0], [2, 0],
       [1, 0], [1, 0], [2, 0], [2, 0], [0, 0]
-    ).forEach(([board, move]) => {
+  );
+
+  const boardWinningSequence = sequenceOfPairs([0, 0], [0, 0], [1, 0], [0, 0], [2, 0], [0, 0]);
+
+  const runBoardWinningSequence = (player: PlayerNumber) => {
+    boardWinningSequence.forEach(([board, move]) => {
+      subject = subject.move(player, board, move);
+    });
+  };
+
+  const runGameWinningSequence = (player: PlayerNumber) => {
+    gameWinningSequence.forEach(([board, move]) => {
       subject = subject.move(player, board, move);
     });
   };
 
   beforeEach(() => {
     subject = new UTTT();
-  })
+  });
 
   describe('#constructor()', () => {
 
@@ -127,16 +137,12 @@ describe('UTTT', () => {
       });
 
       it(`will not allow ${label} to play on a board that has already been won`, () => {
-        sequenceOfPairs([0, 0], [0, 0], [1, 0], [0, 0], [2, 0], [0, 0]).forEach(([board, move]) => {
-          subject = subject.move(player, board, move);
-        });
-
+        runBoardWinningSequence(player);
         expect(() => subject.move(player, [0, 0], [1, 1]));
       });
 
       it(`will throw if ${label} tries to move and the game is over`, () => {
-        runWinningSequence(opponent);
-
+        runGameWinningSequence(opponent);
         expect(() => subject.move(player, [0, 0], [0, 0])).to.throw();
       });
 
@@ -173,7 +179,7 @@ describe('UTTT', () => {
       const opponent = player - 1 as PlayerNumber;
 
       it(`will correctly report when ${label} has won`, () => {
-        runWinningSequence(player);
+        runGameWinningSequence(player);
 
         expect(subject.isFinished()).to.be.true;
         expect(subject.getResult()).to.equal(player);
@@ -185,11 +191,19 @@ describe('UTTT', () => {
 
   describe('#getValidBoards()', () => {
 
-    it('will list all valid moves', () => {
+    it('will list the only current valid move', () => {
       sequenceOfPairs([0, 0], [0, 0], [1, 0], [0, 0], [2, 0]).forEach(([board, move]) => {
         subject = subject.addMyMove(board, move);
       });
-      
+
+      // Current board to move is [2, 0] because of the last move
+      expect(subject.getValidBoards()).to.have.deep.members([[ 2, 0 ]]);
+    });
+
+    it('will list all valid moves', () => {
+      runBoardWinningSequence(ME as PlayerNumber);
+
+      // Current board to move is [2, 0] because of the last move
       const remaining = coordinates.slice().filter(m => !(m[0] === 0 && m[1] === 0));
       expect(subject.getValidBoards()).to.have.deep.members(remaining);
     });
