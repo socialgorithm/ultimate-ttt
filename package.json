@@ -2,7 +2,7 @@
   "name": "@socialgorithm/ultimate-ttt",
   "version": "4.11.0",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
-  "main": "dist/UTTT.js",
+  "main": "dist/src/UTTT.js",
   "scripts": {
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "gulp typedoc && gulp noJekyll"
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/aurbano/ultimate-ttt.git"
   },
-  "typings": "dist/UTTT",
+  "typings": "dist/src/UTTT",
   "keywords": [
     "tic",
     "tac",
