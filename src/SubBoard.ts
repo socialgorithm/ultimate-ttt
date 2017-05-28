@@ -27,7 +27,7 @@ export default class SubBoard extends TTT<Cell> {
     for(let x = 0; x < this.size; x++){
       this.board[x] = [];
       for(let y = 0; y < this.size; y++){
-        this.board[x][y] = new Cell();
+        this.board[x][y] = new Cell([x, y]);
       }
     }
 
