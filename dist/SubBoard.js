@@ -67,7 +67,7 @@ var SubBoard = (function (_super) {
         if (this.isFull() || this.isFinished()) {
             throw error_1.default(errors_1.default.boardFinished);
         }
-        if (!this.isValidPlayer(player) || (allowTies && player !== constants_1.RESULT_TIE)) {
+        if (!this.isValidPlayer(player, allowTies)) {
             throw error_1.default(errors_1.default.player, player);
         }
         if (!this.isValidMove(move)) {
@@ -129,8 +129,13 @@ var SubBoard = (function (_super) {
         }
         return copy;
     };
-    SubBoard.prototype.isValidPlayer = function (player) {
-        return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
+    SubBoard.prototype.isValidPlayer = function (player, allowTies) {
+        if (allowTies === void 0) { allowTies = false; }
+        var validPlayers = [constants_1.ME, constants_1.OPPONENT];
+        if (allowTies) {
+            validPlayers.push(constants_1.RESULT_TIE);
+        }
+        return validPlayers.indexOf(player) > -1;
     };
     SubBoard.prototype.isFull = function () {
         return this.moves >= this.maxMoves;

@@ -6,7 +6,6 @@
     "preserveConstEnums": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "target": "es5",
     "moduleResolution": "node"

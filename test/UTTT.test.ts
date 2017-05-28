@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import UTTT from '../src/UTTT';
 import { ME, OPPONENT, PlayerNumber } from '../src/model/constants';
+import errors from '../src/model/errors';
+import error from '../src/error';
 
 const playerPairs = [['player 0', ME], ['player 1', OPPONENT]] as [string, PlayerNumber][];
 const coordinates = [0,1,2].map(x => [0,1,2].map(y => [x, y] as [number, number])).reduce((a, b) => a.concat(b), []);
@@ -32,7 +34,7 @@ describe('UTTT', () => {
 
   beforeEach(() => {
     subject = new UTTT();
-  })
+  });
 
   describe('#constructor()', () => {
 
@@ -131,7 +133,7 @@ describe('UTTT', () => {
           subject = subject.move(player, board, move);
         });
 
-        expect(() => subject.move(player, [0, 0], [1, 1]));
+        expect(() => subject.move(player, [0, 0], [1, 1])).to.throw();
       });
 
       it(`will throw if ${label} tries to move and the game is over`, () => {
