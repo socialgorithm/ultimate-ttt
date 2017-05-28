@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/ultimate-ttt",
-  "version": "4.15.0",
+  "version": "4.15.1",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
   "scripts": {
