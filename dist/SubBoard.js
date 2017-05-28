@@ -113,7 +113,13 @@ var SubBoard = (function (_super) {
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = (this.board[x][y].player === undefined || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
+                var player = '-';
+                if (printTies && this.board[x][y].player === constants_1.RESULT_TIE) {
+                    player = '+';
+                }
+                else if (this.board[x][y].player !== constants_1.UNPLAYED && this.board[x][y].player >= constants_1.ME) {
+                    player = "" + this.board[x][y].player;
+                }
                 line += player + ' ';
             }
             ret.push(line);
