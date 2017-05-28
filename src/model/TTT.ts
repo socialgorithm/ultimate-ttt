@@ -72,14 +72,6 @@ abstract class TTT<CellType> {
     }
 
     /**
-     * Same as isFinished()
-     * @returns {boolean}
-     */
-    public isFull(): boolean {
-        return this.moves === this.maxMoves;
-    }
-
-    /**
      * Return a new UTTT board as a copy of this one
      * @returns {UTTT} Copy of the current game
      */
