@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import SubBoard from '../src/SubBoard';
-import { ME, OPPONENT, PlayerNumber } from '../src/model/constants';
+import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE} from '../src/model/constants';
 
 const playerPairs = [['player 0', ME], ['player 1', OPPONENT]] as [string, PlayerNumber][];
 const coordinates = [0,1,2].map(x => [0,1,2].map(y => [x, y] as [number, number])).reduce((a, b) => a.concat(b), []);
@@ -13,9 +13,11 @@ describe('SubBoard', () => {
   const addMoves = (target: PlayerNumber, ...moves: [number, number][]) => 
     moves.forEach(move => { subject = subject.move(target, move); });
 
-  const fillBoard = () => {
+  const fillBoard = (firstPlayer: PlayerNumber = 0) => {
     coordinates.forEach((coords, idx) => {
-      subject = subject.move((idx > 5 ? ((idx + 1) % 2) : (idx % 2)) as PlayerNumber, coords);
+      const eachPlayer = (idx > 5 ? ((idx + 1) % 2) : (idx % 2));
+      const playerNum = (firstPlayer === 1) ? 1 - eachPlayer : eachPlayer;
+      subject = subject.move(playerNum as PlayerNumber, coords);
     });
   };
 
@@ -89,6 +91,14 @@ describe('SubBoard', () => {
       it(`will reject a move by ${label} where the board has been won`, () => {
         addMoves(player, [0,0], [1,1], [2,2]);
         expect(() => subject.move(player, sampleMove)).to.throw();
+      });
+
+      it(`will detect a tie when the last move was by ${label}`, () => {
+        fillBoard(player);
+        expect(() => subject.move(player, sampleMove)).to.throw();
+        expect(subject.isFull()).to.be.true;
+        expect(subject.isFinished()).to.be.true;
+        expect(subject.winner).to.equal(RESULT_TIE);
       });
 
     });

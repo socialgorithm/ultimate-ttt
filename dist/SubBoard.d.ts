@@ -14,6 +14,7 @@ export default class SubBoard extends TTT<Cell> {
     prettyPrint(printTies?: boolean): string;
     copy(): SubBoard;
     private isValidPlayer(player);
+    isFull(): boolean;
     private checkRow(row);
     private checkColumn(col);
     private checkLtRDiagonal();

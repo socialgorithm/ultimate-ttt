@@ -93,8 +93,7 @@ var UTTT = (function (_super) {
             game.nextBoard = undefined;
         }
         if (game.board[board[0]][board[1]].isFinished() &&
-            game.board[board[0]][board[1]].winner !== undefined &&
-            game.board[board[0]][board[1]].winner !== constants_1.RESULT_TIE) {
+            game.board[board[0]][board[1]].winner !== undefined) {
             game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
         }
         game.winner = game.stateBoard.winner;
