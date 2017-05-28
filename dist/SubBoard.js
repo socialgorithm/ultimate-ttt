@@ -90,7 +90,7 @@ var SubBoard = (function (_super) {
         if (!game.isFinished()) {
             game.checkRtLDiagonal();
         }
-        if (game.isFull() && game.winner === undefined) {
+        if (game.isFull() && game.winner === constants_1.UNPLAYED) {
             game.winner = constants_1.RESULT_TIE;
         }
         return game;
@@ -130,6 +130,9 @@ var SubBoard = (function (_super) {
     };
     SubBoard.prototype.isValidPlayer = function (player) {
         return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
+    };
+    SubBoard.prototype.isFull = function () {
+        return this.moves >= this.maxMoves;
     };
     SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;

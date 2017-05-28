@@ -139,7 +139,7 @@ export default class SubBoard extends TTT<Cell> {
     }
 
     // check for a tie
-    if (game.isFull() && game.winner === undefined) {
+    if (game.isFull() && game.winner === UNPLAYED) {
       game.winner = RESULT_TIE;
     }
 
@@ -202,6 +202,14 @@ export default class SubBoard extends TTT<Cell> {
    */
   private isValidPlayer(player: PlayerNumber): boolean {
     return [ ME, OPPONENT ].indexOf(player) > -1;
+  }
+
+  /**
+   * Same as isFinished()
+   * @returns {boolean}
+   */
+  public isFull(): boolean {
+    return this.moves >= this.maxMoves;
   }
 
   /**
