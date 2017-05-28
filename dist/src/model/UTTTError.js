@@ -15,6 +15,7 @@ var UTTTError = (function (_super) {
     function UTTTError(message, code) {
         var _this = _super.call(this, message) || this;
         _this.code = code;
+        _this.code = code;
         return _this;
     }
     return UTTTError;

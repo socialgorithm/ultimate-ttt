@@ -10,23 +10,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var clone = require("clone");
 var SubBoard_1 = require("./SubBoard");
 var errors_1 = require("./model/errors");
 var error_1 = require("./error");
 var constants_1 = require("./model/constants");
 var TTT_1 = require("./model/TTT");
+var utility_1 = require("./utility");
 var UTTT = (function (_super) {
     __extends(UTTT, _super);
     function UTTT(size) {
         if (size === void 0) { size = 3; }
         var _this = _super.call(this) || this;
         _this.size = size;
+        _this.moves = 0;
         _this.maxMoves = Math.pow(_this.size, 4);
         _this.board = [];
-        _this.moves = 0;
-        _this.winner = null;
-        _this.nextBoard = null;
+        _this.nextBoard = undefined;
         _this.stateBoard = new SubBoard_1.default(_this.size);
         for (var x = 0; x < _this.size; x++) {
             _this.board[x] = [];
@@ -42,20 +41,19 @@ var UTTT = (function (_super) {
     UTTT.prototype.getResult = function () {
         return this.stateBoard.getResult();
     };
-    UTTT.prototype.isValidBoardRowCol = function (boardRowCol) {
-        if (!this.nextBoard) {
-            return !(!Array.isArray(boardRowCol) ||
-                boardRowCol.length !== 2 ||
-                boardRowCol[0] < 0 ||
-                boardRowCol[0] > this.size ||
-                boardRowCol[1] < 0 ||
-                boardRowCol[1] > this.size ||
-                typeof (this.board[boardRowCol[0]][boardRowCol[1]]) === 'undefined');
+    UTTT.prototype.isValidBoardRowCol = function (board) {
+        if (this.nextBoard === undefined) {
+            return Array.isArray(board) &&
+                board.length === 2 &&
+                utility_1.isInteger(board[0]) &&
+                utility_1.isInteger(board[1]) &&
+                board[0] > -1 &&
+                board[1] > -1 &&
+                board[1] < this.size &&
+                board[1] < this.size;
         }
         else {
-            return Array.isArray(boardRowCol) &&
-                this.nextBoard[0] === boardRowCol[0] &&
-                this.nextBoard[1] === boardRowCol[1];
+            return Array.isArray(board) && this.nextBoard[0] === board[0] && this.nextBoard[1] === board[1];
         }
     };
     UTTT.prototype.isValidMove = function (boardRowCol, move) {
@@ -65,20 +63,17 @@ var UTTT = (function (_super) {
         return this.board[boardRowCol[0]][boardRowCol[1]].isValidMove(move);
     };
     UTTT.prototype.addMyMove = function (boardRowCol, move) {
-        return this.move(boardRowCol, constants_1.ME, move);
+        return this.move(constants_1.ME, boardRowCol, move);
     };
     UTTT.prototype.addOpponentMove = function (boardRowCol, move) {
-        return this.move(boardRowCol, constants_1.OPPONENT, move);
+        return this.move(constants_1.OPPONENT, boardRowCol, move);
     };
-    UTTT.prototype.move = function (board, player, move) {
+    UTTT.prototype.move = function (player, board, move) {
         if (this.isFinished()) {
             throw error_1.default(errors_1.default.gameFinished);
         }
         if (!this.isValidBoardRowCol(board)) {
-            throw error_1.default(errors_1.default.board, board);
-        }
-        if (!this.isValidMove(board, move)) {
-            throw error_1.default(errors_1.default.move, move);
+            throw error_1.default(errors_1.default.board, board.toString());
         }
         var game = this.copy();
         var updatedBoard = game.board[board[0]][board[1]];
@@ -95,9 +90,11 @@ var UTTT = (function (_super) {
         game.moves++;
         game.nextBoard = move;
         if (game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()) {
-            game.nextBoard = null;
+            game.nextBoard = undefined;
         }
-        if (game.board[board[0]][board[1]].isFinished()) {
+        if (game.board[board[0]][board[1]].isFinished() &&
+            game.board[board[0]][board[1]].winner !== undefined &&
+            game.board[board[0]][board[1]].winner !== constants_1.RESULT_TIE) {
             game.stateBoard = game.stateBoard.move(game.board[board[0]][board[1]].winner, board);
         }
         game.winner = game.stateBoard.winner;
@@ -148,11 +145,11 @@ var UTTT = (function (_super) {
     };
     UTTT.prototype.copy = function () {
         var copy = new UTTT(this.size);
-        copy.board = clone(this.board);
+        copy.board = this.board.map(function (row) { return row.map(function (subBoard) { return subBoard.copy(); }); });
         copy.moves = this.moves;
         copy.winner = this.winner;
-        copy.nextBoard = this.nextBoard;
-        copy.stateBoard = clone(this.stateBoard);
+        copy.nextBoard = this.nextBoard === undefined ? undefined : this.nextBoard.slice();
+        copy.stateBoard = this.stateBoard.copy();
         return copy;
     };
     return UTTT;

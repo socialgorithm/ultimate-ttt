@@ -10,12 +10,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var clone = require("clone");
 var errors_1 = require("./model/errors");
 var Cell_1 = require("./model/Cell");
 var error_1 = require("./error");
 var constants_1 = require("./model/constants");
 var TTT_1 = require("./model/TTT");
+var utility_1 = require("./utility");
 var SubBoard = (function (_super) {
     __extends(SubBoard, _super);
     function SubBoard(size) {
@@ -24,7 +24,6 @@ var SubBoard = (function (_super) {
         _this.size = size;
         _this.board = [];
         _this.moves = 0;
-        _this.winner = null;
         for (var x = 0; x < _this.size; x++) {
             _this.board[x] = [];
             for (var y = 0; y < _this.size; y++) {
@@ -35,7 +34,7 @@ var SubBoard = (function (_super) {
         return _this;
     }
     SubBoard.prototype.isFinished = function () {
-        return this.winner !== null;
+        return this.winner !== undefined;
     };
     SubBoard.prototype.getResult = function () {
         if (!this.isFinished()) {
@@ -44,14 +43,15 @@ var SubBoard = (function (_super) {
         return this.winner;
     };
     SubBoard.prototype.isValidMove = function (move) {
-        return !(!Array.isArray(move) ||
-            move.length !== 2 ||
-            move[0] < 0 ||
-            move[0] > this.size ||
-            move[1] < 0 ||
-            move[1] > this.size ||
-            typeof (this.board[move[0]][move[1]]) === 'undefined' ||
-            this.board[move[0]][move[1]].player !== constants_1.UNPLAYED);
+        return Array.isArray(move) &&
+            move.length === 2 &&
+            utility_1.isInteger(move[0]) &&
+            utility_1.isInteger(move[1]) &&
+            move[0] > -1 &&
+            move[1] > -1 &&
+            move[0] < this.size &&
+            move[1] < this.size &&
+            !this.board[move[0]][move[1]].isPlayed();
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
@@ -90,7 +90,7 @@ var SubBoard = (function (_super) {
         if (!game.isFinished()) {
             game.checkRtLDiagonal();
         }
-        if (game.isFull() && game.winner !== constants_1.ME && game.winner !== constants_1.OPPONENT) {
+        if (game.isFull() && game.winner === undefined) {
             game.winner = constants_1.RESULT_TIE;
         }
         return game;
@@ -99,7 +99,7 @@ var SubBoard = (function (_super) {
         var moves = [];
         for (var x = 0; x < this.size; x++) {
             for (var y = 0; y < this.size; y++) {
-                if (this.board[x][y].player === null) {
+                if (!this.board[x][y].isPlayed()) {
                     moves.push([x, y]);
                 }
             }
@@ -112,13 +112,7 @@ var SubBoard = (function (_super) {
         for (var x = 0; x < this.size; x++) {
             var line = '';
             for (var y = 0; y < this.size; y++) {
-                var player = '-';
-                if (this.board[x][y].player === constants_1.RESULT_TIE) {
-                    player = (printTies) ? '+' : '-';
-                }
-                else if (this.board[x][y].player !== constants_1.UNPLAYED && this.board[x][y].player > constants_1.RESULT_TIE) {
-                    player = "" + this.board[x][y].player;
-                }
+                var player = (this.board[x][y].player === undefined || this.board[x][y].player < constants_1.ME) ? '-' : this.board[x][y].player;
                 line += player + ' ';
             }
             ret.push(line);
@@ -127,13 +121,15 @@ var SubBoard = (function (_super) {
     };
     SubBoard.prototype.copy = function () {
         var copy = new SubBoard(this.size);
-        copy.board = clone(this.board);
+        copy.board = this.board.map(function (copyRow) { return copyRow.map(function (c) { return c.copy(); }); });
         copy.moves = this.moves;
-        copy.winner = this.winner;
+        if (this.winner !== undefined) {
+            copy.winner = this.winner;
+        }
         return copy;
     };
     SubBoard.prototype.isValidPlayer = function (player) {
-        return [constants_1.RESULT_TIE, constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
+        return [constants_1.ME, constants_1.OPPONENT].indexOf(player) > -1;
     };
     SubBoard.prototype.checkRow = function (row) {
         var player = this.board[row][0].player;

@@ -2,6 +2,7 @@ import { Coord, PlayerOrTie } from "./constants";
 declare abstract class TTT<CellType> {
     board: Array<Array<CellType>>;
     nextBoard: Coord;
+    private _winner;
     winner: PlayerOrTie;
     protected size: number;
     protected maxMoves: number;

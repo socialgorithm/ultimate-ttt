@@ -7,11 +7,11 @@ export default class UTTT extends TTT<SubBoard> {
     constructor(size?: number);
     isFinished(): boolean;
     getResult(): number;
-    isValidBoardRowCol(boardRowCol: Coord): boolean;
+    isValidBoardRowCol(board: Coord): boolean;
     isValidMove(boardRowCol: Coord, move: Coord): boolean;
     addMyMove(boardRowCol: Coord, move: Coord): UTTT;
     addOpponentMove(boardRowCol: Coord, move: Coord): UTTT;
-    move(board: Coord, player: number, move: Coord): UTTT;
+    move(player: number, board: Coord, move: Coord): UTTT;
     getValidBoards(): Array<Coord>;
     prettyPrint(): string;
     copy(): UTTT;
