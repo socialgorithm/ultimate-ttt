@@ -4,8 +4,7 @@
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
   "scripts": {
-    "test": "nyc ava",
-    "test:watch": "nyc ava --watch",
+    "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "gulp typedoc && gulp noJekyll"
   },
   "repository": {
@@ -27,31 +26,52 @@
   "homepage": "https://github.com/aurbano/ultimate-ttt#readme",
   "devDependencies": {
     "@ava/babel-preset-stage-4": "^1.0.0",
-    "@types/clone": "^0.1.30",
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.41",
     "ava": "^0.17.0",
     "babel-cli": "^6.22.2",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
+    "chai": "^4.0.0",
     "coveralls": "^2.11.15",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-file": "^0.3.0",
     "gulp-load-plugins": "^1.5.0",
     "gulp-typedoc": "^2.0.2",
+    "mocha": "^3.4.2",
     "nyc": "^10.1.2",
-    "typedoc": "^0.7.1"
+    "source-map-support": "^0.4.15",
+    "ts-node": "^3.0.4",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.3.3"
   },
   "ava": {
     "require": "babel-register",
     "babel": "inherit"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.js",
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "all": true
   },
   "babel": {
     "presets": [
       "@ava/stage-4"
     ]
   },
-  "dependencies": {
-    "clone": "^2.1.1"
-  }
+  "dependencies": {}
 }
