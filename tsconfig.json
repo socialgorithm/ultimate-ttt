@@ -9,5 +9,9 @@
     "outDir": "dist",
     "target": "es5",
     "moduleResolution": "node"
-  }
+  },
+  "exclude": [
+    "node_modules/**/*",
+    "test/**/*"
+  ]
 }
