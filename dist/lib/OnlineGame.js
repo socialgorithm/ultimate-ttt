@@ -74,7 +74,7 @@ var OnlineGame = (function () {
             }
             try {
                 var coords = _this.parseMove(data);
-                _this.game.move(coords.board, _this.currentPlayer.getIndexInSession(), coords.move);
+                _this.game = _this.game.move(_this.currentPlayer.getIndexInSession(), coords.board, coords.move);
                 if (_this.game.isFinished()) {
                     _this.handleGameEnd(_this.switchPlayer(_this.session.players[_this.game.winner]));
                     return;

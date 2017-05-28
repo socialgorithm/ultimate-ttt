@@ -6,7 +6,7 @@ import {Options} from "./input";
 import GUI from "./GUI";
 import * as funcs from './funcs';
 import SocketServer from './SocketServer';
-import Player from './player';
+import { Player } from './player';
 import Session from './Session';
 
 /**
@@ -135,7 +135,7 @@ export default class OnlineGame {
             }
             try {
                 const coords = this.parseMove(data);
-                this.game.move(coords.board, this.currentPlayer.getIndexInSession(), coords.move);
+                this.game = this.game.move(this.currentPlayer.getIndexInSession(), coords.board, coords.move);
                 if (this.game.isFinished()) {
                     this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]));
                     return;

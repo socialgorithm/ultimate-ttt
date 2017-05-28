@@ -8,5 +8,5 @@ export interface Options {
     timeout?: string;
     help?: number;
 }
-declare const _default: () => Options;
+declare var _default: () => Options;
 export default _default;

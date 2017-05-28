@@ -9,6 +9,7 @@ var Player = (function () {
         return this.session.players.indexOf(this);
     };
     Player.prototype.deliverAction = function (action) {
+        console.log("emitting " + action + " to " + this.token);
         this.socket.emit('game', { action: action });
     };
     Player.prototype.otherPlayerInSession = function () {

@@ -1,9 +1,10 @@
 import Session from './Session';
 import OnlineGame from './OnlineGame';
 import OnlineServer from './OnlineServer';
+import { Tournament } from './Tournament';
 import {PlayerNumber} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-export default class Player {
+export class Player {
 
     public session: Session;
 
@@ -13,12 +14,17 @@ export default class Player {
         return this.session.players.indexOf(this) as PlayerNumber;
     }
 
-    deliverAction(action: string) {
+    deliverAction(action: string): void {
+        console.log(`emitting ${action} to ${this.token}`);
         this.socket.emit('game', { action });
     }
 
-    otherPlayerInSession() {
+    otherPlayerInSession(): Player {
         return this.session.players[1 - this.getIndexInSession()];
+    }
+
+    alive(): boolean {
+        return this.socket.connected;
     }
 
 }

@@ -1,12 +1,13 @@
 import * as http from 'http';
 import * as io from 'socket.io';
 import * as fs from 'fs';
-import Player from "./Player";
+import { Player } from "./Player";
 
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
     updateStats(): void;
+    onTournamentStart(): void;
 }
 
 export default class SocketServer {
@@ -38,6 +39,9 @@ export default class SocketServer {
                 // a client (observer) has connected, don't add to player list
                 // send a summary of the server
                 this.socketEvents.updateStats();
+                socket.on('tournament', () => {
+                    this.socketEvents.onTournamentStart();
+                });
                 return true;
             }
 

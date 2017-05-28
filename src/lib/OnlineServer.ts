@@ -2,7 +2,7 @@ import {Options} from "./input";
 import GUI from "./GUI";
 import OnlineGame from "./OnlineGame";
 import SocketServer from "./SocketServer";
-import Player from "./Player";
+import { Player } from "./Player";
 import Session from './Session';
 
 /**
@@ -15,22 +15,27 @@ const pjson = require('../../package.json');
  * Handles the sockets, players, games...
  */
 export default class OnlineServer {
+
   /**
    * List of players in the server
    */
   private players: Array<Player>;
+  
   /**
    * Current games being played
    */
   private games: Array<Session>;
+  
   /**
    * Index of the next game that will be played
    */
   private nextGame: number;
+  
   /**
    * Optional reference to the server GUI (if it has been enabled in the options)
    */
   private ui?: GUI;
+  
   /**
    * Socket.IO Server reference
    */
@@ -44,7 +49,8 @@ export default class OnlineServer {
     this.socketServer = new SocketServer(this.options.port, {
       onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
       onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
-      updateStats: () => this.updateStats()
+      updateStats: () => this.updateStats(),
+      onTournamentStart: () => this.onTournamentStart()
     });
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
@@ -61,6 +67,10 @@ export default class OnlineServer {
     if (this.ui) {
       this.ui.render();
     }
+  }
+
+  private onTournamentStart(): void {
+
   }
 
   private onPlayerConnect(player: Player): void {
