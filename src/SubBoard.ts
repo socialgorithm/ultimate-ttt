@@ -80,7 +80,7 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {SubBoard}
    */
   public addMyMove(move: Coord, index = -1): SubBoard{
-    return this.move(ME, move, index);
+    return this.move(ME, move, false, index);
   }
 
   /**
@@ -90,7 +90,7 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {SubBoard}
    */
   public addOpponentMove(move: Coord, index = -1): SubBoard {
-    return this.move(OPPONENT, move, index)
+    return this.move(OPPONENT, move, false, index)
   }
 
   /**
@@ -98,15 +98,16 @@ export default class SubBoard extends TTT<Cell> {
    * new SubBoard. It may be easier and more clear to use the addOpponentMove and addMyMove methods instead.
    * @param player Player identifier (0 || 1)
    * @param move Move coordinates as an array [x, y]
+   * @param allowTies Whether we should allow adding a TIE (-1) as a player
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: PlayerOrTie, move: Coord, index = -1): SubBoard {
+  public move(player: PlayerOrTie, move: Coord, allowTies: boolean = false, index: number = -1): SubBoard {
     if(this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
 
-    if (!this.isValidPlayer(player as PlayerNumber)) {
+    if (!this.isValidPlayer(player as PlayerNumber) || (allowTies && player !== RESULT_TIE)) {
       throw error(errors.player, player);
     }
 

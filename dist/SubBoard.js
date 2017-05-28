@@ -55,18 +55,19 @@ var SubBoard = (function (_super) {
     };
     SubBoard.prototype.addMyMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this.move(constants_1.ME, move, index);
+        return this.move(constants_1.ME, move, false, index);
     };
     SubBoard.prototype.addOpponentMove = function (move, index) {
         if (index === void 0) { index = -1; }
-        return this.move(constants_1.OPPONENT, move, index);
+        return this.move(constants_1.OPPONENT, move, false, index);
     };
-    SubBoard.prototype.move = function (player, move, index) {
+    SubBoard.prototype.move = function (player, move, allowTies, index) {
+        if (allowTies === void 0) { allowTies = false; }
         if (index === void 0) { index = -1; }
         if (this.isFull() || this.isFinished()) {
             throw error_1.default(errors_1.default.boardFinished);
         }
-        if (!this.isValidPlayer(player)) {
+        if (!this.isValidPlayer(player) || (allowTies && player !== constants_1.RESULT_TIE)) {
             throw error_1.default(errors_1.default.player, player);
         }
         if (!this.isValidMove(move)) {
