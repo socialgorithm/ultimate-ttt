@@ -18,9 +18,9 @@ export interface Options {
 }
 
 export const DEFAULT_OPTIONS: Options = {
-  port: 3141,
-  timeout: 100,
-  games: 100,
+  port: process.env.PORT || 3141,
+  timeout: process.env.TTT_TIMEOUT || 100,
+  games: process.env.TTT_GAMES || 100,
 };
 
 const optionDefinitions = [
@@ -117,11 +117,6 @@ export default (): Options => {
     console.log(getUsage(sections));
     process.exit(0);
   }
-
-  // Read values from env vars if available
-  options.port = process.env.PORT || options.port || 3141;
-  options.games = process.env.TTT_GAMES || options.games;
-  options.timeout = process.env.TTT_TIMEOUT || options.timeout;
 
   if (options.port) {
     options.port = parseInt(options.port, 10);
