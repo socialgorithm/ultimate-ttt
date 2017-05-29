@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/uttt",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
   "main": "dist/standalone.js",
   "scripts": {
