@@ -1,21 +1,19 @@
 "use strict";
 exports.__esModule = true;
 var GUI_1 = require("./GUI");
-var OnlineGame_1 = require("./OnlineGame");
 var SocketServer_1 = require("./SocketServer");
-var Session_1 = require("./Session");
+var Tournament_1 = require("./Tournament");
 var pjson = require('../../package.json');
 var OnlineServer = (function () {
     function OnlineServer(options) {
         var _this = this;
         this.options = options;
         this.players = [];
-        this.games = [];
-        this.nextGame = 0;
-        this.socketServer = new SocketServer_1["default"](this.options.port, {
+        this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
             onPlayerConnect: function (player) { return _this.onPlayerConnect(player); },
             onPlayerDisconnect: function (player) { return _this.onPlayerDisconnect(player); },
-            updateStats: function () { return _this.updateStats(); }
+            updateStats: function () { return _this.updateStats(); },
+            onTournamentStart: function () { return _this.onTournamentStart(); }
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         if (options.gui) {
@@ -30,22 +28,15 @@ var OnlineServer = (function () {
             this.ui.render();
         }
     }
+    OnlineServer.prototype.onTournamentStart = function () {
+        if (this.tournament === undefined || this.tournament.isFinished()) {
+            console.log('Starting tournament');
+            this.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, this.players.slice(), this.ui);
+            this.tournament.start();
+        }
+    };
     OnlineServer.prototype.onPlayerConnect = function (player) {
-        var playerIndex = this.addPlayer(player);
-        var session = this.games[this.nextGame];
-        if (!this.games[this.nextGame]) {
-            this.games[this.nextGame] = new Session_1["default"]([undefined, undefined]);
-        }
-        else if (session.players[0] !== undefined && session.players[1] !== undefined) {
-            this.nextGame++;
-            this.games[this.nextGame] = new Session_1["default"]([undefined, undefined]);
-        }
-        session = this.games[this.nextGame];
-        session.players[session.players[0] === undefined ? 0 : 1] = player;
-        if (session.players[0] !== undefined && session.players[1] !== undefined) {
-            this.startSession(session, this.options);
-            this.nextGame++;
-        }
+        this.addPlayer(player);
         player.deliverAction('waiting');
     };
     OnlineServer.prototype.onPlayerDisconnect = function (player) {
@@ -55,38 +46,31 @@ var OnlineServer = (function () {
         var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };
         this.socketServer.emitPayload('stats', 'stats', payload);
     };
-    OnlineServer.prototype.startSession = function (session, settings) {
-        var _this = this;
-        if (settings === void 0) { settings = {}; }
-        this.log("Starting games between \"" + session.players[0].token + "\" and \"" + session.players[1].token + "\"");
-        this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
-        var onlineGame = new OnlineGame_1["default"](session, this.socketServer, this.ui, settings);
-        session.players.forEach(function (player) {
-            player.session = session;
-            player.socket.on('disconnect', function () {
-                _this.removePlayer(player);
-                onlineGame.handleGameEnd(player.otherPlayerInSession(), true);
-            });
-            player.socket.on('game', onlineGame.handlePlayerMove(player));
-        });
-        onlineGame.playGame();
-    };
     OnlineServer.prototype.addPlayer = function (player) {
-        var index = -1;
-        if (this.players.indexOf(player) < 0) {
-            index = this.players.push(player) - 1;
+        var _this = this;
+        var matches = this.players.filter(function (p) { return p.token === player.token; });
+        if (matches.length > 0) {
+            matches[0].socket.disconnect();
+            this.removePlayer(matches[0]);
         }
-        this.log("Connected \"" + player.token + "\"", true);
-        this.socketServer.emitPayload('stats', 'connect', player.token);
-        if (this.ui) {
-            this.ui.renderOnlinePlayers(this.players.map(function (p) { return p.token; }));
-        }
-        return index;
+        process.nextTick(function () {
+            if (_this.players.filter(function (p) { return p.token === player.token; }).length === 0) {
+                _this.players.push(player);
+            }
+            _this.log("Connected \"" + player.token + "\"", true);
+            _this.socketServer.emitPayload('stats', 'connect', player.token);
+            if (_this.ui) {
+                _this.ui.renderOnlinePlayers(_this.players.map(function (p) { return p.token; }));
+            }
+        });
     };
     OnlineServer.prototype.removePlayer = function (player) {
         var index = this.players.indexOf(player);
         if (index > -1) {
             this.players.splice(index, 1);
+        }
+        else {
+            return;
         }
         this.log("Disconnected " + player.token, true);
         this.socketServer.emitPayload('stats', 'disconnect', player.token);

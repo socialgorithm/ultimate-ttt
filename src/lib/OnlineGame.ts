@@ -8,6 +8,7 @@ import * as funcs from './funcs';
 import { SocketServer } from './SocketServer';
 import { Player } from './player';
 import Session from './Session';
+import { Tournament } from './Tournament';
 
 /**
  * Online game manager between two players
@@ -21,6 +22,7 @@ export default class OnlineGame {
     private game: UTTT;
     private gameStart: [number, number];
     private gameIDForUI: number;
+    private active: boolean;
 
     /**
      * Build a new game manager
@@ -30,13 +32,14 @@ export default class OnlineGame {
      * @param ui Optional GUI reference
      * @param options Server startup options
      */
-    constructor(private session: Session, private socket: SocketServer, private ui: GUI, options: Options) {
+    constructor(private tournament: Tournament, private session: Session, private socket: SocketServer, private ui: GUI, options: Options) {
         this.state = new State();
         this.timeout = parseInt(options.timeout, 10) || 100;
-        this.maxGames = parseInt(options.games, 10) || 1000;
+        this.maxGames = parseInt(options.games, 10) || 100;
         this.currentPlayer = this.playerZero();
         this.firstPlayer = this.playerZero();
         this.game = new UTTT();
+        this.active = true;
 
         if (this.ui) {
             this.gameIDForUI = this.ui.addGameBox.apply(this.ui, this.session.playerTokens());
@@ -47,6 +50,10 @@ export default class OnlineGame {
      * Play an individual game between two players
      */
     public playGame() {
+        if (!this.active) {
+            return;
+        }
+
         this.gameStart = process.hrtime();
         this.state.games++;
         this.game = new UTTT();
@@ -57,6 +64,7 @@ export default class OnlineGame {
         this.playerZero().deliverAction('init');
         this.playerOne().deliverAction('init');
         this.firstPlayer.deliverAction('move');
+        this.firstPlayer.otherPlayerInSession().deliverAction('waiting');
     }
 
     /**
@@ -122,7 +130,6 @@ export default class OnlineGame {
      * @returns {Function} Move handler with the player number embedded for logging
      */
     public handlePlayerMove(player: Player) {
-        let i = 0;
         return (data: string) => {
             if (this.currentPlayer !== player) {
                 this.log(`Game ${this.state.games}: Player ${player.token} played out of time (it was ${this.currentPlayer.token}'s turn)`);
@@ -185,6 +192,9 @@ export default class OnlineGame {
         } else {
             this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}; ${winner ? `${winner.token} won` : 'the players tied'}`);
         }
+
+        this.tournament.endSession(this.session);
+        this.active = false;
     }
 
     private playerZero() {

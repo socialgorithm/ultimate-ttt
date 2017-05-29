@@ -25,7 +25,6 @@ export class PlayerImpl implements Player {
     }
 
     deliverAction(action: string): void {
-        console.log(`emitting ${action} to ${this.token}`);
         this.socket.emit('game', { action });
     }
 

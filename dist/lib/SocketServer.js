@@ -4,8 +4,8 @@ var http = require("http");
 var io = require("socket.io");
 var fs = require("fs");
 var Player_1 = require("./Player");
-var SocketServer = (function () {
-    function SocketServer(port, socketEvents) {
+var SocketServerImpl = (function () {
+    function SocketServerImpl(port, socketEvents) {
         var _this = this;
         var app = http.createServer(this.handler);
         this.io = io(app);
@@ -26,22 +26,25 @@ var SocketServer = (function () {
         this.io.on('connection', function (socket) {
             if (socket.handshake.query.client) {
                 _this.socketEvents.updateStats();
+                socket.on('tournament', function () {
+                    _this.socketEvents.onTournamentStart();
+                });
                 return true;
             }
-            var player = new Player_1["default"](socket.handshake.query.token, socket);
+            var player = new Player_1.PlayerImpl(socket.handshake.query.token, socket);
             socket.on('disconnect', function () {
                 _this.socketEvents.onPlayerDisconnect(player);
             });
             _this.socketEvents.onPlayerConnect(player);
         });
     }
-    SocketServer.prototype.emit = function (type, data) {
+    SocketServerImpl.prototype.emit = function (type, data) {
         this.io.emit(type, data);
     };
-    SocketServer.prototype.emitPayload = function (emitType, type, payload) {
+    SocketServerImpl.prototype.emitPayload = function (emitType, type, payload) {
         this.emit(emitType, { type: type, payload: payload });
     };
-    SocketServer.prototype.handler = function (req, res) {
+    SocketServerImpl.prototype.handler = function (req, res) {
         fs.readFile(__dirname + '/../../public/index.html', function (err, data) {
             if (err) {
                 res.writeHead(500);
@@ -51,7 +54,7 @@ var SocketServer = (function () {
             res.end(data);
         });
     };
-    return SocketServer;
+    return SocketServerImpl;
 }());
-exports["default"] = SocketServer;
+exports.SocketServerImpl = SocketServerImpl;
 //# sourceMappingURL=SocketServer.js.map

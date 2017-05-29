@@ -1,9 +1,11 @@
 import { Options } from "./input";
 import GUI from "./GUI";
-import SocketServer from './SocketServer';
-import Player from './player';
+import { SocketServer } from './SocketServer';
+import { Player } from './player';
 import Session from './Session';
+import { Tournament } from './Tournament';
 export default class OnlineGame {
+    private tournament;
     private session;
     private socket;
     private ui;
@@ -15,7 +17,8 @@ export default class OnlineGame {
     private game;
     private gameStart;
     private gameIDForUI;
-    constructor(session: Session, socket: SocketServer, ui: GUI, options: Options);
+    private active;
+    constructor(tournament: Tournament, session: Session, socket: SocketServer, ui: GUI, options: Options);
     playGame(): void;
     handleGameEnd(winner: Player, playerDisconnected?: boolean): void;
     private parseMove(data);

@@ -4,21 +4,26 @@ var ultimate_ttt_1 = require("@socialgorithm/ultimate-ttt");
 var State_1 = require("./State");
 var funcs = require("./funcs");
 var OnlineGame = (function () {
-    function OnlineGame(session, socket, ui, options) {
+    function OnlineGame(tournament, session, socket, ui, options) {
+        this.tournament = tournament;
         this.session = session;
         this.socket = socket;
         this.ui = ui;
         this.state = new State_1["default"]();
         this.timeout = parseInt(options.timeout, 10) || 100;
-        this.maxGames = parseInt(options.games, 10) || 1000;
+        this.maxGames = parseInt(options.games, 10) || 100;
         this.currentPlayer = this.playerZero();
         this.firstPlayer = this.playerZero();
         this.game = new ultimate_ttt_1["default"]();
+        this.active = true;
         if (this.ui) {
             this.gameIDForUI = this.ui.addGameBox.apply(this.ui, this.session.playerTokens());
         }
     }
     OnlineGame.prototype.playGame = function () {
+        if (!this.active) {
+            return;
+        }
         this.gameStart = process.hrtime();
         this.state.games++;
         this.game = new ultimate_ttt_1["default"]();
@@ -27,6 +32,7 @@ var OnlineGame = (function () {
         this.playerZero().deliverAction('init');
         this.playerOne().deliverAction('init');
         this.firstPlayer.deliverAction('move');
+        this.firstPlayer.otherPlayerInSession().deliverAction('waiting');
     };
     OnlineGame.prototype.handleGameEnd = function (winner, playerDisconnected) {
         if (playerDisconnected === void 0) { playerDisconnected = false; }
@@ -61,7 +67,6 @@ var OnlineGame = (function () {
     };
     OnlineGame.prototype.handlePlayerMove = function (player) {
         var _this = this;
-        var i = 0;
         return function (data) {
             if (_this.currentPlayer !== player) {
                 _this.log("Game " + _this.state.games + ": Player " + player.token + " played out of time (it was " + _this.currentPlayer.token + "'s turn)");
@@ -112,6 +117,8 @@ var OnlineGame = (function () {
         else {
             this.log("Session ended between " + this.playerZero().token + " and " + this.playerOne().token + "; " + (winner ? winner.token + " won" : 'the players tied'));
         }
+        this.tournament.endSession(this.session);
+        this.active = false;
     };
     OnlineGame.prototype.playerZero = function () {
         return this.session.players[0];

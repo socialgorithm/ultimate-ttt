@@ -15,7 +15,9 @@ export declare class TournamentProfile {
     currentOpponent(): TournamentProfile;
     isPlayable(): boolean;
     canPlayGivenProfile(other: TournamentProfile): boolean;
+    isComplete(): boolean;
     markAsComplete(): void;
+    hasPlayed(other: Player): boolean;
 }
 export declare class Tournament {
     readonly name: string;
@@ -24,11 +26,14 @@ export declare class Tournament {
     private ui;
     private profiles;
     private complete;
+    private started;
     constructor(name: string, socketServer: SocketServer, participants: Player[], ui?: GUI);
+    start(): void;
     endSession(session: Session): void;
     isFinished(): boolean;
-    profileByPlayer(player: Player): TournamentProfile;
+    private profileByPlayer(player);
     private startSession(session, settings?);
+    private leftToPlay(profile);
     private flush();
     private playerIsDone(profile);
 }
