@@ -10,4 +10,6 @@
  * Take a look at src/lib/input.js for the whole list of options available.
  */
 import OnlineServer from './lib/OnlineServer';
-new OnlineServer({});
+import {DEFAULT_OPTIONS} from "./lib/input";
+
+new OnlineServer(DEFAULT_OPTIONS);

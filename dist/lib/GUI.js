@@ -4,7 +4,7 @@ var blessed = require("blessed");
 var ip = require("ip");
 var pjson = require('../../package.json');
 var GUI = (function () {
-    function GUI(title, host, port) {
+    function GUI(title, port) {
         this.screen = blessed.screen({
             smartCSR: true,
             warnings: true
@@ -21,7 +21,7 @@ var GUI = (function () {
             tags: true,
             content: '{bold}{red-fg}Ultimate TTT Algorithm Battle v' + pjson.version + '{/red-fg}{/bold}'
         });
-        header.insertBottom('{yellow-fg}Local address:{/yellow-fg}   http://' + host + ':' + port);
+        header.insertBottom('{yellow-fg}Local address:{/yellow-fg}   http://localhost:' + port);
         header.insertBottom('{yellow-fg}Network address:{/yellow-fg} http://' + ip.address() + ':' + port);
         this.screen.key(['escape', 'q', 'C-c'], function () {
             return process.exit(0);

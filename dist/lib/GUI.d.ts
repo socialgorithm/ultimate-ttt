@@ -12,7 +12,7 @@ export default class GUI {
     gameArea: blessed.Widgets.BoxElement;
     logger: blessed.Widgets.Log;
     games: Array<GameUI>;
-    constructor(title: string, host: string, port: number);
+    constructor(title: string, port: number);
     renderOnlinePlayers(players: Array<string>): void;
     addGameBox(playerOne: string, playerTwo: string): number;
     setGameProgress(gameIndex: number, progress: number): void;

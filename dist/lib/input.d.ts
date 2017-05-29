@@ -4,9 +4,10 @@ export interface Options {
     port?: number;
     gui?: boolean;
     host?: string;
-    games?: string;
-    timeout?: string;
+    games?: number;
+    timeout?: number;
     help?: number;
 }
-declare const _default: () => Options;
+export declare const DEFAULT_OPTIONS: Options;
+declare var _default: () => Options;
 export default _default;

@@ -47,10 +47,10 @@ export default class OnlineServer {
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
 
     if (options.gui) {
-      this.ui = new GUI(title, this.options.host, this.options.port);
+      this.ui = new GUI(title, this.options.port);
     } else {
       this.log(title);
-      this.log(`Listening on ${this.options.host}:${this.options.port}`);
+      this.log(`Listening on localhost:${this.options.port}`);
     }
 
     this.log('Server started', true);

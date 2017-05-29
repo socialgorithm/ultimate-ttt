@@ -3,42 +3,57 @@ exports.__esModule = true;
 var commandLineArgs = require('command-line-args');
 var getUsage = require('command-line-usage');
 var info = require('../../package.json');
+exports.DEFAULT_OPTIONS = {
+    port: 3141,
+    timeout: 100,
+    games: 100
+};
 var optionDefinitions = [
     {
         name: 'verbose',
+        type: Boolean,
         description: 'The input to process.'
     },
     {
         name: 'version',
         alias: 'v',
+        type: Boolean,
         description: 'Display the server version'
     },
     {
         name: 'port',
         alias: 'p',
+        type: Number,
+        defaultValue: exports.DEFAULT_OPTIONS.port,
         typeLabel: '[underline]{3141}',
         description: 'Port on which the server should be started (defaults to 3141)'
     },
     {
         name: 'gui',
         alias: 'u',
+        type: Boolean,
         description: 'Display a fancy GUI in the terminal (only available in online mode)'
     },
     {
         name: 'games',
         alias: 'g',
-        typeLabel: '[underline]{1000}',
-        description: 'Number of games to play, defaults to 1000'
+        type: Number,
+        defaultValue: exports.DEFAULT_OPTIONS.games,
+        typeLabel: '[underline]{100}',
+        description: 'Number of games to play, defaults to 100'
     },
     {
         name: 'timeout',
         alias: 't',
+        type: Number,
+        defaultValue: exports.DEFAULT_OPTIONS.timeout,
         typeLabel: '[underline]{100}',
         description: 'Milliseconds after which a player loses (defaults to 100)'
     },
     {
         name: 'help',
         alias: 'h',
+        type: Boolean,
         description: 'Print this guide'
     }
 ];
@@ -76,6 +91,9 @@ exports["default"] = function () {
         console.log(getUsage(sections));
         process.exit(0);
     }
+    options.port = process.env.PORT || options.port || 3141;
+    options.games = process.env.TTT_GAMES || options.games;
+    options.timeout = process.env.TTT_TIMEOUT || options.timeout;
     if (options.port) {
         options.port = parseInt(options.port, 10);
     }

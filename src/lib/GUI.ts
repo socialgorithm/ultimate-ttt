@@ -46,7 +46,7 @@ export default class GUI {
      * @param host Server host
      * @param port Server port
      */
-    constructor(title: string, host: string, port: number) {
+    constructor(title: string, port: number) {
         this.screen = blessed.screen({
             smartCSR: true,
             warnings: true
@@ -67,7 +67,7 @@ export default class GUI {
             content: '{bold}{red-fg}Ultimate TTT Algorithm Battle v' + pjson.version + '{/red-fg}{/bold}',
         });
 
-        header.insertBottom('{yellow-fg}Local address:{/yellow-fg}   http://' + host + ':' + port);
+        header.insertBottom('{yellow-fg}Local address:{/yellow-fg}   http://localhost:' + port);
         header.insertBottom('{yellow-fg}Network address:{/yellow-fg} http://' + ip.address() + ':' + port);
 
         this.screen.key(['escape', 'q', 'C-c'], () => {

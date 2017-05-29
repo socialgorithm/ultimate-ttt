@@ -34,8 +34,8 @@ export default class OnlineGame {
      */
     constructor(private tournament: Tournament, private session: Session, private socket: SocketServer, private ui: GUI, options: Options) {
         this.state = new State();
-        this.timeout = parseInt(options.timeout, 10) || 100;
-        this.maxGames = parseInt(options.games, 10) || 100;
+        this.timeout = options.timeout;
+        this.maxGames = options.games;
         this.currentPlayer = this.playerZero();
         this.firstPlayer = this.playerZero();
         this.game = new UTTT();
