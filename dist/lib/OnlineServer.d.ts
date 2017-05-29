@@ -1,23 +1,15 @@
-/// <reference types="socket.io" />
 import { Options } from "./input";
-export interface Player {
-    playerIndex: number;
-    socket: SocketIO.Socket;
-}
-export interface Game {
-    players: Array<Player>;
-}
 export default class OnlineServer {
+    private options;
     private players;
-    private games;
-    private nextGame;
     private ui?;
-    private io;
-    private host;
-    private port;
+    private socketServer;
+    private tournament;
     constructor(options: Options);
-    private startSession(session, settings?);
-    private handler(req, res);
+    private onTournamentStart();
+    private onPlayerConnect(player);
+    private onPlayerDisconnect(player);
+    private updateStats();
     private addPlayer(player);
     private removePlayer(player);
     private log(message, skipRender?);

@@ -1,155 +1,81 @@
 "use strict";
 exports.__esModule = true;
-var http = require("http");
-var io = require("socket.io");
-var fs = require("fs");
 var GUI_1 = require("./GUI");
-var OnlineGame_1 = require("./OnlineGame");
+var SocketServer_1 = require("./SocketServer");
+var Tournament_1 = require("./Tournament");
 var pjson = require('../../package.json');
 var OnlineServer = (function () {
     function OnlineServer(options) {
         var _this = this;
+        this.options = options;
         this.players = [];
-        this.games = [];
-        this.nextGame = 0;
-        this.host = options.host;
-        this.port = parseInt(options.port, 10) || 3141;
-        var app = http.createServer(this.handler);
-        this.io = io(app);
-        app.listen(this.port);
-        var title = 'Ultimate TTT Algorithm Battle v' + pjson.version;
+        this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
+            onPlayerConnect: function (player) { return _this.onPlayerConnect(player); },
+            onPlayerDisconnect: function (player) { return _this.onPlayerDisconnect(player); },
+            updateStats: function () { return _this.updateStats(); },
+            onTournamentStart: function () { return _this.onTournamentStart(); }
+        });
+        var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         if (options.gui) {
-            this.ui = new GUI_1["default"](title, this.host, this.port);
+            this.ui = new GUI_1["default"](title, this.options.host, this.options.port);
         }
         else {
             this.log(title);
-            this.log('Listening on ' + this.host + ':' + this.port);
+            this.log("Listening on " + this.options.host + ":" + this.options.port);
         }
         this.log('Server started', true);
-        this.io.use(function (socket, next) {
-            var isClient = socket.request._query.client || false;
-            if (isClient) {
-                return next();
-            }
-            var token = socket.request._query.token;
-            if (!token) {
-                return next(new Error('Missing token'));
-            }
-            socket.request.testToken = token;
-            next();
-        });
-        this.io.on('connection', function (socket) {
-            if (socket.handshake.query.client) {
-                socket.emit('stats', {
-                    type: 'stats',
-                    payload: {
-                        players: _this.players,
-                        games: []
-                    }
-                });
-                return true;
-            }
-            var playerIndex = _this.addPlayer(socket.handshake.query.token);
-            if (!_this.games[_this.nextGame]) {
-                _this.games[_this.nextGame] = {
-                    players: []
-                };
-            }
-            else if (_this.games[_this.nextGame].players.length >= 2) {
-                _this.nextGame++;
-                _this.games[_this.nextGame] = {
-                    players: []
-                };
-            }
-            var session = _this.games[_this.nextGame];
-            var player = session.players.length;
-            session.players[player] = {
-                playerIndex: playerIndex,
-                socket: socket
-            };
-            if (session.players.length >= 2) {
-                _this.startSession(session, options);
-                _this.nextGame++;
-            }
-            socket.emit('game', {
-                action: 'waiting'
-            });
-        });
         if (this.ui) {
             this.ui.render();
         }
     }
-    OnlineServer.prototype.startSession = function (session, settings) {
-        var _this = this;
-        if (settings === void 0) { settings = {}; }
-        this.log('Starting games between "' +
-            this.players[session.players[0].playerIndex] +
-            '" and "' +
-            this.players[session.players[1].playerIndex] +
-            '"');
-        this.io.emit('stats', {
-            type: 'session-start',
-            payload: {
-                players: [
-                    this.players[session.players[0].playerIndex],
-                    this.players[session.players[1].playerIndex]
-                ]
-            }
-        });
-        var onlineGame = new OnlineGame_1["default"](session, this.io, this.players, this.ui, settings);
-        session.players[0].socket.on('disconnect', function () {
-            if (session.players && session.players[0]) {
-                _this.removePlayer(_this.players[session.players[0].playerIndex]);
-                onlineGame.handleGameEnd(1, true);
-            }
-        });
-        session.players[1].socket.on('disconnect', function () {
-            if (session.players && session.players[1]) {
-                _this.removePlayer(_this.players[session.players[1].playerIndex]);
-                onlineGame.handleGameEnd(0, true);
-            }
-        });
-        session.players[0].socket.on('game', onlineGame.handlePlayerMove(0));
-        session.players[1].socket.on('game', onlineGame.handlePlayerMove(1));
-        onlineGame.playGame();
+    OnlineServer.prototype.onTournamentStart = function () {
+        if (this.tournament === undefined || this.tournament.isFinished()) {
+            console.log('Starting tournament');
+            this.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, this.players.slice(), this.ui);
+            this.tournament.start();
+        }
     };
-    OnlineServer.prototype.handler = function (req, res) {
-        fs.readFile(__dirname + '/../../public/index.html', function (err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading index.html');
-            }
-            res.writeHead(200);
-            res.end(data);
-        });
+    OnlineServer.prototype.onPlayerConnect = function (player) {
+        this.addPlayer(player);
+        player.deliverAction('waiting');
+    };
+    OnlineServer.prototype.onPlayerDisconnect = function (player) {
+        console.log('handle player disconnect on his active games');
+    };
+    OnlineServer.prototype.updateStats = function () {
+        var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };
+        this.socketServer.emitPayload('stats', 'stats', payload);
     };
     OnlineServer.prototype.addPlayer = function (player) {
-        var index = -1;
-        if (this.players.indexOf(player) < 0) {
-            index = this.players.push(player) - 1;
+        var _this = this;
+        var matches = this.players.filter(function (p) { return p.token === player.token; });
+        if (matches.length > 0) {
+            matches[0].socket.disconnect();
+            this.removePlayer(matches[0]);
         }
-        this.log('Connected "' + player + '"', true);
-        this.io.emit('stats', {
-            type: 'connect',
-            payload: player
+        process.nextTick(function () {
+            if (_this.players.filter(function (p) { return p.token === player.token; }).length === 0) {
+                _this.players.push(player);
+            }
+            _this.log("Connected \"" + player.token + "\"", true);
+            _this.socketServer.emitPayload('stats', 'connect', player.token);
+            if (_this.ui) {
+                _this.ui.renderOnlinePlayers(_this.players.map(function (p) { return p.token; }));
+            }
         });
-        if (this.ui) {
-            this.ui.renderOnlinePlayers(this.players);
-        }
-        return index;
     };
     OnlineServer.prototype.removePlayer = function (player) {
         var index = this.players.indexOf(player);
         if (index > -1) {
             this.players.splice(index, 1);
         }
-        this.log('Disconnected "' + player + '"', true);
-        this.io.emit('stats', {
-            type: 'disconnect',
-            payload: player
-        });
+        else {
+            return;
+        }
+        this.log("Disconnected " + player.token, true);
+        this.socketServer.emitPayload('stats', 'disconnect', player.token);
         if (this.ui) {
-            this.ui.renderOnlinePlayers(this.players);
+            this.ui.renderOnlinePlayers(this.players.map(function (p) { return p.token; }));
         }
     };
     OnlineServer.prototype.log = function (message, skipRender) {

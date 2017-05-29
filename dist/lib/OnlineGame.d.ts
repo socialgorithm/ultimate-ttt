@@ -1,29 +1,32 @@
-/// <reference types="socket.io" />
-import { PlayerNumber } from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import { Game } from "./OnlineServer";
 import { Options } from "./input";
 import GUI from "./GUI";
+import { SocketServer } from './SocketServer';
+import { Player } from './player';
+import Session from './Session';
+import { Tournament } from './Tournament';
 export default class OnlineGame {
+    private tournament;
+    private session;
+    private socket;
+    private ui;
     private timeout;
     private maxGames;
     private state;
-    private session;
-    private players;
     private currentPlayer;
     private firstPlayer;
     private game;
     private gameStart;
-    private gameUIId;
-    private ui;
-    private io;
-    constructor(session: Game, io: SocketIO.Server, players: Array<string>, ui: GUI, options: Options);
+    private gameIDForUI;
+    private active;
+    constructor(tournament: Tournament, session: Session, socket: SocketServer, ui: GUI, options: Options);
     playGame(): void;
-    handleGameEnd(winner: PlayerNumber, playerDisconnected?: boolean): void;
+    handleGameEnd(winner: Player, playerDisconnected?: boolean): void;
     private parseMove(data);
     private writeMove(coords);
-    handlePlayerMove(player: PlayerNumber): (data: string) => void;
+    handlePlayerMove(player: Player): (data: string) => void;
     private switchPlayer(player);
-    private sendAction(action, player);
     private sessionEnd();
+    private playerZero();
+    private playerOne();
     private log(message, skipRender?);
 }

@@ -1,12 +1,12 @@
 export interface Options {
     version?: boolean;
     verbose?: boolean;
-    port?: string;
+    port?: number;
     gui?: boolean;
     host?: string;
     games?: string;
     timeout?: string;
     help?: number;
 }
-declare var _default: () => Options;
+declare const _default: () => Options;
 export default _default;
