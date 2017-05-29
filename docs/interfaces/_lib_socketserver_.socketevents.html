@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Player | Ultimate TTT Server</title>
+	<title>SocketEvents | Ultimate TTT Server</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,31 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_onlineserver_.html">&quot;lib/OnlineServer&quot;</a>
+					<a href="../modules/_lib_socketserver_.html">&quot;lib/SocketServer&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_onlineserver_.player.html">Player</a>
+					<a href="_lib_socketserver_.socketevents.html">SocketEvents</a>
 				</li>
 			</ul>
-			<h1>Interface Player</h1>
+			<h1>Interface SocketEvents</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Player object</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Player</span>
+						<span class="target">SocketEvents</span>
 					</li>
 				</ul>
 			</section>
@@ -89,46 +82,98 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_onlineserver_.player.html#playerindex" class="tsd-kind-icon">player<wbr>Index</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_onlineserver_.player.html#socket" class="tsd-kind-icon">socket</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_socketserver_.socketevents.html#onplayerconnect" class="tsd-kind-icon">on<wbr>Player<wbr>Connect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_socketserver_.socketevents.html#onplayerdisconnect" class="tsd-kind-icon">on<wbr>Player<wbr>Disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_socketserver_.socketevents.html#ontournamentstart" class="tsd-kind-icon">on<wbr>Tournament<wbr>Start</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_socketserver_.socketevents.html#updatestats" class="tsd-kind-icon">update<wbr>Stats</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="playerindex" class="tsd-anchor"></a>
-					<h3>player<wbr>Index</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/OnlineServer.ts#L20">lib/OnlineServer.ts:20</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Index in the player list</p>
-						</div>
-					</div>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onplayerconnect" class="tsd-anchor"></a>
+					<h3>on<wbr>Player<wbr>Connect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Player<wbr>Connect<span class="tsd-signature-symbol">(</span>player<span class="tsd-signature-symbol">: </span><a href="_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/SocketServer.ts#L7">lib/SocketServer.ts:7</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>player: <a href="_lib_player_.player.html" class="tsd-signature-type">Player</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="socket" class="tsd-anchor"></a>
-					<h3>socket</h3>
-					<div class="tsd-signature tsd-kind-icon">socket<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Socket</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/OnlineServer.ts#L24">lib/OnlineServer.ts:24</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Socket to connect to this player directly</p>
-						</div>
-					</div>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onplayerdisconnect" class="tsd-anchor"></a>
+					<h3>on<wbr>Player<wbr>Disconnect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Player<wbr>Disconnect<span class="tsd-signature-symbol">(</span>player<span class="tsd-signature-symbol">: </span><a href="_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/SocketServer.ts#L8">lib/SocketServer.ts:8</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>player: <a href="_lib_player_.player.html" class="tsd-signature-type">Player</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="ontournamentstart" class="tsd-anchor"></a>
+					<h3>on<wbr>Tournament<wbr>Start</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Tournament<wbr>Start<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/SocketServer.ts#L10">lib/SocketServer.ts:10</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="updatestats" class="tsd-anchor"></a>
+					<h3>update<wbr>Stats</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Stats<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/SocketServer.ts#L9">lib/SocketServer.ts:9</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -147,11 +192,23 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_onlinegame_.html">"lib/<wbr>Online<wbr>Game"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_onlineserver_.html">"lib/<wbr>Online<wbr>Server"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_lib_player_.html">"lib/<wbr>Player"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_lib_session_.html">"lib/<wbr>Session"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_state_.html">"lib/<wbr>State"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_lib_tournament_.html">"lib/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_funcs_.html">"lib/funcs"</a>
@@ -159,33 +216,39 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_input_.html">"lib/input"</a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_standalone_.html">"standalone"</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_lib_onlineserver_.onlineserver.html" class="tsd-kind-icon">Online<wbr>Server</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_onlineserver_.game.html" class="tsd-kind-icon">Game</a>
+						<a href="../classes/_lib_socketserver_.socketserverimpl.html" class="tsd-kind-icon">Socket<wbr>Server<wbr>Impl</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_onlineserver_.player.html" class="tsd-kind-icon">Player</a>
+						<a href="_lib_socketserver_.socketevents.html" class="tsd-kind-icon">Socket<wbr>Events</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_onlineserver_.player.html#playerindex" class="tsd-kind-icon">player<wbr>Index</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_socketserver_.socketevents.html#onplayerconnect" class="tsd-kind-icon">on<wbr>Player<wbr>Connect</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_onlineserver_.player.html#socket" class="tsd-kind-icon">socket</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_socketserver_.socketevents.html#onplayerdisconnect" class="tsd-kind-icon">on<wbr>Player<wbr>Disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_socketserver_.socketevents.html#ontournamentstart" class="tsd-kind-icon">on<wbr>Tournament<wbr>Start</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_lib_socketserver_.socketevents.html#updatestats" class="tsd-kind-icon">update<wbr>Stats</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_onlineserver_.html#pjson" class="tsd-kind-icon">pjson</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_lib_socketserver_.socketserver.html" class="tsd-kind-icon">Socket<wbr>Server</a>
 					</li>
 				</ul>
 			</nav>

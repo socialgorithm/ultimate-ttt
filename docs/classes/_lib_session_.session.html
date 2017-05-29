@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>State | Ultimate TTT Server</title>
+	<title>Session | Ultimate TTT Server</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,32 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_state_.html">&quot;lib/State&quot;</a>
+					<a href="../modules/_lib_session_.html">&quot;lib/Session&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_state_.state.html">State</a>
+					<a href="_lib_session_.session.html">Session</a>
 				</li>
 			</ul>
-			<h1>Class State</h1>
+			<h1>Class Session</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Games State holder
-						Used to track the state across multiple games between two players</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">State</span>
+						<span class="target">Session</span>
 					</li>
 				</ul>
 			</section>
@@ -92,24 +84,22 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_lib_state_.state.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_lib_session_.session.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_state_.state.html#games" class="tsd-kind-icon">games</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_state_.state.html#ties" class="tsd-kind-icon">ties</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_state_.state.html#timeouts" class="tsd-kind-icon">timeouts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_state_.state.html#times" class="tsd-kind-icon">times</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_state_.state.html#wins" class="tsd-kind-icon">wins</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_lib_session_.session.html#handlers" class="tsd-kind-icon">handlers</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_lib_session_.session.html#players" class="tsd-kind-icon">players</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_state_.state.html#getstats" class="tsd-kind-icon">get<wbr>Stats</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_state_.state.html#printstate" class="tsd-kind-icon">print<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_session_.session.html#playertokens" class="tsd-kind-icon">player<wbr>Tokens</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_session_.session.html#registerhandler" class="tsd-kind-icon">register<wbr>Handler</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_lib_session_.session.html#terminate" class="tsd-kind-icon">terminate</a></li>
 							</ul>
 						</section>
 					</div>
@@ -121,69 +111,45 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_state_.state.html" class="tsd-signature-type">State</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Session<span class="tsd-signature-symbol">(</span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_session_.session.html" class="tsd-signature-type">Session</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L25">lib/State.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L5">lib/Session.ts:5</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_lib_state_.state.html" class="tsd-signature-type">State</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>players: <span class="tsd-signature-symbol">[</span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_lib_session_.session.html" class="tsd-signature-type">Session</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="games" class="tsd-anchor"></a>
-					<h3>games</h3>
-					<div class="tsd-signature tsd-kind-icon">games<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="handlers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> handlers</h3>
+					<div class="tsd-signature tsd-kind-icon">handlers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L21">lib/State.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L5">lib/Session.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="ties" class="tsd-anchor"></a>
-					<h3>ties</h3>
-					<div class="tsd-signature tsd-kind-icon">ties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="players" class="tsd-anchor"></a>
+					<h3>players</h3>
+					<div class="tsd-signature tsd-kind-icon">players<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/_lib_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L22">lib/State.ts:22</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timeouts" class="tsd-anchor"></a>
-					<h3>timeouts</h3>
-					<div class="tsd-signature tsd-kind-icon">timeouts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L25">lib/State.ts:25</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="times" class="tsd-anchor"></a>
-					<h3>times</h3>
-					<div class="tsd-signature tsd-kind-icon">times<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L24">lib/State.ts:24</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="wins" class="tsd-anchor"></a>
-					<h3>wins</h3>
-					<div class="tsd-signature tsd-kind-icon">wins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L23">lib/State.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L7">lib/Session.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -191,45 +157,64 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getstats" class="tsd-anchor"></a>
-					<h3>get<wbr>Stats</h3>
+					<a name="playertokens" class="tsd-anchor"></a>
+					<h3>player<wbr>Tokens</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Stats<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_state_.stats.html" class="tsd-signature-type">Stats</a></li>
+						<li class="tsd-signature tsd-kind-icon">player<wbr>Tokens<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L62">lib/State.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L9">lib/Session.ts:9</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get some useful stats from the current game state</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_lib_state_.stats.html" class="tsd-signature-type">Stats</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="printstate" class="tsd-anchor"></a>
-					<h3>print<wbr>State</h3>
+					<a name="registerhandler" class="tsd-anchor"></a>
+					<h3>register<wbr>Handler</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">print<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Handler<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/State.ts#L38">lib/State.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L13">lib/Session.ts:13</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Prints the current state to the console</p>
-								</div>
-							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>index: <span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span></h5>
+								</li>
+								<li>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>handler: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="terminate" class="tsd-anchor"></a>
+					<h3>terminate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">terminate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Session.ts#L18">lib/Session.ts:18</a></li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -257,13 +242,13 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_player_.html">"lib/<wbr>Player"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_lib_session_.html">"lib/<wbr>Session"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_state_.html">"lib/<wbr>State"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -285,39 +270,30 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_lib_state_.state.html" class="tsd-kind-icon">State</a>
+						<a href="_lib_session_.session.html" class="tsd-kind-icon">Session</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_lib_session_.session.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_lib_session_.session.html#handlers" class="tsd-kind-icon">handlers</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#games" class="tsd-kind-icon">games</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#ties" class="tsd-kind-icon">ties</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#timeouts" class="tsd-kind-icon">timeouts</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#times" class="tsd-kind-icon">times</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#wins" class="tsd-kind-icon">wins</a>
+								<a href="_lib_session_.session.html#players" class="tsd-kind-icon">players</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#getstats" class="tsd-kind-icon">get<wbr>Stats</a>
+								<a href="_lib_session_.session.html#playertokens" class="tsd-kind-icon">player<wbr>Tokens</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_lib_state_.state.html#printstate" class="tsd-kind-icon">print<wbr>State</a>
+								<a href="_lib_session_.session.html#registerhandler" class="tsd-kind-icon">register<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_lib_session_.session.html#terminate" class="tsd-kind-icon">terminate</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_lib_state_.stats.html" class="tsd-kind-icon">Stats</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

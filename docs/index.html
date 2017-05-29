@@ -69,9 +69,9 @@
 					<p>Ultimate Tic Tac Toe Algorithm - Game Server</p>
 				</blockquote>
 				<p><a href="https://travis-ci.org/socialgorithm/ultimate-ttt-server"><img src="https://img.shields.io/travis/socialgorithm/ultimate-ttt-server.svg" alt="Travis"></a>
-					<a href="https://www.npmjs.com/package/uttt"><img src="https://img.shields.io/npm/v/uttt.svg" alt="npm"></a>
+					<a href="https://www.npmjs.com/package/@socialgorithm/uttt"><img src="https://img.shields.io/npm/v/@socialgorithm/uttt.svg" alt="npm"></a>
 					<a href="https://coveralls.io/github/socialgorithm/ultimate-ttt-server?branch=master"><img src="https://coveralls.io/repos/github/socialgorithm/ultimate-ttt-server/badge.svg?branch=master" alt="Coverage Status"></a>
-				<a href="https://www.npmjs.com/package/uttt"><img src="https://img.shields.io/npm/l/uttt.svg" alt="npm"></a></p>
+				<a href="https://www.npmjs.com/package/@socialgorithm/uttt"><img src="https://img.shields.io/npm/l/@socialgorithm/uttt.svg" alt="npm"></a></p>
 				<p>This is a system intended for games &amp; hackathons mainly, for teams to write their own bot and compete against other bots.</p>
 				<p>They will be playing games of <a href="https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/">&quot;Ultimate Tic Tac Toe&quot;</a>, which provides a great opportunity for learning, predicting moves...</p>
 				<h2 id="getting-started">Getting started</h2>
@@ -81,12 +81,7 @@
 				<p>When deploying, choose any available App Name (or let Heroku decide for you), and click on Deploy. Once it&#39;s finished browse to <code>https://{app-name}.herokuapp.com</code> and you should see the server welcome message.</p>
 				<p>If you open our <a href="https://uttt.socialgorithm.org">web client</a>, you can then connect it to the server by clicking on &quot;Connect&quot; and entering <code>https://{app-name}.herokuapp.com</code> as the server host.</p>
 				<h3 id="install-locally">Install locally</h3>
-				<pre><code class="lang-bash"> $ npm install -g uttt
-</code></pre>
-				<p>Alternatively, clone this repository, cd into it, and run <code>npm link</code> to make the executable available:</p>
-				<pre><code class="lang-bash">$ git <span class="hljs-built_in">clone</span> git@github.com:aurbano/ultimate-ttt-server.git
-$ <span class="hljs-built_in">cd</span> ultimate-ttt-server
-$ npm link
+				<pre><code class="lang-bash"> $ npm install -g @socialgorithm/uttt
 </code></pre>
 				<h3 id="run-in-online-mode">Run in online mode</h3>
 				<p>By default, the server will start in online mode and listen for players on port <code>3141</code>.
@@ -125,6 +120,7 @@ Synopsis
 				</ul>
 				<p>The server uses the <a href="https://github.com/aurbano/ultimate-ttt"><code>ultimate-ttt</code></a> Nodejs implementation of the game to validate and verify game states.</p>
 				<p>If you&#39;re developing a client in JavaScript you can also use that package to maintain your local state easily.</p>
+				<h2 id="-developer-docs-https-socialgorithm-org-ultimate-ttt-server-"><a href="https://socialgorithm.org/ultimate-ttt-server/">Developer Docs</a></h2>
 				<h2 id="roadmap">Roadmap</h2>
 				<ul>
 					<li><del>Execute X number of games and display stats</del></li>
@@ -156,13 +152,28 @@ Synopsis
 						<a href="modules/_lib_onlineserver_.html">"lib/<wbr>Online<wbr>Server"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="modules/_lib_player_.html">"lib/<wbr>Player"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_lib_session_.html">"lib/<wbr>Session"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="modules/_lib_state_.html">"lib/<wbr>State"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_lib_tournament_.html">"lib/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_lib_funcs_.html">"lib/funcs"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_lib_input_.html">"lib/input"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_standalone_.html">"standalone"</a>
 					</li>
 				</ul>
 			</nav>

@@ -86,6 +86,12 @@
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_input_.html#sections" class="tsd-kind-icon">sections</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="_lib_input_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a></li>
+							</ul>
+						</section>
 					</div>
 				</section>
 			</section>
@@ -97,7 +103,7 @@
 					<div class="tsd-signature tsd-kind-icon">command<wbr>Line<wbr>Args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;command-line-args&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/input.ts#L1">lib/input.ts:1</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L1">lib/input.ts:1</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -107,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">get<wbr>Usage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;command-line-usage&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/input.ts#L2">lib/input.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L2">lib/input.ts:2</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -117,17 +123,17 @@
 					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;../../package.json&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/input.ts#L3">lib/input.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L3">lib/input.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="optiondefinitions" class="tsd-anchor"></a>
 					<h3>option<wbr>Definitions</h3>
-					<div class="tsd-signature tsd-kind-icon">option<wbr>Definitions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{name: &#x27;verbose&#x27;,description: &#x27;The input to process.&#x27;},{name: &#x27;version&#x27;,alias: &#x27;v&#x27;,description: &#x27;Display the server version&#x27;},{name: &#x27;port&#x27;,alias: &#x27;p&#x27;,typeLabel: &#x27;[underline]{3141}&#x27;,description: &#x27;Port on which the server should be started (defaults to 3141)&#x27;},{name: &#x27;gui&#x27;,alias: &#x27;u&#x27;,description: &#x27;Display a fancy GUI in the terminal (only available in online mode)&#x27;},{name: &#x27;games&#x27;,alias: &#x27;g&#x27;,typeLabel: &#x27;[underline]{1000}&#x27;,description: &#x27;Number of games to play, defaults to 1000&#x27;},{name: &#x27;timeout&#x27;,alias: &#x27;t&#x27;,typeLabel: &#x27;[underline]{100}&#x27;,description: &#x27;Milliseconds after which a player loses (defaults to 100)&#x27;},{name: &#x27;help&#x27;,alias: &#x27;h&#x27;,description: &#x27;Print this guide&#x27;}]</span></div>
+					<div class="tsd-signature tsd-kind-icon">option<wbr>Definitions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{name: &#x27;verbose&#x27;,type: Boolean,description: &#x27;The input to process.&#x27;},{name: &#x27;version&#x27;,alias: &#x27;v&#x27;,type: Boolean,description: &#x27;Display the server version&#x27;},{name: &#x27;port&#x27;,alias: &#x27;p&#x27;,type: Number,defaultValue: DEFAULT_OPTIONS.port,typeLabel: &#x27;[underline]{3141}&#x27;,description: &#x27;Port on which the server should be started (defaults to 3141)&#x27;},{name: &#x27;gui&#x27;,alias: &#x27;u&#x27;,type: Boolean,description: &#x27;Display a fancy GUI in the terminal (only available in online mode)&#x27;},{name: &#x27;games&#x27;,alias: &#x27;g&#x27;,type: Number,defaultValue: DEFAULT_OPTIONS.games,typeLabel: &#x27;[underline]{100}&#x27;,description: &#x27;Number of games to play, defaults to 100&#x27;},{name: &#x27;timeout&#x27;,alias: &#x27;t&#x27;,type: Number,defaultValue: DEFAULT_OPTIONS.timeout,typeLabel: &#x27;[underline]{100}&#x27;,description: &#x27;Milliseconds after which a player loses (defaults to 100)&#x27;},{name: &#x27;help&#x27;,alias: &#x27;h&#x27;,type: Boolean,description: &#x27;Print this guide&#x27;}]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/input.ts#L20">lib/input.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L26">lib/input.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -137,9 +143,52 @@
 					<div class="tsd-signature tsd-kind-icon">sections<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{header: &#x27;uttt&#x27;,content: &#x27;Ultimate Tic Tac Toe - Game Server&#x27;},{header: &#x27;Options&#x27;,optionList: optionDefinitions},{header: &#x27;Synopsis&#x27;,content: [&#x27;$ uttt --gui&#x27;,&#x27;$ uttt --games 100&#x27;,&#x27;$ uttt --port 5000&#x27;,&#x27;$ uttt [bold]{--help}&#x27;]}]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/9ae7638/src/lib/input.ts#L60">lib/input.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L76">lib/input.ts:76</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module">
+					<a name="default_options" class="tsd-anchor"></a>
+					<h3>DEFAULT_<wbr>OPTIONS</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>OPTIONS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L20">lib/input.ts:20</a></li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="default_options.games" class="tsd-anchor"></a>
+						<h3>games</h3>
+						<div class="tsd-signature tsd-kind-icon">games<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;process.env.TTT_GAMES || 100</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L23">lib/input.ts:23</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="default_options.port" class="tsd-anchor"></a>
+						<h3>port</h3>
+						<div class="tsd-signature tsd-kind-icon">port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;process.env.PORT || 3141</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L21">lib/input.ts:21</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="default_options.timeout" class="tsd-anchor"></a>
+						<h3>timeout</h3>
+						<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;process.env.TTT_TIMEOUT || 100</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L22">lib/input.ts:22</a></li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -162,13 +211,28 @@
 						<a href="_lib_onlineserver_.html">"lib/<wbr>Online<wbr>Server"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_lib_player_.html">"lib/<wbr>Player"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_lib_session_.html">"lib/<wbr>Session"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_lib_state_.html">"lib/<wbr>State"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_lib_tournament_.html">"lib/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_lib_funcs_.html">"lib/funcs"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_lib_input_.html">"lib/input"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_standalone_.html">"standalone"</a>
 					</li>
 				</ul>
 			</nav>
@@ -191,6 +255,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_lib_input_.html#sections" class="tsd-kind-icon">sections</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
+						<a href="_lib_input_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
 					</li>
 				</ul>
 			</nav>
