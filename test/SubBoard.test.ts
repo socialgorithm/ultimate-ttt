@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import SubBoard from '../src/SubBoard';
-import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE} from '../src/model/constants';
+import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE, UNPLAYED} from '../src/model/constants';
 
 const playerPairs = [['player 0', ME], ['player 1', OPPONENT]] as [string, PlayerNumber][];
 const coordinates = [0,1,2].map(x => [0,1,2].map(y => [x, y] as [number, number])).reduce((a, b) => a.concat(b), []);
@@ -39,7 +39,7 @@ describe('SubBoard', () => {
 
     it('will correctly populate the board', () => {
       coordinates.forEach(([row, col]) => {
-        expect(subject.board[row][col].player).to.equal(-1);
+        expect(subject.board[row][col].player).to.equal(UNPLAYED);
       });
     });
 
@@ -53,7 +53,7 @@ describe('SubBoard', () => {
         subject = subject.move(player, sampleMove);
         coordinates.forEach(([row, col]) => {
           const isTarget = row == sampleMove[0] && col == sampleMove[1];
-          expect(subject.board[row][col].player).to.equal(isTarget ? player : -1);
+          expect(subject.board[row][col].player).to.equal(isTarget ? player : UNPLAYED);
         });
       });
 
