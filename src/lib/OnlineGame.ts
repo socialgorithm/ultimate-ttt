@@ -77,9 +77,7 @@ export default class OnlineGame {
 
         if (winner !== undefined && winner !== null && winner > RESULT_TIE) {
             this.state.wins[winner]++;
-            this.log('Player ' + winner + ' won')
         } else {
-            this.log('They tied!');
             this.state.ties++;
         }
 

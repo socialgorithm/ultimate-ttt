@@ -162,7 +162,7 @@ export default class GUI {
         const gameUI: GameUI = {
             box: blessed.box({
                 parent: this.gameArea,
-                top: 2 + (this.games.length - 1) * height,
+                top: 3 + (this.games.length - 1) * height,
                 left: 0,
                 width: '100%-2',
                 height: height,
@@ -218,7 +218,7 @@ export default class GUI {
         this.gameArea.render();
         this.render();
 
-        return this.games.push(gameUI);
+        return this.games.push(gameUI) - 1;
     }
 
     /**
@@ -230,6 +230,7 @@ export default class GUI {
         if (this.games[gameIndex]) {
             this.games[gameIndex].progressBar.setProgress(progress);
             this.games[gameIndex].progressBar.render();
+            this.games[gameIndex].box.render();
             this.render();
         }
     }

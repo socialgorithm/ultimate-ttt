@@ -40,10 +40,8 @@ var OnlineGame = (function () {
         this.state.times.push(funcs.convertExecTime(hrend[1]));
         if (winner !== undefined && winner !== null && winner > constants_1.RESULT_TIE) {
             this.state.wins[winner]++;
-            this.log('Player ' + winner + ' won');
         }
         else {
-            this.log('They tied!');
             this.state.ties++;
         }
         this.firstPlayer = this.session.players[this.firstPlayer.getIndexInSession() === 1 ? 0 : 1];
