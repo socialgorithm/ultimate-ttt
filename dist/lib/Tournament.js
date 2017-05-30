@@ -42,11 +42,12 @@ var TournamentProfile = (function () {
 }());
 exports.TournamentProfile = TournamentProfile;
 var Tournament = (function () {
-    function Tournament(name, socketServer, participants, ui) {
+    function Tournament(name, socketServer, participants, options, ui) {
         var _this = this;
         this.name = name;
         this.socketServer = socketServer;
         this.participants = participants;
+        this.options = options;
         this.ui = ui;
         this.started = false;
         this.profiles = this.participants.map(function (p) { return new TournamentProfile(_this, p); });
@@ -77,7 +78,6 @@ var Tournament = (function () {
         }
     };
     Tournament.prototype.startSession = function (session, settings) {
-        if (settings === void 0) { settings = {}; }
         this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
         var game = new OnlineGame_1["default"](this, session, this.socketServer, this.ui, settings);
         session.players.forEach(function (player) {
@@ -85,12 +85,13 @@ var Tournament = (function () {
         });
         session.players.forEach(function (player, index) {
             session.registerHandler(index, 'disconnect', function () {
-                game.handleGameEnd(player.otherPlayerInSession(), true);
+                game.handleGameEnd(player.otherPlayerInSession().getIndexInSession(), true);
             });
             session.registerHandler(index, 'game', game.handlePlayerMove(player));
         });
         game.playGame();
         this.stats.players[session.players[0].token][session.players[1].token].started = true;
+        this.stats.players[session.players[1].token][session.players[0].token].started = true;
         this.sendUpdate();
     };
     Tournament.prototype.endSession = function (session) {
@@ -103,7 +104,7 @@ var Tournament = (function () {
         this.stats.players[session.players[0].token][session.players[1].token].finished = true;
         this.stats.players[session.players[1].token][session.players[0].token].finished = true;
         if (session.state && session.stats) {
-            console.log('updating stats between ' + session.players[0] + ' and ' + session.players[1]);
+            this.log('Updating stats between ' + session.players[0].token + ' and ' + session.players[1].token + ' ties: ' + session.state.ties);
             this.stats.players[session.players[0].token][session.players[1].token].state = session.state;
             this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
             var state = session.state;
@@ -142,7 +143,7 @@ var Tournament = (function () {
                 }
                 if (profile.isPlaying()) {
                     var session = new Session_1["default"]([profile.player, profile.currentOpponent().player]);
-                    this.startSession(session);
+                    this.startSession(session, this.options);
                 }
                 else if (this.leftToPlay(profile) === 0) {
                     profile.markAsComplete();
@@ -158,8 +159,18 @@ var Tournament = (function () {
     };
     Tournament.prototype.playerIsDone = function (profile) {
         if (this.isFinished()) {
-            console.log('Tournament completed');
+            this.log('Tournament completed');
             this.sendUpdate();
+        }
+    };
+    Tournament.prototype.log = function (message, skipRender) {
+        if (skipRender === void 0) { skipRender = false; }
+        var time = (new Date()).toTimeString().substr(0, 5);
+        if (this.ui) {
+            this.ui.log(message, skipRender);
+        }
+        else {
+            console.log(time, message);
         }
     };
     return Tournament;

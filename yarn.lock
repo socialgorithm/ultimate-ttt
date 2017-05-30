@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@socialgorithm/ultimate-ttt@^4.18.0":
-  version "4.18.0"
-  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.18.0.tgz#0408fa82935fd2f6c5f9ebcd19f50f66b3ca79d4"
+"@socialgorithm/ultimate-ttt@^4.19.0":
+  version "4.19.0"
+  resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.19.0.tgz#48e59d832237b4c90537cc25c7d95b018eda1aec"
 
 "@types/chai@^3.5.2":
   version "3.5.2"
@@ -452,9 +452,9 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-command-line-args@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.5.tgz#c7beccd6641f525ed6f292e17084ab3231b301be"
+command-line-args@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/command-line-args/-/command-line-args-4.0.6.tgz#0ff87a1dd159890dcaeb2a005abdae71e55059fc"
   dependencies:
     array-back "^1.0.4"
     find-replace "^1.0.3"
@@ -2794,9 +2794,9 @@ typescript@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.2.tgz#f0f045e196f69a72f06b25fd3bd39d01c3ce9984"
 
-typescript@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.3.tgz#9639f3c3b40148e8ca97fe08a51dd1891bb6be22"
+typescript@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.4.tgz#3d38321828231e434f287514959c37a82b629f42"
 
 typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"

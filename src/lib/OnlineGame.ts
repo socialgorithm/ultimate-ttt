@@ -1,5 +1,5 @@
 import UTTT from '@socialgorithm/ultimate-ttt';
-import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 import State from "./State";
 import {Options} from "./input";
@@ -64,7 +64,6 @@ export default class OnlineGame {
         this.playerZero().deliverAction('init');
         this.playerOne().deliverAction('init');
         this.firstPlayer.deliverAction('move');
-        this.firstPlayer.otherPlayerInSession().deliverAction('waiting');
     }
 
     /**
@@ -72,13 +71,15 @@ export default class OnlineGame {
      * @param winner Game's winner, used to update the state
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
-    public handleGameEnd(winner: Player, playerDisconnected: boolean = false) {
+    public handleGameEnd(winner: PlayerOrTie, playerDisconnected: boolean = false) {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
 
-        if (winner !== undefined && winner !== null) {
-            this.state.wins[winner.getIndexInSession()]++;
+        if (winner !== undefined && winner !== null && winner > RESULT_TIE) {
+            this.state.wins[winner]++;
+            this.log('Player ' + winner + ' won')
         } else {
+            this.log('They tied!');
             this.state.ties++;
         }
 
@@ -133,25 +134,28 @@ export default class OnlineGame {
         return (data: string) => {
             if (this.currentPlayer !== player) {
                 this.log(`Game ${this.state.games}: Player ${player.token} played out of time (it was ${this.currentPlayer.token}'s turn)`);
-                this.handleGameEnd(this.currentPlayer);
+                this.handleGameEnd(this.currentPlayer.getIndexInSession());
                 return;
             }
             if (data === 'fail') {
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
+                // this is weird and probably won't ever happen
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
                 return;
             }
             try {
                 const coords = this.parseMove(data);
                 this.game = this.game.move(this.currentPlayer.getIndexInSession(), coords.board, coords.move);
-                if (this.game.isFinished()) {
-                    this.handleGameEnd(this.switchPlayer(this.session.players[this.game.winner]));
-                    return;
-                }
+
                 this.currentPlayer = this.switchPlayer(this.currentPlayer);
                 this.currentPlayer.deliverAction(`opponent ${this.writeMove(coords)}`);
+
+                if (this.game.isFinished()) {
+                    this.handleGameEnd(this.game.winner);
+                    return;
+                }
             } catch (e) {
                 this.log(`Game ${this.state.games}: Player ${this.currentPlayer.token} errored: ${e.message}`);
-                this.handleGameEnd(this.switchPlayer(this.currentPlayer));
+                this.handleGameEnd(this.switchPlayer(this.currentPlayer).getIndexInSession());
             }
         };
     }
@@ -172,7 +176,7 @@ export default class OnlineGame {
 
         const stats = this.state.getStats();
 
-        if (stats.winner === -1) {
+        if (stats.winner === RESULT_TIE) {
             this.session.players.forEach(p => p.deliverAction('end tie'));
         } else {
             this.session.players[stats.winner].deliverAction('end win');
@@ -184,15 +188,15 @@ export default class OnlineGame {
 
         this.socket.emitPayload('stats', 'session-end', { players: this.session.playerTokens(), stats: stats });
 
-        let winner: Player = undefined;
-        if (stats.winner > -1) {
-            winner = this.session.players[stats.winner];
+        let winnerStr: string = 'Tie!';
+        if (stats.winner > RESULT_TIE) {
+            winnerStr = this.session.players[stats.winner].token;
         }
 
         if (this.ui) {
-            this.ui.setGameEnd(this.gameIDForUI, winner.token, this.state);
+            this.ui.setGameEnd(this.gameIDForUI, winnerStr, this.state);
         } else {
-            this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}; ${winner ? `${winner.token} won` : 'the players tied'}`);
+            this.log(`Session ended between ${this.playerZero().token} and ${this.playerOne().token}; ${winnerStr}`);
         }
 
         this.tournament.endSession(this.session);

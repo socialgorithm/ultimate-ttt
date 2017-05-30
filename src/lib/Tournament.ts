@@ -61,7 +61,7 @@ export class Tournament {
     private started: boolean = false;
     private stats: TournamentStats;
 
-    constructor(public readonly name: string, private socketServer: SocketServer, public participants: Player[], private ui?: GUI) {
+    constructor(public readonly name: string, private socketServer: SocketServer, public participants: Player[], private options: Options, private ui?: GUI) {
         this.profiles = this.participants.map(p => new TournamentProfile(this, p));
         this.stats = {
             started: this.started,
@@ -93,7 +93,7 @@ export class Tournament {
         }
     }
 
-    private startSession(session: Session, settings: Options = {}): void {
+    private startSession(session: Session, settings: Options): void {
         this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
         const game = new OnlineGame(this, session, this.socketServer, this.ui, settings);
 
@@ -103,7 +103,7 @@ export class Tournament {
 
         session.players.forEach((player, index) => {
             session.registerHandler(index as 0|1, 'disconnect', () => {
-                game.handleGameEnd(player.otherPlayerInSession(), true);
+                game.handleGameEnd(player.otherPlayerInSession().getIndexInSession(), true);
             });
             session.registerHandler(index as 0|1, 'game', game.handlePlayerMove(player));
         });
@@ -111,6 +111,7 @@ export class Tournament {
         game.playGame();
 
         this.stats.players[session.players[0].token][session.players[1].token].started = true;
+        this.stats.players[session.players[1].token][session.players[0].token].started = true;
         this.sendUpdate();
     }
 
@@ -123,7 +124,7 @@ export class Tournament {
         this.stats.players[session.players[0].token][session.players[1].token].finished = true;
         this.stats.players[session.players[1].token][session.players[0].token].finished = true;
         if (session.state && session.stats) {
-            console.log('updating stats between ' + session.players[0] + ' and ' + session.players[1]);
+            this.log('Updating stats between ' + session.players[0].token + ' and ' + session.players[1].token + ' ties: ' + session.state.ties);
             // player 1 stats
             this.stats.players[session.players[0].token][session.players[1].token].state = session.state;
             this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
@@ -167,7 +168,7 @@ export class Tournament {
 
                 if (profile.isPlaying()) {
                     const session = new Session([profile.player, profile.currentOpponent().player]);
-                    this.startSession(session);
+                    this.startSession(session, this.options);
                 } else if (this.leftToPlay(profile) === 0) {
                     profile.markAsComplete();
                     this.complete++;
@@ -185,9 +186,23 @@ export class Tournament {
 
     private playerIsDone(profile: TournamentProfile) {
         if (this.isFinished()) {
-            console.log('Tournament completed');
+            this.log('Tournament completed');
             this.sendUpdate();
         }
     }
 
+    /**
+     * Log a message to the console or the GUI if it's enabled
+     * TODO inherit this from a shared parent class
+     * @param message
+     * @param skipRender only for GUI mode, set to true to avoid rerendering
+     */
+    private log(message: string, skipRender: boolean = false): void {
+        const time = (new Date()).toTimeString().substr(0,5);
+        if (this.ui) {
+            this.ui.log(message, skipRender);
+        } else {
+            console.log(time, message);
+        }
+    }
 }

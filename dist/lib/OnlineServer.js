@@ -30,8 +30,8 @@ var OnlineServer = (function () {
     }
     OnlineServer.prototype.onTournamentStart = function () {
         if (this.tournament === undefined || this.tournament.isFinished()) {
-            console.log('Starting tournament');
-            this.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, this.players.slice(), this.ui);
+            this.log('Starting tournament!');
+            this.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, this.players.slice(), this.options, this.ui);
             this.tournament.start();
         }
     };
@@ -40,7 +40,7 @@ var OnlineServer = (function () {
         player.deliverAction('waiting');
     };
     OnlineServer.prototype.onPlayerDisconnect = function (player) {
-        console.log('handle player disconnect on his active games');
+        this.log('Handle player disconnect on his active games');
     };
     OnlineServer.prototype.updateStats = function () {
         var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };

@@ -1,3 +1,4 @@
+import { Options } from './input';
 import { SocketServer } from './SocketServer';
 import Session from './Session';
 import { Player } from './Player';
@@ -23,14 +24,15 @@ export declare class Tournament {
     readonly name: string;
     private socketServer;
     participants: Player[];
+    private options;
     private ui;
     private profiles;
     private complete;
     private started;
     private stats;
-    constructor(name: string, socketServer: SocketServer, participants: Player[], ui?: GUI);
+    constructor(name: string, socketServer: SocketServer, participants: Player[], options: Options, ui?: GUI);
     start(): void;
-    private startSession(session, settings?);
+    private startSession(session, settings);
     endSession(session: Session): void;
     isFinished(): boolean;
     private profileByPlayer(player);
@@ -38,4 +40,5 @@ export declare class Tournament {
     private flush();
     private sendUpdate();
     private playerIsDone(profile);
+    private log(message, skipRender?);
 }

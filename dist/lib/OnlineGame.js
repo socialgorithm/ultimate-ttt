@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var ultimate_ttt_1 = require("@socialgorithm/ultimate-ttt");
+var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var State_1 = require("./State");
 var funcs = require("./funcs");
 var OnlineGame = (function () {
@@ -32,16 +33,17 @@ var OnlineGame = (function () {
         this.playerZero().deliverAction('init');
         this.playerOne().deliverAction('init');
         this.firstPlayer.deliverAction('move');
-        this.firstPlayer.otherPlayerInSession().deliverAction('waiting');
     };
     OnlineGame.prototype.handleGameEnd = function (winner, playerDisconnected) {
         if (playerDisconnected === void 0) { playerDisconnected = false; }
         var hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
-        if (winner !== undefined && winner !== null) {
-            this.state.wins[winner.getIndexInSession()]++;
+        if (winner !== undefined && winner !== null && winner > constants_1.RESULT_TIE) {
+            this.state.wins[winner]++;
+            this.log('Player ' + winner + ' won');
         }
         else {
+            this.log('They tied!');
             this.state.ties++;
         }
         this.firstPlayer = this.session.players[this.firstPlayer.getIndexInSession() === 1 ? 0 : 1];
@@ -70,26 +72,26 @@ var OnlineGame = (function () {
         return function (data) {
             if (_this.currentPlayer !== player) {
                 _this.log("Game " + _this.state.games + ": Player " + player.token + " played out of time (it was " + _this.currentPlayer.token + "'s turn)");
-                _this.handleGameEnd(_this.currentPlayer);
+                _this.handleGameEnd(_this.currentPlayer.getIndexInSession());
                 return;
             }
             if (data === 'fail') {
-                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer));
+                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer).getIndexInSession());
                 return;
             }
             try {
                 var coords = _this.parseMove(data);
                 _this.game = _this.game.move(_this.currentPlayer.getIndexInSession(), coords.board, coords.move);
-                if (_this.game.isFinished()) {
-                    _this.handleGameEnd(_this.switchPlayer(_this.session.players[_this.game.winner]));
-                    return;
-                }
                 _this.currentPlayer = _this.switchPlayer(_this.currentPlayer);
                 _this.currentPlayer.deliverAction("opponent " + _this.writeMove(coords));
+                if (_this.game.isFinished()) {
+                    _this.handleGameEnd(_this.game.winner);
+                    return;
+                }
             }
             catch (e) {
                 _this.log("Game " + _this.state.games + ": Player " + _this.currentPlayer.token + " errored: " + e.message);
-                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer));
+                _this.handleGameEnd(_this.switchPlayer(_this.currentPlayer).getIndexInSession());
             }
         };
     };
@@ -99,7 +101,7 @@ var OnlineGame = (function () {
     OnlineGame.prototype.sessionEnd = function () {
         this.log("Finished games between \"" + this.playerZero().token + "\" and \"" + this.playerOne().token + "\"");
         var stats = this.state.getStats();
-        if (stats.winner === -1) {
+        if (stats.winner === constants_1.RESULT_TIE) {
             this.session.players.forEach(function (p) { return p.deliverAction('end tie'); });
         }
         else {
@@ -109,15 +111,15 @@ var OnlineGame = (function () {
         this.session.state = this.state;
         this.session.stats = stats;
         this.socket.emitPayload('stats', 'session-end', { players: this.session.playerTokens(), stats: stats });
-        var winner = undefined;
-        if (stats.winner > -1) {
-            winner = this.session.players[stats.winner];
+        var winnerStr = 'Tie!';
+        if (stats.winner > constants_1.RESULT_TIE) {
+            winnerStr = this.session.players[stats.winner].token;
         }
         if (this.ui) {
-            this.ui.setGameEnd(this.gameIDForUI, winner.token, this.state);
+            this.ui.setGameEnd(this.gameIDForUI, winnerStr, this.state);
         }
         else {
-            this.log("Session ended between " + this.playerZero().token + " and " + this.playerOne().token + "; " + (winner ? winner.token + " won" : 'the players tied'));
+            this.log("Session ended between " + this.playerZero().token + " and " + this.playerOne().token + "; " + winnerStr);
         }
         this.tournament.endSession(this.session);
         this.active = false;

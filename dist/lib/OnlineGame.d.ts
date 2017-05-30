@@ -1,3 +1,4 @@
+import { PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import { Options } from "./input";
 import GUI from "./GUI";
 import { SocketServer } from './SocketServer';
@@ -20,7 +21,7 @@ export default class OnlineGame {
     private active;
     constructor(tournament: Tournament, session: Session, socket: SocketServer, ui: GUI, options: Options);
     playGame(): void;
-    handleGameEnd(winner: Player, playerDisconnected?: boolean): void;
+    handleGameEnd(winner: PlayerOrTie, playerDisconnected?: boolean): void;
     private parseMove(data);
     private writeMove(coords);
     handlePlayerMove(player: Player): (data: string) => void;

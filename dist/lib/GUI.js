@@ -155,6 +155,7 @@ var GUI = (function () {
     GUI.prototype.setGameProgress = function (gameIndex, progress) {
         if (this.games[gameIndex]) {
             this.games[gameIndex].progressBar.setProgress(progress);
+            this.games[gameIndex].progressBar.render();
             this.render();
         }
     };
@@ -191,6 +192,7 @@ var GUI = (function () {
                 '{yellow-fg}Max:{/yellow-fg} ' + stats.max + 'ms. ' +
                 '{yellow-fg}Min:{/yellow-fg} ' + stats.min + 'ms'
         }));
+        game.box.render();
         this.render();
     };
     GUI.prototype.log = function (message, skipRender) {

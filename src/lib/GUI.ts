@@ -229,6 +229,7 @@ export default class GUI {
     public setGameProgress(gameIndex: number, progress: number): void {
         if (this.games[gameIndex]) {
             this.games[gameIndex].progressBar.setProgress(progress);
+            this.games[gameIndex].progressBar.render();
             this.render();
         }
     }
@@ -275,6 +276,7 @@ export default class GUI {
             '{yellow-fg}Min:{/yellow-fg} ' + stats.min + 'ms'
         }));
 
+        game.box.render();
         this.render();
     }
 

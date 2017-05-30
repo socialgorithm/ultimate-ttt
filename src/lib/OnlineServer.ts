@@ -62,8 +62,8 @@ export default class OnlineServer {
 
   private onTournamentStart(): void {
     if (this.tournament === undefined || this.tournament.isFinished()) {
-      console.log('Starting tournament');
-      this.tournament = new Tournament('Tournament', this.socketServer, this.players.slice(), this.ui);
+      this.log('Starting tournament!');
+      this.tournament = new Tournament('Tournament', this.socketServer, this.players.slice(), this.options, this.ui);
       this.tournament.start();
     }
   }
@@ -74,7 +74,7 @@ export default class OnlineServer {
   }
 
   private onPlayerDisconnect(player: Player): void {
-    console.log('handle player disconnect on his active games');
+    this.log('Handle player disconnect on his active games');
   }
 
   private updateStats(): void {
