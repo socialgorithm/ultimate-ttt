@@ -7,13 +7,21 @@ export interface Stats {
     winPercentages?: Array<string>;
     tiePercentage?: string;
 }
-export default class State {
+export interface State {
+    games: number;
+    ties: number;
+    wins: Array<number>;
+    times: Array<number>;
+    timeouts: Array<number>;
+}
+export default class StateImpl implements State {
     games: number;
     ties: number;
     wins: Array<number>;
     times: Array<number>;
     timeouts: Array<number>;
     constructor();
+    toJSON(): State;
     printState(): void;
     getStats(): Stats;
 }

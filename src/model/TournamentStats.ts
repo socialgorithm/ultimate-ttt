@@ -1,10 +1,11 @@
-import {Stats} from "../lib/State";
+import State, {Stats} from "../lib/State";
 /**
  * Tournament Stats
  */
 export interface SessionInfo {
     started: boolean,
     finished: boolean,
+    state: State,
     stats: Stats,
 }
 

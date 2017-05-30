@@ -1,8 +1,9 @@
 import { Player } from './Player';
-import { Stats } from "./State";
+import State, { Stats } from "./State";
 export default class Session {
     players: [Player, Player];
     private handlers;
+    state: State;
     stats: Stats;
     constructor(players: [Player, Player]);
     playerTokens(): [string, string];

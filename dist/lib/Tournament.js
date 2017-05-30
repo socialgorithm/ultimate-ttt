@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var OnlineGame_1 = require("./OnlineGame");
 var Session_1 = require("./Session");
+var State_1 = require("./State");
 var TournamentProfile = (function () {
     function TournamentProfile(tournament, player) {
         this.tournament = tournament;
@@ -59,6 +60,7 @@ var Tournament = (function () {
                 _this.stats.players[playerA.token][playerB.token] = {
                     started: false,
                     finished: false,
+                    state: new State_1["default"](),
                     stats: null
                 };
             });
@@ -70,6 +72,7 @@ var Tournament = (function () {
     Tournament.prototype.start = function () {
         if (!this.started && !this.isFinished()) {
             this.started = true;
+            this.stats.started = true;
             this.flush();
         }
     };
@@ -98,7 +101,16 @@ var Tournament = (function () {
             profile.stopPlaying();
         });
         this.stats.players[session.players[0].token][session.players[1].token].finished = true;
-        this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
+        this.stats.players[session.players[1].token][session.players[0].token].finished = true;
+        if (session.state && session.stats) {
+            console.log('updating stats between ' + session.players[0] + ' and ' + session.players[1]);
+            this.stats.players[session.players[0].token][session.players[1].token].state = session.state;
+            this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
+            var state = session.state;
+            state.wins = [state.wins[1], state.wins[0]];
+            this.stats.players[session.players[1].token][session.players[0].token].state = session.state;
+            this.stats.players[session.players[1].token][session.players[0].token].stats = state.getStats();
+        }
         this.flush();
     };
     Tournament.prototype.isFinished = function () {
@@ -147,6 +159,7 @@ var Tournament = (function () {
     Tournament.prototype.playerIsDone = function (profile) {
         if (this.isFinished()) {
             console.log('Tournament completed');
+            this.sendUpdate();
         }
     };
     return Tournament;

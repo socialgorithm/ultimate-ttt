@@ -5,6 +5,7 @@ import Session from './Session';
 import { Player } from './Player';
 import GUI from './GUI';
 import {TournamentStats} from "../model/TournamentStats";
+import StateImpl from "./State";
 
 export class TournamentProfile {
 
@@ -73,6 +74,7 @@ export class Tournament {
                     this.stats.players[playerA.token][playerB.token] = {
                         started: false,
                         finished: false,
+                        state: new StateImpl(),
                         stats: null,
                     };
                 }
@@ -86,6 +88,7 @@ export class Tournament {
     start() {
         if (!this.started && !this.isFinished()) {
             this.started = true;
+            this.stats.started = true;
             this.flush();
         }
     }
@@ -118,7 +121,18 @@ export class Tournament {
             profile.stopPlaying();
         });
         this.stats.players[session.players[0].token][session.players[1].token].finished = true;
-        this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
+        this.stats.players[session.players[1].token][session.players[0].token].finished = true;
+        if (session.state && session.stats) {
+            console.log('updating stats between ' + session.players[0] + ' and ' + session.players[1]);
+            // player 1 stats
+            this.stats.players[session.players[0].token][session.players[1].token].state = session.state;
+            this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
+            // invert them for the other player
+            const state = session.state;
+            state.wins = [state.wins[1], state.wins[0]];
+            this.stats.players[session.players[1].token][session.players[0].token].state = session.state;
+            this.stats.players[session.players[1].token][session.players[0].token].stats = state.getStats();
+        }
         this.flush();
     }
 
@@ -172,6 +186,7 @@ export class Tournament {
     private playerIsDone(profile: TournamentProfile) {
         if (this.isFinished()) {
             console.log('Tournament completed');
+            this.sendUpdate();
         }
     }
 

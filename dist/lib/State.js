@@ -1,15 +1,24 @@
 "use strict";
 exports.__esModule = true;
 var funcs = require("./funcs");
-var State = (function () {
-    function State() {
+var StateImpl = (function () {
+    function StateImpl() {
         this.games = 0;
         this.ties = 0;
         this.wins = [0, 0];
         this.times = [];
         this.timeouts = [0, 0];
     }
-    State.prototype.printState = function () {
+    StateImpl.prototype.toJSON = function () {
+        return {
+            games: this.games,
+            ties: this.ties,
+            wins: this.wins,
+            times: this.times,
+            timeouts: this.timeouts
+        };
+    };
+    StateImpl.prototype.printState = function () {
         var stats = this.getStats();
         console.log('');
         console.log('Games played: %d', this.games);
@@ -27,7 +36,7 @@ var State = (function () {
         console.log('Max game: %dms', stats.max);
         console.log('Min game: %dms', stats.min);
     };
-    State.prototype.getStats = function () {
+    StateImpl.prototype.getStats = function () {
         var stats = {};
         if (this.wins[0] === this.wins[1]) {
             stats.winner = -1;
@@ -63,7 +72,7 @@ var State = (function () {
         }
         return stats;
     };
-    return State;
+    return StateImpl;
 }());
-exports["default"] = State;
+exports["default"] = StateImpl;
 //# sourceMappingURL=State.js.map

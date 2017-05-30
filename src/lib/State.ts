@@ -13,11 +13,19 @@ export interface Stats {
   tiePercentage?: string;
 }
 
+export interface State {
+  games: number;
+  ties: number;
+  wins: Array<number>;
+  times: Array<number>;
+  timeouts: Array<number>;
+}
+
 /**
  * Games State holder
  * Used to track the state across multiple games between two players
  */
-export default class State {
+export default class StateImpl implements State {
   public games: number;
   public ties: number;
   public wins: Array<number>;
@@ -30,6 +38,16 @@ export default class State {
     this.wins = [0, 0];
     this.times = [];
     this.timeouts = [0, 0];
+  }
+
+  public toJSON(): State {
+    return {
+      games: this.games,
+      ties: this.ties,
+      wins: this.wins,
+      times: this.times,
+      timeouts: this.timeouts,
+    };
   }
 
   /**
