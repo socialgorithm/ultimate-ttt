@@ -35,5 +35,6 @@ export declare class Tournament {
     private startSession(session, settings?);
     private leftToPlay(profile);
     private flush();
+    private sendUpdate();
     private playerIsDone(profile);
 }

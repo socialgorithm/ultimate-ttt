@@ -139,12 +139,17 @@ export class Tournament {
 
             }
         }
-        this.socketServer.emitPayload('tournament', 'update', { profiles: this.profiles });
+        this.sendUpdate();
+    }
+
+    private sendUpdate() {
+        const tournamentData = {};
+        this.socketServer.emitPayload('tournament', 'playerEnd', { started: this.started, data: tournamentData });
     }
 
     private playerIsDone(profile: TournamentProfile) {
         if (this.isFinished()) {
-            this.socketServer.emitPayload('tournament', 'playerEnd', { profiles: this.profiles, profile, });
+            this.sendUpdate();
             console.log('Tournament completed');
         }
     }

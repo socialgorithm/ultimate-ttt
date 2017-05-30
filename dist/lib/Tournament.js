@@ -121,11 +121,15 @@ var Tournament = (function () {
                 }
             }
         }
-        this.socketServer.emitPayload('tournament', 'update', { profiles: this.profiles });
+        this.sendUpdate();
+    };
+    Tournament.prototype.sendUpdate = function () {
+        var tournamentData = {};
+        this.socketServer.emitPayload('tournament', 'playerEnd', { started: this.started, data: tournamentData });
     };
     Tournament.prototype.playerIsDone = function (profile) {
         if (this.isFinished()) {
-            this.socketServer.emitPayload('tournament', 'playerEnd', { profiles: this.profiles, profile: profile });
+            this.sendUpdate();
             console.log('Tournament completed');
         }
     };
