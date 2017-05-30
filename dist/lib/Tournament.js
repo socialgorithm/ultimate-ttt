@@ -121,9 +121,11 @@ var Tournament = (function () {
                 }
             }
         }
+        this.socketServer.emitPayload('tournament', 'update', { profiles: this.profiles });
     };
     Tournament.prototype.playerIsDone = function (profile) {
         if (this.isFinished()) {
+            this.socketServer.emitPayload('tournament', 'playerEnd', { profiles: this.profiles, profile: profile });
             console.log('Tournament completed');
         }
     };

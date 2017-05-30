@@ -1,5 +1,4 @@
 import { Options } from './input';
-import OnlineServer from './OnlineServer';
 import OnlineGame from './OnlineGame';
 import { SocketServer } from './SocketServer';
 import Session from './Session';
@@ -140,10 +139,12 @@ export class Tournament {
 
             }
         }
+        this.socketServer.emitPayload('tournament', 'update', { profiles: this.profiles });
     }
 
     private playerIsDone(profile: TournamentProfile) {
         if (this.isFinished()) {
+            this.socketServer.emitPayload('tournament', 'playerEnd', { profiles: this.profiles, profile, });
             console.log('Tournament completed');
         }
     }
