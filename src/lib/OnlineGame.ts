@@ -179,6 +179,7 @@ export default class OnlineGame {
             this.session.players[1 - stats.winner].deliverAction('end lose');
         }
 
+        this.session.stats = stats;
 
         this.socket.emitPayload('stats', 'session-end', { players: this.session.playerTokens(), stats: stats });
 

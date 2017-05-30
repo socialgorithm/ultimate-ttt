@@ -4,6 +4,7 @@ import { SocketServer } from './SocketServer';
 import Session from './Session';
 import { Player } from './Player';
 import GUI from './GUI';
+import {TournamentStats} from "../model/TournamentStats";
 
 export class TournamentProfile {
 
@@ -57,9 +58,26 @@ export class Tournament {
     private profiles: TournamentProfile[];
     private complete: number;
     private started: boolean = false;
+    private stats: TournamentStats;
 
     constructor(public readonly name: string, private socketServer: SocketServer, public participants: Player[], private ui?: GUI) {
         this.profiles = this.participants.map(p => new TournamentProfile(this, p));
+        this.stats = {
+            started: this.started,
+            players: {},
+        };
+        this.participants.forEach((playerA) => {
+            this.stats.players[playerA.token] = {};
+            this.participants.forEach(
+                (playerB) => {
+                    this.stats.players[playerA.token][playerB.token] = {
+                        started: false,
+                        finished: false,
+                        stats: null,
+                    };
+                }
+            )
+        });
         this.complete = 0;
         this.started = false;
         this.flush();
@@ -72,23 +90,6 @@ export class Tournament {
         }
     }
 
-    endSession(session: Session): void {
-        session.terminate();
-        session.players.forEach(player => {
-            const profile = this.profileByPlayer(player);
-            profile.stopPlaying();
-        });
-        this.flush();
-    }
-
-    isFinished(): boolean {
-        return this.complete === this.profiles.length;
-    }
-
-    private profileByPlayer(player: Player): TournamentProfile {
-        return this.profiles.filter(p => p.player.token === player.token)[0];
-    }
-    
     private startSession(session: Session, settings: Options = {}): void {
         this.socketServer.emitPayload('stats', 'session-start', { players: session.playerTokens() });
         const game = new OnlineGame(this, session, this.socketServer, this.ui, settings);
@@ -105,6 +106,28 @@ export class Tournament {
         });
 
         game.playGame();
+
+        this.stats.players[session.players[0].token][session.players[1].token].started = true;
+        this.sendUpdate();
+    }
+
+    endSession(session: Session): void {
+        session.terminate();
+        session.players.forEach(player => {
+            const profile = this.profileByPlayer(player);
+            profile.stopPlaying();
+        });
+        this.stats.players[session.players[0].token][session.players[1].token].finished = true;
+        this.stats.players[session.players[0].token][session.players[1].token].stats = session.stats;
+        this.flush();
+    }
+
+    isFinished(): boolean {
+        return this.complete === this.profiles.length;
+    }
+
+    private profileByPlayer(player: Player): TournamentProfile {
+        return this.profiles.filter(p => p.player.token === player.token)[0];
     }
 
     private leftToPlay(profile: TournamentProfile): number {
@@ -143,13 +166,11 @@ export class Tournament {
     }
 
     private sendUpdate() {
-        const tournamentData = {};
-        this.socketServer.emitPayload('tournament', 'playerEnd', { started: this.started, data: tournamentData });
+        this.socketServer.emitPayload('tournament', 'stats', this.stats);
     }
 
     private playerIsDone(profile: TournamentProfile) {
         if (this.isFinished()) {
-            this.sendUpdate();
             console.log('Tournament completed');
         }
     }

@@ -27,12 +27,13 @@ export declare class Tournament {
     private profiles;
     private complete;
     private started;
+    private stats;
     constructor(name: string, socketServer: SocketServer, participants: Player[], ui?: GUI);
     start(): void;
+    private startSession(session, settings?);
     endSession(session: Session): void;
     isFinished(): boolean;
     private profileByPlayer(player);
-    private startSession(session, settings?);
     private leftToPlay(profile);
     private flush();
     private sendUpdate();

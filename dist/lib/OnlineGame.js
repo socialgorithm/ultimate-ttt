@@ -106,6 +106,7 @@ var OnlineGame = (function () {
             this.session.players[stats.winner].deliverAction('end win');
             this.session.players[1 - stats.winner].deliverAction('end lose');
         }
+        this.session.stats = stats;
         this.socket.emitPayload('stats', 'session-end', { players: this.session.playerTokens(), stats: stats });
         var winner = undefined;
         if (stats.winner > -1) {
