@@ -22,12 +22,12 @@ export default class OnlineGame {
     constructor(tournament: Tournament, session: Session, socket: SocketServer, ui: GUI, options: Options);
     playGame(): void;
     handleGameEnd(winner: PlayerOrTie, playerDisconnected?: boolean): void;
-    private parseMove(data);
-    private writeMove(coords);
+    private parseMove;
+    private writeMove;
     handlePlayerMove(player: Player): (data: string) => void;
-    private switchPlayer(player);
-    private sessionEnd();
-    private playerZero();
-    private playerOne();
-    private log(message, skipRender?);
+    private switchPlayer;
+    private sessionEnd;
+    private playerZero;
+    private playerOne;
+    private log;
 }

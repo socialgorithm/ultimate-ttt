@@ -6,11 +6,11 @@ export default class OnlineServer {
     private socketServer;
     private tournament;
     constructor(options: Options);
-    private onTournamentStart();
-    private onPlayerConnect(player);
-    private onPlayerDisconnect(player);
-    private updateStats();
-    private addPlayer(player);
-    private removePlayer(player);
-    private log(message, skipRender?);
+    private onTournamentStart;
+    private onPlayerConnect;
+    private onPlayerDisconnect;
+    private updateStats;
+    private addPlayer;
+    private removePlayer;
+    private log;
 }

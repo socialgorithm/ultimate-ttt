@@ -4,9 +4,9 @@ var commandLineArgs = require('command-line-args');
 var getUsage = require('command-line-usage');
 var info = require('../../package.json');
 exports.DEFAULT_OPTIONS = {
-    port: process.env.PORT || 3141,
-    timeout: process.env.TTT_TIMEOUT || 100,
-    games: process.env.TTT_GAMES || 100
+    port: parseInt(process.env.PORT, 10) || 3141,
+    timeout: parseInt(process.env.TTT_TIMEOUT, 10) || 100,
+    games: parseInt(process.env.TTT_GAMES, 10) || 100
 };
 var optionDefinitions = [
     {
@@ -76,7 +76,7 @@ var sections = [
         ]
     }
 ];
-exports["default"] = function () {
+exports["default"] = (function () {
     var options = commandLineArgs(optionDefinitions);
     Object.keys(options).map(function (key) {
         if (options[key] === null) {
@@ -97,5 +97,5 @@ exports["default"] = function () {
     options.host = options.host || 'localhost';
     options.port = options.port || 3141;
     return options;
-};
+});
 //# sourceMappingURL=input.js.map

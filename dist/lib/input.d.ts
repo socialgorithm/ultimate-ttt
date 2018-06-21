@@ -9,5 +9,5 @@ export interface Options {
     help?: number;
 }
 export declare const DEFAULT_OPTIONS: Options;
-declare var _default: () => Options;
+declare const _default: () => Options;
 export default _default;

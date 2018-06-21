@@ -18,9 +18,9 @@ export interface Options {
 }
 
 export const DEFAULT_OPTIONS: Options = {
-  port: process.env.PORT || 3141,
-  timeout: process.env.TTT_TIMEOUT || 100,
-  games: process.env.TTT_GAMES || 100,
+  port: parseInt(process.env.PORT, 10) || 3141,
+  timeout: parseInt(process.env.TTT_TIMEOUT, 10) || 100,
+  games: parseInt(process.env.TTT_GAMES, 10) || 100,
 };
 
 const optionDefinitions = [

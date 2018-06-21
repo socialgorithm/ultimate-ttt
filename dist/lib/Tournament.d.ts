@@ -25,20 +25,20 @@ export declare class Tournament {
     private socketServer;
     participants: Player[];
     private options;
-    private ui;
+    private ui?;
     private profiles;
     private complete;
     private started;
     private stats;
     constructor(name: string, socketServer: SocketServer, participants: Player[], options: Options, ui?: GUI);
     start(): void;
-    private startSession(session, settings);
+    private startSession;
     endSession(session: Session): void;
     isFinished(): boolean;
-    private profileByPlayer(player);
-    private leftToPlay(profile);
-    private flush();
-    private sendUpdate();
-    private playerIsDone(profile);
-    private log(message, skipRender?);
+    private profileByPlayer;
+    private leftToPlay;
+    private flush;
+    private sendUpdate;
+    private playerIsDone;
+    private log;
 }

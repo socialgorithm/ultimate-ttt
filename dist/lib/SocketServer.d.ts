@@ -21,5 +21,5 @@ export declare class SocketServerImpl implements SocketServer {
         payload: any;
     }): void;
     emitPayload(emitType: string, type: string, payload: any): void;
-    private handler(req, res);
+    private handler;
 }
