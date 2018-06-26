@@ -2,12 +2,16 @@ import * as http from 'http';
 import * as io from 'socket.io';
 import * as fs from 'fs';
 import { Player, PlayerImpl } from "./Player";
+import { Lobby } from './Lobby';
+import { Tournament } from './Tournament'
 
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
+    onLobbyCreate(player: Player): Lobby;
+    onLobbyJoin(player: Player, lobbyToken: string): Lobby;
+    onLobbyTournamentStart(lobbyToken: string): Tournament;
     updateStats(): void;
-    onTournamentStart(): void;
 }
 
 export interface SocketServer {
@@ -39,18 +43,33 @@ export class SocketServerImpl implements SocketServer {
             next();
         });
 
-        this.io.on('connection', (socket) => {
-            if (socket.handshake.query.client) {
-                // a client (observer) has connected, don't add to player list
-                // send a summary of the server
-                this.socketEvents.updateStats();
-                socket.on('tournament', () => {
-                    this.socketEvents.onTournamentStart();
-                });
-                return true;
-            }
+        this.io.on('connection', (socket: SocketIO.Socket) => {
+            const player = new PlayerImpl(socket.handshake.query.name, socket);
 
-            const player = new PlayerImpl(socket.handshake.query.token, socket);
+            socket.on('lobby create', () => {
+                const lobby = this.socketEvents.onLobbyCreate(player);
+                socket.on('lobby tournament start', () => {
+                    const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token)
+                    if(tournament == null) {
+                        socket.emit('exception', {error: 'Unable to start tournament'})
+                    } else {
+                        socket.emit('started tournament', tournament)
+                    }
+                });
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to create lobby'})
+                } else {
+                    socket.emit('created lobby', lobby)
+                }
+            });
+
+            socket.on('lobby join', (data: Map) => { 
+                const lobby = this.socketEvents.onLobbyJoin(player, data.token); 
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to join lobby, ensure token is correct'})
+                }
+                socket.emit('joined lobby', lobby)
+            });
 
             socket.on('disconnect', () => {
                 this.socketEvents.onPlayerDisconnect(player);

@@ -5,6 +5,8 @@ import { SocketServer, SocketServerImpl } from "./SocketServer";
 import { Player } from "./Player";
 import Session from './Session';
 import { Tournament } from './Tournament';
+import randomWord from "random-word"
+import { Lobby } from "./Lobby";
 
 /**
  * Load the package.json to get the version number
@@ -21,6 +23,8 @@ export default class OnlineServer {
    * List of players in the server
    */
   private players: Array<Player>;
+
+  private lobbies: Array<Lobby>;
   
   /**
    * Optional reference to the server GUI (if it has been enabled in the options)
@@ -32,16 +36,17 @@ export default class OnlineServer {
    */
   private socketServer: SocketServer;
 
-  private tournament: Tournament;
-
   constructor(private options: Options) {
     this.players = [];
+    this.lobbies = [];
 
     this.socketServer = new SocketServerImpl(this.options.port, {
       onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
       onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
-      updateStats: () => this.updateStats(),
-      onTournamentStart: () => this.onTournamentStart()
+      onLobbyCreate: (player: Player) => this.onLobbyCreate(player),
+      onLobbyJoin: (player: Player, lobbyToken: string) => this.onLobbyJoin(player, lobbyToken),
+      onLobbyTournamentStart: (lobbyToken: string) => this.onLobbyTournamentStart(lobbyToken),
+      updateStats: () => this.updateStats()
     });
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
@@ -60,14 +65,6 @@ export default class OnlineServer {
     }
   }
 
-  private onTournamentStart(): void {
-    if (this.tournament === undefined || this.tournament.isFinished()) {
-      this.log('Starting tournament!');
-      this.tournament = new Tournament('Tournament', this.socketServer, this.players.slice(), this.options, this.ui);
-      this.tournament.start();
-    }
-  }
-
   private onPlayerConnect(player: Player): void {
     this.addPlayer(player);
     player.deliverAction('waiting');
@@ -75,6 +72,40 @@ export default class OnlineServer {
 
   private onPlayerDisconnect(player: Player): void {
     this.log('Handle player disconnect on his active games');
+  }
+
+  private onLobbyCreate(creator: Player): Lobby {
+    const lobby = new Lobby(creator)
+    this.lobbies.push(lobby)
+    return lobby
+  }
+
+  private onLobbyJoin(player: Player, lobbyToken: String): Lobby {
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
+    if(foundLobby == null) {
+      return null;
+    }
+
+    if(foundLobby.players.find(p => p.token === player.token) == null) {
+      foundLobby.players.push(player)
+    }
+    
+    return foundLobby;
+  }
+
+  private onLobbyTournamentStart(lobbyToken: string): Tournament {
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
+    if(foundLobby == null) {
+      return null;
+    }
+
+    if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+      this.log('Starting tournament in lobby ${foundLobby.token}!');
+      foundLobby.tournament = new Tournament('Tournament', this.socketServer, foundLobby.players, this.options, this.ui);
+      foundLobby.tournament.start();
+    }
+
+    return foundLobby.tournament
   }
 
   private updateStats(): void {
