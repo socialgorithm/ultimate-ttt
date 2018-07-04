@@ -59,7 +59,7 @@ export class SocketServerImpl implements SocketServer {
                 if(lobby == null) {
                     socket.emit('exception', {error: 'Unable to create lobby'})
                 } else {
-                    socket.emit('created lobby', lobby)
+                    socket.emit('lobby created', lobby)
                 }
             });
 
@@ -68,7 +68,7 @@ export class SocketServerImpl implements SocketServer {
                 if(lobby == null) {
                     socket.emit('exception', {error: 'Unable to join lobby, ensure token is correct'})
                 }
-                socket.emit('joined lobby', lobby)
+                socket.emit('lobby joined', lobby)
             });
 
             socket.on('disconnect', () => {
