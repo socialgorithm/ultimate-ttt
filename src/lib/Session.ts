@@ -1,9 +1,11 @@
 import { Player } from './Player';
 import State, {Stats} from "./State";
 
+type Handler = (...args: any[]) => void;
+
 export default class Session {
 
-  private handlers: [number, string, Function][] = [];
+  private handlers: [number, string, Handler][] = [];
   public state: State;
   public stats: Stats;
 
@@ -13,7 +15,7 @@ export default class Session {
     return this.players.map(p => p.token) as [string, string];
   }
 
-  registerHandler(index: 0|1, type: string, handler: Function) {
+  registerHandler(index: 0|1, type: string, handler: Handler) {
     this.handlers.push([index, type, handler]);
     this.players[index].socket.on(type, handler);
   }
