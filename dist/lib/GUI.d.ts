@@ -1,4 +1,3 @@
-/// <reference path="../../custom-types/blessed/index.d.ts" />
 import * as blessed from 'blessed';
 import State from "./State";
 export interface GameUI {

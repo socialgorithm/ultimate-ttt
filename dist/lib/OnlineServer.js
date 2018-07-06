@@ -3,17 +3,21 @@ exports.__esModule = true;
 var GUI_1 = require("./GUI");
 var SocketServer_1 = require("./SocketServer");
 var Tournament_1 = require("./Tournament");
+var Lobby_1 = require("./Lobby");
 var pjson = require('../../package.json');
 var OnlineServer = (function () {
     function OnlineServer(options) {
         var _this = this;
         this.options = options;
         this.players = [];
+        this.lobbies = [];
         this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
             onPlayerConnect: function (player) { return _this.onPlayerConnect(player); },
             onPlayerDisconnect: function (player) { return _this.onPlayerDisconnect(player); },
-            updateStats: function () { return _this.updateStats(); },
-            onTournamentStart: function () { return _this.onTournamentStart(); }
+            onLobbyCreate: function (player) { return _this.onLobbyCreate(player); },
+            onLobbyJoin: function (player, lobbyToken) { return _this.onLobbyJoin(player, lobbyToken); },
+            onLobbyTournamentStart: function (lobbyToken) { return _this.onLobbyTournamentStart(lobbyToken); },
+            updateStats: function () { return _this.updateStats(); }
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         if (options.gui) {
@@ -28,19 +32,39 @@ var OnlineServer = (function () {
             this.ui.render();
         }
     }
-    OnlineServer.prototype.onTournamentStart = function () {
-        if (this.tournament === undefined || this.tournament.isFinished()) {
-            this.log('Starting tournament!');
-            this.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, this.players.slice(), this.options, this.ui);
-            this.tournament.start();
-        }
-    };
     OnlineServer.prototype.onPlayerConnect = function (player) {
         this.addPlayer(player);
         player.deliverAction('waiting');
     };
     OnlineServer.prototype.onPlayerDisconnect = function (player) {
         this.log('Handle player disconnect on his active games');
+    };
+    OnlineServer.prototype.onLobbyCreate = function (creator) {
+        var lobby = new Lobby_1.Lobby(creator);
+        this.lobbies.push(lobby);
+        return lobby;
+    };
+    OnlineServer.prototype.onLobbyJoin = function (player, lobbyToken) {
+        var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
+        if (foundLobby == null) {
+            return null;
+        }
+        if (foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
+            foundLobby.players.push(player);
+        }
+        return foundLobby;
+    };
+    OnlineServer.prototype.onLobbyTournamentStart = function (lobbyToken) {
+        var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
+        if (foundLobby == null) {
+            return null;
+        }
+        if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+            this.log('Starting tournament in lobby ${foundLobby.token}!');
+            foundLobby.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, foundLobby.players, this.options, this.ui);
+            foundLobby.tournament.start();
+        }
+        return foundLobby.tournament;
     };
     OnlineServer.prototype.updateStats = function () {
         var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };

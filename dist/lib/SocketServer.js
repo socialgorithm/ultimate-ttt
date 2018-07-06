@@ -24,14 +24,35 @@ var SocketServerImpl = (function () {
             next();
         });
         this.io.on('connection', function (socket) {
-            if (socket.handshake.query.client) {
-                _this.socketEvents.updateStats();
-                socket.on('tournament', function () {
-                    _this.socketEvents.onTournamentStart();
+            var player = new Player_1.PlayerImpl(socket.handshake.query.name, socket);
+            socket.on('lobby create', function () {
+                var lobby = _this.socketEvents.onLobbyCreate(player);
+                socket.on('lobby tournament start', function () {
+                    var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token);
+                    if (tournament == null) {
+                        socket.emit('exception', { error: 'Unable to start tournament' });
+                    }
+                    else {
+                        socket.emit('started tournament', tournament);
+                    }
                 });
-                return true;
-            }
-            var player = new Player_1.PlayerImpl(socket.handshake.query.token, socket);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to create lobby' });
+                }
+                else {
+                    var lobbyInfo = {
+                        token: lobby.token
+                    };
+                    socket.emit('lobby created', JSON.stringify(lobbyInfo));
+                }
+            });
+            socket.on('lobby join', function (data) {
+                var lobby = _this.socketEvents.onLobbyJoin(player, data.token);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to join lobby, ensure token is correct' });
+                }
+                socket.emit('lobby joined', lobby);
+            });
             socket.on('disconnect', function () {
                 _this.socketEvents.onPlayerDisconnect(player);
             });

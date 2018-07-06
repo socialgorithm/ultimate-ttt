@@ -1,4 +1,3 @@
-/// <reference path="../../custom-types/blessed/index.d.ts" />
 import * as blessed from 'blessed';
 import * as ip from "ip";
 import State from "./State";

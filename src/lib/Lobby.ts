@@ -1,12 +1,16 @@
-import randomWord from 'random-word'
+import * as randomWord from 'random-word'
 
 import { Player } from './Player';
 import { Tournament } from './Tournament';
 
 export class Lobby {
-    public token: string = `${randomWord()}-${randomWord()}`;
+    public admin: Player;
+    public token: string;
     public players: Array<Player>;
     public tournament: Tournament;
 
-    constructor(public admin: Player) {}
+    constructor(admin: Player) {
+        this.admin = admin;
+        this.token = `${randomWord()}-${randomWord()}`;
+    }
 }

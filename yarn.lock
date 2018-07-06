@@ -6,6 +6,13 @@
   version "4.19.0"
   resolved "https://registry.yarnpkg.com/@socialgorithm/ultimate-ttt/-/ultimate-ttt-4.19.0.tgz#48e59d832237b4c90537cc25c7d95b018eda1aec"
 
+"@types/blessed@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@types/blessed/-/blessed-0.1.10.tgz#9d60bdb49ef54ad91a80a1a15477759fd787a6d0"
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
+
 "@types/chai@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.2.tgz#c11cd2817d3a401b7ba0f5a420f35c56139b1c1e"

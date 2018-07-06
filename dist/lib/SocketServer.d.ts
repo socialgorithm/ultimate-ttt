@@ -1,9 +1,13 @@
 import { Player } from "./Player";
+import { Lobby } from './Lobby';
+import { Tournament } from './Tournament';
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
+    onLobbyCreate(player: Player): Lobby;
+    onLobbyJoin(player: Player, lobbyToken: string): Lobby;
+    onLobbyTournamentStart(lobbyToken: string): Tournament;
     updateStats(): void;
-    onTournamentStart(): void;
 }
 export interface SocketServer {
     emit(type: string, data: {
