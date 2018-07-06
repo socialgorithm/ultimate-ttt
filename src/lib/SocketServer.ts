@@ -62,16 +62,17 @@ export class SocketServerImpl implements SocketServer {
                     const lobbyInfo = {
                         token: lobby.token,
                     };
-                    socket.emit('lobby created', JSON.stringify(lobbyInfo));
+                    socket.emit('lobby created', lobbyInfo);
                 }
             });
 
             socket.on('lobby join', (data: any) => { 
                 const lobby = this.socketEvents.onLobbyJoin(player, data.token); 
                 if(lobby == null) {
-                    socket.emit('exception', {error: 'Unable to join lobby, ensure token is correct'})
+                    socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'})
+                    return;
                 }
-                socket.emit('lobby joined', lobby)
+                socket.emit('lobby joined', lobby.token)
             });
 
             socket.on('disconnect', () => {

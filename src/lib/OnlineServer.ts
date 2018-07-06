@@ -67,24 +67,28 @@ export default class OnlineServer {
     player.deliverAction('waiting');
   }
 
-  private onPlayerDisconnect(player: Player): void {
+  private onPlayerDisconnect = (player: Player): void => {
     this.log('Handle player disconnect on his active games');
   }
 
-  private onLobbyCreate(creator: Player): Lobby {
+  private onLobbyCreate = (creator: Player): Lobby => {
     const lobby = new Lobby(creator)
     this.lobbies.push(lobby)
+    this.log('Created lobby ' + lobby.token);
     return lobby
   }
 
-  private onLobbyJoin(player: Player, lobbyToken: String): Lobby {
+  private onLobbyJoin = (player: Player, lobbyToken: String): Lobby => {
+    this.log('Player ' + player.token + ' wants to join ' + lobbyToken);
     const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
     if(foundLobby == null) {
+      this.log('Lobby not found (' + lobbyToken + ')');
       return null;
     }
 
     if(foundLobby.players.find(p => p.token === player.token) == null) {
       foundLobby.players.push(player)
+      this.log('Player ' + player.token + ' joined ' + lobbyToken);
     }
     
     return foundLobby;

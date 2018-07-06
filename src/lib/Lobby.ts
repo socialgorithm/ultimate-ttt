@@ -11,6 +11,7 @@ export class Lobby {
 
     constructor(admin: Player) {
         this.admin = admin;
+        this.players = [];
         this.token = `${randomWord()}-${randomWord()}`;
     }
 }

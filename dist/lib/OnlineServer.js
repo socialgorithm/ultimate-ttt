@@ -9,6 +9,28 @@ var OnlineServer = (function () {
     function OnlineServer(options) {
         var _this = this;
         this.options = options;
+        this.onPlayerDisconnect = function (player) {
+            _this.log('Handle player disconnect on his active games');
+        };
+        this.onLobbyCreate = function (creator) {
+            var lobby = new Lobby_1.Lobby(creator);
+            _this.lobbies.push(lobby);
+            _this.log('Created lobby ' + lobby.token);
+            return lobby;
+        };
+        this.onLobbyJoin = function (player, lobbyToken) {
+            _this.log('Player ' + player.token + ' wants to join ' + lobbyToken);
+            var foundLobby = _this.lobbies.find(function (l) { return l.token === lobbyToken; });
+            if (foundLobby == null) {
+                _this.log('Lobby not found (' + lobbyToken + ')');
+                return null;
+            }
+            if (foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
+                foundLobby.players.push(player);
+                _this.log('Player ' + player.token + ' joined ' + lobbyToken);
+            }
+            return foundLobby;
+        };
         this.players = [];
         this.lobbies = [];
         this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
@@ -35,24 +57,6 @@ var OnlineServer = (function () {
     OnlineServer.prototype.onPlayerConnect = function (player) {
         this.addPlayer(player);
         player.deliverAction('waiting');
-    };
-    OnlineServer.prototype.onPlayerDisconnect = function (player) {
-        this.log('Handle player disconnect on his active games');
-    };
-    OnlineServer.prototype.onLobbyCreate = function (creator) {
-        var lobby = new Lobby_1.Lobby(creator);
-        this.lobbies.push(lobby);
-        return lobby;
-    };
-    OnlineServer.prototype.onLobbyJoin = function (player, lobbyToken) {
-        var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
-        if (foundLobby == null) {
-            return null;
-        }
-        if (foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
-            foundLobby.players.push(player);
-        }
-        return foundLobby;
     };
     OnlineServer.prototype.onLobbyTournamentStart = function (lobbyToken) {
         var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
