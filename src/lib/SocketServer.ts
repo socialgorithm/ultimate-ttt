@@ -72,7 +72,10 @@ export class SocketServerImpl implements SocketServer {
                     socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'})
                     return;
                 }
-                socket.emit('lobby joined', lobby.token)
+                socket.emit('lobby joined', {
+                    token: lobby.token,
+                    isAdmin: lobby.admin.token === player.token,
+                })
             });
 
             socket.on('disconnect', () => {
