@@ -9,7 +9,7 @@ export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
     onLobbyCreate(player: Player): Lobby;
-    onLobbyJoin(player: Player, lobbyToken: string): Lobby;
+    onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
     onLobbyTournamentStart(lobbyToken: string): Tournament;
     updateStats(): void;
 }
@@ -59,21 +59,25 @@ export class SocketServerImpl implements SocketServer {
                 if(lobby == null) {
                     socket.emit('exception', {error: 'Unable to create lobby'})
                 } else {
-                    const lobbyInfo = {
-                        token: lobby.token,
-                    };
-                    socket.emit('lobby created', lobbyInfo);
+                    socket.join(lobby.token);
+                    socket.emit('lobby created', {
+                        lobby: lobby.toObject()
+                    });
                 }
             });
 
             socket.on('lobby join', (data: any) => { 
-                const lobby = this.socketEvents.onLobbyJoin(player, data.token); 
+                const lobby = this.socketEvents.onLobbyJoin(player, data.token, data.spectating); 
                 if(lobby == null) {
                     socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'})
                     return;
                 }
+                this.io.in(data.token).emit('connected', {
+                    lobby: lobby.toObject()
+                });
+                socket.join(lobby.token);
                 socket.emit('lobby joined', {
-                    token: lobby.token,
+                    lobby: lobby.toObject(),
                     isAdmin: lobby.admin.token === player.token,
                 })
             });

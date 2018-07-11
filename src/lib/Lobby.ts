@@ -14,4 +14,13 @@ export class Lobby {
         this.players = [];
         this.token = `${randomWord()}-${randomWord()}`;
     }
+
+    toObject() {
+        return JSON.parse(JSON.stringify(this, (key, value) => {
+            if (key === 'socket' || key === 'admin') {
+                return null;
+            }
+            return value;
+        }))
+    }
 }

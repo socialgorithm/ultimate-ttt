@@ -18,14 +18,15 @@ var OnlineServer = (function () {
             _this.log('Created lobby ' + lobby.token);
             return lobby;
         };
-        this.onLobbyJoin = function (player, lobbyToken) {
-            _this.log('Player ' + player.token + ' wants to join ' + lobbyToken);
+        this.onLobbyJoin = function (player, lobbyToken, spectating) {
+            if (spectating === void 0) { spectating = false; }
+            _this.log('Player ' + player.token + ' wants to join ' + lobbyToken + ' - spectating? ' + spectating);
             var foundLobby = _this.lobbies.find(function (l) { return l.token === lobbyToken; });
             if (foundLobby == null) {
                 _this.log('Lobby not found (' + lobbyToken + ')');
                 return null;
             }
-            if (foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
+            if (!spectating && foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
                 foundLobby.players.push(player);
                 _this.log('Player ' + player.token + ' joined ' + lobbyToken);
             }
@@ -34,12 +35,12 @@ var OnlineServer = (function () {
         this.players = [];
         this.lobbies = [];
         this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
-            onPlayerConnect: function (player) { return _this.onPlayerConnect(player); },
-            onPlayerDisconnect: function (player) { return _this.onPlayerDisconnect(player); },
-            onLobbyCreate: function (player) { return _this.onLobbyCreate(player); },
-            onLobbyJoin: function (player, lobbyToken) { return _this.onLobbyJoin(player, lobbyToken); },
-            onLobbyTournamentStart: function (lobbyToken) { return _this.onLobbyTournamentStart(lobbyToken); },
-            updateStats: function () { return _this.updateStats(); }
+            onPlayerConnect: this.onPlayerConnect.bind(this),
+            onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
+            onLobbyCreate: this.onLobbyCreate.bind(this),
+            onLobbyJoin: this.onLobbyJoin.bind(this),
+            onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+            updateStats: this.updateStats.bind(this)
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         if (options.gui) {

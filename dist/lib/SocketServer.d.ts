@@ -5,7 +5,7 @@ export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
     onLobbyCreate(player: Player): Lobby;
-    onLobbyJoin(player: Player, lobbyToken: string): Lobby;
+    onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
     onLobbyTournamentStart(lobbyToken: string): Tournament;
     updateStats(): void;
 }

@@ -38,12 +38,12 @@ export default class OnlineServer {
     this.lobbies = [];
 
     this.socketServer = new SocketServerImpl(this.options.port, {
-      onPlayerConnect: (player: Player) => this.onPlayerConnect(player), 
-      onPlayerDisconnect: (player: Player) => this.onPlayerDisconnect(player), 
-      onLobbyCreate: (player: Player) => this.onLobbyCreate(player),
-      onLobbyJoin: (player: Player, lobbyToken: string) => this.onLobbyJoin(player, lobbyToken),
-      onLobbyTournamentStart: (lobbyToken: string) => this.onLobbyTournamentStart(lobbyToken),
-      updateStats: () => this.updateStats()
+      onPlayerConnect: this.onPlayerConnect.bind(this), 
+      onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
+      onLobbyCreate: this.onLobbyCreate.bind(this),
+      onLobbyJoin: this.onLobbyJoin.bind(this),
+      onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+      updateStats: this.updateStats.bind(this),
     });
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
@@ -69,6 +69,7 @@ export default class OnlineServer {
 
   private onPlayerDisconnect = (player: Player): void => {
     this.log('Handle player disconnect on his active games');
+    // TODO Remove the player from any lobbies 
   }
 
   private onLobbyCreate = (creator: Player): Lobby => {
@@ -78,15 +79,16 @@ export default class OnlineServer {
     return lobby
   }
 
-  private onLobbyJoin = (player: Player, lobbyToken: String): Lobby => {
-    this.log('Player ' + player.token + ' wants to join ' + lobbyToken);
+  private onLobbyJoin = (player: Player, lobbyToken: String, spectating: boolean = false): Lobby => {
+    this.log('Player ' + player.token + ' wants to join ' + lobbyToken + ' - spectating? ' + spectating);
     const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
     if(foundLobby == null) {
       this.log('Lobby not found (' + lobbyToken + ')');
       return null;
     }
 
-    if(foundLobby.players.find(p => p.token === player.token) == null) {
+    // If the user is spectating, we wont add it to the players list (e.g. web client)
+    if(!spectating && foundLobby.players.find(p => p.token === player.token) == null) {
       foundLobby.players.push(player)
       this.log('Player ' + player.token + ' joined ' + lobbyToken);
     }

@@ -6,4 +6,5 @@ export declare class Lobby {
     players: Array<Player>;
     tournament: Tournament;
     constructor(admin: Player);
+    toObject(): any;
 }

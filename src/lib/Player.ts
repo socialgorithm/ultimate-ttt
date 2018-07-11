@@ -6,7 +6,7 @@ import {PlayerNumber} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 export interface Player {
     session: Session;
-    token: string;
+    token: string; // user unique name
     socket: SocketIO.Socket;
     getIndexInSession(): PlayerNumber;
     deliverAction(action: string): void;

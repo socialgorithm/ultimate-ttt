@@ -40,20 +40,24 @@ var SocketServerImpl = (function () {
                     socket.emit('exception', { error: 'Unable to create lobby' });
                 }
                 else {
-                    var lobbyInfo = {
-                        token: lobby.token
-                    };
-                    socket.emit('lobby created', lobbyInfo);
+                    socket.join(lobby.token);
+                    socket.emit('lobby created', {
+                        lobby: lobby.toObject()
+                    });
                 }
             });
             socket.on('lobby join', function (data) {
-                var lobby = _this.socketEvents.onLobbyJoin(player, data.token);
+                var lobby = _this.socketEvents.onLobbyJoin(player, data.token, data.spectating);
                 if (lobby == null) {
                     socket.emit('lobby exception', { error: 'Unable to join lobby, ensure token is correct' });
                     return;
                 }
+                _this.io["in"](data.token).emit('connected', {
+                    lobby: lobby.toObject()
+                });
+                socket.join(lobby.token);
                 socket.emit('lobby joined', {
-                    token: lobby.token,
+                    lobby: lobby.toObject(),
                     isAdmin: lobby.admin.token === player.token
                 });
             });

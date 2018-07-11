@@ -35,7 +35,7 @@
     "@socialgorithm/ultimate-ttt": "^4.19.0",
     "@types/ip": "0.0.31",
     "@types/node": "^10.5.1",
-    "@types/socket.io": "^1.4.29",
+    "@types/socket.io": "^1.4.36",
     "blessed": "^0.1.81",
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
