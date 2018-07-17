@@ -50,11 +50,15 @@ export class SocketServerImpl implements SocketServer {
             socket.on('lobby create', () => {
                 const lobby = this.socketEvents.onLobbyCreate(player);
                 socket.on('lobby tournament start', () => {
+                    console.log('start tournament');
                     const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token);
                     if(tournament == null) {
                         socket.emit('exception', {error: 'Unable to start tournament'});
                     } else {
-                        socket.emit('started tournament', tournament);
+                        this.io.in(lobby.token).emit('started tournament', {
+                            lobby: lobby.toObject(),
+                            tournament,
+                        });
                     }
                 });
                 if(lobby == null) {

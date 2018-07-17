@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var randomWord = require("random-word");
+var circularJson = require("circular-json");
 var Lobby = (function () {
     function Lobby(admin) {
         this.admin = admin;
@@ -8,12 +9,12 @@ var Lobby = (function () {
         this.token = randomWord() + "-" + randomWord();
     }
     Lobby.prototype.toObject = function () {
-        return JSON.parse(JSON.stringify(this, function (key, value) {
-            if (key === 'socket' || key === 'admin') {
+        return circularJson.stringify(this, function (key, value) {
+            if (key === 'admin' || key === 'socket') {
                 return null;
             }
             return value;
-        }));
+        });
     };
     return Lobby;
 }());

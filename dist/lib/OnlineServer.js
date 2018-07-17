@@ -78,7 +78,7 @@ var OnlineServer = (function () {
             return null;
         }
         if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
-            this.log('Starting tournament in lobby ${foundLobby.token}!');
+            this.log("Starting tournament in lobby " + foundLobby.token + "!");
             foundLobby.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, foundLobby.players, this.options, this.ui);
             foundLobby.tournament.start();
         }

@@ -28,12 +28,16 @@ var SocketServerImpl = (function () {
             socket.on('lobby create', function () {
                 var lobby = _this.socketEvents.onLobbyCreate(player);
                 socket.on('lobby tournament start', function () {
+                    console.log('start tournament');
                     var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token);
                     if (tournament == null) {
                         socket.emit('exception', { error: 'Unable to start tournament' });
                     }
                     else {
-                        socket.emit('started tournament', tournament);
+                        _this.io["in"](lobby.token).emit('started tournament', {
+                            lobby: lobby.toObject(),
+                            tournament: tournament
+                        });
                     }
                 });
                 if (lobby == null) {

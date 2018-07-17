@@ -1,4 +1,5 @@
 import * as randomWord from 'random-word'
+import * as circularJson from 'circular-json';
 
 import { Player } from './Player';
 import { Tournament } from './Tournament';
@@ -16,11 +17,11 @@ export class Lobby {
     }
 
     toObject() {
-        return JSON.parse(JSON.stringify(this, (key, value) => {
-            if (key === 'socket' || key === 'admin') {
+        return circularJson.stringify(this, (key, value) => {
+            if (key === 'admin' || key === 'socket') {
                 return null;
             }
             return value;
-        }))
+        });
     }
 }
