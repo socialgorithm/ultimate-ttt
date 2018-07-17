@@ -11,6 +11,19 @@ var OnlineServer = (function () {
         this.options = options;
         this.onPlayerDisconnect = function (player) {
             _this.log('Handle player disconnect on his active games');
+            _this.lobbies.forEach(function (lobby) {
+                var playerIndex = lobby.players.findIndex(function (eachPlayer) { return eachPlayer.token === player.token; });
+                if (playerIndex < 0) {
+                    return;
+                }
+                lobby.players.splice(playerIndex, 1);
+                _this.socketServer.emitInLobby(lobby.token, 'lobby disconnected', {
+                    type: 'player left',
+                    payload: {
+                        lobby: lobby.toObject()
+                    }
+                });
+            });
         };
         this.onLobbyCreate = function (creator) {
             var lobby = new Lobby_1.Lobby(creator);
@@ -114,7 +127,7 @@ var OnlineServer = (function () {
             this.ui.log(message, skipRender);
         }
         else {
-            console.log(time, message);
+            console.log("[" + time + "]", message);
         }
     };
     return OnlineServer;

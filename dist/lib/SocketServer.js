@@ -24,7 +24,7 @@ var SocketServerImpl = (function () {
             next();
         });
         this.io.on('connection', function (socket) {
-            var player = new Player_1.PlayerImpl(socket.handshake.query.name, socket);
+            var player = new Player_1.PlayerImpl(socket.handshake.query.token, socket);
             socket.on('lobby create', function () {
                 var lobby = _this.socketEvents.onLobbyCreate(player);
                 socket.on('lobby tournament start', function () {
@@ -69,6 +69,9 @@ var SocketServerImpl = (function () {
     }
     SocketServerImpl.prototype.emit = function (type, data) {
         this.io.emit(type, data);
+    };
+    SocketServerImpl.prototype.emitInLobby = function (lobby, type, data) {
+        this.io.to(lobby).emit(type, data);
     };
     SocketServerImpl.prototype.emitPayload = function (emitType, type, payload) {
         this.emit(emitType, { type: type, payload: payload });

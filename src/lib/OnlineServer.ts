@@ -69,7 +69,21 @@ export default class OnlineServer {
 
   private onPlayerDisconnect = (player: Player): void => {
     this.log('Handle player disconnect on his active games');
-    // TODO Remove the player from any lobbies 
+    // TODO Remove the player from any lobbies
+    this.lobbies.forEach(lobby => {
+      const playerIndex = lobby.players.findIndex(eachPlayer => eachPlayer.token === player.token);
+      if (playerIndex < 0) {
+        return;
+      }
+      // Remove the player, and notify lobby of changes
+      lobby.players.splice(playerIndex, 1);
+      this.socketServer.emitInLobby(lobby.token, 'lobby disconnected', {
+        type: 'player left',
+        payload: {
+          lobby: lobby.toObject(),
+        },
+      });
+    });
   }
 
   private onLobbyCreate = (creator: Player): Lobby => {
@@ -167,7 +181,7 @@ export default class OnlineServer {
     if (this.ui) {
       this.ui.log(message, skipRender);
     } else {
-      console.log(time, message);
+      console.log(`[${time}]`, message);
     }
   }
 }

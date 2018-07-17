@@ -17,6 +17,7 @@ export interface SocketEvents {
 export interface SocketServer {
     emit(type: string, data: { type: string, payload: any }): void;
     emitPayload(emitType: string, type: string, payload: any): void;
+    emitInLobby(lobby: string, type: string, data: { type: string, payload: any }): void;
 }
 
 export class SocketServerImpl implements SocketServer {
@@ -44,7 +45,7 @@ export class SocketServerImpl implements SocketServer {
         });
 
         this.io.on('connection', (socket: SocketIO.Socket) => {
-            const player = new PlayerImpl(socket.handshake.query.name, socket);
+            const player = new PlayerImpl(socket.handshake.query.token, socket);
 
             socket.on('lobby create', () => {
                 const lobby = this.socketEvents.onLobbyCreate(player);
@@ -97,6 +98,16 @@ export class SocketServerImpl implements SocketServer {
      */
     public emit(type: string, data: { type: string, payload: any }): void {
         this.io.emit(type, data);
+    }
+
+    /**
+     * Send a message to a lobby
+     * @param lobby Lobby token
+     * @param type Message type (determines who receives the data)
+     * @param data Data to be sent
+     */
+    public emitInLobby(lobby: string, type: string, data: { type: string, payload: any }): void {
+        this.io.to(lobby).emit(type, data);
     }
 
     public emitPayload(emitType: string, type: string, payload: any): void {
