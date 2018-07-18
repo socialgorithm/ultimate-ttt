@@ -5,6 +5,9 @@ import Player from "../tournament/model/Player";
 import { Lobby } from '../tournament/model/Lobby';
 import { Tournament } from '../tournament/Tournament'
 
+/**
+ * Interface between the Server and the Socket
+ */
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
@@ -14,6 +17,14 @@ export interface SocketEvents {
     updateStats(): void;
 }
 
+/**
+ * SocketServer performs all the necessary work around sockets
+ * and notifies the main Server of any changes (players, lobbies... )
+ * 
+ * The idea behind separating it is to provide a clean interface to the socket,
+ * and preserve all the server functionality independent of it. Testing should
+ * become easier because of that for example.
+ */
 export default class SocketServer {
     private io: SocketIO.Server;
     private socketEvents: SocketEvents;
