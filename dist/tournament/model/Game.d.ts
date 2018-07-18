@@ -1,7 +1,7 @@
 import { PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import { Options } from "../../lib/cli-options";
 import GUI from "../../server/GUI";
-import { SocketServer } from '../../server/SocketServer';
+import SocketServer from '../../server/SocketServer';
 import Player from './Player';
 import Session from './Session';
 import { Tournament } from '../Tournament';

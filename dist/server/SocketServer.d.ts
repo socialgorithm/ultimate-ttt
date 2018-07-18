@@ -9,18 +9,7 @@ export interface SocketEvents {
     onLobbyTournamentStart(lobbyToken: string): Tournament;
     updateStats(): void;
 }
-export interface SocketServer {
-    emit(type: string, data: {
-        type: string;
-        payload: any;
-    }): void;
-    emitPayload(emitType: string, type: string, payload: any): void;
-    emitInLobby(lobby: string, type: string, data: {
-        type: string;
-        payload: any;
-    }): void;
-}
-export declare class SocketServerImpl implements SocketServer {
+export default class SocketServer {
     private io;
     private socketEvents;
     constructor(port: number, socketEvents: SocketEvents);

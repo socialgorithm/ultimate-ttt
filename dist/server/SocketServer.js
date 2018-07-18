@@ -4,8 +4,8 @@ var http = require("http");
 var io = require("socket.io");
 var fs = require("fs");
 var Player_1 = require("../tournament/model/Player");
-var SocketServerImpl = (function () {
-    function SocketServerImpl(port, socketEvents) {
+var SocketServer = (function () {
+    function SocketServer(port, socketEvents) {
         var _this = this;
         var app = http.createServer(this.handler);
         this.io = io(app);
@@ -71,16 +71,16 @@ var SocketServerImpl = (function () {
             _this.socketEvents.onPlayerConnect(player);
         });
     }
-    SocketServerImpl.prototype.emit = function (type, data) {
+    SocketServer.prototype.emit = function (type, data) {
         this.io.emit(type, data);
     };
-    SocketServerImpl.prototype.emitInLobby = function (lobby, type, data) {
+    SocketServer.prototype.emitInLobby = function (lobby, type, data) {
         this.io.to(lobby).emit(type, data);
     };
-    SocketServerImpl.prototype.emitPayload = function (emitType, type, payload) {
+    SocketServer.prototype.emitPayload = function (emitType, type, payload) {
         this.emit(emitType, { type: type, payload: payload });
     };
-    SocketServerImpl.prototype.handler = function (req, res) {
+    SocketServer.prototype.handler = function (req, res) {
         fs.readFile(__dirname + '/../../public/index.html', function (err, data) {
             if (err) {
                 res.writeHead(500);
@@ -90,7 +90,7 @@ var SocketServerImpl = (function () {
             res.end(data);
         });
     };
-    return SocketServerImpl;
+    return SocketServer;
 }());
-exports.SocketServerImpl = SocketServerImpl;
+exports["default"] = SocketServer;
 //# sourceMappingURL=SocketServer.js.map

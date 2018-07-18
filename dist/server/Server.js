@@ -47,7 +47,7 @@ var Server = (function () {
         };
         this.players = [];
         this.lobbies = [];
-        this.socketServer = new SocketServer_1.SocketServerImpl(this.options.port, {
+        this.socketServer = new SocketServer_1["default"](this.options.port, {
             onPlayerConnect: this.onPlayerConnect.bind(this),
             onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
             onLobbyCreate: this.onLobbyCreate.bind(this),

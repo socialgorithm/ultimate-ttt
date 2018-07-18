@@ -1,6 +1,6 @@
 import {Options} from "../lib/cli-options";
 import GUI from "./GUI";
-import { SocketServer, SocketServerImpl } from "./SocketServer";
+import SocketServer from "./SocketServer";
 import Player from "../tournament/model/Player";
 import { Tournament } from '../tournament/Tournament';
 import { Lobby } from "../tournament/model/Lobby";
@@ -37,7 +37,7 @@ export default class Server {
     this.players = [];
     this.lobbies = [];
 
-    this.socketServer = new SocketServerImpl(this.options.port, {
+    this.socketServer = new SocketServer(this.options.port, {
       onPlayerConnect: this.onPlayerConnect.bind(this), 
       onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
       onLobbyCreate: this.onLobbyCreate.bind(this),

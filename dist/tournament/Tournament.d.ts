@@ -1,5 +1,5 @@
 import { Options } from '../lib/cli-options';
-import { SocketServer } from '../server/SocketServer';
+import SocketServer from '../server/SocketServer';
 import Session from './model/Session';
 import Player from './model/Player';
 import GUI from '../server/GUI';

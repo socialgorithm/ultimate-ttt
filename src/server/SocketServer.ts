@@ -14,13 +14,7 @@ export interface SocketEvents {
     updateStats(): void;
 }
 
-export interface SocketServer {
-    emit(type: string, data: { type: string, payload: any }): void;
-    emitPayload(emitType: string, type: string, payload: any): void;
-    emitInLobby(lobby: string, type: string, data: { type: string, payload: any }): void;
-}
-
-export class SocketServerImpl implements SocketServer {
+export default class SocketServer {
     private io: SocketIO.Server;
     private socketEvents: SocketEvents;
 

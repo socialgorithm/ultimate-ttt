@@ -5,12 +5,12 @@ import State from "./State";
 import {Options} from "../../lib/cli-options";
 import GUI from "../../server/GUI";
 import * as funcs from '../../lib/funcs';
-import { SocketServer } from '../../server/SocketServer';
+import SocketServer from '../../server/SocketServer';
 import Player from './Player';
 import Session from './Session';
 import { Tournament } from '../Tournament';
-
-/**
+// test
+/*
  * Online game manager between two players
  */
 export default class Game {
