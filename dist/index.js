@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var OnlineServer_1 = require("./lib/OnlineServer");
+var Server_1 = require("./server/Server");
 exports["default"] = (function (options) {
-    new OnlineServer_1["default"](options);
+    new Server_1["default"](options);
 });
 //# sourceMappingURL=index.js.map

@@ -10,7 +10,7 @@ describe('Server', () => {
         };
 
     beforeEach(() => {
-        server = require('../src/lib/OnlineServer')
+        server = require('../src/lib/Server')
     })
 
     it('lets a player create a lobby', () => {

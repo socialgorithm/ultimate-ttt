@@ -5,6 +5,7 @@
   "main": "dist/standalone.js",
   "scripts": {
     "start": "node dist/standalone.js",
+    "start:opts": "node bin/index.js",
     "build": "tsc -w",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "gulp typedoc && gulp noJekyll"

@@ -3,13 +3,13 @@
  * Ultimate Tic Tac Toe Algorithm Battle - Game Server
  */
 
-import OnlineServer from './lib/OnlineServer';
-import { Options } from "./lib/input";
+import Server from './server/Server';
+import { Options } from "./lib/cli-options";
 
 /**
  * Start a server with the given options
  * @param options Server options
  */
 export default (options: Options) => {
-  new OnlineServer(options);
+  new Server(options);
 }
