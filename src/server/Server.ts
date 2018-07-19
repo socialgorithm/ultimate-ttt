@@ -118,7 +118,7 @@ export default class Server {
 
     if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
       this.log(`Starting tournament in lobby ${foundLobby.token}!`);
-      foundLobby.tournament = new Tournament('Tournament', this.socketServer, foundLobby.players, this.options, this.ui);
+      foundLobby.tournament = new Tournament(this.socketServer, foundLobby.players, this.options, this.ui);
       foundLobby.tournament.start();
     }
 
