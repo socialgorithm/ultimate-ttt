@@ -42,7 +42,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
             )
         }).reduce((result, current, idx) =>
             result.concat(current)
-        );
+        , []);
     }
 
 }

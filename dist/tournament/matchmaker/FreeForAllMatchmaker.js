@@ -23,7 +23,7 @@ var FreeForAllMatchmaker = (function () {
             });
         }).reduce(function (result, current, idx) {
             return result.concat(current);
-        });
+        }, []);
     };
     return FreeForAllMatchmaker;
 }());
