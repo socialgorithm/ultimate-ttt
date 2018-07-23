@@ -29,7 +29,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
         let match: Match[] = [];
         this.finished = true; // Free for all only runs matchmaking once
         return this.players.map((playerA, $index) => {
-            return this.players.splice($index + 1).map(
+            return this.players.slice($index + 1).map(
                 playerB => {
                     return new Match(
                         [playerA, playerB],
@@ -55,8 +55,17 @@ export default class FreeForAllMatchmaker implements Matchmaker {
             if (!playerStats[match.players[1].token]) {
                 playerStats[match.players[1].token] = 0;
             }
-            playerStats[match.players[0].token] += match.stats.wins[0];
-            playerStats[match.players[1].token] += match.stats.wins[1];
+            const p0wins = match.stats.wins[0];
+            const p1wins = match.stats.wins[1];
+            if (p0wins === p1wins) {
+                return;
+            }
+            if (p0wins > p1wins) {
+                playerStats[match.players[0].token]++;
+            }
+            if (p1wins > p0wins) {
+                playerStats[match.players[1].token]++;
+            }
         });
         return Object.keys(playerStats).map(token => ({
             player: token,

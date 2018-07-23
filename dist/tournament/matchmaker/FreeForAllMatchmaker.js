@@ -16,7 +16,7 @@ var FreeForAllMatchmaker = (function () {
         var match = [];
         this.finished = true;
         return this.players.map(function (playerA, $index) {
-            return _this.players.splice($index + 1).map(function (playerB) {
+            return _this.players.slice($index + 1).map(function (playerB) {
                 return new Match_1["default"]([playerA, playerB], {
                     maxGames: _this.options.maxGames,
                     timeout: _this.options.timeout
@@ -35,8 +35,17 @@ var FreeForAllMatchmaker = (function () {
             if (!playerStats[match.players[1].token]) {
                 playerStats[match.players[1].token] = 0;
             }
-            playerStats[match.players[0].token] += match.stats.wins[0];
-            playerStats[match.players[1].token] += match.stats.wins[1];
+            var p0wins = match.stats.wins[0];
+            var p1wins = match.stats.wins[1];
+            if (p0wins === p1wins) {
+                return;
+            }
+            if (p0wins > p1wins) {
+                playerStats[match.players[0].token]++;
+            }
+            if (p1wins > p0wins) {
+                playerStats[match.players[1].token]++;
+            }
         });
         return Object.keys(playerStats).map(function (token) { return ({
             player: token,
