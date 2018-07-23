@@ -1,44 +1,20 @@
-import { Options } from '../lib/cli-options';
 import SocketServer from '../server/SocketServer';
-import Session from './model/Session';
 import Player from './model/Player';
-import GUI from '../server/GUI';
-export declare class TournamentProfile {
-    private tournament;
-    player: Player;
-    private opponent;
-    private played;
-    private complete;
-    constructor(tournament: Tournament, player: Player);
-    startPlaying(other: TournamentProfile): void;
-    stopPlaying(): void;
-    isPlaying(): boolean;
-    currentOpponent(): TournamentProfile;
-    isPlayable(): boolean;
-    canPlayGivenProfile(other: TournamentProfile): boolean;
-    isComplete(): boolean;
-    markAsComplete(): void;
-    hasPlayed(other: Player): boolean;
-}
+import Match from './match/Match';
+export declare type TournamentOptions = {
+    numberOfGames: number;
+    type: string;
+    timeout: number;
+};
 export declare class Tournament {
-    readonly name: string;
-    private socketServer;
-    participants: Player[];
     private options;
-    private ui?;
-    private profiles;
-    private complete;
-    private started;
+    private socket;
+    players: Player[];
+    private player;
     private stats;
-    constructor(name: string, socketServer: SocketServer, participants: Player[], options: Options, ui?: GUI);
+    private matchmaker;
+    constructor(options: TournamentOptions, socket: SocketServer, players: Player[]);
     start(): void;
-    private startSession;
-    endSession(session: Session): void;
+    playMatches(matches: Match[]): Match[];
     isFinished(): boolean;
-    private profileByPlayer;
-    private leftToPlay;
-    private flush;
-    private sendUpdate;
-    private playerIsDone;
-    private log;
 }

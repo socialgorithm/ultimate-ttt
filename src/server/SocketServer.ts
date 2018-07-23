@@ -3,7 +3,9 @@ import * as io from 'socket.io';
 import * as fs from 'fs';
 import Player from "../tournament/model/Player";
 import { Lobby } from '../tournament/model/Lobby';
-import { Tournament } from '../tournament/Tournament'
+import { Tournament, TournamentOptions } from '../tournament/Tournament'
+import Channel from '../tournament/model/Channel';
+import { DEFAULT_TOURNAMENT_OPTIONS } from './constants';
 
 /**
  * Interface between the Server and the Socket
@@ -13,7 +15,7 @@ export interface SocketEvents {
     onPlayerDisconnect(player: Player): void;
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string): Tournament;
+    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Tournament;
     updateStats(): void;
 }
 
@@ -50,13 +52,15 @@ export default class SocketServer {
         });
 
         this.io.on('connection', (socket: SocketIO.Socket) => {
-            const player = new Player(socket.handshake.query.token, socket);
+            const playerChannel = new Channel(socket);
+            const player = new Player(socket.handshake.query.token, playerChannel);
 
             socket.on('lobby create', () => {
                 const lobby = this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', () => {
-                    console.log('start tournament');
-                    const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token);
+                socket.on('lobby tournament start', (data) => {
+                    console.log('start tournament, options=>', data.options);
+                    const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
+                    const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token, options);
                     if(tournament == null) {
                         socket.emit('exception', {error: 'Unable to start tournament'});
                     } else {

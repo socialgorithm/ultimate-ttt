@@ -70,16 +70,16 @@ var Server = (function () {
     }
     Server.prototype.onPlayerConnect = function (player) {
         this.addPlayer(player);
-        player.deliverAction('waiting');
+        player.channel.send('waiting');
     };
-    Server.prototype.onLobbyTournamentStart = function (lobbyToken) {
+    Server.prototype.onLobbyTournamentStart = function (lobbyToken, tournamentOptions) {
         var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
         if (foundLobby == null) {
             return null;
         }
         if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
             this.log("Starting tournament in lobby " + foundLobby.token + "!");
-            foundLobby.tournament = new Tournament_1.Tournament('Tournament', this.socketServer, foundLobby.players, this.options, this.ui);
+            foundLobby.tournament = new Tournament_1.Tournament(tournamentOptions, this.socketServer, foundLobby.players);
             foundLobby.tournament.start();
         }
         return foundLobby.tournament;
@@ -92,7 +92,7 @@ var Server = (function () {
         var _this = this;
         var matches = this.players.filter(function (p) { return p.token === player.token; });
         if (matches.length > 0) {
-            matches[0].socket.disconnect();
+            matches[0].channel.disconnect();
             this.removePlayer(matches[0]);
         }
         process.nextTick(function () {

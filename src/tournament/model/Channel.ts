@@ -30,6 +30,10 @@ export default class Channel {
 
   isConnected(): boolean {
     return this.socket.connected
-  } 
+  }
+
+  disconnect(): void {
+    this.socket.disconnect();
+  }
 
 }

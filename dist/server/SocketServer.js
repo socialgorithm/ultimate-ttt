@@ -4,6 +4,8 @@ var http = require("http");
 var io = require("socket.io");
 var fs = require("fs");
 var Player_1 = require("../tournament/model/Player");
+var Channel_1 = require("../tournament/model/Channel");
+var constants_1 = require("./constants");
 var SocketServer = (function () {
     function SocketServer(port, socketEvents) {
         var _this = this;
@@ -24,12 +26,14 @@ var SocketServer = (function () {
             next();
         });
         this.io.on('connection', function (socket) {
-            var player = new Player_1["default"](socket.handshake.query.token, socket);
+            var playerChannel = new Channel_1["default"](socket);
+            var player = new Player_1["default"](socket.handshake.query.token, playerChannel);
             socket.on('lobby create', function () {
                 var lobby = _this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', function () {
-                    console.log('start tournament');
-                    var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token);
+                socket.on('lobby tournament start', function (data) {
+                    console.log('start tournament, options=>', data.options);
+                    var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
+                    var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token, options);
                     if (tournament == null) {
                         socket.emit('exception', { error: 'Unable to start tournament' });
                     }

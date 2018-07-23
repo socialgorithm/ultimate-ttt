@@ -1,3 +1,5 @@
-export default class GameOptions {
-    timeout: number;
+export type GameOptions = {
+    timeout: number,
 }
+
+export default GameOptions;

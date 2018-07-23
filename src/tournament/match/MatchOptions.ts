@@ -1,4 +1,6 @@
-export default class MatchOptions {
-    maxGames: number;
-    timeout: number;
-}
+export type MatchOptions = {
+    maxGames: number,
+    timeout: number,
+};
+
+export default MatchOptions;

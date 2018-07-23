@@ -1,14 +1,9 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
-import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 import State from "../../model/State";
-import {Options} from "../../../lib/cli-options";
-import GUI from "../../../server/GUI";
 import * as funcs from '../../../lib/funcs';
-import SocketServer from '../../../server/SocketServer';
 import Player from '../../model/Player';
-import Session from '../../model/Session';
-import { Tournament } from '../../Tournament';
 import GameOptions from './GameOptions';
 import GameEvents from './GameEvents';
 

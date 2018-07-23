@@ -12,15 +12,11 @@ export interface Options {
   port?: number;
   gui?: boolean;
   host?: string;
-  games?: number;
-  timeout?: number;
   help?: number;
 }
 
 export const DEFAULT_OPTIONS: Options = {
   port: parseInt(process.env.PORT, 10) || 3141,
-  timeout: parseInt(process.env.TTT_TIMEOUT, 10) || 100,
-  games: parseInt(process.env.TTT_GAMES, 10) || 100,
 };
 
 const optionDefinitions = [
@@ -48,22 +44,6 @@ const optionDefinitions = [
     alias: 'u',
     type: Boolean,
     description: 'Display a fancy GUI in the terminal (only available in online mode)'
-  },
-  {
-    name: 'games',
-    alias: 'g',
-    type: Number,
-    defaultValue: DEFAULT_OPTIONS.games,
-    typeLabel: '[underline]{100}',
-    description: 'Number of games to play, defaults to 100'
-  },
-  {
-    name: 'timeout',
-    alias: 't',
-    type: Number,
-    defaultValue: DEFAULT_OPTIONS.timeout,
-    typeLabel: '[underline]{100}',
-    description: 'Milliseconds after which a player loses (defaults to 100)'
   },
   {
     name: 'help',

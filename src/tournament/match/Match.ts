@@ -1,17 +1,9 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
-import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-import State from "./State";
-import {Options} from "../../lib/cli-options";
-import GUI from "../../server/GUI";
-import * as funcs from '../../lib/funcs';
-import SocketServer from '../../server/SocketServer';
-import Player from './Player';
-import Session from './Session';
-import { Tournament } from '../Tournament';
 import MatchOptions from './MatchOptions';
 import Game from './game/Game';
 import Player from '../model/Player';
+import State from '../model/State';
 
 /*
  * A set of games between two players
@@ -26,10 +18,13 @@ export default class Match {
 
     constructor(private players: Player[], private options: MatchOptions) {
         this.games = [];
+
         for(let i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game(
+                this.players,
                 {timeout: options.timeout},
-                {onGameStart: () => {}}
+                {onGameStart: () => {}},
+                console.log
             )
         }
     }

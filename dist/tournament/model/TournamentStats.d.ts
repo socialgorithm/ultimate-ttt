@@ -1,15 +1,6 @@
-import State, { Stats } from "./State";
-export interface SessionInfo {
-    started: boolean;
-    finished: boolean;
-    state: State;
-    stats: Stats;
-}
+import Match from "../match/Match";
 export interface TournamentStats {
     started: boolean;
-    players: {
-        [key: string]: {
-            [key: string]: SessionInfo;
-        };
-    };
+    finished: boolean;
+    matches: Match[];
 }

@@ -1,21 +1,12 @@
 "use strict";
 exports.__esModule = true;
 var Player = (function () {
-    function Player(token, socket) {
+    function Player(token, channel) {
         this.token = token;
-        this.socket = socket;
+        this.channel = channel;
     }
-    Player.prototype.getIndexInSession = function () {
-        return this.session.players.indexOf(this);
-    };
-    Player.prototype.deliverAction = function (action) {
-        this.socket.emit('game', { action: action });
-    };
-    Player.prototype.otherPlayerInSession = function () {
-        return this.session.players[1 - this.getIndexInSession()];
-    };
     Player.prototype.alive = function () {
-        return this.socket.connected;
+        return this.channel.isConnected();
     };
     return Player;
 }());

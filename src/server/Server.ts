@@ -2,7 +2,7 @@ import {Options} from "../lib/cli-options";
 import GUI from "./GUI";
 import SocketServer from "./SocketServer";
 import Player from "../tournament/model/Player";
-import { Tournament } from '../tournament/Tournament';
+import { Tournament, TournamentOptions } from '../tournament/Tournament';
 import { Lobby } from "../tournament/model/Lobby";
 
 /**
@@ -64,7 +64,7 @@ export default class Server {
 
   private onPlayerConnect(player: Player): void {
     this.addPlayer(player);
-    player.deliverAction('waiting');
+    player.channel.send('waiting');
   }
 
   private onPlayerDisconnect = (player: Player): void => {
@@ -110,7 +110,7 @@ export default class Server {
     return foundLobby;
   }
 
-  private onLobbyTournamentStart(lobbyToken: string): Tournament {
+  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: TournamentOptions): Tournament {
     const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
     if(foundLobby == null) {
       return null;
@@ -118,7 +118,7 @@ export default class Server {
 
     if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
       this.log(`Starting tournament in lobby ${foundLobby.token}!`);
-      foundLobby.tournament = new Tournament(this.socketServer, foundLobby.players, this.options, this.ui);
+      foundLobby.tournament = new Tournament(tournamentOptions, this.socketServer, foundLobby.players);
       foundLobby.tournament.start();
     }
 
@@ -137,7 +137,7 @@ export default class Server {
   private addPlayer(player: Player): void {
     const matches = this.players.filter(p => p.token === player.token);
     if (matches.length > 0) {
-      matches[0].socket.disconnect();
+      matches[0].channel.disconnect();
       this.removePlayer(matches[0]);
     }
 
