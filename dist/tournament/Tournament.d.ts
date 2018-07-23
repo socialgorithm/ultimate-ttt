@@ -18,5 +18,17 @@ export declare class Tournament {
     start(): Promise<void>;
     playMatches(matches: Match[]): Promise<void>;
     isFinished(): boolean;
+    getStats(): {
+        options: TournamentOptions;
+        started: boolean;
+        finished: boolean;
+        matches: {
+            stats: import("../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
+            players: {
+                token: string;
+            }[];
+        }[];
+        ranking: string[];
+    };
     private sendStats;
 }

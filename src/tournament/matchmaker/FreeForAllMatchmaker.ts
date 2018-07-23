@@ -46,4 +46,25 @@ export default class FreeForAllMatchmaker implements Matchmaker {
         , []);
     }
 
+    getRanking(stats: TournamentStats): string[] {
+        const playerStats: any = {};
+        stats.matches.forEach(match => {
+            if (!playerStats[match.players[0].token]) {
+                playerStats[match.players[0].token] = 0;
+            }
+            if (!playerStats[match.players[1].token]) {
+                playerStats[match.players[1].token] = 0;
+            }
+            playerStats[match.players[0].token] += match.stats.wins[0];
+            playerStats[match.players[1].token] += match.stats.wins[1];
+        });
+        return Object.keys(playerStats).map(token => ({
+            player: token,
+            gamesWon: playerStats[token],
+        })).sort(
+            (a: any, b: any) => b.gamesWon - a.gamesWon
+        ).map(
+            playerRank => playerRank.player
+        );
+    }
 }

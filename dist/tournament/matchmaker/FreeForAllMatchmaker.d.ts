@@ -12,4 +12,5 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     constructor(players: Player[], options: MatchOptions, sendStats: Function);
     isFinished(): boolean;
     getRemainingMatches(tournamentStats: TournamentStats): Match[];
+    getRanking(stats: TournamentStats): string[];
 }

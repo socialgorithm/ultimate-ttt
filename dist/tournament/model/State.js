@@ -8,6 +8,7 @@ var State = (function () {
         this.wins = [0, 0];
         this.times = [];
         this.timeouts = [0, 0];
+        this.state = 'upcoming';
     }
     State.prototype.toJSON = function () {
         return {
@@ -15,7 +16,8 @@ var State = (function () {
             ties: this.ties,
             wins: this.wins,
             times: this.times,
-            timeouts: this.timeouts
+            timeouts: this.timeouts,
+            state: this.state
         };
     };
     State.prototype.printState = function () {

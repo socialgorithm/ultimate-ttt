@@ -63,12 +63,25 @@ export class Tournament {
     }
     
     isFinished(): boolean {
-        return this.stats.finished
+        return this.stats.finished;
+    }
+
+    public getStats() {
+        return {
+            options: this.options,
+            started: this.stats.started,
+            finished: this.stats.finished,
+            matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => ({
+                stats: match.stats,
+                players: match.players.map(player => ({
+                    token: player.token,
+                })),
+            })),
+            ranking: this.matchmaker.getRanking(this.stats),
+        };
     }
 
     private sendStats = (): void => {
-        const stats: any = this.stats;
-        stats.matches = stats.matches.filter((match: Match) => match && match.state).map((match: Match) => match.state);
-        this.socket.emitInLobby(this.lobbyToken, 'tournament stats', stats);
+        this.socket.emitInLobby(this.lobbyToken, 'tournament stats', this.getStats());
     }
 }

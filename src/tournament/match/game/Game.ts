@@ -91,13 +91,13 @@ export default class Game {
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
     public handleGameWon(winnerIndex: PlayerNumber) {
+        this.winnerIndex = this.switchPlayer(winnerIndex); // necessary because the winner is recorded inversely
         this.handleGameEnd();
-        this.winnerIndex = winnerIndex;
     }
 
     public handleGameTied() {
-        this.handleGameEnd()
         this.winnerIndex = -1;
+        this.handleGameEnd()
     }
 
     private handleGameEnd() {
@@ -115,7 +115,6 @@ export default class Game {
             player.channel.send('game', `end ${gameState}`);
             player.channel.removeAllHandlers();
         });
-        console.log('--------------- GAME ENDED ----------------');
         this.resolve(true);
     }
 

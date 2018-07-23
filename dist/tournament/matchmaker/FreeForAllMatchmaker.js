@@ -26,6 +26,23 @@ var FreeForAllMatchmaker = (function () {
             return result.concat(current);
         }, []);
     };
+    FreeForAllMatchmaker.prototype.getRanking = function (stats) {
+        var playerStats = {};
+        stats.matches.forEach(function (match) {
+            if (!playerStats[match.players[0].token]) {
+                playerStats[match.players[0].token] = 0;
+            }
+            if (!playerStats[match.players[1].token]) {
+                playerStats[match.players[1].token] = 0;
+            }
+            playerStats[match.players[0].token] += match.stats.wins[0];
+            playerStats[match.players[1].token] += match.stats.wins[1];
+        });
+        return Object.keys(playerStats).map(function (token) { return ({
+            player: token,
+            gamesWon: playerStats[token]
+        }); }).sort(function (a, b) { return b.gamesWon - a.gamesWon; }).map(function (playerRank) { return playerRank.player; });
+    };
     return FreeForAllMatchmaker;
 }());
 exports["default"] = FreeForAllMatchmaker;

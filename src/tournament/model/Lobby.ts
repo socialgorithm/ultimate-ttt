@@ -17,11 +17,12 @@ export class Lobby {
     }
 
     toObject() {
-        return circularJson.stringify(this, (key, value) => {
-            if (key === 'admin' || key === 'socket') {
-                return null;
-            }
-            return value;
-        });
+        return {
+            token: this.token,
+            players: this.players.map(player => ({
+                token: player.token,
+            })),
+            tournament: this.tournament ? this.tournament.getStats() : null,
+        };
     }
 }

@@ -8,6 +8,7 @@ import Match from "../match/Match";
  * according to the strategy followed.
  */
 export default interface Matchmaker {
-    isFinished(): Boolean
-    getRemainingMatches(stats: TournamentStats): Match[]
+    isFinished(): Boolean,
+    getRemainingMatches(stats: TournamentStats): Match[],
+    getRanking(stats: TournamentStats): string[],
 }

@@ -57,12 +57,12 @@ var Game = (function () {
         };
     };
     Game.prototype.handleGameWon = function (winnerIndex) {
+        this.winnerIndex = this.switchPlayer(winnerIndex);
         this.handleGameEnd();
-        this.winnerIndex = winnerIndex;
     };
     Game.prototype.handleGameTied = function () {
-        this.handleGameEnd();
         this.winnerIndex = -1;
+        this.handleGameEnd();
     };
     Game.prototype.handleGameEnd = function () {
         var _this = this;
@@ -81,7 +81,6 @@ var Game = (function () {
             player.channel.send('game', "end " + gameState);
             player.channel.removeAllHandlers();
         });
-        console.log('--------------- GAME ENDED ----------------');
         this.resolve(true);
     };
     Game.prototype.parseMove = function (data) {

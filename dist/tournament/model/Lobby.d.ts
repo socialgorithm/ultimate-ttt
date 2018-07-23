@@ -6,5 +6,22 @@ export declare class Lobby {
     players: Array<Player>;
     tournament: Tournament;
     constructor(admin: Player);
-    toObject(): string;
+    toObject(): {
+        token: string;
+        players: {
+            token: string;
+        }[];
+        tournament: {
+            options: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/Tournament").TournamentOptions;
+            started: boolean;
+            finished: boolean;
+            matches: {
+                stats: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
+                players: {
+                    token: string;
+                }[];
+            }[];
+            ranking: string[];
+        };
+    };
 }

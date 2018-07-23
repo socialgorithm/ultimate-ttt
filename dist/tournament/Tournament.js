@@ -49,9 +49,7 @@ var Tournament = (function () {
             matches: []
         };
         this.sendStats = function () {
-            var stats = _this.stats;
-            stats.matches = stats.matches.filter(function (match) { return match && match.state; }).map(function (match) { return match.state; });
-            _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', stats);
+            _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', _this.getStats());
         };
         var matchOptions = {
             maxGames: this.options.numberOfGames,
@@ -116,6 +114,20 @@ var Tournament = (function () {
     };
     Tournament.prototype.isFinished = function () {
         return this.stats.finished;
+    };
+    Tournament.prototype.getStats = function () {
+        return {
+            options: this.options,
+            started: this.stats.started,
+            finished: this.stats.finished,
+            matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return ({
+                stats: match.stats,
+                players: match.players.map(function (player) { return ({
+                    token: player.token
+                }); })
+            }); }),
+            ranking: this.matchmaker.getRanking(this.stats)
+        };
     };
     return Tournament;
 }());

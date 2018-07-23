@@ -23,6 +23,7 @@ export default class State {
   public wins: Array<number>; // Array with only two elements, 0 is wins by player 0, 1 is wins by player 1
   public times: Array<number>; // Array with the times for all the games
   public timeouts: Array<number>; // Array for all timeouts
+  public state: 'playing' | 'finished' | 'upcoming';
 
   constructor() {
     this.games = 0;
@@ -30,6 +31,7 @@ export default class State {
     this.wins = [0, 0];
     this.times = [];
     this.timeouts = [0, 0];
+    this.state = 'upcoming';
   }
 
   public toJSON() {
@@ -39,6 +41,7 @@ export default class State {
       wins: this.wins,
       times: this.times,
       timeouts: this.timeouts,
+      state: this.state,
     };
   }
 

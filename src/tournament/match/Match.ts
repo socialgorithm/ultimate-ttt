@@ -1,5 +1,3 @@
-import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
-
 import MatchOptions from './MatchOptions';
 import Game from './game/Game';
 import Player from '../model/Player';
@@ -10,11 +8,11 @@ import State from '../model/State';
  */
 export default class Match {
     public games: Game[];
-    public state: State;
+    public stats: State;
 
-    constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
+    constructor(public players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.games = [];
-        this.state = new State();
+        this.stats = new State();
 
         for(let i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game(
@@ -35,16 +33,18 @@ export default class Match {
      * Play all the games in this match
      */
     public async playGames() {
+        this.stats.state = 'playing';
         for (let game of this.games) {
             await game.playGame();
-            this.state.times.push(game.gameTime);
-            this.state.games++;
+            this.stats.times.push(game.gameTime);
+            this.stats.games++;
             if (game.winnerIndex === -1) {
-                this.state.ties++;
+                this.stats.ties++;
             } else {
-                this.state.wins[game.winnerIndex]++;
+                this.stats.wins[game.winnerIndex]++;
             }
             this.sendStats();
         }
+        this.stats.state = 'finished';
     }
 }

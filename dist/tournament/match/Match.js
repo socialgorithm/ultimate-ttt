@@ -43,7 +43,7 @@ var Match = (function () {
         this.options = options;
         this.sendStats = sendStats;
         this.games = [];
-        this.state = new State_1["default"]();
+        this.stats = new State_1["default"]();
         for (var i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game_1["default"](this.players, {
                 timeout: options.timeout,
@@ -59,6 +59,7 @@ var Match = (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        this.stats.state = 'playing';
                         _i = 0, _a = this.games;
                         _b.label = 1;
                     case 1:
@@ -67,20 +68,22 @@ var Match = (function () {
                         return [4, game.playGame()];
                     case 2:
                         _b.sent();
-                        this.state.times.push(game.gameTime);
-                        this.state.games++;
+                        this.stats.times.push(game.gameTime);
+                        this.stats.games++;
                         if (game.winnerIndex === -1) {
-                            this.state.ties++;
+                            this.stats.ties++;
                         }
                         else {
-                            this.state.wins[game.winnerIndex]++;
+                            this.stats.wins[game.winnerIndex]++;
                         }
                         this.sendStats();
                         _b.label = 3;
                     case 3:
                         _i++;
                         return [3, 1];
-                    case 4: return [2];
+                    case 4:
+                        this.stats.state = 'finished';
+                        return [2];
                 }
             });
         });
