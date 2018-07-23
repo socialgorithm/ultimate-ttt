@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
+var q = require("q");
 var State_1 = require("../../model/State");
 var funcs = require("../../../lib/funcs");
 var Game = (function () {
@@ -11,6 +12,7 @@ var Game = (function () {
         this.log = log;
         this.game = new UTTT_1["default"]();
         this.state = new State_1["default"]();
+        this.deferred = q.defer();
     }
     Game.prototype.playGame = function () {
         this.gameStart = process.hrtime();
@@ -20,6 +22,7 @@ var Game = (function () {
         this.playerZero().channel.send('init');
         this.playerOne().channel.send('init');
         this.players[this.currentPlayerIndex].channel.send('move');
+        return this.deferred.promise;
     };
     Game.prototype.handlePlayerMove = function (player) {
         var _this = this;
@@ -64,6 +67,7 @@ var Game = (function () {
     Game.prototype.handleGameEnd = function () {
         var hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
+        this.deferred.resolve(true);
     };
     Game.prototype.parseMove = function (data) {
         var _a = data.trim().split(';')

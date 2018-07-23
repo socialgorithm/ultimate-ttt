@@ -1,5 +1,6 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import * as q from 'q';
 
 import State from "../../model/State";
 import * as funcs from '../../../lib/funcs';
@@ -14,8 +15,9 @@ export default class Game {
     private game: UTTT;
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
-    private winnerIndex: PlayerOrTie
+    private winnerIndex: PlayerOrTie;
     private state: State;
+    private deferred: q.Deferred<boolean>;
 
     /**
      * Create a game between two players
@@ -24,12 +26,13 @@ export default class Game {
     constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
         this.game = new UTTT();
         this.state = new State();
+        this.deferred = q.defer();
     }
 
     /**
      * Play an individual game between two players
      */
-    public playGame() {
+    public playGame(): q.Promise<boolean> {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
 
@@ -39,6 +42,7 @@ export default class Game {
         this.playerZero().channel.send('init');
         this.playerOne().channel.send('init');
         this.players[this.currentPlayerIndex].channel.send('move');
+        return this.deferred.promise;
     }
 
     /**
@@ -87,8 +91,8 @@ export default class Game {
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
     public handleGameWon(winnerIndex: PlayerNumber) {
-        this.handleGameEnd()
-        this.winnerIndex = winnerIndex
+        this.handleGameEnd();
+        this.winnerIndex = winnerIndex;
     }
 
     public handleGameTied() {
@@ -99,6 +103,7 @@ export default class Game {
     private handleGameEnd() {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
+        this.deferred.resolve(true);
     }
 
     /**

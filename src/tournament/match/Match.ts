@@ -5,7 +5,7 @@ import Game from './game/Game';
 import Player from '../model/Player';
 import State from '../model/State';
 
-/*
+/**
  * A set of games between two players
  */
 export default class Match {
@@ -32,9 +32,9 @@ export default class Match {
     /**
      * Play all the games in this match
      */
-    public playGames() {
-        this.games.forEach((game) => {
-            game.playGame()
-        });
+    public async playGames() {
+        for (let game of this.games) {
+            await game.playGame();
+        }
     }
 }

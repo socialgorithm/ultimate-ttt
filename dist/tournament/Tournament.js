@@ -6,6 +6,11 @@ var Tournament = (function () {
         this.options = options;
         this.socket = socket;
         this.players = players;
+        this.stats = {
+            started: false,
+            finished: false,
+            matches: []
+        };
         var matchOptions = {
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout
@@ -19,12 +24,15 @@ var Tournament = (function () {
     }
     Tournament.prototype.start = function () {
         if (!this.stats.started && !this.isFinished()) {
+            console.log('Starting Tournament');
             this.stats.started = true;
             while (!this.matchmaker.isFinished()) {
                 var matches = this.matchmaker.getRemainingMatches(this.stats);
+                console.log('MatchMaker matches', matches);
                 var playedMatches = this.playMatches(matches);
                 this.stats.matches = this.stats.matches.concat(playedMatches);
             }
+            console.log('finished games');
             this.stats.finished = true;
         }
     };

@@ -13,6 +13,7 @@ var FreeForAllMatchmaker = (function () {
     FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
         var _this = this;
         var match = [];
+        this.finished = true;
         return this.players.map(function (playerA, $index) {
             return _this.players.splice($index + 1).map(function (playerB) {
                 return new Match_1["default"]([playerA, playerB], {

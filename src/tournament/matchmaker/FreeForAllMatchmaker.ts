@@ -26,7 +26,8 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     }
 
     getRemainingMatches(tournamentStats: TournamentStats): Match[] {
-        let match: Match[] = []
+        let match: Match[] = [];
+        this.finished = true; // Free for all only runs matchmaking once
         return this.players.map((playerA, $index) => {
             return this.players.splice($index + 1).map(
                 playerB => {

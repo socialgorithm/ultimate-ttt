@@ -31,16 +31,15 @@ var SocketServer = (function () {
             socket.on('lobby create', function () {
                 var lobby = _this.socketEvents.onLobbyCreate(player);
                 socket.on('lobby tournament start', function (data) {
-                    console.log('start tournament, options=>', data.options);
                     var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
                     var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token, options);
                     if (tournament == null) {
                         socket.emit('exception', { error: 'Unable to start tournament' });
                     }
                     else {
-                        _this.io["in"](lobby.token).emit('started tournament', {
-                            lobby: lobby.toObject(),
-                            tournament: tournament
+                        lobby.tournament = tournament;
+                        _this.io["in"](lobby.token).emit('lobby tournament started', {
+                            lobby: lobby.toObject()
                         });
                     }
                 });

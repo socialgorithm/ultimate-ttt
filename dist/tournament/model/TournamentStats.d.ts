@@ -1,6 +1,6 @@
 import Match from "../match/Match";
-export interface TournamentStats {
+export declare type TournamentStats = {
     started: boolean;
     finished: boolean;
     matches: Match[];
-}
+};

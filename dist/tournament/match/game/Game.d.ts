@@ -1,4 +1,5 @@
 import { PlayerNumber } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import * as q from 'q';
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
 import GameEvents from './GameEvents';
@@ -12,8 +13,9 @@ export default class Game {
     private gameStart;
     private winnerIndex;
     private state;
+    private deferred;
     constructor(players: Player[], options: GameOptions, events: GameEvents, log: any);
-    playGame(): void;
+    playGame(): q.Promise<boolean>;
     handlePlayerMove(player: Player): (data: string) => void;
     handleGameWon(winnerIndex: PlayerNumber): void;
     handleGameTied(): void;

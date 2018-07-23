@@ -1,10 +1,6 @@
-import { Options } from '../lib/cli-options';
 import SocketServer from '../server/SocketServer';
-import Session from './model/Session';
 import Player from './model/Player';
-import GUI from '../server/GUI';
 import {TournamentStats} from "./model/TournamentStats";
-import StateImpl from "./model/State";
 import Matchmaker from './matchmaker/Matchmaker';
 import Match from './match/Match';
 import FreeForAllMatchmaker from './matchmaker/FreeForAllMatchmaker';
@@ -27,7 +23,11 @@ export type TournamentOptions = {
 export class Tournament {
 
     private player: Player[];
-    private stats: TournamentStats;
+    private stats: TournamentStats = {
+        started: false,
+        finished: false,
+        matches: [],
+    };
     private matchmaker: Matchmaker;
 
     constructor(private options: TournamentOptions, private socket: SocketServer, public players: Player[]) {
@@ -45,12 +45,15 @@ export class Tournament {
 
     start() {
         if (!this.stats.started && !this.isFinished()) {
+            console.log('Starting Tournament');
             this.stats.started = true;
             while(!this.matchmaker.isFinished()) {
                 const matches = this.matchmaker.getRemainingMatches(this.stats);
+                console.log('MatchMaker matches', matches);
                 const playedMatches = this.playMatches(matches)
                 this.stats.matches = this.stats.matches.concat(playedMatches)
             }
+            console.log('finished games');
             this.stats.finished = true;
         }
     }

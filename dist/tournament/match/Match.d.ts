@@ -10,5 +10,5 @@ export default class Match {
     private gameIDForUI;
     private active;
     constructor(players: Player[], options: MatchOptions);
-    playGames(): void;
+    playGames(): Promise<void>;
 }

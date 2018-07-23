@@ -43,6 +43,7 @@
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
     "ip": "^1.1.5",
+    "q": "^1.5.1",
     "random-word": "^2.0.0",
     "socket.io": "^2.0.1"
   },
@@ -50,6 +51,7 @@
     "@types/blessed": "^0.1.10",
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.41",
+    "@types/q": "^1.5.0",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
     "gulp": "^3.9.1",

@@ -58,15 +58,14 @@ export default class SocketServer {
             socket.on('lobby create', () => {
                 const lobby = this.socketEvents.onLobbyCreate(player);
                 socket.on('lobby tournament start', (data) => {
-                    console.log('start tournament, options=>', data.options);
                     const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
                     const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token, options);
                     if(tournament == null) {
                         socket.emit('exception', {error: 'Unable to start tournament'});
                     } else {
-                        this.io.in(lobby.token).emit('started tournament', {
+                        lobby.tournament = tournament;
+                        this.io.in(lobby.token).emit('lobby tournament started', {
                             lobby: lobby.toObject(),
-                            tournament,
                         });
                     }
                 });
