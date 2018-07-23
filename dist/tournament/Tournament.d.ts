@@ -10,11 +10,13 @@ export declare class Tournament {
     private options;
     private socket;
     players: Player[];
+    private lobbyToken;
     private player;
     private stats;
     private matchmaker;
-    constructor(options: TournamentOptions, socket: SocketServer, players: Player[]);
-    start(): void;
-    playMatches(matches: Match[]): Match[];
+    constructor(options: TournamentOptions, socket: SocketServer, players: Player[], lobbyToken: string);
+    start(): Promise<void>;
+    playMatches(matches: Match[]): Promise<void>;
     isFinished(): boolean;
+    private sendStats;
 }

@@ -118,7 +118,7 @@ export default class SocketServer {
      * @param type Message type (determines who receives the data)
      * @param data Data to be sent
      */
-    public emitInLobby(lobby: string, type: string, data: { type: string, payload: any }): void {
+    public emitInLobby(lobby: string, type: string, data: any): void {
         this.io.to(lobby).emit(type, data);
     }
 

@@ -25,7 +25,7 @@ export default class Channel {
   }
 
   send(type: string, ...args: any[]) {
-    this.socket.emit(type, args)
+    this.socket.emit(type, ...args)
   }
 
   isConnected(): boolean {

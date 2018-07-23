@@ -16,7 +16,7 @@ export default class Match {
     private gameIDForUI: number;
     private active: boolean;
 
-    constructor(private players: Player[], private options: MatchOptions) {
+    constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.games = [];
 
         for(let i = 0; i < options.maxGames; i++) {
@@ -35,6 +35,7 @@ export default class Match {
     public async playGames() {
         for (let game of this.games) {
             await game.playGame();
+            this.sendStats();
         }
     }
 }

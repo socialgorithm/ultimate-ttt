@@ -3,12 +3,13 @@ import Player from '../model/Player';
 export default class Match {
     private players;
     private options;
+    private sendStats;
     private games;
     private state;
     private game;
     private gameStart;
     private gameIDForUI;
     private active;
-    constructor(players: Player[], options: MatchOptions);
+    constructor(players: Player[], options: MatchOptions, sendStats: Function);
     playGames(): Promise<void>;
 }

@@ -17,7 +17,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     private maxMatches: number;
     private finished: boolean;
 
-    constructor(private players: Player[], private options: MatchOptions) {
+    constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.maxMatches = Math.pow(players.length, players.length)
     }
 
@@ -36,7 +36,8 @@ export default class FreeForAllMatchmaker implements Matchmaker {
                         {
                             maxGames: this.options.maxGames,
                             timeout: this.options.timeout,
-                        }
+                        },
+                        this.sendStats
                     );
                 }
             )

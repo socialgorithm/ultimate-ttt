@@ -1,6 +1,5 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import * as q from 'q';
 
 import State from "../../model/State";
 import * as funcs from '../../../lib/funcs';
@@ -17,7 +16,8 @@ export default class Game {
     private gameStart: [number, number];
     private winnerIndex: PlayerOrTie;
     private state: State;
-    private deferred: q.Deferred<boolean>;
+    private gamePromise: Promise<boolean>;
+    private resolve: Function;
 
     /**
      * Create a game between two players
@@ -26,23 +26,25 @@ export default class Game {
     constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
         this.game = new UTTT();
         this.state = new State();
-        this.deferred = q.defer();
+        this.gamePromise = new Promise((resolve) => {
+            this.resolve = resolve;
+        });
     }
 
     /**
      * Play an individual game between two players
      */
-    public playGame(): q.Promise<boolean> {
+    public playGame(): Promise<boolean> {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
 
-        this.playerZero().channel.registerHandler('game', this.handlePlayerMove(this.playerZero()));
-        this.playerOne().channel.registerHandler('game', this.handlePlayerMove(this.playerOne()));
+        this.playerZero().channel.registerHandler('game', this.handlePlayerMove(this.playerZero(), 0));
+        this.playerOne().channel.registerHandler('game', this.handlePlayerMove(this.playerOne(), 1));
 
-        this.playerZero().channel.send('init');
-        this.playerOne().channel.send('init');
-        this.players[this.currentPlayerIndex].channel.send('move');
-        return this.deferred.promise;
+        this.playerZero().channel.send('game', 'init');
+        this.playerOne().channel.send('game', 'init');
+        this.players[this.currentPlayerIndex].channel.send('game', 'move');
+        return this.gamePromise;
     }
 
     /**
@@ -51,9 +53,9 @@ export default class Game {
      * @param player Player number (0-1)
      * @returns {Function} Move handler with the player number embedded for logging
      */
-    public handlePlayerMove(player: Player) {
+    public handlePlayerMove(player: Player, playerIndex: number) {
         return (data: string) => {
-            if (this.currentPlayerIndex !== this.players.indexOf(player)) {
+            if (this.currentPlayerIndex !== playerIndex) {
                 this.log(`Game ${this.state.games}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
                 this.handleGameWon(this.currentPlayerIndex);
                 return;
@@ -68,7 +70,7 @@ export default class Game {
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
 
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
-                this.players[this.currentPlayerIndex].channel.send(`opponent ${this.writeMove(coords)}`);
+                this.players[this.currentPlayerIndex].channel.send('game', `opponent ${this.writeMove(coords)}`);
 
                 if (this.game.isFinished()) {
                     if(this.game.winner === -1) {
@@ -103,7 +105,20 @@ export default class Game {
     private handleGameEnd() {
         const hrend = process.hrtime(this.gameStart);
         this.state.times.push(funcs.convertExecTime(hrend[1]));
-        this.deferred.resolve(true);
+        this.players.forEach((player, index) => {
+            let gameState = 'tied';
+            if (this.winnerIndex > -1) {
+                if (this.winnerIndex === index) {
+                    gameState = 'won';
+                } else {
+                    gameState = 'lost';
+                }
+            }
+            player.channel.send('game', `end ${gameState}`);
+            player.channel.removeAllHandlers();
+        });
+        console.log('--------------- GAME ENDED ----------------');
+        this.resolve(true);
     }
 
     /**

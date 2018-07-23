@@ -37,9 +37,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var Game_1 = require("./game/Game");
 var Match = (function () {
-    function Match(players, options) {
+    function Match(players, options, sendStats) {
         this.players = players;
         this.options = options;
+        this.sendStats = sendStats;
         this.games = [];
         for (var i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game_1["default"](this.players, { timeout: options.timeout }, { onGameStart: function () { } }, console.log);
@@ -59,6 +60,7 @@ var Match = (function () {
                         return [4, game.playGame()];
                     case 2:
                         _b.sent();
+                        this.sendStats();
                         _b.label = 3;
                     case 3:
                         _i++;

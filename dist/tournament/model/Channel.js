@@ -20,7 +20,8 @@ var Channel = (function () {
         for (var _i = 1; _i < arguments.length; _i++) {
             args[_i - 1] = arguments[_i];
         }
-        this.socket.emit(type, args);
+        var _a;
+        (_a = this.socket).emit.apply(_a, [type].concat(args));
     };
     Channel.prototype.isConnected = function () {
         return this.socket.connected;
