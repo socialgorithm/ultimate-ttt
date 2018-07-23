@@ -49,7 +49,9 @@ var Tournament = (function () {
             matches: []
         };
         this.sendStats = function () {
-            _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', _this.stats);
+            var stats = _this.stats;
+            stats.matches = stats.matches.filter(function (match) { return match && match.state; }).map(function (match) { return match.state; });
+            _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', stats);
         };
         var matchOptions = {
             maxGames: this.options.numberOfGames,
@@ -74,14 +76,13 @@ var Tournament = (function () {
                     case 1:
                         if (!!this.matchmaker.isFinished()) return [3, 3];
                         matches = this.matchmaker.getRemainingMatches(this.stats);
+                        this.stats.matches = this.stats.matches.concat(matches);
                         return [4, this.playMatches(matches)];
                     case 2:
                         _a.sent();
-                        this.stats.matches = this.stats.matches.concat(matches);
                         this.sendStats();
                         return [3, 1];
                     case 3:
-                        console.log('Finished games');
                         this.stats.finished = true;
                         this.sendStats();
                         _a.label = 4;

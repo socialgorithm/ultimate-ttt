@@ -47,11 +47,10 @@ export class Tournament {
             this.stats.started = true;
             while(!this.matchmaker.isFinished()) {
                 const matches = this.matchmaker.getRemainingMatches(this.stats);
-                await this.playMatches(matches);
                 this.stats.matches = this.stats.matches.concat(matches);
+                await this.playMatches(matches);
                 this.sendStats();
             }
-            console.log('Finished games');
             this.stats.finished = true;
             this.sendStats();
         }
@@ -68,6 +67,8 @@ export class Tournament {
     }
 
     private sendStats = (): void => {
-        this.socket.emitInLobby(this.lobbyToken, 'tournament stats', this.stats);
+        const stats: any = this.stats;
+        stats.matches = stats.matches.filter((match: Match) => match && match.state).map((match: Match) => match.state);
+        this.socket.emitInLobby(this.lobbyToken, 'tournament stats', stats);
     }
 }

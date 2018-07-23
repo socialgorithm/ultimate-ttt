@@ -18,11 +18,11 @@ export interface Stats {
  * Used to track the state across multiple games between two players
  */
 export default class State {
-  public games: number;
-  public ties: number;
-  public wins: Array<number>;
-  public times: Array<number>;
-  public timeouts: Array<number>;
+  public games: number; // Number of games won
+  public ties: number; // Number of ties
+  public wins: Array<number>; // Array with only two elements, 0 is wins by player 0, 1 is wins by player 1
+  public times: Array<number>; // Array with the times for all the games
+  public timeouts: Array<number>; // Array for all timeouts
 
   constructor() {
     this.games = 0;

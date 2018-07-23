@@ -1,7 +1,6 @@
 "use strict";
 exports.__esModule = true;
 var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
-var State_1 = require("../../model/State");
 var funcs = require("../../../lib/funcs");
 var Game = (function () {
     function Game(players, options, events, log) {
@@ -11,7 +10,6 @@ var Game = (function () {
         this.events = events;
         this.log = log;
         this.game = new UTTT_1["default"]();
-        this.state = new State_1["default"]();
         this.gamePromise = new Promise(function (resolve) {
             _this.resolve = resolve;
         });
@@ -30,7 +28,7 @@ var Game = (function () {
         var _this = this;
         return function (data) {
             if (_this.currentPlayerIndex !== playerIndex) {
-                _this.log("Game " + _this.state.games + ": Player " + player.token + " played out of turn (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
+                _this.log("Game " + _this.options.gameId + ": Player " + player.token + " played out of turn (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
                 _this.handleGameWon(_this.currentPlayerIndex);
                 return;
             }
@@ -69,7 +67,7 @@ var Game = (function () {
     Game.prototype.handleGameEnd = function () {
         var _this = this;
         var hrend = process.hrtime(this.gameStart);
-        this.state.times.push(funcs.convertExecTime(hrend[1]));
+        this.gameTime = funcs.convertExecTime(hrend[1]);
         this.players.forEach(function (player, index) {
             var gameState = 'tied';
             if (_this.winnerIndex > -1) {

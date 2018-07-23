@@ -36,14 +36,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var Game_1 = require("./game/Game");
+var State_1 = require("../model/State");
 var Match = (function () {
     function Match(players, options, sendStats) {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
         this.games = [];
+        this.state = new State_1["default"]();
         for (var i = 0; i < options.maxGames; i++) {
-            this.games[i] = new Game_1["default"](this.players, { timeout: options.timeout }, { onGameStart: function () { } }, console.log);
+            this.games[i] = new Game_1["default"](this.players, {
+                timeout: options.timeout,
+                gameId: i
+            }, {
+                onGameStart: function () { }
+            }, console.log);
         }
     }
     Match.prototype.playGames = function () {
@@ -60,6 +67,14 @@ var Match = (function () {
                         return [4, game.playGame()];
                     case 2:
                         _b.sent();
+                        this.state.times.push(game.gameTime);
+                        this.state.games++;
+                        if (game.winnerIndex === -1) {
+                            this.state.ties++;
+                        }
+                        else {
+                            this.state.wins[game.winnerIndex]++;
+                        }
                         this.sendStats();
                         _b.label = 3;
                     case 3:

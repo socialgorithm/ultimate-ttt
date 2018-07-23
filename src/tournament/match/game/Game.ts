@@ -1,7 +1,6 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coords, PlayerNumber, PlayerOrTie} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-import State from "../../model/State";
 import * as funcs from '../../../lib/funcs';
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
@@ -14,10 +13,10 @@ export default class Game {
     private game: UTTT;
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
-    private winnerIndex: PlayerOrTie;
-    private state: State;
     private gamePromise: Promise<boolean>;
     private resolve: Function;
+    public winnerIndex: PlayerOrTie;
+    public gameTime: number;
 
     /**
      * Create a game between two players
@@ -25,7 +24,6 @@ export default class Game {
      */
     constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
         this.game = new UTTT();
-        this.state = new State();
         this.gamePromise = new Promise((resolve) => {
             this.resolve = resolve;
         });
@@ -56,7 +54,7 @@ export default class Game {
     public handlePlayerMove(player: Player, playerIndex: number) {
         return (data: string) => {
             if (this.currentPlayerIndex !== playerIndex) {
-                this.log(`Game ${this.state.games}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
+                this.log(`Game ${this.options.gameId}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
                 this.handleGameWon(this.currentPlayerIndex);
                 return;
             }
@@ -104,7 +102,7 @@ export default class Game {
 
     private handleGameEnd() {
         const hrend = process.hrtime(this.gameStart);
-        this.state.times.push(funcs.convertExecTime(hrend[1]));
+        this.gameTime = funcs.convertExecTime(hrend[1]);
         this.players.forEach((player, index) => {
             let gameState = 'tied';
             if (this.winnerIndex > -1) {
