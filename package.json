@@ -11,8 +11,7 @@
     "docs": "typedoc --out docs/ --mode modules ./src"
   },
   "engines": {
-    "node" : ">= 8",
-    "yarn" : "~1.0.0"
+    "node" : ">= 8"
   },
   "bin": {
     "uttt": "bin/index.js"
