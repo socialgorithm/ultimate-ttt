@@ -9,7 +9,7 @@
  *
  * Take a look at src/lib/input.js for the whole list of options available.
  */
-import OnlineServer from './lib/OnlineServer';
-import {DEFAULT_OPTIONS} from "./lib/input";
+import Server from './server/Server';
+import {DEFAULT_OPTIONS} from "./lib/cli-options";
 
-new OnlineServer(DEFAULT_OPTIONS);
+new Server(DEFAULT_OPTIONS);

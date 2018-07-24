@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var OnlineServer_1 = require("./lib/OnlineServer");
-var input_1 = require("./lib/input");
-new OnlineServer_1["default"](input_1.DEFAULT_OPTIONS);
+var Server_1 = require("./server/Server");
+var cli_options_1 = require("./lib/cli-options");
+new Server_1["default"](cli_options_1.DEFAULT_OPTIONS);
 //# sourceMappingURL=standalone.js.map
