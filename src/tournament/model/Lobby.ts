@@ -1,5 +1,4 @@
 import * as randomWord from 'random-word'
-import * as circularJson from 'circular-json';
 
 import Player from './Player';
 import { Tournament } from '../Tournament';

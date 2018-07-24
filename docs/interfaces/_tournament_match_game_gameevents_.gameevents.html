@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;lib/funcs&quot; | @socialgorithm/uttt</title>
+	<title>GameEvents | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,140 +56,56 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_lib_funcs_.html">&quot;lib/funcs&quot;</a>
+					<a href="../modules/_tournament_match_game_gameevents_.html">&quot;tournament/match/game/GameEvents&quot;</a>
+				</li>
+				<li>
+					<a href="_tournament_match_game_gameevents_.gameevents.html">GameEvents</a>
 				</li>
 			</ul>
-			<h1>External module &quot;lib/funcs&quot;</h1>
+			<h1>Interface GameEvents</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">GameEvents</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_funcs_.html#convertexectime" class="tsd-kind-icon">convert<wbr>Exec<wbr>Time</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_funcs_.html#getpercentage" class="tsd-kind-icon">get<wbr>Percentage</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_lib_funcs_.html#round" class="tsd-kind-icon">round</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_tournament_match_game_gameevents_.gameevents.html#ongamestart" class="tsd-kind-icon">on<wbr>Game<wbr>Start</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="convertexectime" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> convert<wbr>Exec<wbr>Time</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">convert<wbr>Exec<wbr>Time<span class="tsd-signature-symbol">(</span>nanosecs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="ongamestart" class="tsd-anchor"></a>
+					<h3>on<wbr>Game<wbr>Start</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Game<wbr>Start<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/funcs.ts#L15">lib/funcs.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/match/game/GameEvents.ts#L2">tournament/match/game/GameEvents.ts:2</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Convert execution time to milliseconds</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>nanosecs: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Execution time in nanoseconds</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>Exec time in ms</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getpercentage" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Percentage</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Percentage<span class="tsd-signature-symbol">(</span>num<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, total<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/funcs.ts#L25">lib/funcs.ts:25</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Convert a float 0-1 to a percentage string 0-100%</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>num: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Partial number</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>total: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Total number</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>Percentage string</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="round" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> round</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">round<span class="tsd-signature-symbol">(</span>time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/funcs.ts#L6">lib/funcs.ts:6</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Round a number to the nearest integer and return an int</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>time: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Float number</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>Int</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -202,81 +118,84 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">"index"</a>
+						<a href="../modules/_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
+						<a href="../modules/_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_lib_funcs_.html">"lib/funcs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_gui_.html">"server/GUI"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_server_.html">"server/<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_constants_.html">"server/constants"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_standalone_.html">"standalone"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_lib_funcs_.html">"lib/funcs"</a>
+						<a href="../modules/_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_server_gui_.html">"server/GUI"</a>
+						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_server_server_.html">"server/<wbr>Server"</a>
+						<a href="../modules/_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
+						<a href="../modules/_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_server_constants_.html">"server/constants"</a>
+						<a href="../modules/_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_standalone_.html">"standalone"</a>
+						<a href="../modules/_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
+						<a href="../modules/_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
+						<a href="../modules/_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
+						<a href="../modules/_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_lib_funcs_.html#convertexectime" class="tsd-kind-icon">convert<wbr>Exec<wbr>Time</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_tournament_match_game_gameevents_.gameevents.html" class="tsd-kind-icon">Game<wbr>Events</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="_tournament_match_game_gameevents_.gameevents.html#ongamestart" class="tsd-kind-icon">on<wbr>Game<wbr>Start</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_lib_funcs_.html#getpercentage" class="tsd-kind-icon">get<wbr>Percentage</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_lib_funcs_.html#round" class="tsd-kind-icon">round</a>
-					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

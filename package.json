@@ -8,7 +8,7 @@
     "start:opts": "node bin/index.js",
     "build": "tsc -w",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
-    "docs": "gulp typedoc && gulp noJekyll"
+    "docs": "typedoc --out docs/ --mode modules ./src"
   },
   "bin": {
     "uttt": "bin/index.js"
@@ -34,16 +34,13 @@
   "homepage": "https://github.com/aurbano/ultimate-ttt-server#readme",
   "dependencies": {
     "@socialgorithm/ultimate-ttt": "^4.19.0",
-    "@types/circular-json": "^0.4.0",
     "@types/ip": "0.0.31",
     "@types/node": "^10.5.1",
     "@types/socket.io": "^1.4.36",
     "blessed": "^0.1.81",
-    "circular-json": "^0.5.5",
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
     "ip": "^1.1.5",
-    "q": "^1.5.1",
     "random-word": "^2.0.0",
     "socket.io": "^2.0.1"
   },
@@ -51,13 +48,9 @@
     "@types/blessed": "^0.1.10",
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.41",
-    "@types/q": "^1.5.0",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
-    "gulp": "^3.9.1",
     "gulp-file": "^0.3.0",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-typedoc": "^2.0.2",
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
     "socket.io-client": "^2.1.1",

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Options | Ultimate TTT Server</title>
+	<title>Stats | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Ultimate TTT Server</a>
+					<a href="../index.html" class="title">@socialgorithm/uttt</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_input_.html">&quot;lib/input&quot;</a>
+					<a href="../modules/_tournament_model_state_.html">&quot;tournament/model/State&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_input_.options.html">Options</a>
+					<a href="_tournament_model_state_.stats.html">Stats</a>
 				</li>
 			</ul>
-			<h1>Interface Options</h1>
+			<h1>Interface Stats</h1>
 		</div>
 	</div>
 </header>
@@ -72,8 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Server Options
-						If launching from the terminal these options can be set as <code>--{option name}[ value]</code></p>
+						<p>Game stats calculated from a given state</p>
 					</div>
 				</div>
 			</section>
@@ -81,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Options</span>
+						<span class="target">Stats</span>
 					</li>
 				</ul>
 			</section>
@@ -92,14 +91,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#games" class="tsd-kind-icon">games</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#gui" class="tsd-kind-icon">gui</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#help" class="tsd-kind-icon">help</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#host" class="tsd-kind-icon">host</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#port" class="tsd-kind-icon">port</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#timeout" class="tsd-kind-icon">timeout</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#verbose" class="tsd-kind-icon">verbose</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_input_.options.html#version" class="tsd-kind-icon">version</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#avg" class="tsd-kind-icon">avg</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#max" class="tsd-kind-icon">max</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#min" class="tsd-kind-icon">min</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#tiepercentage" class="tsd-kind-icon">tie<wbr>Percentage</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#total" class="tsd-kind-icon">total</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#winpercentages" class="tsd-kind-icon">win<wbr>Percentages</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.stats.html#winner" class="tsd-kind-icon">winner</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,82 +106,72 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="games" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> games</h3>
-					<div class="tsd-signature tsd-kind-icon">games<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="avg" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> avg</h3>
+					<div class="tsd-signature tsd-kind-icon">avg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L15">lib/input.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L10">tournament/model/State.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="gui" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> gui</h3>
-					<div class="tsd-signature tsd-kind-icon">gui<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="max" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> max</h3>
+					<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L13">lib/input.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L9">tournament/model/State.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="help" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> help</h3>
-					<div class="tsd-signature tsd-kind-icon">help<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="min" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> min</h3>
+					<div class="tsd-signature tsd-kind-icon">min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L17">lib/input.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L11">tournament/model/State.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="host" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> host</h3>
-					<div class="tsd-signature tsd-kind-icon">host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="tiepercentage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tie<wbr>Percentage</h3>
+					<div class="tsd-signature tsd-kind-icon">tie<wbr>Percentage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L14">lib/input.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L13">tournament/model/State.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="port" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> port</h3>
-					<div class="tsd-signature tsd-kind-icon">port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="total" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> total</h3>
+					<div class="tsd-signature tsd-kind-icon">total<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L12">lib/input.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L8">tournament/model/State.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="timeout" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> timeout</h3>
-					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="winpercentages" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> win<wbr>Percentages</h3>
+					<div class="tsd-signature tsd-kind-icon">win<wbr>Percentages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L16">lib/input.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L12">tournament/model/State.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="verbose" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> verbose</h3>
-					<div class="tsd-signature tsd-kind-icon">verbose<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="winner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> winner</h3>
+					<div class="tsd-signature tsd-kind-icon">winner<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L11">lib/input.ts:11</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="version" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
-					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/input.ts#L10">lib/input.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/State.ts#L7">tournament/model/State.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -199,93 +187,102 @@
 						<a href="../modules/_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_gui_.html">"lib/GUI"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_onlinegame_.html">"lib/<wbr>Online<wbr>Game"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_onlineserver_.html">"lib/<wbr>Online<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_player_.html">"lib/<wbr>Player"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_session_.html">"lib/<wbr>Session"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_state_.html">"lib/<wbr>State"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_tournament_.html">"lib/<wbr>Tournament"</a>
+						<a href="../modules/_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_funcs_.html">"lib/funcs"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_lib_input_.html">"lib/input"</a>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_gui_.html">"server/GUI"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_server_.html">"server/<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_constants_.html">"server/constants"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_standalone_.html">"standalone"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_tournament_model_state_.state.html" class="tsd-kind-icon">State</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_input_.options.html" class="tsd-kind-icon">Options</a>
+						<a href="_tournament_model_state_.stats.html" class="tsd-kind-icon">Stats</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#games" class="tsd-kind-icon">games</a>
+								<a href="_tournament_model_state_.stats.html#avg" class="tsd-kind-icon">avg</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#gui" class="tsd-kind-icon">gui</a>
+								<a href="_tournament_model_state_.stats.html#max" class="tsd-kind-icon">max</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#help" class="tsd-kind-icon">help</a>
+								<a href="_tournament_model_state_.stats.html#min" class="tsd-kind-icon">min</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#host" class="tsd-kind-icon">host</a>
+								<a href="_tournament_model_state_.stats.html#tiepercentage" class="tsd-kind-icon">tie<wbr>Percentage</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#port" class="tsd-kind-icon">port</a>
+								<a href="_tournament_model_state_.stats.html#total" class="tsd-kind-icon">total</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#timeout" class="tsd-kind-icon">timeout</a>
+								<a href="_tournament_model_state_.stats.html#winpercentages" class="tsd-kind-icon">win<wbr>Percentages</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#verbose" class="tsd-kind-icon">verbose</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_input_.options.html#version" class="tsd-kind-icon">version</a>
+								<a href="_tournament_model_state_.stats.html#winner" class="tsd-kind-icon">winner</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_input_.html#commandlineargs" class="tsd-kind-icon">command<wbr>Line<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_input_.html#getusage" class="tsd-kind-icon">get<wbr>Usage</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_input_.html#info" class="tsd-kind-icon">info</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_input_.html#optiondefinitions" class="tsd-kind-icon">option<wbr>Definitions</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_lib_input_.html#sections" class="tsd-kind-icon">sections</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="../modules/_lib_input_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

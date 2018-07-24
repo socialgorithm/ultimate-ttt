@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Player | Ultimate TTT Server</title>
+	<title>Options | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Ultimate TTT Server</a>
+					<a href="../index.html" class="title">@socialgorithm/uttt</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,31 +56,33 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_player_.html">&quot;lib/Player&quot;</a>
+					<a href="../modules/_lib_cli_options_.html">&quot;lib/cli-options&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_player_.player.html">Player</a>
+					<a href="_lib_cli_options_.options.html">Options</a>
 				</li>
 			</ul>
-			<h1>Interface Player</h1>
+			<h1>Interface Options</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Server Options
+						If launching from the terminal these options can be set as <code>--{option name}[ value]</code></p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Player</span>
+						<span class="target">Options</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/_lib_player_.playerimpl.html" class="tsd-signature-type">PlayerImpl</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -90,18 +92,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_player_.player.html#session" class="tsd-kind-icon">session</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_player_.player.html#socket" class="tsd-kind-icon">socket</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_player_.player.html#token" class="tsd-kind-icon">token</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_player_.player.html#alive" class="tsd-kind-icon">alive</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_player_.player.html#deliveraction" class="tsd-kind-icon">deliver<wbr>Action</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_player_.player.html#getindexinsession" class="tsd-kind-icon">get<wbr>Index<wbr>InSession</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="_lib_player_.player.html#otherplayerinsession" class="tsd-kind-icon">other<wbr>Player<wbr>InSession</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#gui" class="tsd-kind-icon">gui</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#help" class="tsd-kind-icon">help</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#host" class="tsd-kind-icon">host</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#port" class="tsd-kind-icon">port</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#verbose" class="tsd-kind-icon">verbose</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_cli_options_.options.html#version" class="tsd-kind-icon">version</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,111 +106,64 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="session" class="tsd-anchor"></a>
-					<h3>session</h3>
-					<div class="tsd-signature tsd-kind-icon">session<span class="tsd-signature-symbol">:</span> <a href="../classes/_lib_session_.session.html" class="tsd-signature-type">Session</a></div>
+					<a name="gui" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> gui</h3>
+					<div class="tsd-signature tsd-kind-icon">gui<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L8">lib/Player.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L13">lib/cli-options.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="socket" class="tsd-anchor"></a>
-					<h3>socket</h3>
-					<div class="tsd-signature tsd-kind-icon">socket<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Socket</span></div>
+					<a name="help" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> help</h3>
+					<div class="tsd-signature tsd-kind-icon">help<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L10">lib/Player.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L15">lib/cli-options.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="token" class="tsd-anchor"></a>
-					<h3>token</h3>
-					<div class="tsd-signature tsd-kind-icon">token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="host" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> host</h3>
+					<div class="tsd-signature tsd-kind-icon">host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L9">lib/Player.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L14">lib/cli-options.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="alive" class="tsd-anchor"></a>
-					<h3>alive</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">alive<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L14">lib/Player.ts:14</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="port" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> port</h3>
+					<div class="tsd-signature tsd-kind-icon">port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L12">lib/cli-options.ts:12</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="deliveraction" class="tsd-anchor"></a>
-					<h3>deliver<wbr>Action</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">deliver<wbr>Action<span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L12">lib/Player.ts:12</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>action: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="verbose" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> verbose</h3>
+					<div class="tsd-signature tsd-kind-icon">verbose<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L11">lib/cli-options.ts:11</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getindexinsession" class="tsd-anchor"></a>
-					<h3>get<wbr>Index<wbr>InSession</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Index<wbr>InSession<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PlayerNumber</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L11">lib/Player.ts:11</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PlayerNumber</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="otherplayerinsession" class="tsd-anchor"></a>
-					<h3>other<wbr>Player<wbr>InSession</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">other<wbr>Player<wbr>InSession<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_player_.player.html" class="tsd-signature-type">Player</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/4370727/src/lib/Player.ts#L13">lib/Player.ts:13</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_lib_player_.player.html" class="tsd-signature-type">Player</a></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="version" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
+					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/lib/cli-options.ts#L10">lib/cli-options.ts:10</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -227,76 +176,115 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_index_.html">"index"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_gui_.html">"lib/GUI"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_onlinegame_.html">"lib/<wbr>Online<wbr>Game"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_onlineserver_.html">"lib/<wbr>Online<wbr>Server"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_lib_player_.html">"lib/<wbr>Player"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_session_.html">"lib/<wbr>Session"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_socketserver_.html">"lib/<wbr>Socket<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_state_.html">"lib/<wbr>State"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_tournament_.html">"lib/<wbr>Tournament"</a>
+						<a href="../modules/_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_lib_funcs_.html">"lib/funcs"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_input_.html">"lib/input"</a>
+						<a href="../modules/_server_gui_.html">"server/GUI"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_server_.html">"server/<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_server_constants_.html">"server/constants"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_standalone_.html">"standalone"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_lib_player_.playerimpl.html" class="tsd-kind-icon">Player<wbr>Impl</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_lib_player_.player.html" class="tsd-kind-icon">Player</a>
+						<a href="_lib_cli_options_.options.html" class="tsd-kind-icon">Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#session" class="tsd-kind-icon">session</a>
+								<a href="_lib_cli_options_.options.html#gui" class="tsd-kind-icon">gui</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#socket" class="tsd-kind-icon">socket</a>
+								<a href="_lib_cli_options_.options.html#help" class="tsd-kind-icon">help</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#token" class="tsd-kind-icon">token</a>
+								<a href="_lib_cli_options_.options.html#host" class="tsd-kind-icon">host</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#alive" class="tsd-kind-icon">alive</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_cli_options_.options.html#port" class="tsd-kind-icon">port</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#deliveraction" class="tsd-kind-icon">deliver<wbr>Action</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_cli_options_.options.html#verbose" class="tsd-kind-icon">verbose</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#getindexinsession" class="tsd-kind-icon">get<wbr>Index<wbr>InSession</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="_lib_player_.player.html#otherplayerinsession" class="tsd-kind-icon">other<wbr>Player<wbr>InSession</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_cli_options_.options.html#version" class="tsd-kind-icon">version</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_lib_cli_options_.html#commandlineargs" class="tsd-kind-icon">command<wbr>Line<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_lib_cli_options_.html#getusage" class="tsd-kind-icon">get<wbr>Usage</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_lib_cli_options_.html#info" class="tsd-kind-icon">info</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_lib_cli_options_.html#optiondefinitions" class="tsd-kind-icon">option<wbr>Definitions</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_lib_cli_options_.html#sections" class="tsd-kind-icon">sections</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
+						<a href="../modules/_lib_cli_options_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
