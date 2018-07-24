@@ -4,6 +4,7 @@
   "repository": "https://github.com/socialgorithm/ultimate-ttt-server",
   "logo": "https://socialgorithm.org/assets/avatar.png",
   "keywords": ["ultimate", "ttt", "socialgorithm"],
+  "image": "heroku/nodejs",
   "env": {
     "TTT_GAMES": {
       "description": "Number of games to play per round",

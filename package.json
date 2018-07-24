@@ -10,6 +10,10 @@
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "typedoc --out docs/ --mode modules ./src"
   },
+  "engines": {
+    "node" : ">= 8",
+    "yarn" : "~1.0.0"
+  },
   "bin": {
     "uttt": "bin/index.js"
   },
