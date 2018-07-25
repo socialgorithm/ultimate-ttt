@@ -4,6 +4,8 @@ import SocketServer from "./SocketServer";
 import Player from "../tournament/model/Player";
 import { Tournament, TournamentOptions } from '../tournament/Tournament';
 import { Lobby } from "../tournament/model/Lobby";
+import * as events from '../events';
+import PubSubber from "../tournament/model/Subscriber";
 
 /**
  * Load the package.json to get the version number
@@ -14,7 +16,7 @@ const pjson = require('../../package.json');
  * Online Server class
  * Handles the sockets, players, games...
  */
-export default class Server {
+export default class Server extends PubSubber {
 
   /**
    * List of players in the server
@@ -34,17 +36,11 @@ export default class Server {
   private socketServer: SocketServer;
 
   constructor(private options: Options) {
+    super();
     this.players = [];
     this.lobbies = [];
 
-    this.socketServer = new SocketServer(this.options.port, {
-      onPlayerConnect: this.onPlayerConnect.bind(this), 
-      onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
-      onLobbyCreate: this.onLobbyCreate.bind(this),
-      onLobbyJoin: this.onLobbyJoin.bind(this),
-      onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
-      updateStats: this.updateStats.bind(this),
-    });
+    this.socketServer = new SocketServer(this.options.port);
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
 
@@ -60,16 +56,33 @@ export default class Server {
     if (this.ui) {
       this.ui.render();
     }
+
+    // Setup the listeners
+    this.subscribe(events.PLAYER_CONNECT, this.onPlayerConnect);
+    this.subscribe(events.PLAYER_DISCONNECT, this.onPlayerDisconnect);
+    this.subscribe(events.LOBBY_CREATE, this.onLobbyCreate);
+    this.subscribe(events.LOBBY_JOIN, this.onLobbyJoin);
+    this.subscribe(events.TOURNAMENT_START, this.onLobbyTournamentStart);
+    // this.subscribe(events.UPDATE_STATS, this.updateStats);
+    this.subscribe(events.LOG, this.log);
   }
 
   private onPlayerConnect(player: Player): void {
-    this.addPlayer(player);
-    player.channel.send('waiting');
+    // const matches = this.players.filter(p => p.token === player.token);
+    // if (matches.length > 0) {
+    //   matches[0].channel.disconnect();
+    //   this.removePlayer(matches[0]);
+    // }
+
+    if (this.players.filter(p => p.token === player.token).length === 0) {
+      this.players.push(player);
+    }
+    this.log(`Connected "${player.token}"`, true);
   }
 
   private onPlayerDisconnect = (player: Player): void => {
     this.log('Handle player disconnect on his active games');
-    // TODO Remove the player from any lobbies
+    const lobbyList: Array<Lobby> = [];
     this.lobbies.forEach(lobby => {
       const playerIndex = lobby.players.findIndex(eachPlayer => eachPlayer.token === player.token);
       if (playerIndex < 0) {
@@ -77,12 +90,12 @@ export default class Server {
       }
       // Remove the player, and notify lobby of changes
       lobby.players.splice(playerIndex, 1);
-      this.socketServer.emitInLobby(lobby.token, 'lobby disconnected', {
-        type: 'player left',
-        payload: {
-          lobby: lobby.toObject(),
-        },
-      });
+      lobbyList.push(lobby);
+    });
+
+    this.publish(events.success(events.PLAYER_DISCONNECT), {
+      lobbyList,
+      player,
     });
   }
 
@@ -106,6 +119,11 @@ export default class Server {
       foundLobby.players.push(player)
       this.log('Player ' + player.token + ' joined ' + lobbyToken);
     }
+
+    this.publish(events.success(events.LOBBY_JOIN), {
+      lobby: foundLobby,
+      player,
+    });
     
     return foundLobby;
   }
@@ -125,33 +143,10 @@ export default class Server {
     return foundLobby.tournament
   }
 
-  private updateStats(): void {
-    const payload = { players: this.players.map(p => p.token), games: [] as any[] };
-    this.socketServer.emitPayload('stats', 'stats', payload);
-  }
-
-  /**
-   * Add a player to the server
-   * @param player Player token
-   */
-  private addPlayer(player: Player): void {
-    const matches = this.players.filter(p => p.token === player.token);
-    if (matches.length > 0) {
-      matches[0].channel.disconnect();
-      this.removePlayer(matches[0]);
-    }
-
-    process.nextTick(() => {
-      if (this.players.filter(p => p.token === player.token).length === 0) {
-        this.players.push(player);
-      }
-      this.log(`Connected "${player.token}"`, true);
-      this.socketServer.emitPayload('stats', 'connect', player.token);
-      if (this.ui) {
-        this.ui.renderOnlinePlayers(this.players.map(p => p.token));
-      }
-    });
-  }
+  // private updateStats(): void {
+  //   const payload = { players: this.players.map(p => p.token), games: [] as any[] };
+  //   this.socketServer.emitPayload('stats', 'stats', payload);
+  // }
 
   /**
    * Remove a player from the server
@@ -165,7 +160,6 @@ export default class Server {
       return;
     }
     this.log(`Disconnected ${player.token}`, true);
-    this.socketServer.emitPayload('stats', 'disconnect', player.token);
     if (this.ui) {
       this.ui.renderOnlinePlayers(this.players.map(p => p.token));
     }

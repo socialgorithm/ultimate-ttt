@@ -1,23 +1,11 @@
 import * as http from 'http';
 import * as io from 'socket.io';
 import * as fs from 'fs';
+
+import * as events from '../events';
 import Player from "../tournament/model/Player";
 import { Lobby } from '../tournament/model/Lobby';
-import { Tournament, TournamentOptions } from '../tournament/Tournament'
-import Channel from '../tournament/model/Channel';
-import { DEFAULT_TOURNAMENT_OPTIONS } from './constants';
-
-/**
- * Interface between the Server and the Socket
- */
-export interface SocketEvents {
-    onPlayerConnect(player: Player): void;
-    onPlayerDisconnect(player: Player): void;
-    onLobbyCreate(player: Player): Lobby;
-    onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Tournament;
-    updateStats(): void;
-}
+import PubSubber from '../tournament/model/Subscriber';
 
 /**
  * SocketServer performs all the necessary work around sockets
@@ -27,16 +15,17 @@ export interface SocketEvents {
  * and preserve all the server functionality independent of it. Testing should
  * become easier because of that for example.
  */
-export default class SocketServer {
+export default class SocketServer extends PubSubber {
     private io: SocketIO.Server;
-    private socketEvents: SocketEvents;
+    private playerSockets: {
+        [ key: string ]: SocketIO.Socket,
+    };
 
-    constructor(port: number, socketEvents: SocketEvents) {
+    constructor(port: number) {
+        super();
         const app = http.createServer(this.handler);
         this.io = io(app);
         app.listen(port);
-
-        this.socketEvents = socketEvents;
 
         this.io.use((socket: SocketIO.Socket, next: Function) => {
             const isClient = socket.request._query.client || false;
@@ -52,64 +41,50 @@ export default class SocketServer {
         });
 
         this.io.on('connection', (socket: SocketIO.Socket) => {
-            const playerChannel = new Channel(socket);
-            const player = new Player(socket.handshake.query.token, playerChannel);
+            const token = socket.handshake.query.token;
+            const player = new Player(token);
+            
+            // Store the socket
+            this.playerSockets[token] = socket;
 
-            socket.on('lobby create', () => {
-                const lobby = this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', (data) => {
-                    const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                    const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token, options);
-                    if(tournament == null) {
-                        socket.emit('exception', {error: 'Unable to start tournament'});
-                    } else {
-                        lobby.tournament = tournament;
-                        this.io.in(lobby.token).emit('lobby tournament started', {
-                            lobby: lobby.toObject(),
-                        });
-                    }
-                });
-                if(lobby == null) {
-                    socket.emit('exception', {error: 'Unable to create lobby'})
-                } else {
-                    socket.join(lobby.token);
-                    socket.emit('lobby created', {
-                        lobby: lobby.toObject()
-                    });
-                }
+            // Forward the socket events to the PubSub system
+            socket.on('lobby create', this.publishPlayerEvent(events.LOBBY_CREATE, token));
+            socket.on('lobby tournament start', this.publishPlayerEvent(events.TOURNAMENT_START, token));
+            socket.on('lobby join', this.publishPlayerEvent(events.LOBBY_JOIN, token));
+            socket.on('disconnect', (data) => {
+                // Remove the player socket
+                delete this.playerSockets[token];
+                this.publishPlayerEvent(events.PLAYER_DISCONNECT, token)(data);
             });
 
-            socket.on('lobby join', (data: any) => { 
-                const lobby = this.socketEvents.onLobbyJoin(player, data.token, data.spectating); 
-                if(lobby == null) {
-                    socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'})
-                    return;
-                }
-                this.io.in(data.token).emit('connected', {
-                    lobby: lobby.toObject()
-                });
-                socket.join(lobby.token);
-                socket.emit('lobby joined', {
-                    lobby: lobby.toObject(),
-                    isAdmin: lobby.admin.token === player.token,
-                })
-            });
-
-            socket.on('disconnect', () => {
-                this.socketEvents.onPlayerDisconnect(player);
-            });
-
-            this.socketEvents.onPlayerConnect(player);
+            this.publish(events.PLAYER_CONNECT, player);
         });
+
+        // Subscribe to events
+        this.subscribe(events.success(events.LOBBY_JOIN), this.onLobbyJoined);
+        this.subscribe(events.success(events.PLAYER_DISCONNECT), this.onPlayerDisconnected);
     }
 
-    /**
-     * Send a message to any client listening on the socket
-     * @param type Message type (determines who receives the data)
-     * @param data Data to be sent
-     */
-    public emit(type: string, data: { type: string, payload: any }): void {
-        this.io.emit(type, data);
+    private onLobbyJoined(data: { lobby: Lobby, player: Player }) {
+        this.io.in(data.lobby.token).emit('connected', {
+            lobby: data.lobby.toObject()
+        });
+        const socket = this.playerSockets[data.player.token];
+        if (!socket) {
+            console.error('Unknown player', data.player.token);
+            return;
+        }
+        socket.join(data.lobby.token);
+        socket.emit('lobby joined', {
+            lobby: data.lobby.toObject(),
+            isAdmin: data.lobby.admin.token === data.player.token,
+        })
+    }
+
+    private publishPlayerEvent(event: string, token: string) {
+        return (data: any) => {
+            this.publish(`${event}.${token}`, data);
+        };
     }
 
     /**
@@ -118,12 +93,46 @@ export default class SocketServer {
      * @param type Message type (determines who receives the data)
      * @param data Data to be sent
      */
-    public emitInLobby(lobby: string, type: string, data: any): void {
+    private emitInLobby(lobby: string, type: string, data: any): void {
         this.io.to(lobby).emit(type, data);
     }
 
-    public emitPayload(emitType: string, type: string, payload: any): void {
-        this.emit(emitType, { type, payload });
+    /**
+     * Send a message to everyone
+     * @param emitType
+     * @param data 
+     */
+    private emitPayload(emitType: string, data: any): void {
+        this.io.emit(emitType, data);
+    }
+
+    /**
+     * Send a message to a specific player
+     * @param playerToken
+     * @param type 
+     * @param data 
+     */
+    private emitToPlayer(playerToken: string, type: string, data: any): void {
+        // TODO find player and emit something to them
+        const socket = this.playerSockets[data.player.token];
+        if (!socket) {
+            console.error('Unknown player', data.player.token);
+            return;
+        }
+        socket.emit(type, data);
+    }
+
+    /**
+     * After a player has successfully disconnected, we need to notify
+     * all the lobbies the player belonged to
+     * @param data
+     */
+    private onPlayerDisconnected(data: { player: Player, lobbyList: Array<Lobby> }) {
+        data.lobbyList.forEach(lobby => {
+            this.emitInLobby(lobby.token, 'lobby disconnected', {
+                lobby: lobby.toObject(),
+            });
+        });
     }
 
     /**

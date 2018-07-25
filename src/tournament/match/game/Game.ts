@@ -5,11 +5,12 @@ import * as funcs from '../../../lib/funcs';
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
 import GameEvents from './GameEvents';
+import PubSubber from '../../model/Subscriber';
 
 /*
  * A game between two players
  */
-export default class Game {
+export default class Game extends PubSubber {
     private game: UTTT;
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
@@ -23,6 +24,7 @@ export default class Game {
      * * @param options Options for gameplay
      */
     constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
+        super();
         this.game = new UTTT();
         this.gamePromise = new Promise((resolve) => {
             this.resolve = resolve;

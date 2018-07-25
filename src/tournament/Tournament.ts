@@ -1,3 +1,5 @@
+import * as uuid from 'uuid/v4';
+
 import SocketServer from '../server/SocketServer';
 import Player from './model/Player';
 import {TournamentStats} from "./model/TournamentStats";
@@ -5,6 +7,8 @@ import Matchmaker from './matchmaker/Matchmaker';
 import Match from './match/Match';
 import FreeForAllMatchmaker from './matchmaker/FreeForAllMatchmaker';
 import { MatchOptions } from './match/MatchOptions';
+import PubSubber from './model/Subscriber';
+import { MATCH_END } from '../events';
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -20,7 +24,7 @@ export type TournamentOptions = {
  * Represents a tournament within a lobby, when given a matching strategy, it matches players according to that strategy,
  * runs the games between matched players and broadcasts game stats
  */
-export class Tournament {
+export class Tournament extends PubSubber {
     private player: Player[];
     private stats: TournamentStats = {
         started: false,
@@ -28,8 +32,11 @@ export class Tournament {
         matches: [],
     };
     private matchmaker: Matchmaker;
+    private tournamentID: string;
 
     constructor(private options: TournamentOptions, private socket: SocketServer, public players: Player[], private lobbyToken: string) {
+        super();
+        this.tournamentID = uuid();
         const matchOptions: MatchOptions = {
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout,
@@ -37,29 +44,46 @@ export class Tournament {
         switch (options.type) {
             case 'FreeForAll':
             default:
-                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, this.sendStats);
+                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions);
                 break;
         }
+
+        this.subscribeNamespaced(this.tournamentID, MATCH_END, this.playNextMatch);
     }
 
-    async start() {
-        if (!this.stats.started && !this.isFinished()) {
-            this.stats.started = true;
-            while(!this.matchmaker.isFinished()) {
-                const matches = this.matchmaker.getRemainingMatches(this.stats);
-                this.stats.matches = this.stats.matches.concat(matches);
-                await this.playMatches(matches);
-                this.sendStats();
-            }
-            this.stats.finished = true;
-            this.sendStats();
-        }
+    public start() {
+        this.stats.started = true;
+        this.playNextMatches();
     }
 
-    async playMatches(matches: Match[]) {
-        for(let match of matches) {
-            await match.playGames();
+    private playNextMatch() {
+        const nextMatch = this.stats.matches.find(match => match.stats.state === 'upcoming');
+        if (!nextMatch) {
+            return this.onAllMatchesEnd();
         }
+        nextMatch.start();
+    }
+
+    private playNextMatches() {
+        const matches = this.matchmaker.getRemainingMatches(this.tournamentID, this.stats);
+        if (matches.length < 1) {
+            // potential bug in the matchmaker (no more matches, yet not finished)
+            return this.onTournamentEnd();
+        }
+        this.stats.matches = this.stats.matches.concat(matches);
+        this.playNextMatch();
+    }
+
+    private onAllMatchesEnd() {
+        if (this.matchmaker.isFinished()) {
+            return this.onTournamentEnd();
+        }
+        this.playNextMatches();
+    }
+
+    private onTournamentEnd() {
+        this.stats.finished = true;
+        this.unsubscribeAll();
     }
     
     isFinished(): boolean {
@@ -81,7 +105,7 @@ export class Tournament {
         };
     }
 
-    private sendStats = (): void => {
-        this.socket.emitInLobby(this.lobbyToken, 'tournament stats', this.getStats());
-    }
+    // private sendStats = (): void => {
+    //     this.socket.emitInLobby(this.lobbyToken, 'tournament stats', this.getStats());
+    // }
 }
