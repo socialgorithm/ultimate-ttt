@@ -1,8 +1,10 @@
-import { PlayerNumber, PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import { PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
 import GameEvents from './GameEvents';
-export default class Game {
+import PubSubber from '../../model/Subscriber';
+export default class Game extends PubSubber {
+    private matchID;
     private players;
     private options;
     private events;
@@ -10,19 +12,17 @@ export default class Game {
     private game;
     private currentPlayerIndex;
     private gameStart;
-    private gamePromise;
-    private resolve;
     winnerIndex: PlayerOrTie;
     gameTime: number;
-    constructor(players: Player[], options: GameOptions, events: GameEvents, log: any);
-    playGame(): Promise<boolean>;
-    handlePlayerMove(player: Player, playerIndex: number): (data: string) => void;
-    handleGameWon(winnerIndex: PlayerNumber): void;
-    handleGameTied(): void;
+    constructor(matchID: string, players: Player[], options: GameOptions, events: GameEvents, log: any);
+    start(): void;
+    private onFinish;
+    private handlePlayerMove;
+    private handleGameWon;
+    private handleGameTied;
     private handleGameEnd;
+    private sendToPlayer;
     private parseMove;
     private writeMove;
     private switchPlayer;
-    private playerZero;
-    private playerOne;
 }

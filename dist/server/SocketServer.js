@@ -1,19 +1,29 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
 var http = require("http");
 var io = require("socket.io");
 var fs = require("fs");
+var events = require("../events");
 var Player_1 = require("../tournament/model/Player");
-var Channel_1 = require("../tournament/model/Channel");
-var constants_1 = require("./constants");
-var SocketServer = (function () {
-    function SocketServer(port, socketEvents) {
-        var _this = this;
-        var app = http.createServer(this.handler);
-        this.io = io(app);
+var Subscriber_1 = require("../tournament/model/Subscriber");
+var SocketServer = (function (_super) {
+    __extends(SocketServer, _super);
+    function SocketServer(port) {
+        var _this = _super.call(this) || this;
+        var app = http.createServer(_this.handler);
+        _this.io = io(app);
         app.listen(port);
-        this.socketEvents = socketEvents;
-        this.io.use(function (socket, next) {
+        _this.io.use(function (socket, next) {
             var isClient = socket.request._query.client || false;
             if (isClient) {
                 return next();
@@ -25,63 +35,68 @@ var SocketServer = (function () {
             socket.request.testToken = token;
             next();
         });
-        this.io.on('connection', function (socket) {
-            var playerChannel = new Channel_1["default"](socket);
-            var player = new Player_1["default"](socket.handshake.query.token, playerChannel);
-            socket.on('lobby create', function () {
-                var lobby = _this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', function (data) {
-                    var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                    var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token, options);
-                    if (tournament == null) {
-                        socket.emit('exception', { error: 'Unable to start tournament' });
-                    }
-                    else {
-                        lobby.tournament = tournament;
-                        _this.io["in"](lobby.token).emit('lobby tournament started', {
-                            lobby: lobby.toObject()
-                        });
-                    }
-                });
-                if (lobby == null) {
-                    socket.emit('exception', { error: 'Unable to create lobby' });
-                }
-                else {
-                    socket.join(lobby.token);
-                    socket.emit('lobby created', {
-                        lobby: lobby.toObject()
-                    });
-                }
+        _this.io.on('connection', function (socket) {
+            var token = socket.handshake.query.token;
+            var player = new Player_1["default"](token);
+            _this.playerSockets[token] = socket;
+            socket.on('lobby create', _this.publishPlayerEvent(events.LOBBY_CREATE, token));
+            socket.on('lobby tournament start', _this.publishPlayerEvent(events.TOURNAMENT_START, token));
+            socket.on('lobby join', _this.publishPlayerEvent(events.LOBBY_JOIN, token));
+            socket.on('game', function (data) {
+                _this.publishNamespaced(token, events.PLAYER_DATA, data);
             });
-            socket.on('lobby join', function (data) {
-                var lobby = _this.socketEvents.onLobbyJoin(player, data.token, data.spectating);
-                if (lobby == null) {
-                    socket.emit('lobby exception', { error: 'Unable to join lobby, ensure token is correct' });
-                    return;
-                }
-                _this.io["in"](data.token).emit('connected', {
-                    lobby: lobby.toObject()
-                });
-                socket.join(lobby.token);
-                socket.emit('lobby joined', {
-                    lobby: lobby.toObject(),
-                    isAdmin: lobby.admin.token === player.token
-                });
+            socket.on('disconnect', function (data) {
+                delete _this.playerSockets[token];
+                _this.publishPlayerEvent(events.PLAYER_DISCONNECT, token)(data);
             });
-            socket.on('disconnect', function () {
-                _this.socketEvents.onPlayerDisconnect(player);
-            });
-            _this.socketEvents.onPlayerConnect(player);
+            _this.publish(events.PLAYER_CONNECT, player);
         });
+        _this.subscribe(events.success(events.LOBBY_JOIN), _this.onLobbyJoined);
+        _this.subscribe(events.success(events.PLAYER_DISCONNECT), _this.onPlayerDisconnected);
+        return _this;
     }
-    SocketServer.prototype.emit = function (type, data) {
-        this.io.emit(type, data);
+    SocketServer.prototype.onLobbyJoined = function (data) {
+        this.io["in"](data.lobby.token).emit('connected', {
+            lobby: data.lobby.toObject()
+        });
+        var socket = this.playerSockets[data.player.token];
+        if (!socket) {
+            console.error('Unknown player', data.player.token);
+            return;
+        }
+        socket.join(data.lobby.token);
+        socket.emit('lobby joined', {
+            lobby: data.lobby.toObject(),
+            isAdmin: data.lobby.admin.token === data.player.token
+        });
+    };
+    SocketServer.prototype.publishPlayerEvent = function (event, token) {
+        var _this = this;
+        return function (data) {
+            _this.publish(event + "." + token, data);
+        };
     };
     SocketServer.prototype.emitInLobby = function (lobby, type, data) {
         this.io.to(lobby).emit(type, data);
     };
-    SocketServer.prototype.emitPayload = function (emitType, type, payload) {
-        this.emit(emitType, { type: type, payload: payload });
+    SocketServer.prototype.emitPayload = function (emitType, data) {
+        this.io.emit(emitType, data);
+    };
+    SocketServer.prototype.emitToPlayer = function (playerToken, type, data) {
+        var socket = this.playerSockets[data.player.token];
+        if (!socket) {
+            console.error('Unknown player', data.player.token);
+            return;
+        }
+        socket.emit(type, data);
+    };
+    SocketServer.prototype.onPlayerDisconnected = function (data) {
+        var _this = this;
+        data.lobbyList.forEach(function (lobby) {
+            _this.emitInLobby(lobby.token, 'lobby disconnected', {
+                lobby: lobby.toObject()
+            });
+        });
     };
     SocketServer.prototype.handler = function (req, res) {
         fs.readFile(__dirname + '/../../public/index.html', function (err, data) {
@@ -94,6 +109,6 @@ var SocketServer = (function () {
         });
     };
     return SocketServer;
-}());
+}(Subscriber_1["default"]));
 exports["default"] = SocketServer;
 //# sourceMappingURL=SocketServer.js.map

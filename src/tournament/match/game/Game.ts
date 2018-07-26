@@ -6,16 +6,15 @@ import Player from '../../model/Player';
 import GameOptions from './GameOptions';
 import GameEvents from './GameEvents';
 import PubSubber from '../../model/Subscriber';
+import { GAME_END, PLAYER_DATA, SEND_PLAYER_DATA } from '../../../events';
 
-/*
+/**
  * A game between two players
  */
 export default class Game extends PubSubber {
     private game: UTTT;
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
-    private gamePromise: Promise<boolean>;
-    private resolve: Function;
     public winnerIndex: PlayerOrTie;
     public gameTime: number;
 
@@ -23,28 +22,31 @@ export default class Game extends PubSubber {
      * Create a game between two players
      * * @param options Options for gameplay
      */
-    constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
+    constructor(private matchID: string, private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
         super();
         this.game = new UTTT();
-        this.gamePromise = new Promise((resolve) => {
-            this.resolve = resolve;
+
+        // Subscribe to player events for this game
+        this.players.forEach((player, index) => {
+            this.subscribeNamespaced(player.token, PLAYER_DATA, this.handlePlayerMove(player, index));
         });
     }
 
     /**
      * Play an individual game between two players
      */
-    public playGame(): Promise<boolean> {
+    public start() {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
 
-        this.playerZero().channel.registerHandler('game', this.handlePlayerMove(this.playerZero(), 0));
-        this.playerOne().channel.registerHandler('game', this.handlePlayerMove(this.playerOne(), 1));
+        this.sendToPlayer(this.players[0], 'game', 'init');
+        this.sendToPlayer(this.players[1], 'game', 'init');
+        this.sendToPlayer(this.players[this.currentPlayerIndex], 'game', 'move');
+    }
 
-        this.playerZero().channel.send('game', 'init');
-        this.playerOne().channel.send('game', 'init');
-        this.players[this.currentPlayerIndex].channel.send('game', 'move');
-        return this.gamePromise;
+    private onFinish() {
+        this.unsubscribeAll();
+        this.publishNamespaced(this.matchID, GAME_END, this);
     }
 
     /**
@@ -53,7 +55,7 @@ export default class Game extends PubSubber {
      * @param player Player number (0-1)
      * @returns {Function} Move handler with the player number embedded for logging
      */
-    public handlePlayerMove(player: Player, playerIndex: number) {
+    private handlePlayerMove(player: Player, playerIndex: number) {
         return (data: string) => {
             if (this.currentPlayerIndex !== playerIndex) {
                 this.log(`Game ${this.options.gameId}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
@@ -70,7 +72,7 @@ export default class Game extends PubSubber {
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
 
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
-                this.players[this.currentPlayerIndex].channel.send('game', `opponent ${this.writeMove(coords)}`);
+                this.sendToPlayer(this.players[this.currentPlayerIndex], 'game', `opponent ${this.writeMove(coords)}`);
 
                 if (this.game.isFinished()) {
                     if(this.game.winner === -1) {
@@ -92,12 +94,12 @@ export default class Game extends PubSubber {
      * @param winnerIndex Game's winner, used to update the state
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
-    public handleGameWon(winnerIndex: PlayerNumber) {
+    private handleGameWon(winnerIndex: PlayerNumber) {
         this.winnerIndex = this.switchPlayer(winnerIndex); // necessary because the winner is recorded inversely
         this.handleGameEnd();
     }
 
-    public handleGameTied() {
+    private handleGameTied() {
         this.winnerIndex = -1;
         this.handleGameEnd()
     }
@@ -114,10 +116,16 @@ export default class Game extends PubSubber {
                     gameState = 'lost';
                 }
             }
-            player.channel.send('game', `end ${gameState}`);
-            player.channel.removeAllHandlers();
+            this.sendToPlayer(player, 'game', `end ${gameState}`);
         });
-        this.resolve(true);
+        this.onFinish();
+    }
+
+    private sendToPlayer(player: Player, type: string, data: string) {
+        this.publishNamespaced(player.token, SEND_PLAYER_DATA, {
+            type,
+            data,
+        });
     }
 
     /**
@@ -147,13 +155,5 @@ export default class Game extends PubSubber {
      */
     private switchPlayer(playerNumber: PlayerNumber): PlayerNumber {
         return playerNumber === 0 ? 1 : 0;
-    }
-
-    private playerZero(): Player {
-        return this.players[0];
-    }
-
-    private playerOne(): Player {
-        return this.players[1];
     }
 }

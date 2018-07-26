@@ -51,6 +51,9 @@ export default class SocketServer extends PubSubber {
             socket.on('lobby create', this.publishPlayerEvent(events.LOBBY_CREATE, token));
             socket.on('lobby tournament start', this.publishPlayerEvent(events.TOURNAMENT_START, token));
             socket.on('lobby join', this.publishPlayerEvent(events.LOBBY_JOIN, token));
+            socket.on('game', (data) => {
+                this.publishNamespaced(token, events.PLAYER_DATA, data);
+            });
             socket.on('disconnect', (data) => {
                 // Remove the player socket
                 delete this.playerSockets[token];

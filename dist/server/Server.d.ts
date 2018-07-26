@@ -1,5 +1,6 @@
 import { Options } from "../lib/cli-options";
-export default class Server {
+import PubSubber from "../tournament/model/Subscriber";
+export default class Server extends PubSubber {
     private options;
     private players;
     private lobbies;
@@ -11,8 +12,6 @@ export default class Server {
     private onLobbyCreate;
     private onLobbyJoin;
     private onLobbyTournamentStart;
-    private updateStats;
-    private addPlayer;
     private removePlayer;
     private log;
 }

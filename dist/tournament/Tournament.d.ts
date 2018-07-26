@@ -1,12 +1,12 @@
 import SocketServer from '../server/SocketServer';
 import Player from './model/Player';
-import Match from './match/Match';
+import PubSubber from './model/Subscriber';
 export declare type TournamentOptions = {
     numberOfGames: number;
     type: string;
     timeout: number;
 };
-export declare class Tournament {
+export declare class Tournament extends PubSubber {
     private options;
     private socket;
     players: Player[];
@@ -14,9 +14,13 @@ export declare class Tournament {
     private player;
     private stats;
     private matchmaker;
+    private tournamentID;
     constructor(options: TournamentOptions, socket: SocketServer, players: Player[], lobbyToken: string);
-    start(): Promise<void>;
-    playMatches(matches: Match[]): Promise<void>;
+    start(): void;
+    private playNextMatch;
+    private playNextMatches;
+    private onAllMatchesEnd;
+    private onTournamentEnd;
     isFinished(): boolean;
     getStats(): {
         options: TournamentOptions;
@@ -30,5 +34,4 @@ export declare class Tournament {
         }[];
         ranking: string[];
     };
-    private sendStats;
 }

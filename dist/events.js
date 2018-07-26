@@ -1,0 +1,19 @@
+"use strict";
+exports.__esModule = true;
+exports.PLAYER_CONNECT = 'PLAYER_CONNECT';
+exports.PLAYER_DISCONNECT = 'PLAYER_DISCONNECT';
+exports.LOBBY_CREATE = 'LOBBY_CREATE';
+exports.LOBBY_JOIN = 'LOBBY_JOIN';
+exports.TOURNAMENT_START = 'TOURNAMENT_START';
+exports.UPDATE_STATS = 'UPDATE_STATS';
+exports.LOG = 'LOG';
+exports.MATCH_START = 'MATCH_START';
+exports.MATCH_END = 'MATCH_END';
+exports.GAME_START = 'GAME_START';
+exports.GAME_END = 'GAME_END';
+exports.PLAYER_DATA = 'PLAYER_DATA';
+exports.SEND_PLAYER_DATA = 'SEND_PLAYER_DATA';
+exports.success = function (event) { return event + "_SUCCESS"; };
+exports.pending = function (event) { return event + "_PENDING"; };
+exports.failure = function (event) { return event + "_FAILURE"; };
+//# sourceMappingURL=events.js.map

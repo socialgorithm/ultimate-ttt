@@ -23,6 +23,7 @@ export default class Match extends PubSubber {
 
         for(let i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game(
+                this.matchID,
                 this.players,
                 {
                     timeout: options.timeout,
@@ -50,7 +51,7 @@ export default class Match extends PubSubber {
             this.onMatchEnd();
             return;
         }
-        game.playGame();
+        game.start();
     }
 
     private onGameEnd(game: Game) {

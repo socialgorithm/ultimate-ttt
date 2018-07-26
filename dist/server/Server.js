@@ -1,37 +1,50 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
 var GUI_1 = require("./GUI");
 var SocketServer_1 = require("./SocketServer");
 var Tournament_1 = require("../tournament/Tournament");
 var Lobby_1 = require("../tournament/model/Lobby");
+var events = require("../events");
+var Subscriber_1 = require("../tournament/model/Subscriber");
 var pjson = require('../../package.json');
-var Server = (function () {
+var Server = (function (_super) {
+    __extends(Server, _super);
     function Server(options) {
-        var _this = this;
-        this.options = options;
-        this.onPlayerDisconnect = function (player) {
+        var _this = _super.call(this) || this;
+        _this.options = options;
+        _this.onPlayerDisconnect = function (player) {
             _this.log('Handle player disconnect on his active games');
+            var lobbyList = [];
             _this.lobbies.forEach(function (lobby) {
                 var playerIndex = lobby.players.findIndex(function (eachPlayer) { return eachPlayer.token === player.token; });
                 if (playerIndex < 0) {
                     return;
                 }
                 lobby.players.splice(playerIndex, 1);
-                _this.socketServer.emitInLobby(lobby.token, 'lobby disconnected', {
-                    type: 'player left',
-                    payload: {
-                        lobby: lobby.toObject()
-                    }
-                });
+                lobbyList.push(lobby);
+            });
+            _this.publish(events.success(events.PLAYER_DISCONNECT), {
+                lobbyList: lobbyList,
+                player: player
             });
         };
-        this.onLobbyCreate = function (creator) {
+        _this.onLobbyCreate = function (creator) {
             var lobby = new Lobby_1.Lobby(creator);
             _this.lobbies.push(lobby);
             _this.log('Created lobby ' + lobby.token);
             return lobby;
         };
-        this.onLobbyJoin = function (player, lobbyToken, spectating) {
+        _this.onLobbyJoin = function (player, lobbyToken, spectating) {
             if (spectating === void 0) { spectating = false; }
             _this.log('Player ' + player.token + ' wants to join ' + lobbyToken + ' - spectating? ' + spectating);
             var foundLobby = _this.lobbies.find(function (l) { return l.token === lobbyToken; });
@@ -43,34 +56,40 @@ var Server = (function () {
                 foundLobby.players.push(player);
                 _this.log('Player ' + player.token + ' joined ' + lobbyToken);
             }
+            _this.publish(events.success(events.LOBBY_JOIN), {
+                lobby: foundLobby,
+                player: player
+            });
             return foundLobby;
         };
-        this.players = [];
-        this.lobbies = [];
-        this.socketServer = new SocketServer_1["default"](this.options.port, {
-            onPlayerConnect: this.onPlayerConnect.bind(this),
-            onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
-            onLobbyCreate: this.onLobbyCreate.bind(this),
-            onLobbyJoin: this.onLobbyJoin.bind(this),
-            onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
-            updateStats: this.updateStats.bind(this)
-        });
+        _this.players = [];
+        _this.lobbies = [];
+        _this.socketServer = new SocketServer_1["default"](_this.options.port);
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         if (options.gui) {
-            this.ui = new GUI_1["default"](title, this.options.port);
+            _this.ui = new GUI_1["default"](title, _this.options.port);
         }
         else {
-            this.log(title);
-            this.log("Listening on localhost:" + this.options.port);
+            _this.log(title);
+            _this.log("Listening on localhost:" + _this.options.port);
         }
-        this.log('Server started', true);
-        if (this.ui) {
-            this.ui.render();
+        _this.log('Server started', true);
+        if (_this.ui) {
+            _this.ui.render();
         }
+        _this.subscribe(events.PLAYER_CONNECT, _this.onPlayerConnect);
+        _this.subscribe(events.PLAYER_DISCONNECT, _this.onPlayerDisconnect);
+        _this.subscribe(events.LOBBY_CREATE, _this.onLobbyCreate);
+        _this.subscribe(events.LOBBY_JOIN, _this.onLobbyJoin);
+        _this.subscribe(events.TOURNAMENT_START, _this.onLobbyTournamentStart);
+        _this.subscribe(events.LOG, _this.log);
+        return _this;
     }
     Server.prototype.onPlayerConnect = function (player) {
-        this.addPlayer(player);
-        player.channel.send('waiting');
+        if (this.players.filter(function (p) { return p.token === player.token; }).length === 0) {
+            this.players.push(player);
+        }
+        this.log("Connected \"" + player.token + "\"", true);
     };
     Server.prototype.onLobbyTournamentStart = function (lobbyToken, tournamentOptions) {
         var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
@@ -84,28 +103,6 @@ var Server = (function () {
         }
         return foundLobby.tournament;
     };
-    Server.prototype.updateStats = function () {
-        var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };
-        this.socketServer.emitPayload('stats', 'stats', payload);
-    };
-    Server.prototype.addPlayer = function (player) {
-        var _this = this;
-        var matches = this.players.filter(function (p) { return p.token === player.token; });
-        if (matches.length > 0) {
-            matches[0].channel.disconnect();
-            this.removePlayer(matches[0]);
-        }
-        process.nextTick(function () {
-            if (_this.players.filter(function (p) { return p.token === player.token; }).length === 0) {
-                _this.players.push(player);
-            }
-            _this.log("Connected \"" + player.token + "\"", true);
-            _this.socketServer.emitPayload('stats', 'connect', player.token);
-            if (_this.ui) {
-                _this.ui.renderOnlinePlayers(_this.players.map(function (p) { return p.token; }));
-            }
-        });
-    };
     Server.prototype.removePlayer = function (player) {
         var index = this.players.indexOf(player);
         if (index > -1) {
@@ -115,7 +112,6 @@ var Server = (function () {
             return;
         }
         this.log("Disconnected " + player.token, true);
-        this.socketServer.emitPayload('stats', 'disconnect', player.token);
         if (this.ui) {
             this.ui.renderOnlinePlayers(this.players.map(function (p) { return p.token; }));
         }
@@ -131,6 +127,6 @@ var Server = (function () {
         }
     };
     return Server;
-}());
+}(Subscriber_1["default"]));
 exports["default"] = Server;
 //# sourceMappingURL=Server.js.map

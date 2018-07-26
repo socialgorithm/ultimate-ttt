@@ -16,6 +16,9 @@ export const MATCH_END = 'MATCH_END';
 export const GAME_START = 'GAME_START';
 export const GAME_END = 'GAME_END';
 
+export const PLAYER_DATA = 'PLAYER_DATA';
+export const SEND_PLAYER_DATA = 'SEND_PLAYER_DATA';
+
 export const success = (event: string): string => `${event}_SUCCESS`;
 export const pending = (event: string): string => `${event}_PENDING`;
 export const failure = (event: string): string => `${event}_FAILURE`;

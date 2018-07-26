@@ -1,28 +1,44 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 exports.__esModule = true;
 var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var funcs = require("../../../lib/funcs");
-var Game = (function () {
-    function Game(players, options, events, log) {
-        var _this = this;
-        this.players = players;
-        this.options = options;
-        this.events = events;
-        this.log = log;
-        this.game = new UTTT_1["default"]();
-        this.gamePromise = new Promise(function (resolve) {
-            _this.resolve = resolve;
+var Subscriber_1 = require("../../model/Subscriber");
+var events_1 = require("../../../events");
+var Game = (function (_super) {
+    __extends(Game, _super);
+    function Game(matchID, players, options, events, log) {
+        var _this = _super.call(this) || this;
+        _this.matchID = matchID;
+        _this.players = players;
+        _this.options = options;
+        _this.events = events;
+        _this.log = log;
+        _this.game = new UTTT_1["default"]();
+        _this.players.forEach(function (player, index) {
+            _this.subscribeNamespaced(player.token, events_1.PLAYER_DATA, _this.handlePlayerMove(player, index));
         });
+        return _this;
     }
-    Game.prototype.playGame = function () {
+    Game.prototype.start = function () {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
-        this.playerZero().channel.registerHandler('game', this.handlePlayerMove(this.playerZero(), 0));
-        this.playerOne().channel.registerHandler('game', this.handlePlayerMove(this.playerOne(), 1));
-        this.playerZero().channel.send('game', 'init');
-        this.playerOne().channel.send('game', 'init');
-        this.players[this.currentPlayerIndex].channel.send('game', 'move');
-        return this.gamePromise;
+        this.sendToPlayer(this.players[0], 'game', 'init');
+        this.sendToPlayer(this.players[1], 'game', 'init');
+        this.sendToPlayer(this.players[this.currentPlayerIndex], 'game', 'move');
+    };
+    Game.prototype.onFinish = function () {
+        this.unsubscribeAll();
+        this.publishNamespaced(this.matchID, events_1.GAME_END, this);
     };
     Game.prototype.handlePlayerMove = function (player, playerIndex) {
         var _this = this;
@@ -40,7 +56,7 @@ var Game = (function () {
                 var coords = _this.parseMove(data);
                 _this.game = _this.game.move(_this.currentPlayerIndex, coords.board, coords.move);
                 _this.currentPlayerIndex = _this.switchPlayer(_this.currentPlayerIndex);
-                _this.players[_this.currentPlayerIndex].channel.send('game', "opponent " + _this.writeMove(coords));
+                _this.sendToPlayer(_this.players[_this.currentPlayerIndex], 'game', "opponent " + _this.writeMove(coords));
                 if (_this.game.isFinished()) {
                     if (_this.game.winner === -1) {
                         _this.handleGameTied();
@@ -78,10 +94,15 @@ var Game = (function () {
                     gameState = 'lost';
                 }
             }
-            player.channel.send('game', "end " + gameState);
-            player.channel.removeAllHandlers();
+            _this.sendToPlayer(player, 'game', "end " + gameState);
         });
-        this.resolve(true);
+        this.onFinish();
+    };
+    Game.prototype.sendToPlayer = function (player, type, data) {
+        this.publishNamespaced(player.token, events_1.SEND_PLAYER_DATA, {
+            type: type,
+            data: data
+        });
     };
     Game.prototype.parseMove = function (data) {
         var _a = data.trim().split(';')
@@ -95,13 +116,7 @@ var Game = (function () {
     Game.prototype.switchPlayer = function (playerNumber) {
         return playerNumber === 0 ? 1 : 0;
     };
-    Game.prototype.playerZero = function () {
-        return this.players[0];
-    };
-    Game.prototype.playerOne = function () {
-        return this.players[1];
-    };
     return Game;
-}());
+}(Subscriber_1["default"]));
 exports["default"] = Game;
 //# sourceMappingURL=Game.js.map

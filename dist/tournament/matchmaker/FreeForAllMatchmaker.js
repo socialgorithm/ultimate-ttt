@@ -2,25 +2,24 @@
 exports.__esModule = true;
 var Match_1 = require("../match/Match");
 var FreeForAllMatchmaker = (function () {
-    function FreeForAllMatchmaker(players, options, sendStats) {
+    function FreeForAllMatchmaker(players, options) {
         this.players = players;
         this.options = options;
-        this.sendStats = sendStats;
         this.maxMatches = Math.pow(players.length, players.length);
     }
     FreeForAllMatchmaker.prototype.isFinished = function () {
         return this.finished;
     };
-    FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
+    FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentId, tournamentStats) {
         var _this = this;
         var match = [];
         this.finished = true;
         return this.players.map(function (playerA, $index) {
             return _this.players.slice($index + 1).map(function (playerB) {
-                return new Match_1["default"]([playerA, playerB], {
+                return new Match_1["default"](tournamentId, [playerA, playerB], {
                     maxGames: _this.options.maxGames,
                     timeout: _this.options.timeout
-                }, _this.sendStats);
+                });
             });
         }).reduce(function (result, current, idx) {
             return result.concat(current);

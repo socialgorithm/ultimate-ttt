@@ -1,0 +1,16 @@
+export declare const PLAYER_CONNECT = "PLAYER_CONNECT";
+export declare const PLAYER_DISCONNECT = "PLAYER_DISCONNECT";
+export declare const LOBBY_CREATE = "LOBBY_CREATE";
+export declare const LOBBY_JOIN = "LOBBY_JOIN";
+export declare const TOURNAMENT_START = "TOURNAMENT_START";
+export declare const UPDATE_STATS = "UPDATE_STATS";
+export declare const LOG = "LOG";
+export declare const MATCH_START = "MATCH_START";
+export declare const MATCH_END = "MATCH_END";
+export declare const GAME_START = "GAME_START";
+export declare const GAME_END = "GAME_END";
+export declare const PLAYER_DATA = "PLAYER_DATA";
+export declare const SEND_PLAYER_DATA = "SEND_PLAYER_DATA";
+export declare const success: (event: string) => string;
+export declare const pending: (event: string) => string;
+export declare const failure: (event: string) => string;
