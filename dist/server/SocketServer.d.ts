@@ -1,12 +1,12 @@
 import Player from "../tournament/model/Player";
 import { Lobby } from '../tournament/model/Lobby';
-import { Tournament, TournamentOptions } from '../tournament/Tournament';
+import { TournamentOptions } from '../tournament/Tournament';
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Tournament;
+    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Lobby;
     updateStats(): void;
 }
 export default class SocketServer {
