@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var FreeForAllMatchmaker_1 = require("./matchmaker/FreeForAllMatchmaker");
+var DoubleEliminationMatchmaker_1 = require("./matchmaker/DoubleEliminationMatchmaker");
 var Tournament = (function () {
     function Tournament(options, socket, players, lobbyToken) {
         var _this = this;
@@ -56,6 +57,9 @@ var Tournament = (function () {
             timeout: this.options.timeout
         };
         switch (options.type) {
+            case 'DoubleElimination':
+                this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
+                break;
             case 'FreeForAll':
             default:
                 this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
@@ -126,7 +130,7 @@ var Tournament = (function () {
                     token: player.token
                 }); })
             }); }),
-            ranking: this.matchmaker.getRanking(this.stats)
+            ranking: this.matchmaker.getRanking()
         };
     };
     return Tournament;

@@ -16,9 +16,9 @@ export default class FreeForAllMatchmaker implements Matchmaker {
 
     private maxMatches: number;
     private finished: boolean;
+    private stats: TournamentStats;
 
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
-        this.maxMatches = Math.pow(players.length, players.length)
     }
 
     isFinished(): boolean {
@@ -26,8 +26,11 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     }
 
     getRemainingMatches(tournamentStats: TournamentStats): Match[] {
+        this.stats = tournamentStats;
+
         let match: Match[] = [];
         this.finished = true; // Free for all only runs matchmaking once
+
         return this.players.map((playerA, $index) => {
             return this.players.slice($index + 1).map(
                 playerB => {
@@ -43,12 +46,12 @@ export default class FreeForAllMatchmaker implements Matchmaker {
             )
         }).reduce((result, current, idx) =>
             result.concat(current)
-        , []);
+            , []);
     }
 
-    getRanking(stats: TournamentStats): string[] {
+    getRanking(): string[] {
         const playerStats: any = {};
-        stats.matches.forEach(match => {
+        this.stats.matches.forEach(match => {
             if (!playerStats[match.players[0].token]) {
                 playerStats[match.players[0].token] = 0;
             }

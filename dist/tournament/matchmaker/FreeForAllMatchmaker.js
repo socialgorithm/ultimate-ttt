@@ -6,13 +6,13 @@ var FreeForAllMatchmaker = (function () {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
-        this.maxMatches = Math.pow(players.length, players.length);
     }
     FreeForAllMatchmaker.prototype.isFinished = function () {
         return this.finished;
     };
     FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
         var _this = this;
+        this.stats = tournamentStats;
         var match = [];
         this.finished = true;
         return this.players.map(function (playerA, $index) {
@@ -26,9 +26,9 @@ var FreeForAllMatchmaker = (function () {
             return result.concat(current);
         }, []);
     };
-    FreeForAllMatchmaker.prototype.getRanking = function (stats) {
+    FreeForAllMatchmaker.prototype.getRanking = function () {
         var playerStats = {};
-        stats.matches.forEach(function (match) {
+        this.stats.matches.forEach(function (match) {
             if (!playerStats[match.players[0].token]) {
                 playerStats[match.players[0].token] = 0;
             }

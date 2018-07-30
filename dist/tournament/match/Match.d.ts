@@ -6,6 +6,7 @@ export default class Match {
     players: Player[];
     private options;
     private sendStats;
+    uuid: string;
     games: Game[];
     stats: State;
     constructor(players: Player[], options: MatchOptions, sendStats: Function);

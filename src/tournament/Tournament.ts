@@ -5,6 +5,7 @@ import Matchmaker from './matchmaker/Matchmaker';
 import Match from './match/Match';
 import FreeForAllMatchmaker from './matchmaker/FreeForAllMatchmaker';
 import { MatchOptions } from './match/MatchOptions';
+import DoubleEliminationMatchmaker from './matchmaker/DoubleEliminationMatchmaker';
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -35,6 +36,9 @@ export class Tournament {
             timeout: this.options.timeout,
         };
         switch (options.type) {
+            case 'DoubleElimination':
+                this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, this.sendStats);
+                break;
             case 'FreeForAll':
             default:
                 this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, this.sendStats);
@@ -77,7 +81,7 @@ export class Tournament {
                     token: player.token,
                 })),
             })),
-            ranking: this.matchmaker.getRanking(this.stats),
+            ranking: this.matchmaker.getRanking(),
         };
     }
 

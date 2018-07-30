@@ -7,7 +7,7 @@
     "start": "node dist/standalone.js",
     "start:opts": "node bin/index.js",
     "build": "tsc -w",
-    "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
+    "test": "mocha -r ts-node/register test/**/*.test.ts",
     "docs": "typedoc --out docs/ --mode modules ./src"
   },
   "engines": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aurbano/ultimate-ttt-server.git"
+    "url": "git+https://github.com/sociagorithm/ultimate-ttt-server.git"
   },
   "keywords": [
     "ultimate",
@@ -29,12 +29,12 @@
     "algorithm",
     "battle"
   ],
-  "author": "Alejandro U. Alvarez",
+  "author": "Socialgorithm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aurbano/ultimate-ttt-server/issues"
+    "url": "https://github.com/socialgorithm/ultimate-ttt-server/issues"
   },
-  "homepage": "https://github.com/aurbano/ultimate-ttt-server#readme",
+  "homepage": "https://github.com/socialgorithm/ultimate-ttt-server#readme",
   "dependencies": {
     "@socialgorithm/ultimate-ttt": "^4.19.0",
     "@types/ip": "0.0.31",
@@ -53,11 +53,13 @@
     "@types/blessed": "^0.1.10",
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.41",
+    "@types/sinon": "^5.0.1",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
     "gulp-file": "^0.3.0",
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
+    "sinon": "^6.1.4",
     "socket.io-client": "^2.1.1",
     "ts-node": "^7.0.0",
     "typedoc": "^0.11.1",

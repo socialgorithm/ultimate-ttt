@@ -14,6 +14,7 @@ export default class State {
     times: Array<number>;
     timeouts: Array<number>;
     state: 'playing' | 'finished' | 'upcoming';
+    winner: number;
     constructor();
     toJSON(): {
         games: number;

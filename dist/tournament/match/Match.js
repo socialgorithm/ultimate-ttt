@@ -37,11 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var Game_1 = require("./game/Game");
 var State_1 = require("../model/State");
+var uuid = require("uuid/v4");
 var Match = (function () {
     function Match(players, options, sendStats) {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.uuid = uuid();
         this.games = [];
         this.stats = new State_1["default"]();
         for (var i = 0; i < options.maxGames; i++) {
@@ -83,6 +85,12 @@ var Match = (function () {
                         return [3, 1];
                     case 4:
                         this.stats.state = 'finished';
+                        if (this.stats.wins[0] > this.stats.wins[1]) {
+                            this.stats.winner = 0;
+                        }
+                        else if (this.stats.wins[1] > this.stats.wins[0]) {
+                            this.stats.winner = 1;
+                        }
                         return [2];
                 }
             });
