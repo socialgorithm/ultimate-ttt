@@ -76,6 +76,9 @@ var Match = (function () {
                         else {
                             this.stats.wins[game.winnerIndex]++;
                         }
+                        if (game.timedoutPlayer) {
+                            this.stats.timeouts[game.timedoutPlayer]++;
+                        }
                         this.sendStats();
                         _b.label = 3;
                     case 3:

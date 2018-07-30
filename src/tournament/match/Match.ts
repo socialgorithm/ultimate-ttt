@@ -43,6 +43,9 @@ export default class Match {
             } else {
                 this.stats.wins[game.winnerIndex]++;
             }
+            if (game.timedoutPlayer) {
+                this.stats.timeouts[game.timedoutPlayer]++;
+            }
             this.sendStats();
         }
         this.stats.state = 'finished';
