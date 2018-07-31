@@ -8,6 +8,7 @@ var DoubleEliminationMatchmaker = (function () {
         this.options = options;
         this.sendStats = sendStats;
         this.processedMatches = [];
+        this.playerStats = {};
         this.players.forEach(function (player) {
             _this.playerStats[player.token] = { player: player, wins: 0, losses: 0 };
         });
@@ -19,6 +20,7 @@ var DoubleEliminationMatchmaker = (function () {
         var _this = this;
         this.tournamentStats = tournamentStats;
         var matches = [];
+        console.log("1");
         if (tournamentStats.matches.length === 0) {
             return this.matchPlayers(this.players);
         }
@@ -36,6 +38,7 @@ var DoubleEliminationMatchmaker = (function () {
             this.finished = true;
             return [];
         }
+        console.log("2");
         var winners = [];
         var losers = [];
         for (var playerToken in this.playerStats) {
@@ -48,6 +51,7 @@ var DoubleEliminationMatchmaker = (function () {
             }
         }
         if (winners.length > 1 || losers.length > 1) {
+            console.log("3");
             matches.concat(this.matchPlayers(winners));
             matches.concat(this.matchPlayers(losers));
         }

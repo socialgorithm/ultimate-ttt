@@ -23,6 +23,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private playerStats: { [key: string]: PlayerStats }
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.processedMatches = [];
+        this.playerStats = {};
         this.players.forEach(player => {
             this.playerStats[player.token] = { player: player, wins: 0, losses: 0 };
         })
@@ -35,7 +36,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     getRemainingMatches(tournamentStats: TournamentStats): Match[] {
         this.tournamentStats = tournamentStats
         
-        const matches: Match[] = [];
+        let matches: Match[] = [];
 
         if(tournamentStats.matches.length === 0) {
             return this.matchPlayers(this.players);
@@ -54,6 +55,8 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             }
         );
 
+        console.log(this.playerStats)
+
         if(justPlayedMatches.length === 1) {
             this.finished = true;
             return [];
@@ -71,10 +74,10 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         }
 
         if(winners.length > 1 || losers.length > 1) {
-            matches.concat(this.matchPlayers(winners))
-            matches.concat(this.matchPlayers(losers))
+            matches = matches.concat(this.matchPlayers(winners))
+            matches = matches.concat(this.matchPlayers(losers))
         } else {
-            matches.concat(this.matchPlayers(winners.concat(losers)))
+            matches = matches.concat(this.matchPlayers(winners.concat(losers)))
         }
         
         return matches
@@ -83,7 +86,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private matchPlayers(players: Player[]): Match[] {
         let matches: Match[] = []; 
         let oddPlayerExists: boolean = false;
-        let evenLimit: number = this.players.length
+        let evenLimit: number = players.length
 
         if(players.length < 2) {
             return matches
