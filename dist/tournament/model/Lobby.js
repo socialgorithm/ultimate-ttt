@@ -5,6 +5,7 @@ var Lobby = (function () {
     function Lobby(admin) {
         this.admin = admin;
         this.players = [];
+        this.bannedPlayers = [];
         this.token = randomWord() + "-" + randomWord();
     }
     Lobby.prototype.toObject = function () {
