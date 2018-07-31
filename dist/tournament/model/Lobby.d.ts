@@ -12,11 +12,11 @@ export declare class Lobby {
             token: string;
         }[];
         tournament: {
-            options: import("../../../../../../../../Users/Bharat/code/sg/ultimate-ttt-server/src/tournament/Tournament").TournamentOptions;
+            options: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/Tournament").TournamentOptions;
             started: boolean;
             finished: boolean;
             matches: {
-                stats: import("../../../../../../../../Users/Bharat/code/sg/ultimate-ttt-server/src/tournament/model/State").default;
+                stats: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
                 players: {
                     token: string;
                 }[];

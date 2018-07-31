@@ -110,7 +110,7 @@ export default class Server {
     return foundLobby;
   }
 
-  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: TournamentOptions): Tournament {
+  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: TournamentOptions): Lobby {
     const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
     if(foundLobby == null) {
       return null;
@@ -122,7 +122,7 @@ export default class Server {
       foundLobby.tournament.start();
     }
 
-    return foundLobby.tournament
+    return foundLobby;
   }
 
   private updateStats(): void {

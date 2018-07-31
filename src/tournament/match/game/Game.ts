@@ -79,7 +79,7 @@ export default class Game {
                     return;
                 }
             } catch (e) {
-                //this.log(`Game ${this.state.games}: Player ${this.currentPlayer.token} errored: ${e.message}`);
+                this.log(`Game ${this.options.gameId}: Player ${this.players[this.currentPlayerIndex].token} errored: ${e.message}`);
                 this.handleGameWon(this.switchPlayer(this.currentPlayerIndex));
             }
         };
@@ -91,7 +91,7 @@ export default class Game {
      * @param playerDisconnected Whether the game was stopped due to a player disconnecting. If true, the session will be finished
      */
     public handleGameWon(winnerIndex: PlayerNumber) {
-        this.winnerIndex = this.switchPlayer(winnerIndex); // necessary because the winner is recorded inversely
+        this.winnerIndex = winnerIndex;
         this.handleGameEnd();
     }
 
