@@ -9,7 +9,7 @@
     "dev": "tsc && ts-node --files src/standalone.ts",
     "start:opts": "tsc && ts-node bin/index.js",
     "build": "tsc -w",
-    "test": "export TS_NODE_FILES=true && nyc mocha --recursive --compilers ts:ts-node/register",
+    "test": "cross-env TS_NODE_FILES=true && nyc mocha --recursive --compilers ts:ts-node/register",
     "docs": "typedoc --out docs/ --mode modules ./src"
   },
   "engines": {
@@ -58,6 +58,7 @@
     "@types/uuid": "^3.4.3",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
+    "cross-env": "^5.2.0",
     "gulp-file": "^0.3.0",
     "mocha": "^3.4.2",
     "nodemon": "^1.18.3",
