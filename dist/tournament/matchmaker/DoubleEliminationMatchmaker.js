@@ -34,7 +34,6 @@ var DoubleEliminationMatchmaker = (function () {
             _this.playerStats[winnerToken].wins++;
             _this.playerStats[loserToken].losses++;
         });
-        console.log(this.playerStats);
         if (justPlayedMatches.length === 1 && this.waitingToPlay.length < 1) {
             this.finished = true;
             return [];
@@ -43,10 +42,10 @@ var DoubleEliminationMatchmaker = (function () {
         var oneLossPlayers = [];
         for (var playerToken in this.playerStats) {
             var stats = this.playerStats[playerToken];
-            if (stats.losses === 0) {
+            if (stats.losses === 0 && this.waitingToPlay.indexOf(stats.player) === -1) {
                 zeroLossPlayers.push(stats.player);
             }
-            else if (stats.losses === 1) {
+            else if (stats.losses === 1 && this.waitingToPlay.indexOf(stats.player) === -1) {
                 oneLossPlayers.push(stats.player);
             }
         }
@@ -54,14 +53,12 @@ var DoubleEliminationMatchmaker = (function () {
             matches = matches.concat(this.matchPlayers(zeroLossPlayers));
         }
         else if (zeroLossPlayers.length === 1) {
-            console.log("zero loss last: " + zeroLossPlayers[0].token);
             this.waitingToPlay.push(zeroLossPlayers[0]);
         }
         if (oneLossPlayers.length > 1) {
             matches = matches.concat(this.matchPlayers(oneLossPlayers));
         }
         else if (oneLossPlayers.length === 1) {
-            console.log("one loss last: " + zeroLossPlayers[0].token);
             this.waitingToPlay.push(oneLossPlayers[0]);
         }
         if (this.waitingToPlay.length > 1) {
