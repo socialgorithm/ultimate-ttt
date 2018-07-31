@@ -5,6 +5,7 @@ export declare type TournamentOptions = {
     numberOfGames: number;
     type: string;
     timeout: number;
+    autoPlay: boolean;
 };
 export declare class Tournament {
     private options;
@@ -16,6 +17,8 @@ export declare class Tournament {
     private matchmaker;
     constructor(options: TournamentOptions, socket: SocketServer, players: Player[], lobbyToken: string);
     start(): Promise<void>;
+    continue(): Promise<void>;
+    private playTournament;
     playMatches(matches: Match[]): Promise<void>;
     isFinished(): boolean;
     getStats(): {
@@ -28,7 +31,14 @@ export declare class Tournament {
                 token: string;
             }[];
         }[];
+        upcomingMatches: {
+            stats: import("../../../../../../../../Users/Tom/Dropbox/Development/socialgorithm/server/src/tournament/model/State").default;
+            players: {
+                token: string;
+            }[];
+        }[];
         ranking: string[];
+        waiting: boolean;
     };
     private sendStats;
 }

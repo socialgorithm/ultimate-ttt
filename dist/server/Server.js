@@ -81,6 +81,7 @@ var Server = (function () {
             onLobbyCreate: this.onLobbyCreate.bind(this),
             onLobbyJoin: this.onLobbyJoin.bind(this),
             onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+            onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
             updateStats: this.updateStats.bind(this)
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
@@ -111,6 +112,17 @@ var Server = (function () {
             foundLobby.tournament = new Tournament_1.Tournament(tournamentOptions, this.socketServer, playersToPlay, foundLobby.token);
             foundLobby.tournament.start();
         }
+        return foundLobby;
+    };
+    Server.prototype.onLobbyTournamentContinue = function (lobbyToken) {
+        var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
+        if (foundLobby == null) {
+            return null;
+        }
+        if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+            return null;
+        }
+        foundLobby.tournament["continue"]();
         return foundLobby;
     };
     Server.prototype.updateStats = function () {

@@ -9,6 +9,7 @@ export interface SocketEvents {
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
     onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions, players: Array<string>): Lobby;
+    onLobbyTournamentContinue(lobbyToken: string): Lobby;
     updateStats(): void;
 }
 export default class SocketServer {

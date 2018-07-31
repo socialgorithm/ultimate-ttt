@@ -54,6 +54,18 @@ var SocketServer = (function () {
                     });
                 }
             });
+            socket.on('lobby tournament continue', function (data) {
+                var token = data.lobbyToken;
+                var lobby = _this.socketEvents.onLobbyTournamentContinue(token);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to continue tournament' });
+                }
+                else {
+                    _this.io["in"](lobby.token).emit('lobby tournament continued', {
+                        lobby: lobby.toObject()
+                    });
+                }
+            });
             socket.on('lobby join', function (data) {
                 var lobby = _this.socketEvents.onLobbyJoin(player, data.token, data.spectating);
                 if (lobby == null) {
