@@ -37,9 +37,8 @@ describe('Double Elimination Matchmaker', () => {
         matches[0].stats.winner = 1; //p4
         matches[1].stats.winner = 0; //p2
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches })
-        console.log(matchmaker)
         expect(matches).to.have.lengthOf(1);
-        expect(matches[0].players[1]).to.equal(p2);
+        expect(matches[0].players).to.deep.equal([p4, p2]);
 
 
         done();
