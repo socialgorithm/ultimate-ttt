@@ -13,9 +13,11 @@ import { DEFAULT_TOURNAMENT_OPTIONS } from './constants';
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
+    onLobbyKick(lobbyToken: string, playerToken: string): Lobby;
+    onLobbyBan(lobbyToken: string, playerToken: string): Lobby;
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Lobby;
+    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions, players: Array<string>): Lobby;
     updateStats(): void;
 }
 
@@ -70,7 +72,8 @@ export default class SocketServer {
             socket.on('lobby tournament start', (data) => {
                 const token = data.token;
                 const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                const lobby = this.socketEvents.onLobbyTournamentStart(token, options);
+                const players: Array<string> = data.players;
+                const lobby = this.socketEvents.onLobbyTournamentStart(token, options, players);
                 if(lobby == null) {
                     socket.emit('exception', {error: 'Unable to start tournament'});
                 } else {
@@ -83,7 +86,7 @@ export default class SocketServer {
             socket.on('lobby join', (data: any) => { 
                 const lobby = this.socketEvents.onLobbyJoin(player, data.token, data.spectating); 
                 if(lobby == null) {
-                    socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'})
+                    socket.emit('lobby exception', {error: 'Unable to join lobby, ensure token is correct'});
                     return;
                 }
                 this.io.in(data.token).emit('connected', {
@@ -94,6 +97,32 @@ export default class SocketServer {
                     lobby: lobby.toObject(),
                     isAdmin: lobby.admin.token === player.token,
                 })
+            });
+
+            socket.on('lobby player kick', (data: any) => {
+                const {lobbyToken, playerToken} = data;
+                const lobby = this.socketEvents.onLobbyKick(lobbyToken, playerToken);
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to kick player'});
+                } else {
+                    this.io.in(lobby.token).emit('lobby player kicked', {
+                        lobby: lobby.toObject(),
+                    });
+                    this.io.in(playerToken).emit('kicked');
+                }
+            });
+
+            socket.on('lobby player ban', (data: any) => {
+                const {lobbyToken, playerToken} = data;
+                const lobby = this.socketEvents.onLobbyBan(lobbyToken, playerToken);
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to ban player'});
+                } else {
+                    this.io.in(lobby.token).emit('lobby player banned', {
+                        lobby: lobby.toObject(),
+                    });
+                    this.io.in(playerToken).emit('banned');
+                }
             });
 
             socket.on('disconnect', () => {
