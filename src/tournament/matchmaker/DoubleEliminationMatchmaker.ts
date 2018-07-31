@@ -21,12 +21,15 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private tournamentStats: TournamentStats;
     private processedMatches: string[];
     private playerStats: { [key: string]: PlayerStats }
+    private waitingToPlay: Player[];
+
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.processedMatches = [];
         this.playerStats = {};
         this.players.forEach(player => {
             this.playerStats[player.token] = { player: player, wins: 0, losses: 0 };
-        })
+        });
+        this.waitingToPlay = [];
     }
 
     isFinished(): boolean {
@@ -57,27 +60,39 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
 
         console.log(this.playerStats)
 
-        if(justPlayedMatches.length === 1) {
+        if(justPlayedMatches.length === 1 && this.waitingToPlay.length < 1) {
             this.finished = true;
             return [];
         }
 
-        const winners = [];
-        const losers = [];
+        const zeroLossPlayers = [];
+        const oneLossPlayers = [];
         for(const playerToken in this.playerStats) {
             const stats = this.playerStats[playerToken];
             if(stats.losses === 0) {
-                winners.push(stats.player)          
+                zeroLossPlayers.push(stats.player);   
             } else if(stats.losses === 1) {
-                losers.push(stats.player)
+                oneLossPlayers.push(stats.player);
             }
         }
 
-        if(winners.length > 1 || losers.length > 1) {
-            matches = matches.concat(this.matchPlayers(winners))
-            matches = matches.concat(this.matchPlayers(losers))
-        } else {
-            matches = matches.concat(this.matchPlayers(winners.concat(losers)))
+        if(zeroLossPlayers.length > 1) {
+            matches = matches.concat(this.matchPlayers(zeroLossPlayers));
+        } else if(zeroLossPlayers.length === 1) {
+            console.log(`zero loss last: ${zeroLossPlayers[0].token}`);
+            this.waitingToPlay.push(zeroLossPlayers[0]);
+        }
+        if(oneLossPlayers.length > 1) {
+            matches = matches.concat(this.matchPlayers(oneLossPlayers));
+        } else if(oneLossPlayers.length === 1) {
+            console.log(`one loss last: ${zeroLossPlayers[0].token}`);
+            this.waitingToPlay.push(oneLossPlayers[0]);
+        }
+
+        if(this.waitingToPlay.length > 1) {
+            console.log("Matching waiters")
+            matches = matches.concat(this.matchPlayers(this.waitingToPlay));
+            this.waitingToPlay = [];
         }
         
         return matches
