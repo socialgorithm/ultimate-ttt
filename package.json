@@ -5,13 +5,15 @@
   "main": "dist/standalone.js",
   "scripts": {
     "start": "node dist/standalone.js",
-    "start:opts": "node bin/index.js",
+    "start:dev": "nodemon",
+    "dev": "tsc && ts-node --files src/standalone.ts",
+    "start:opts": "tsc && ts-node bin/index.js",
     "build": "tsc -w",
-    "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
+    "test": "export TS_NODE_FILES=true && nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "typedoc --out docs/ --mode modules ./src"
   },
   "engines": {
-    "node" : ">= 8"
+    "node": ">= 8"
   },
   "bin": {
     "uttt": "bin/index.js"
@@ -37,9 +39,6 @@
   "homepage": "https://github.com/aurbano/ultimate-ttt-server#readme",
   "dependencies": {
     "@socialgorithm/ultimate-ttt": "^4.19.0",
-    "@types/ip": "0.0.31",
-    "@types/node": "^10.5.1",
-    "@types/socket.io": "^1.4.36",
     "blessed": "^0.1.81",
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
@@ -50,11 +49,16 @@
   "devDependencies": {
     "@types/blessed": "^0.1.10",
     "@types/chai": "^3.5.2",
+    "@types/ip": "0.0.31",
     "@types/mocha": "^2.2.41",
+    "@types/node": "^10.5.1",
+    "@types/socket.io": "^1.4.36",
+    "@types/socket.io-client": "^1.4.32",
     "chai": "^4.0.0",
     "coveralls": "^2.13.1",
     "gulp-file": "^0.3.0",
     "mocha": "^3.4.2",
+    "nodemon": "^1.18.3",
     "nyc": "^10.3.2",
     "socket.io-client": "^2.1.1",
     "ts-node": "^7.0.0",
