@@ -58,8 +58,6 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             }
         );
 
-        console.log(this.playerStats)
-
         if(justPlayedMatches.length === 1 && this.waitingToPlay.length < 1) {
             this.finished = true;
             return [];
@@ -69,9 +67,9 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         const oneLossPlayers = [];
         for(const playerToken in this.playerStats) {
             const stats = this.playerStats[playerToken];
-            if(stats.losses === 0) {
+            if(stats.losses === 0 && this.waitingToPlay.indexOf(stats.player) === -1) {
                 zeroLossPlayers.push(stats.player);   
-            } else if(stats.losses === 1) {
+            } else if(stats.losses === 1 && this.waitingToPlay.indexOf(stats.player) === -1) {
                 oneLossPlayers.push(stats.player);
             }
         }
@@ -79,13 +77,11 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         if(zeroLossPlayers.length > 1) {
             matches = matches.concat(this.matchPlayers(zeroLossPlayers));
         } else if(zeroLossPlayers.length === 1) {
-            console.log(`zero loss last: ${zeroLossPlayers[0].token}`);
             this.waitingToPlay.push(zeroLossPlayers[0]);
         }
         if(oneLossPlayers.length > 1) {
             matches = matches.concat(this.matchPlayers(oneLossPlayers));
         } else if(oneLossPlayers.length === 1) {
-            console.log(`one loss last: ${zeroLossPlayers[0].token}`);
             this.waitingToPlay.push(oneLossPlayers[0]);
         }
 
