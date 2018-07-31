@@ -15,7 +15,7 @@ export interface SocketEvents {
     onPlayerDisconnect(player: Player): void;
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Tournament;
+    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Lobby;
     updateStats(): void;
 }
 
@@ -57,24 +57,25 @@ export default class SocketServer {
 
             socket.on('lobby create', () => {
                 const lobby = this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', (data) => {
-                    const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                    const tournament = this.socketEvents.onLobbyTournamentStart(lobby.token, options);
-                    if(tournament == null) {
-                        socket.emit('exception', {error: 'Unable to start tournament'});
-                    } else {
-                        lobby.tournament = tournament;
-                        this.io.in(lobby.token).emit('lobby tournament started', {
-                            lobby: lobby.toObject(),
-                        });
-                    }
-                });
                 if(lobby == null) {
                     socket.emit('exception', {error: 'Unable to create lobby'})
                 } else {
                     socket.join(lobby.token);
                     socket.emit('lobby created', {
                         lobby: lobby.toObject()
+                    });
+                }
+            });
+
+            socket.on('lobby tournament start', (data) => {
+                const token = data.token;
+                const options = Object.assign(DEFAULT_TOURNAMENT_OPTIONS, data.options);
+                const lobby = this.socketEvents.onLobbyTournamentStart(token, options);
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to start tournament'});
+                } else {
+                    this.io.in(lobby.token).emit('lobby tournament started', {
+                        lobby: lobby.toObject(),
                     });
                 }
             });

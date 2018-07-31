@@ -30,25 +30,25 @@ var SocketServer = (function () {
             var player = new Player_1["default"](socket.handshake.query.token, playerChannel);
             socket.on('lobby create', function () {
                 var lobby = _this.socketEvents.onLobbyCreate(player);
-                socket.on('lobby tournament start', function (data) {
-                    var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                    var tournament = _this.socketEvents.onLobbyTournamentStart(lobby.token, options);
-                    if (tournament == null) {
-                        socket.emit('exception', { error: 'Unable to start tournament' });
-                    }
-                    else {
-                        lobby.tournament = tournament;
-                        _this.io["in"](lobby.token).emit('lobby tournament started', {
-                            lobby: lobby.toObject()
-                        });
-                    }
-                });
                 if (lobby == null) {
                     socket.emit('exception', { error: 'Unable to create lobby' });
                 }
                 else {
                     socket.join(lobby.token);
                     socket.emit('lobby created', {
+                        lobby: lobby.toObject()
+                    });
+                }
+            });
+            socket.on('lobby tournament start', function (data) {
+                var token = data.token;
+                var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
+                var lobby = _this.socketEvents.onLobbyTournamentStart(token, options);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to start tournament' });
+                }
+                else {
+                    _this.io["in"](lobby.token).emit('lobby tournament started', {
                         lobby: lobby.toObject()
                     });
                 }

@@ -52,12 +52,13 @@ var Game = (function () {
                 }
             }
             catch (e) {
+                _this.log("Game " + _this.options.gameId + ": Player " + _this.players[_this.currentPlayerIndex].token + " errored: " + e.message);
                 _this.handleGameWon(_this.switchPlayer(_this.currentPlayerIndex));
             }
         };
     };
     Game.prototype.handleGameWon = function (winnerIndex) {
-        this.winnerIndex = this.switchPlayer(winnerIndex);
+        this.winnerIndex = winnerIndex;
         this.handleGameEnd();
     };
     Game.prototype.handleGameTied = function () {

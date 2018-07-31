@@ -82,7 +82,7 @@ var Server = (function () {
             foundLobby.tournament = new Tournament_1.Tournament(tournamentOptions, this.socketServer, foundLobby.players, foundLobby.token);
             foundLobby.tournament.start();
         }
-        return foundLobby.tournament;
+        return foundLobby;
     };
     Server.prototype.updateStats = function () {
         var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };

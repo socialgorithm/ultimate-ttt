@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { mock, instance, when } from 'ts-mockito';
 import Player from '../../../src/tournament/model/Player';
 import DoubleEliminationMatchmaker from '../../../src/tournament/matchmaker/DoubleEliminationMatchmaker';
-import Match from '../../../src/tournament/match/Match';
 import Channel from '../../../src/tournament/model/Channel';
 
 describe('Double Elimination Matchmaker', () => {
