@@ -153,15 +153,11 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         
         // find out if this match came from another
         const parentMatches = this.unlinkedMatches.filter((match): boolean => {
-            if (match.stats.state !== 'finished') {
+            const winner = match.players[match.stats.winner];
+            if (!winner) {
                 return false;
             }
-            const winner = match.stats.winner;
-            if (winner === RESULT_TIE) {
-                return false;
-            }
-            const eachWinnerToken = match.players[winner].token;
-            return playerTokens.indexOf(eachWinnerToken) > -1;
+            return playerTokens.indexOf(winner.token) > -1;
         }).map(
             match => match.uuid
         );

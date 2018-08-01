@@ -55,4 +55,12 @@ export default class Match {
             this.stats.winner = 1
         }
     }
+
+    public toString() {
+        let winner = '';
+        if (this.stats.winner > -1) {
+            winner = ' [W ' + this.players[this.stats.winner].token + ']';
+        }
+        return 'Match ' + this.uuid + ' (' + this.players.map(player => player.token) + ') [' + this.stats.state + '] ' + winner;
+    }
 }
