@@ -3,12 +3,16 @@ import Match from "../match/Match";
 import Player from "../model/Player";
 import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
-import * as uuid from 'uuid/v4';
 
 type PlayerStats = {
     player: Player;
     wins: number;
     losses: number;
+}
+
+type MatchingResult = {
+    matches?: Match[];
+    oddPlayer?: Player;
 }
 
 /**
@@ -94,18 +98,16 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         return matches
     }
 
-    private matchPlayers(players: Player[]): Match[] {
-        let matches: Match[] = []; 
-        let oddPlayerExists: boolean = false;
-        let evenLimit: number = players.length
+    private matchPlayers(players: Player[]): MatchingResult {
+        let oddPlayer: Player;
 
         if(players.length < 2) {
-            return matches
+            return { }
         }
 
         if(players.length % 2 !== 0) {
-            oddPlayerExists = true;
-            evenLimit = players.length - 1;
+            oddPlayer = players[players.length-1]
+            players = players.slice(0, -1);
         }
 
         for(let i = 0; i < evenLimit; i+=2) {
