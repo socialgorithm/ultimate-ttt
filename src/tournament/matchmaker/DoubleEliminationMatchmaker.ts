@@ -2,10 +2,10 @@ import { RESULT_TIE } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
 import Matchmaker from "./Matchmaker";
 import Player from "../model/Player";
-import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
 import DoubleEliminationMatch, { MatchParent } from "./DoubleEliminationMatch";
 import Match from "../match/Match";
+import { TournamentStats } from "../stats/TournamentStats";
 
 type PlayerStats = {
     player: Player;
@@ -66,7 +66,14 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
                 this.processedMatches.push(match.uuid);
                 if(match.stats.winner === RESULT_TIE) {
-                    matches.push(this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }, [{playerIndex: 0, parent: match.uuid}, {playerIndex: 1, parent: match.uuid}]))
+                    matches.push(
+                        this.createMatch(
+                            match.players[0], 
+                            match.players[1],
+                            { timeout: match.options.timeout / 2 }, 
+                            [{playerIndex: 0, parent: match.uuid}, {playerIndex: 1, parent: match.uuid}]
+                        )
+                    )
                     tiedPlayers.push(...match.players)
                 } else {
                     const winnerToken = match.players[match.stats.winner].token;
@@ -131,7 +138,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         return matches;
     }
 
-    private matchPlayers(players: Player[], optionOverrides?: any): MatchingResult {
+    private matchPlayers(players: Player[]): MatchingResult {
         let matches: DoubleEliminationMatch[] = []; 
         let oddPlayer: Player;
 
@@ -200,8 +207,19 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     }
 
     getRanking(): string[] {
-        return this.players
-            .sort((a: Player, b: Player) => this.playerStats[b.token].wins - this.playerStats[a.token].wins)
-            .map(player => player.token);
+        const ranking: string[] = [];
+        this.tournamentStats.matches.reverse().forEach(match => {
+            if(match.stats.winner !== RESULT_TIE) {
+                const winner = match.players[match.stats.winner].token
+                const loser = match.players[match.stats.winner === 1 ? 0 : 1].token
+                if(ranking.indexOf(winner) === -1) {
+                    ranking.push(winner);
+                }
+                if(ranking.indexOf(loser) === -1) {
+                    ranking.push(loser);
+                }
+            }
+        });
+        return ranking;
     }
 }

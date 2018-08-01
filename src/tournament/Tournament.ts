@@ -1,6 +1,6 @@
 import SocketServer from '../server/SocketServer';
 import Player from './model/Player';
-import {TournamentStats} from "./model/TournamentStats";
+import {TournamentStats} from "./stats/TournamentStats";
 import Matchmaker from './matchmaker/Matchmaker';
 import Match from './match/Match';
 import FreeForAllMatchmaker from './matchmaker/FreeForAllMatchmaker';

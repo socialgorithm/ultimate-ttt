@@ -94,7 +94,7 @@ var DoubleEliminationMatchmaker = (function () {
         }
         return matches;
     };
-    DoubleEliminationMatchmaker.prototype.matchPlayers = function (players, optionOverrides) {
+    DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
         var _this = this;
         var _a;
         var matches = [];
@@ -149,10 +149,20 @@ var DoubleEliminationMatchmaker = (function () {
         match.parentMatches = parentMatches;
     };
     DoubleEliminationMatchmaker.prototype.getRanking = function () {
-        var _this = this;
-        return this.players
-            .sort(function (a, b) { return _this.playerStats[b.token].wins - _this.playerStats[a.token].wins; })
-            .map(function (player) { return player.token; });
+        var ranking = [];
+        this.tournamentStats.matches.reverse().forEach(function (match) {
+            if (match.stats.winner !== constants_1.RESULT_TIE) {
+                var winner = match.players[match.stats.winner].token;
+                var loser = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                if (ranking.indexOf(winner) === -1) {
+                    ranking.push(winner);
+                }
+                if (ranking.indexOf(loser) === -1) {
+                    ranking.push(loser);
+                }
+            }
+        });
+        return ranking;
     };
     return DoubleEliminationMatchmaker;
 }());

@@ -98,9 +98,12 @@ describe('Double Elimination Matchmaker', () => {
 
     it('matches odd number of players', (done) => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4, p5], matchOptions, sendStats);
+        const allMatches: DoubleEliminationMatch[] = [];
+        let matches: DoubleEliminationMatch[] = [];
 
         //Round 1
-        let matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: [] });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[1].players).to.deep.equal([p3, p4]);
@@ -108,7 +111,8 @@ describe('Double Elimination Matchmaker', () => {
         //Round 2
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 0; //p3
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p5, p1]); //winning bracket
         expect(matches[1].players).to.deep.equals([p2, p4]); //losing bracket
@@ -116,7 +120,8 @@ describe('Double Elimination Matchmaker', () => {
         //Round 3
         matches[0].stats.winner = 0; //p5
         matches[1].stats.winner = 0; //p2
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p3, p5]);
         expect(matches[1].players).to.deep.equal([p1, p2]);
@@ -124,20 +129,26 @@ describe('Double Elimination Matchmaker', () => {
         //Round 4
         matches[0].stats.winner = 0; //p3
         matches[1].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p5]);
 
         //Round 5
         matches[0].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p3, p1]);
 
         //Round 6
         matches[0].stats.winner = 1; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        allMatches.push(...matches);
         expect(matches).to.be.empty;
+
+        //Test Ranking
+        expect(matchmaker.getRanking()).to.deep.equal(['P1', 'P3', 'P5', 'P2', 'P4'])
 
         done();
     });
