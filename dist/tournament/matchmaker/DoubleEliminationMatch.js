@@ -18,6 +18,15 @@ var DoubleEliminationMatch = (function (_super) {
         _this.parentMatches = [];
         return _this;
     }
+    DoubleEliminationMatch.prototype.getStats = function () {
+        return {
+            stats: this.stats,
+            players: this.players.map(function (player) { return ({
+                token: player.token
+            }); }),
+            parentMatches: this.parentMatches
+        };
+    };
     return DoubleEliminationMatch;
 }(Match_1["default"]));
 exports["default"] = DoubleEliminationMatch;

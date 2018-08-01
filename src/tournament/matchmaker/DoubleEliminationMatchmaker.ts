@@ -78,9 +78,9 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         const oneLossPlayers = [];
         for(const playerToken in this.playerStats) {
             const stats = this.playerStats[playerToken];
-            if(stats.losses === 0 && this.waitingForFinal.indexOf(stats.player) === -1) {
-                zeroLossPlayers.push(stats.player);   
-            } else if(stats.losses === 1 && this.waitingForFinal.indexOf(stats.player) === -1) {
+            if(!this.playerIsWaitingForMatch(stats.player) && stats.losses === 0) {
+                zeroLossPlayers.push(stats.player);
+            } else if(!this.playerIsWaitingForMatch(stats.player) && stats.losses === 1) {
                 oneLossPlayers.push(stats.player);
             }
         }
@@ -146,7 +146,11 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         this.unlinkedMatches.push(...matches);
 
         return { matches, oddPlayer }
-    } 
+    }
+
+    private playerIsWaitingForMatch(player: Player): boolean {
+        return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer
+    }
 
     private setParentMatches(match: DoubleEliminationMatch) {
         const playerTokens = match.players.map(player => player.token);

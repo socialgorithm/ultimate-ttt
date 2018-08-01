@@ -11,5 +11,11 @@ export default class Match {
     stats: State;
     constructor(players: Player[], options: MatchOptions, sendStats: Function);
     playGames(): Promise<void>;
+    getStats(): {
+        stats: State;
+        players: {
+            token: string;
+        }[];
+    };
     toString(): string;
 }
