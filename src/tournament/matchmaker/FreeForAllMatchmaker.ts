@@ -36,12 +36,15 @@ export default class FreeForAllMatchmaker implements Matchmaker {
         let match: Match[] = [];
         const matches = this.players.map((playerA, $index) => {
             if (this.index === $index) return [];
-            return [this.players[this.index]].map(
+            return [this.players[this.index]].filter(
                 playerB => {
-                    if (tournamentStats.matches.find(match =>
+                    return !(tournamentStats.matches.find(match =>
                         match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
                         match.players[1].token === playerA.token && match.players[0].token === playerB.token
-                    )) return null;
+                    ));
+                }
+            ).map(
+                playerB => {
                     return new Match(
                         [playerA, playerB],
                         {

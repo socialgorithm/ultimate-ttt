@@ -21,12 +21,12 @@ var FreeForAllMatchmaker = (function () {
         var matches = this.players.map(function (playerA, $index) {
             if (_this.index === $index)
                 return [];
-            return [_this.players[_this.index]].map(function (playerB) {
-                if (tournamentStats.matches.find(function (match) {
+            return [_this.players[_this.index]].filter(function (playerB) {
+                return !(tournamentStats.matches.find(function (match) {
                     return match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
                         match.players[1].token === playerA.token && match.players[0].token === playerB.token;
-                }))
-                    return null;
+                }));
+            }).map(function (playerB) {
                 return new Match_1["default"]([playerA, playerB], {
                     maxGames: _this.options.maxGames,
                     timeout: _this.options.timeout,
