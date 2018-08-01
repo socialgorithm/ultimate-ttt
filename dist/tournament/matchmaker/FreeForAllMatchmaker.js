@@ -6,6 +6,7 @@ var FreeForAllMatchmaker = (function () {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.index = 0;
     }
     FreeForAllMatchmaker.prototype.isFinished = function () {
         return this.finished;
@@ -13,18 +14,29 @@ var FreeForAllMatchmaker = (function () {
     FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
         var _this = this;
         this.stats = tournamentStats;
+        if (this.index >= this.players.length) {
+            return [];
+        }
         var match = [];
-        this.finished = true;
-        return this.players.map(function (playerA, $index) {
-            return _this.players.slice($index + 1).map(function (playerB) {
+        var matches = this.players.map(function (playerA, $index) {
+            if (_this.index === $index)
+                return [];
+            return [_this.players[_this.index]].map(function (playerB) {
+                if (tournamentStats.matches.find(function (match) {
+                    return match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
+                        match.players[1].token === playerA.token && match.players[0].token === playerB.token;
+                }))
+                    return null;
                 return new Match_1["default"]([playerA, playerB], {
                     maxGames: _this.options.maxGames,
-                    timeout: _this.options.timeout
+                    timeout: _this.options.timeout,
+                    autoPlay: _this.options.autoPlay
                 }, _this.sendStats);
             });
-        }).reduce(function (result, current, idx) {
-            return result.concat(current);
-        }, []);
+        }).reduce(function (result, current, idx) { return result.concat(current); }, []);
+        ++this.index;
+        this.finished = this.index >= this.players.length;
+        return matches;
     };
     FreeForAllMatchmaker.prototype.getRanking = function () {
         var playerStats = {};

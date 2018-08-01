@@ -15,6 +15,7 @@ export type TournamentOptions = {
     numberOfGames: number,
     type: string,
     timeout: number,
+    autoPlay: boolean
 };
 
 /**
@@ -26,7 +27,9 @@ export class Tournament {
     private stats: TournamentStats = {
         started: false,
         finished: false,
+        waiting: false,
         matches: [],
+        upcomingMatches: []
     };
     private matchmaker: Matchmaker;
 
@@ -34,6 +37,7 @@ export class Tournament {
         const matchOptions: MatchOptions = {
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout,
+            autoPlay: this.options.autoPlay
         };
         switch (options.type) {
             case 'DoubleElimination':
@@ -49,12 +53,34 @@ export class Tournament {
     async start() {
         if (!this.stats.started && !this.isFinished()) {
             this.stats.started = true;
-            while(!this.matchmaker.isFinished()) {
-                const matches = this.matchmaker.getRemainingMatches(this.stats);
-                this.stats.matches = this.stats.matches.concat(matches);
-                await this.playMatches(matches);
-                this.sendStats();
+            this.playTournament();
+        }
+    }
+
+    async continue() {
+        this.playTournament();
+    }
+
+    private async playTournament() {
+        this.stats.waiting = false;
+        while(!this.matchmaker.isFinished()) {
+            if (this.stats.upcomingMatches.length > 0) {
+                await this.playMatches(this.stats.upcomingMatches);
+                this.stats.matches = this.stats.matches.concat(this.stats.upcomingMatches);
             }
+
+            this.stats.upcomingMatches = this.matchmaker.getRemainingMatches(this.stats);
+
+            if (this.options.autoPlay) {
+                this.sendStats();
+            } else {
+                break;
+            }
+        }
+        if (!this.matchmaker.isFinished()) {
+            this.stats.waiting = true;
+            this.sendStats();
+        } else {
             this.stats.finished = true;
             this.sendStats();
         }
@@ -75,12 +101,24 @@ export class Tournament {
             options: this.options,
             started: this.stats.started,
             finished: this.stats.finished,
-            matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => match.getStats()),
+            matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => ({
+                stats: match.stats,
+                players: match.players.map(player => ({
+                    token: player.token,
+                })),
+            })),
+            upcomingMatches: this.stats.upcomingMatches.filter((match: Match) => match && match.stats).map((match: Match) => ({
+                stats: match.stats,
+                players: match.players.map(player => ({
+                    token: player.token,
+                })),
+            })),
             ranking: this.matchmaker.getRanking(),
+            waiting: this.stats.waiting
         };
     }
 
     private sendStats = (): void => {
         this.socket.emitInLobby(this.lobbyToken, 'tournament stats', this.getStats());
-    }
+    };
 }

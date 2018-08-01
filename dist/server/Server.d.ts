@@ -13,6 +13,7 @@ export default class Server {
     private onLobbyCreate;
     private onLobbyJoin;
     private onLobbyTournamentStart;
+    private onLobbyTournamentContinue;
     private updateStats;
     private addPlayer;
     private removePlayer;

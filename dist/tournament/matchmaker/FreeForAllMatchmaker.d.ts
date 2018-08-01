@@ -10,6 +10,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     private maxMatches;
     private finished;
     private stats;
+    private index;
     constructor(players: Player[], options: MatchOptions, sendStats: Function);
     isFinished(): boolean;
     getRemainingMatches(tournamentStats: TournamentStats): Match[];
