@@ -45,7 +45,7 @@ var DoubleEliminationMatchmaker = (function () {
                 _this.playerStats[loserToken].losses++;
             }
         });
-        if (matches.length < 1 && justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
+        if (matches.length < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
             return [];
         }
@@ -95,8 +95,6 @@ var DoubleEliminationMatchmaker = (function () {
         return matches;
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
-        var _this = this;
-        var _a;
         var matches = [];
         var oddPlayer;
         if (players.length < 2) {
@@ -111,20 +109,25 @@ var DoubleEliminationMatchmaker = (function () {
             var playerB = players[i + 1];
             matches.push(this.createMatch(playerA, playerB));
         }
-        matches.forEach(function (match) {
-            _this.setParentMatches(match);
-        });
-        (_a = this.unlinkedMatches).push.apply(_a, matches);
         return { matches: matches, oddPlayer: oddPlayer };
     };
     DoubleEliminationMatchmaker.prototype.createMatch = function (playerA, playerB, optionOverrides, parentMatches) {
         var finalOptions = Object.assign(this.options, optionOverrides || {});
         var match = new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats);
-        match.parentMatches = parentMatches;
+        if (parentMatches) {
+            match.parentMatches = parentMatches;
+        }
+        else {
+            this.setParentMatches(match);
+        }
+        this.unlinkedMatches.push(match);
         return match;
     };
     DoubleEliminationMatchmaker.prototype.playerIsWaitingForMatch = function (player) {
         return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer;
+    };
+    DoubleEliminationMatchmaker.prototype.anyPlayersWaiting = function () {
+        return this.waitingForFinal.length > 0 || !!this.zeroLossOddPlayer || !!this.oneLossOddPlayer;
     };
     DoubleEliminationMatchmaker.prototype.setParentMatches = function (match) {
         var _this = this;

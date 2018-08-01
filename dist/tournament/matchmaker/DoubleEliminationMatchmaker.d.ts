@@ -21,6 +21,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private matchPlayers;
     private createMatch;
     private playerIsWaitingForMatch;
+    private anyPlayersWaiting;
     private setParentMatches;
     getRanking(): string[];
 }

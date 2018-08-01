@@ -48,8 +48,7 @@ var Tournament = (function () {
             started: false,
             finished: false,
             waiting: false,
-            matches: [],
-            upcomingMatches: []
+            matches: []
         };
         this.sendStats = function () {
             _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', _this.getStats());
@@ -90,21 +89,22 @@ var Tournament = (function () {
     };
     Tournament.prototype.playTournament = function () {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, upcomingMatches, upcomingMatches;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         this.stats.waiting = false;
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
                         if (!!this.matchmaker.isFinished()) return [3, 4];
-                        if (!(this.stats.upcomingMatches.length > 0)) return [3, 3];
-                        return [4, this.playMatches(this.stats.upcomingMatches)];
+                        upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === 'upcoming'; });
+                        if (!(upcomingMatches.length > 0)) return [3, 3];
+                        return [4, this.playMatches(upcomingMatches)];
                     case 2:
-                        _a.sent();
-                        this.stats.matches = this.stats.matches.concat(this.stats.upcomingMatches);
-                        _a.label = 3;
+                        _b.sent();
+                        _b.label = 3;
                     case 3:
-                        this.stats.upcomingMatches = this.matchmaker.getRemainingMatches(this.stats);
+                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
                         if (this.options.autoPlay) {
                             this.sendStats();
                         }
@@ -118,7 +118,8 @@ var Tournament = (function () {
                             this.sendStats();
                         }
                         else {
-                            this.stats.finished = true;
+                            upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === 'upcoming' || match.stats.state === 'playing'; });
+                            this.stats.finished = upcomingMatches.length < 1;
                             this.sendStats();
                         }
                         return [2];
@@ -157,18 +158,7 @@ var Tournament = (function () {
             options: this.options,
             started: this.stats.started,
             finished: this.stats.finished,
-            matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return ({
-                stats: match.stats,
-                players: match.players.map(function (player) { return ({
-                    token: player.token
-                }); })
-            }); }),
-            upcomingMatches: this.stats.upcomingMatches.filter(function (match) { return match && match.stats; }).map(function (match) { return ({
-                stats: match.stats,
-                players: match.players.map(function (player) { return ({
-                    token: player.token
-                }); })
-            }); }),
+            matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return match.getStats(); }),
             ranking: this.matchmaker.getRanking(),
             waiting: this.stats.waiting
         };

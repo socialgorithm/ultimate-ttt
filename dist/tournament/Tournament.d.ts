@@ -26,13 +26,8 @@ export declare class Tournament {
         started: boolean;
         finished: boolean;
         matches: {
-            stats: import("../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/model/State").default;
-            players: {
-                token: string;
-            }[];
-        }[];
-        upcomingMatches: {
-            stats: import("../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/model/State").default;
+            uuid: string;
+            stats: import("../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
             players: {
                 token: string;
             }[];

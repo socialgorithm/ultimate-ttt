@@ -4,7 +4,6 @@ import Matchmaker from "./Matchmaker";
 import Player from "../model/Player";
 import MatchOptions from "../match/MatchOptions";
 import DoubleEliminationMatch, { MatchParent } from "./DoubleEliminationMatch";
-import Match from "../match/Match";
 import { TournamentStats } from "../stats/TournamentStats";
 
 type PlayerStats = {
@@ -84,7 +83,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             }
         );
 
-        if(matches.length < 1 && justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
+        if(matches.length < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
             return [];
         }
@@ -176,6 +175,10 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
 
     private playerIsWaitingForMatch(player: Player): boolean {
         return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer
+    }
+
+    private anyPlayersWaiting(): boolean {
+        return this.waitingForFinal.length > 0 || !!this.zeroLossOddPlayer || !!this.oneLossOddPlayer;
     }
 
     private setParentMatches(match: DoubleEliminationMatch) {
