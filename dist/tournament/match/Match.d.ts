@@ -11,4 +11,5 @@ export default class Match {
     stats: State;
     constructor(players: Player[], options: MatchOptions, sendStats: Function);
     playGames(): Promise<void>;
+    toString(): string;
 }

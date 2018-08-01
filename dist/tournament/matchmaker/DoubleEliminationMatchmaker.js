@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var DoubleEliminationMatch_1 = require("./DoubleEliminationMatch");
 var DoubleEliminationMatchmaker = (function () {
     function DoubleEliminationMatchmaker(players, options, sendStats) {
@@ -111,15 +110,11 @@ var DoubleEliminationMatchmaker = (function () {
         var _this = this;
         var playerTokens = match.players.map(function (player) { return player.token; });
         var parentMatches = this.unlinkedMatches.filter(function (match) {
-            if (match.stats.state !== 'finished') {
+            var winner = match.players[match.stats.winner];
+            if (!winner) {
                 return false;
             }
-            var winner = match.stats.winner;
-            if (winner === constants_1.RESULT_TIE) {
-                return false;
-            }
-            var eachWinnerToken = match.players[winner].token;
-            return playerTokens.indexOf(eachWinnerToken) > -1;
+            return playerTokens.indexOf(winner.token) > -1;
         }).map(function (match) { return match.uuid; });
         parentMatches.forEach(function (matchUUID) {
             var unlinkedIndex = _this.unlinkedMatches.findIndex(function (eachMatch) { return eachMatch.uuid === matchUUID; });
