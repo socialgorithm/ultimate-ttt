@@ -33,6 +33,7 @@ export default class State {
     this.times = [];
     this.timeouts = [0, 0];
     this.state = 'upcoming';
+    this.winner = -1;
   }
 
   public toJSON() {
@@ -43,6 +44,7 @@ export default class State {
       times: this.times,
       timeouts: this.timeouts,
       state: this.state,
+      winner: this.winner,
     };
   }
 
