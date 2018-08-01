@@ -75,12 +75,7 @@ export class Tournament {
             options: this.options,
             started: this.stats.started,
             finished: this.stats.finished,
-            matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => ({
-                stats: match.stats,
-                players: match.players.map(player => ({
-                    token: player.token,
-                })),
-            })),
+            matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => match.getStats()),
             ranking: this.matchmaker.getRanking(),
         };
     }

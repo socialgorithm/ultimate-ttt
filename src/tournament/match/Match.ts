@@ -56,6 +56,15 @@ export default class Match {
         }
     }
 
+    public getStats() {
+        return {
+            stats: this.stats,
+            players: this.players.map(player => ({
+                token: player.token,
+            })),
+        };
+    }
+
     public toString() {
         let winner = '';
         if (this.stats.winner > -1) {
