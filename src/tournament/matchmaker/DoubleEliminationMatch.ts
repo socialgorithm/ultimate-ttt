@@ -1,15 +1,16 @@
 import Match from "../match/Match";
 
+type MatchParent = {
+    playerIndex: number,
+    parent: string,
+};
+
 export default class DoubleEliminationMatch extends Match {
-    public parentMatches: Array<string> = [];
+    public parentMatches: Array<MatchParent> = [];
 
     public getStats() {
-        return {
-            stats: this.stats,
-            players: this.players.map(player => ({
-                token: player.token,
-            })),
-            parentMatches: this.parentMatches,
-        };
+        const stats: any = super.getStats();
+        stats.parentMatches = this.parentMatches;
+        return stats;
     }
 }

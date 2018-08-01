@@ -58,6 +58,7 @@ export default class Match {
 
     public getStats() {
         return {
+            uuid: this.uuid,
             stats: this.stats,
             players: this.players.map(player => ({
                 token: player.token,

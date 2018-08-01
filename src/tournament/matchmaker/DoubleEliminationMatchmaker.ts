@@ -159,11 +159,17 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             }
             return playerTokens.indexOf(winner.token) > -1;
         }).map(
-            match => match.uuid
+            match => {
+                const winner = match.players[match.stats.winner];
+                return {
+                    playerIndex: playerTokens.indexOf(winner.token),
+                    parent: match.uuid,
+                };
+            }
         );
 
-        parentMatches.forEach(matchUUID => {
-            const unlinkedIndex = this.unlinkedMatches.findIndex(eachMatch => eachMatch.uuid === matchUUID);
+        parentMatches.forEach(matchParent => {
+            const unlinkedIndex = this.unlinkedMatches.findIndex(eachMatch => eachMatch.uuid === matchParent.parent);
             this.unlinkedMatches.splice(unlinkedIndex, 1);
         });
 

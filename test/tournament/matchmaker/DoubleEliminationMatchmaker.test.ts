@@ -34,6 +34,8 @@ describe('Double Elimination Matchmaker', () => {
         //Round 2
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 1; //p4
+        matches[0].stats.state = 'finished';
+        matches[1].stats.state = 'finished';
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
@@ -43,13 +45,21 @@ describe('Double Elimination Matchmaker', () => {
         expect(matches[0].parentMatches).to.have.length(2);
         expect(matches[1].parentMatches).to.have.length(0);
         expect(matches[0].parentMatches).to.deep.equal([
-            allMatches[0].uuid, // P1-P2
-            allMatches[1].uuid, // P3-P4
+            {
+                playerIndex: 0,
+                parent:  allMatches[0].uuid, // P1-P2
+            },
+            {
+                playerIndex: 1,
+                parent: allMatches[1].uuid, // P3-P4
+            },
         ]);
 
         //Round 3
         matches[0].stats.winner = 1; //p4
         matches[1].stats.winner = 0; //p2
+        matches[0].stats.state = 'finished';
+        matches[1].stats.state = 'finished';
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
@@ -57,11 +67,15 @@ describe('Double Elimination Matchmaker', () => {
         // parents
         expect(matches[0].parentMatches).to.have.length(1);
         expect(matches[0].parentMatches).to.deep.equal([
-            allMatches[3].uuid, // P2-P3
+            {
+                playerIndex: 1,
+                parent: allMatches[3].uuid, // P2-P3
+            },
         ]);
 
         //Round 4
         matches[0].stats.winner = 0; //p1
+        matches[0].stats.state = 'finished';
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
@@ -69,8 +83,14 @@ describe('Double Elimination Matchmaker', () => {
         // parents
         expect(matches[0].parentMatches).to.have.length(2);
         expect(matches[0].parentMatches).to.deep.equal([
-            allMatches[2].uuid, // P1-P4
-            allMatches[4].uuid, // P1-P2
+            {
+                playerIndex: 0,
+                parent: allMatches[2].uuid, // P1-P4
+            },
+            {
+                playerIndex: 1,
+                parent: allMatches[4].uuid, // P1-P2
+            },
         ]);
 
         done();
