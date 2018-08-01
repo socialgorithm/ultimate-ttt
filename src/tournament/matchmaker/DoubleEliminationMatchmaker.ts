@@ -1,9 +1,10 @@
+import { RESULT_TIE } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+
 import Matchmaker from "./Matchmaker";
-import Match from "../match/Match";
 import Player from "../model/Player";
 import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
-import { match } from "../../../node_modules/@types/minimatch";
+import DoubleEliminationMatch from "./DoubleEliminationMatch";
 
 type PlayerStats = {
     player: Player;
@@ -12,7 +13,7 @@ type PlayerStats = {
 }
 
 type MatchingResult = {
-    matches?: Match[];
+    matches?: DoubleEliminationMatch[];
     oddPlayer?: Player;
 }
 
@@ -29,6 +30,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private zeroLossOddPlayer: Player;
     private oneLossOddPlayer: Player;
     private waitingForFinal: Player[];
+    private unlinkedMatches: DoubleEliminationMatch[] = [];
 
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.processedMatches = [];
@@ -43,10 +45,10 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         return this.finished;
     }
 
-    getRemainingMatches(tournamentStats: TournamentStats): Match[] {
+    getRemainingMatches(tournamentStats: TournamentStats): DoubleEliminationMatch[] {
         this.tournamentStats = tournamentStats
         
-        let matches: Match[];
+        let matches: DoubleEliminationMatch[] = [];
 
         if(tournamentStats.matches.length === 0) {
             const matchResult = this.matchPlayers(this.players);
@@ -58,12 +60,12 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             this.processedMatches.indexOf(match.uuid) === -1
         );
 
-        justPlayedMatches.forEach(match => {
+        justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
                 this.processedMatches.push(match.uuid);
-                const winnerToken = match.players[match.stats.winner].token
-                const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token
-                this.playerStats[winnerToken].wins++
-                this.playerStats[loserToken].losses++
+                const winnerToken = match.players[match.stats.winner].token;
+                const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                this.playerStats[winnerToken].wins++;
+                this.playerStats[loserToken].losses++;
             }
         );
 
@@ -113,15 +115,15 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             this.waitingForFinal = [];
         }
         
-        return matches
+        return matches;
     }
 
     private matchPlayers(players: Player[]): MatchingResult {
-        const matches: Match[] = [];
+        let matches: DoubleEliminationMatch[] = []; 
         let oddPlayer: Player;
 
         if(players.length < 2) {
-            return { }
+            return {};
         }
 
         if(players.length % 2 !== 0) {
@@ -132,11 +134,45 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         for(let i = 0; i < players.length; i+=2) {
             const playerA = players[i];
             const playerB = players[i+1];
-            matches.push(new Match([playerA, playerB], this.options, this.sendStats));
+            matches.push(new DoubleEliminationMatch([playerA, playerB], this.options, this.sendStats));
         }
+
+        // set the parents for the new batch
+        matches.forEach(match => {
+            this.setParentMatches(match)
+        });
+
+        // store as unlinked
+        this.unlinkedMatches.push(...matches);
 
         return { matches, oddPlayer }
     } 
+
+    private setParentMatches(match: DoubleEliminationMatch) {
+        const playerTokens = match.players.map(player => player.token);
+        
+        // find out if this match came from another
+        const parentMatches = this.unlinkedMatches.filter((match): boolean => {
+            if (match.stats.state !== 'finished') {
+                return false;
+            }
+            const winner = match.stats.winner;
+            if (winner === RESULT_TIE) {
+                return false;
+            }
+            const eachWinnerToken = match.players[winner].token;
+            return playerTokens.indexOf(eachWinnerToken) > -1;
+        }).map(
+            match => match.uuid
+        );
+
+        parentMatches.forEach(matchUUID => {
+            const unlinkedIndex = this.unlinkedMatches.findIndex(eachMatch => eachMatch.uuid === matchUUID);
+            this.unlinkedMatches.splice(unlinkedIndex, 1);
+        });
+
+        match.parentMatches = parentMatches;
+    }
 
     getRanking(): string[] {
         return this.players
