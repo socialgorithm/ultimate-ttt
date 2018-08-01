@@ -14,6 +14,7 @@ export default class State {
     times: Array<number>;
     timeouts: Array<number>;
     state: 'playing' | 'finished' | 'upcoming';
+    winner: number;
     constructor();
     toJSON(): {
         games: number;
@@ -22,6 +23,7 @@ export default class State {
         times: number[];
         timeouts: number[];
         state: "playing" | "finished" | "upcoming";
+        winner: number;
     };
     printState(): void;
     getStats(): Stats;

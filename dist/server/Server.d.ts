@@ -8,9 +8,12 @@ export default class Server {
     constructor(options: Options);
     private onPlayerConnect;
     private onPlayerDisconnect;
+    private onLobbyKick;
+    private onLobbyBan;
     private onLobbyCreate;
     private onLobbyJoin;
     private onLobbyTournamentStart;
+    private onLobbyTournamentContinue;
     private updateStats;
     private addPlayer;
     private removePlayer;

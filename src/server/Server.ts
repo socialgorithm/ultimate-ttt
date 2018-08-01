@@ -38,11 +38,14 @@ export default class Server {
     this.lobbies = [];
 
     this.socketServer = new SocketServer(this.options.port, {
-      onPlayerConnect: this.onPlayerConnect.bind(this), 
+      onPlayerConnect: this.onPlayerConnect.bind(this),
       onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
+      onLobbyKick: this.onLobbyKick.bind(this),
+      onLobbyBan: this.onLobbyBan.bind(this),
       onLobbyCreate: this.onLobbyCreate.bind(this),
       onLobbyJoin: this.onLobbyJoin.bind(this),
       onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+      onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
       updateStats: this.updateStats.bind(this),
     });
 
@@ -84,7 +87,36 @@ export default class Server {
         },
       });
     });
-  }
+  };
+
+    private onLobbyKick = (lobbyToken: string, playerToken: string): Lobby => {
+        this.log('Player ' + playerToken + ' is being kicked from ' + lobbyToken);
+        const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
+        if(foundLobby == null) {
+            this.log('Lobby not found (' + lobbyToken + ')');
+            return null;
+        }
+
+        const playerIndex = foundLobby.players.findIndex(p => p.token === playerToken);
+        foundLobby.players.splice(playerIndex, 1);
+
+        return foundLobby;
+    };
+
+  private onLobbyBan = (lobbyToken: string, playerToken: string): Lobby => {
+    this.log('Player ' + playerToken + ' is being banned from ' + lobbyToken);
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
+    if(foundLobby == null) {
+      this.log('Lobby not found (' + lobbyToken + ')');
+      return null;
+    }
+
+    const playerIndex = foundLobby.players.findIndex(p => p.token === playerToken);
+    foundLobby.players.splice(playerIndex, 1);
+    foundLobby.bannedPlayers.push(playerToken);
+
+    return foundLobby;
+  };
 
   private onLobbyCreate = (creator: Player): Lobby => {
     const lobby = new Lobby(creator)
@@ -101,6 +133,10 @@ export default class Server {
       return null;
     }
 
+    if (foundLobby.bannedPlayers.find(p => p === player.token)) {
+      return null;
+    }
+
     // If the user is spectating, we wont add it to the players list (e.g. web client)
     if(!spectating && foundLobby.players.find(p => p.token === player.token) == null) {
       foundLobby.players.push(player)
@@ -108,19 +144,35 @@ export default class Server {
     }
     
     return foundLobby;
-  }
+  };
 
-  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: TournamentOptions): Lobby {
-    const foundLobby = this.lobbies.find(l => l.token === lobbyToken)
+  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: TournamentOptions, players: Array<string>): Lobby {
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
     if(foundLobby == null) {
       return null;
     }
 
     if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
       this.log(`Starting tournament in lobby ${foundLobby.token}!`);
-      foundLobby.tournament = new Tournament(tournamentOptions, this.socketServer, foundLobby.players, foundLobby.token);
+      const playersToPlay = foundLobby.players.filter(p => players.includes(p.token));
+      foundLobby.tournament = new Tournament(tournamentOptions, this.socketServer, playersToPlay, foundLobby.token);
       foundLobby.tournament.start();
     }
+
+    return foundLobby;
+  }
+
+  private onLobbyTournamentContinue(lobbyToken: string): Lobby {
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
+    if(foundLobby == null) {
+      return null;
+    }
+
+    if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+        return null;
+    }
+
+    foundLobby.tournament.continue();
 
     return foundLobby;
   }

@@ -25,6 +25,29 @@ var Server = (function () {
                 });
             });
         };
+        this.onLobbyKick = function (lobbyToken, playerToken) {
+            _this.log('Player ' + playerToken + ' is being kicked from ' + lobbyToken);
+            var foundLobby = _this.lobbies.find(function (l) { return l.token === lobbyToken; });
+            if (foundLobby == null) {
+                _this.log('Lobby not found (' + lobbyToken + ')');
+                return null;
+            }
+            var playerIndex = foundLobby.players.findIndex(function (p) { return p.token === playerToken; });
+            foundLobby.players.splice(playerIndex, 1);
+            return foundLobby;
+        };
+        this.onLobbyBan = function (lobbyToken, playerToken) {
+            _this.log('Player ' + playerToken + ' is being banned from ' + lobbyToken);
+            var foundLobby = _this.lobbies.find(function (l) { return l.token === lobbyToken; });
+            if (foundLobby == null) {
+                _this.log('Lobby not found (' + lobbyToken + ')');
+                return null;
+            }
+            var playerIndex = foundLobby.players.findIndex(function (p) { return p.token === playerToken; });
+            foundLobby.players.splice(playerIndex, 1);
+            foundLobby.bannedPlayers.push(playerToken);
+            return foundLobby;
+        };
         this.onLobbyCreate = function (creator) {
             var lobby = new Lobby_1.Lobby(creator);
             _this.lobbies.push(lobby);
@@ -39,6 +62,9 @@ var Server = (function () {
                 _this.log('Lobby not found (' + lobbyToken + ')');
                 return null;
             }
+            if (foundLobby.bannedPlayers.find(function (p) { return p === player.token; })) {
+                return null;
+            }
             if (!spectating && foundLobby.players.find(function (p) { return p.token === player.token; }) == null) {
                 foundLobby.players.push(player);
                 _this.log('Player ' + player.token + ' joined ' + lobbyToken);
@@ -50,9 +76,12 @@ var Server = (function () {
         this.socketServer = new SocketServer_1["default"](this.options.port, {
             onPlayerConnect: this.onPlayerConnect.bind(this),
             onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
+            onLobbyKick: this.onLobbyKick.bind(this),
+            onLobbyBan: this.onLobbyBan.bind(this),
             onLobbyCreate: this.onLobbyCreate.bind(this),
             onLobbyJoin: this.onLobbyJoin.bind(this),
             onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+            onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
             updateStats: this.updateStats.bind(this)
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
@@ -72,16 +101,28 @@ var Server = (function () {
         this.addPlayer(player);
         player.channel.send('waiting');
     };
-    Server.prototype.onLobbyTournamentStart = function (lobbyToken, tournamentOptions) {
+    Server.prototype.onLobbyTournamentStart = function (lobbyToken, tournamentOptions, players) {
         var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
         if (foundLobby == null) {
             return null;
         }
         if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
             this.log("Starting tournament in lobby " + foundLobby.token + "!");
-            foundLobby.tournament = new Tournament_1.Tournament(tournamentOptions, this.socketServer, foundLobby.players, foundLobby.token);
+            var playersToPlay = foundLobby.players.filter(function (p) { return players.includes(p.token); });
+            foundLobby.tournament = new Tournament_1.Tournament(tournamentOptions, this.socketServer, playersToPlay, foundLobby.token);
             foundLobby.tournament.start();
         }
+        return foundLobby;
+    };
+    Server.prototype.onLobbyTournamentContinue = function (lobbyToken) {
+        var foundLobby = this.lobbies.find(function (l) { return l.token === lobbyToken; });
+        if (foundLobby == null) {
+            return null;
+        }
+        if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+            return null;
+        }
+        foundLobby.tournament["continue"]();
         return foundLobby;
     };
     Server.prototype.updateStats = function () {

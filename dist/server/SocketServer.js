@@ -43,12 +43,25 @@ var SocketServer = (function () {
             socket.on('lobby tournament start', function (data) {
                 var token = data.token;
                 var options = Object.assign(constants_1.DEFAULT_TOURNAMENT_OPTIONS, data.options);
-                var lobby = _this.socketEvents.onLobbyTournamentStart(token, options);
+                var players = data.players;
+                var lobby = _this.socketEvents.onLobbyTournamentStart(token, options, players);
                 if (lobby == null) {
                     socket.emit('exception', { error: 'Unable to start tournament' });
                 }
                 else {
                     _this.io["in"](lobby.token).emit('lobby tournament started', {
+                        lobby: lobby.toObject()
+                    });
+                }
+            });
+            socket.on('lobby tournament continue', function (data) {
+                var token = data.lobbyToken;
+                var lobby = _this.socketEvents.onLobbyTournamentContinue(token);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to continue tournament' });
+                }
+                else {
+                    _this.io["in"](lobby.token).emit('lobby tournament continued', {
                         lobby: lobby.toObject()
                     });
                 }
@@ -67,6 +80,32 @@ var SocketServer = (function () {
                     lobby: lobby.toObject(),
                     isAdmin: lobby.admin.token === player.token
                 });
+            });
+            socket.on('lobby player kick', function (data) {
+                var lobbyToken = data.lobbyToken, playerToken = data.playerToken;
+                var lobby = _this.socketEvents.onLobbyKick(lobbyToken, playerToken);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to kick player' });
+                }
+                else {
+                    _this.io["in"](lobby.token).emit('lobby player kicked', {
+                        lobby: lobby.toObject()
+                    });
+                    _this.io["in"](playerToken).emit('kicked');
+                }
+            });
+            socket.on('lobby player ban', function (data) {
+                var lobbyToken = data.lobbyToken, playerToken = data.playerToken;
+                var lobby = _this.socketEvents.onLobbyBan(lobbyToken, playerToken);
+                if (lobby == null) {
+                    socket.emit('exception', { error: 'Unable to ban player' });
+                }
+                else {
+                    _this.io["in"](lobby.token).emit('lobby player banned', {
+                        lobby: lobby.toObject()
+                    });
+                    _this.io["in"](playerToken).emit('banned');
+                }
             });
             socket.on('disconnect', function () {
                 _this.socketEvents.onPlayerDisconnect(player);

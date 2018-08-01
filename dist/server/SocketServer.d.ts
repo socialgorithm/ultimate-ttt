@@ -4,9 +4,12 @@ import { TournamentOptions } from '../tournament/Tournament';
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;
+    onLobbyKick(lobbyToken: string, playerToken: string): Lobby;
+    onLobbyBan(lobbyToken: string, playerToken: string): Lobby;
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
-    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions): Lobby;
+    onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions, players: Array<string>): Lobby;
+    onLobbyTournamentContinue(lobbyToken: string): Lobby;
     updateStats(): void;
 }
 export default class SocketServer {

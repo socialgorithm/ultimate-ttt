@@ -8,10 +8,12 @@ export class Lobby {
     public token: string;
     public players: Array<Player>;
     public tournament: Tournament;
+    bannedPlayers: Array<string>;
 
     constructor(admin: Player) {
         this.admin = admin;
         this.players = [];
+        this.bannedPlayers = [];
         this.token = `${randomWord()}-${randomWord()}`;
     }
 

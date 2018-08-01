@@ -5,6 +5,7 @@ export declare class Lobby {
     token: string;
     players: Array<Player>;
     tournament: Tournament;
+    bannedPlayers: Array<string>;
     constructor(admin: Player);
     toObject(): {
         token: string;
@@ -16,12 +17,14 @@ export declare class Lobby {
             started: boolean;
             finished: boolean;
             matches: {
+                uuid: string;
                 stats: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
                 players: {
                     token: string;
                 }[];
             }[];
             ranking: string[];
+            waiting: boolean;
         };
     };
 }
