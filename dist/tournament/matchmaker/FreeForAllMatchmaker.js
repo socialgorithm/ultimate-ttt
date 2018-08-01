@@ -7,13 +7,13 @@ var FreeForAllMatchmaker = (function () {
         this.options = options;
         this.sendStats = sendStats;
         this.index = 0;
-        this.maxMatches = Math.pow(players.length, players.length);
     }
     FreeForAllMatchmaker.prototype.isFinished = function () {
         return this.finished;
     };
     FreeForAllMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
         var _this = this;
+        this.stats = tournamentStats;
         if (this.index >= this.players.length) {
             return [];
         }
@@ -21,28 +21,26 @@ var FreeForAllMatchmaker = (function () {
         var matches = this.players.map(function (playerA, $index) {
             if (_this.index === $index)
                 return [];
-            return [_this.players[_this.index]].map(function (playerB) {
-                if (tournamentStats.matches.find(function (match) {
+            return [_this.players[_this.index]].filter(function (playerB) {
+                return !(tournamentStats.matches.find(function (match) {
                     return match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
                         match.players[1].token === playerA.token && match.players[0].token === playerB.token;
-                }))
-                    return null;
+                }));
+            }).map(function (playerB) {
                 return new Match_1["default"]([playerA, playerB], {
                     maxGames: _this.options.maxGames,
                     timeout: _this.options.timeout,
                     autoPlay: _this.options.autoPlay
                 }, _this.sendStats);
             });
-        }).reduce(function (result, current, idx) {
-            return result.concat(current);
-        }, []).filter(function (match) { return match; });
+        }).reduce(function (result, current, idx) { return result.concat(current); }, []);
         ++this.index;
         this.finished = this.index >= this.players.length;
         return matches;
     };
-    FreeForAllMatchmaker.prototype.getRanking = function (stats) {
+    FreeForAllMatchmaker.prototype.getRanking = function () {
         var playerStats = {};
-        stats.matches.forEach(function (match) {
+        this.stats.matches.forEach(function (match) {
             if (!playerStats[match.players[0].token]) {
                 playerStats[match.players[0].token] = 0;
             }

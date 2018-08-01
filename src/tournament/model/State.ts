@@ -24,6 +24,7 @@ export default class State {
   public times: Array<number>; // Array with the times for all the games
   public timeouts: Array<number>; // Array for all timeouts
   public state: 'playing' | 'finished' | 'upcoming';
+  public winner: number; // The index (in players) of the winner of the match
 
   constructor() {
     this.games = 0;
@@ -32,6 +33,7 @@ export default class State {
     this.times = [];
     this.timeouts = [0, 0];
     this.state = 'upcoming';
+    this.winner = -1;
   }
 
   public toJSON() {
@@ -42,6 +44,7 @@ export default class State {
       times: this.times,
       timeouts: this.timeouts,
       state: this.state,
+      winner: this.winner,
     };
   }
 

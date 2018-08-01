@@ -13,16 +13,18 @@ export declare class Lobby {
             token: string;
         }[];
         tournament: {
-            options: import("../../../../../../../../../Users/Tom/Dropbox/Development/socialgorithm/server/src/tournament/Tournament").TournamentOptions;
+            options: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/Tournament").TournamentOptions;
             started: boolean;
             finished: boolean;
             matches: {
-                stats: import("../../../../../../../../../Users/Tom/Dropbox/Development/socialgorithm/server/src/tournament/model/State").default;
+                uuid: string;
+                stats: import("../../../../../../../../Users/alex/proyects/socialgorithm/ultimate-ttt-server/src/tournament/model/State").default;
                 players: {
                     token: string;
                 }[];
             }[];
             ranking: string[];
+            waiting: boolean;
         };
     };
 }

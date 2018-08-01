@@ -8,5 +8,4 @@ export type TournamentStats = {
     finished: boolean,
     waiting: boolean,
     matches: Match[],
-    upcomingMatches: Match[],
 }
