@@ -5,6 +5,7 @@ import Player from "../model/Player";
 import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
 import DoubleEliminationMatch from "./DoubleEliminationMatch";
+import Match from "../match/Match";
 
 type PlayerStats = {
     player: Player;
@@ -60,16 +61,23 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             this.processedMatches.indexOf(match.uuid) === -1
         );
 
+        const tiedPlayers: Player[] = [];
+
         justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
                 this.processedMatches.push(match.uuid);
-                const winnerToken = match.players[match.stats.winner].token;
-                const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
-                this.playerStats[winnerToken].wins++;
-                this.playerStats[loserToken].losses++;
+                if(match.stats.winner === RESULT_TIE) {
+                    matches.push(this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }))
+                    tiedPlayers.push(...match.players)
+                } else {
+                    const winnerToken = match.players[match.stats.winner].token;
+                    const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                    this.playerStats[winnerToken].wins++;
+                    this.playerStats[loserToken].losses++;
+                }
             }
         );
 
-        if(justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
+        if(matches.length < 1 && justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
             this.finished = true;
             return [];
         }
@@ -78,9 +86,10 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         const oneLossPlayers = [];
         for(const playerToken in this.playerStats) {
             const stats = this.playerStats[playerToken];
-            if(!this.playerIsWaitingForMatch(stats.player) && stats.losses === 0) {
+            if(!this.playerIsWaitingForMatch(stats.player) && tiedPlayers.indexOf(stats.player) === -1)
+            if(stats.losses === 0) {
                 zeroLossPlayers.push(stats.player);
-            } else if(!this.playerIsWaitingForMatch(stats.player) && stats.losses === 1) {
+            } else if(stats.losses === 1) {
                 oneLossPlayers.push(stats.player);
             }
         }
@@ -109,6 +118,10 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             this.waitingForFinal.push(oneLossPlayers[0]);
         }
 
+        if(tiedPlayers.length > 0) {
+
+        }
+
         if(this.waitingForFinal.length > 1) {
             const matchResult = this.matchPlayers(this.waitingForFinal);
             matches.push(...matchResult.matches)
@@ -118,7 +131,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         return matches;
     }
 
-    private matchPlayers(players: Player[]): MatchingResult {
+    private matchPlayers(players: Player[], optionOverrides?: any): MatchingResult {
         let matches: DoubleEliminationMatch[] = []; 
         let oddPlayer: Player;
 
@@ -134,7 +147,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         for(let i = 0; i < players.length; i+=2) {
             const playerA = players[i];
             const playerB = players[i+1];
-            matches.push(new DoubleEliminationMatch([playerA, playerB], this.options, this.sendStats));
+            matches.push(this.createMatch(playerA, playerB));
         }
 
         // set the parents for the new batch
@@ -146,6 +159,11 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         this.unlinkedMatches.push(...matches);
 
         return { matches, oddPlayer }
+    }
+
+    private createMatch(playerA: Player, playerB: Player, optionOverrides?: any): DoubleEliminationMatch {
+        const finalOptions = Object.assign(this.options, optionOverrides || {});
+        return new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats)
     }
 
     private playerIsWaitingForMatch(player: Player): boolean {

@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var DoubleEliminationMatch_1 = require("./DoubleEliminationMatch");
 var DoubleEliminationMatchmaker = (function () {
     function DoubleEliminationMatchmaker(players, options, sendStats) {
@@ -30,14 +31,21 @@ var DoubleEliminationMatchmaker = (function () {
         var justPlayedMatches = this.tournamentStats.matches.filter(function (match) {
             return _this.processedMatches.indexOf(match.uuid) === -1;
         });
+        var tiedPlayers = [];
         justPlayedMatches.forEach(function (match) {
             _this.processedMatches.push(match.uuid);
-            var winnerToken = match.players[match.stats.winner].token;
-            var loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
-            _this.playerStats[winnerToken].wins++;
-            _this.playerStats[loserToken].losses++;
+            if (match.stats.winner === constants_1.RESULT_TIE) {
+                matches.push(_this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }));
+                tiedPlayers.push.apply(tiedPlayers, match.players);
+            }
+            else {
+                var winnerToken = match.players[match.stats.winner].token;
+                var loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                _this.playerStats[winnerToken].wins++;
+                _this.playerStats[loserToken].losses++;
+            }
         });
-        if (justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
+        if (matches.length < 1 && justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
             this.finished = true;
             return [];
         }
@@ -45,12 +53,13 @@ var DoubleEliminationMatchmaker = (function () {
         var oneLossPlayers = [];
         for (var playerToken in this.playerStats) {
             var stats = this.playerStats[playerToken];
-            if (!this.playerIsWaitingForMatch(stats.player) && stats.losses === 0) {
-                zeroLossPlayers.push(stats.player);
-            }
-            else if (!this.playerIsWaitingForMatch(stats.player) && stats.losses === 1) {
-                oneLossPlayers.push(stats.player);
-            }
+            if (!this.playerIsWaitingForMatch(stats.player) && tiedPlayers.indexOf(stats.player) === -1)
+                if (stats.losses === 0) {
+                    zeroLossPlayers.push(stats.player);
+                }
+                else if (stats.losses === 1) {
+                    oneLossPlayers.push(stats.player);
+                }
         }
         if (this.zeroLossOddPlayer != null) {
             zeroLossPlayers.unshift(this.zeroLossOddPlayer);
@@ -76,6 +85,8 @@ var DoubleEliminationMatchmaker = (function () {
         else if (oneLossPlayers.length === 1) {
             this.waitingForFinal.push(oneLossPlayers[0]);
         }
+        if (tiedPlayers.length > 0) {
+        }
         if (this.waitingForFinal.length > 1) {
             var matchResult = this.matchPlayers(this.waitingForFinal);
             matches.push.apply(matches, matchResult.matches);
@@ -83,7 +94,7 @@ var DoubleEliminationMatchmaker = (function () {
         }
         return matches;
     };
-    DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
+    DoubleEliminationMatchmaker.prototype.matchPlayers = function (players, optionOverrides) {
         var _this = this;
         var _a;
         var matches = [];
@@ -98,13 +109,17 @@ var DoubleEliminationMatchmaker = (function () {
         for (var i = 0; i < players.length; i += 2) {
             var playerA = players[i];
             var playerB = players[i + 1];
-            matches.push(new DoubleEliminationMatch_1["default"]([playerA, playerB], this.options, this.sendStats));
+            matches.push(this.createMatch(playerA, playerB));
         }
         matches.forEach(function (match) {
             _this.setParentMatches(match);
         });
         (_a = this.unlinkedMatches).push.apply(_a, matches);
         return { matches: matches, oddPlayer: oddPlayer };
+    };
+    DoubleEliminationMatchmaker.prototype.createMatch = function (playerA, playerB, optionOverrides) {
+        var finalOptions = Object.assign(this.options, optionOverrides || {});
+        return new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats);
     };
     DoubleEliminationMatchmaker.prototype.playerIsWaitingForMatch = function (player) {
         return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer;

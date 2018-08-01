@@ -12,7 +12,7 @@ export default class Match {
     public games: Game[];
     public stats: State;
 
-    constructor(public players: Player[], private options: MatchOptions, private sendStats: Function) {
+    constructor(public players: Player[], public options: MatchOptions, private sendStats: Function) {
         this.uuid = uuid()
         this.games = [];
         this.stats = new State();

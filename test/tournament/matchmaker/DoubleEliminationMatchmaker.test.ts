@@ -16,7 +16,7 @@ describe('Double Elimination Matchmaker', () => {
     const matchOptions = { maxGames: 100, timeout: 100 }
     const sendStats = () => { };
 
-     it('matches players correctly', (done) => {
+     it('matches even number of players', (done) => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4], matchOptions, sendStats);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
@@ -76,7 +76,7 @@ describe('Double Elimination Matchmaker', () => {
         done();
     });
 
-    it('matches odd number of players correctly', (done) => {
+    it('matches odd number of players', (done) => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4, p5], matchOptions, sendStats);
 
         //Round 1
@@ -121,4 +121,25 @@ describe('Double Elimination Matchmaker', () => {
 
         done();
     });
+
+    it('resolves ties', (done) => {
+        const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, sendStats);
+        let matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: []});
+        expect(matches).to.have.lengthOf(1);
+        expect(matches[0].players).to.deep.equal([p1, p2])
+
+        matches[0].stats.winner = -1; //TIE
+        matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
+        expect(matches).to.have.lengthOf(1)
+        expect(matches[0].players).to.deep.equal([p1, p2])
+        expect(matches[0].options.timeout).to.equal(50)
+
+        matches[0].stats.winner = -1; //TIE
+        matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
+        expect(matches).to.have.lengthOf(1)
+        expect(matches[0].players).to.deep.equal([p1, p2])
+        expect(matches[0].options.timeout).to.equal(25)
+
+        done();
+    })
 })

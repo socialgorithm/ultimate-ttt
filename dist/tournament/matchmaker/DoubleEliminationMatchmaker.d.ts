@@ -19,6 +19,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     isFinished(): boolean;
     getRemainingMatches(tournamentStats: TournamentStats): DoubleEliminationMatch[];
     private matchPlayers;
+    private createMatch;
     private playerIsWaitingForMatch;
     private setParentMatches;
     getRanking(): string[];

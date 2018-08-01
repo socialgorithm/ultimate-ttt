@@ -4,7 +4,7 @@ import Player from '../model/Player';
 import State from '../model/State';
 export default class Match {
     players: Player[];
-    private options;
+    options: MatchOptions;
     private sendStats;
     uuid: string;
     games: Game[];
