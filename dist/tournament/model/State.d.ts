@@ -23,6 +23,7 @@ export default class State {
         times: number[];
         timeouts: number[];
         state: "playing" | "finished" | "upcoming";
+        winner: number;
     };
     printState(): void;
     getStats(): Stats;

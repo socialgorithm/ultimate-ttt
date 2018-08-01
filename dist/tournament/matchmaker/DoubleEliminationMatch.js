@@ -19,13 +19,9 @@ var DoubleEliminationMatch = (function (_super) {
         return _this;
     }
     DoubleEliminationMatch.prototype.getStats = function () {
-        return {
-            stats: this.stats,
-            players: this.players.map(function (player) { return ({
-                token: player.token
-            }); }),
-            parentMatches: this.parentMatches
-        };
+        var stats = _super.prototype.getStats.call(this);
+        stats.parentMatches = this.parentMatches;
+        return stats;
     };
     return DoubleEliminationMatch;
 }(Match_1["default"]));

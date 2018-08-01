@@ -23,6 +23,7 @@ export declare class Tournament {
         started: boolean;
         finished: boolean;
         matches: {
+            uuid: string;
             stats: import("../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/model/State").default;
             players: {
                 token: string;

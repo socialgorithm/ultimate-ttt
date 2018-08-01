@@ -1,11 +1,10 @@
 import Match from "../match/Match";
+declare type MatchParent = {
+    playerIndex: number;
+    parent: string;
+};
 export default class DoubleEliminationMatch extends Match {
-    parentMatches: Array<string>;
-    getStats(): {
-        stats: import("../../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/model/State").default;
-        players: {
-            token: string;
-        }[];
-        parentMatches: string[];
-    };
+    parentMatches: Array<MatchParent>;
+    getStats(): any;
 }
+export {};

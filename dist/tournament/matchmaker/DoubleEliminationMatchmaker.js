@@ -133,9 +133,15 @@ var DoubleEliminationMatchmaker = (function () {
                 return false;
             }
             return playerTokens.indexOf(winner.token) > -1;
-        }).map(function (match) { return match.uuid; });
-        parentMatches.forEach(function (matchUUID) {
-            var unlinkedIndex = _this.unlinkedMatches.findIndex(function (eachMatch) { return eachMatch.uuid === matchUUID; });
+        }).map(function (match) {
+            var winner = match.players[match.stats.winner];
+            return {
+                playerIndex: playerTokens.indexOf(winner.token),
+                parent: match.uuid
+            };
+        });
+        parentMatches.forEach(function (matchParent) {
+            var unlinkedIndex = _this.unlinkedMatches.findIndex(function (eachMatch) { return eachMatch.uuid === matchParent.parent; });
             _this.unlinkedMatches.splice(unlinkedIndex, 1);
         });
         match.parentMatches = parentMatches;

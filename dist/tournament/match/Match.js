@@ -98,6 +98,7 @@ var Match = (function () {
     };
     Match.prototype.getStats = function () {
         return {
+            uuid: this.uuid,
             stats: this.stats,
             players: this.players.map(function (player) { return ({
                 token: player.token
