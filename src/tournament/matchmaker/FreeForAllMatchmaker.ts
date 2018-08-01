@@ -16,6 +16,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
 
     private maxMatches: number;
     private finished: boolean;
+    private index: number = 0;
 
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.maxMatches = Math.pow(players.length, players.length)
@@ -26,16 +27,25 @@ export default class FreeForAllMatchmaker implements Matchmaker {
     }
 
     getRemainingMatches(tournamentStats: TournamentStats): Match[] {
+        if (this.index >= this.players.length) {
+            return [];
+        }
+
         let match: Match[] = [];
-        this.finished = true; // Free for all only runs matchmaking once
-        return this.players.map((playerA, $index) => {
-            return this.players.slice($index + 1).map(
+        const matches = this.players.map((playerA, $index) => {
+            if (this.index === $index) return [];
+            return [this.players[this.index]].map(
                 playerB => {
+                    if (tournamentStats.matches.find(match =>
+                        match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
+                        match.players[1].token === playerA.token && match.players[0].token === playerB.token
+                    )) return null;
                     return new Match(
                         [playerA, playerB],
                         {
                             maxGames: this.options.maxGames,
                             timeout: this.options.timeout,
+                            autoPlay: this.options.autoPlay
                         },
                         this.sendStats
                     );
@@ -43,7 +53,12 @@ export default class FreeForAllMatchmaker implements Matchmaker {
             )
         }).reduce((result, current, idx) =>
             result.concat(current)
-        , []);
+        , []).filter(match => match);
+
+        ++this.index;
+        this.finished = this.index >= this.players.length;
+
+        return matches;
     }
 
     getRanking(stats: TournamentStats): string[] {

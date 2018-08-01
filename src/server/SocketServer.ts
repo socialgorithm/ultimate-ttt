@@ -18,6 +18,7 @@ export interface SocketEvents {
     onLobbyCreate(player: Player): Lobby;
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
     onLobbyTournamentStart(lobbyToken: string, options: TournamentOptions, players: Array<string>): Lobby;
+    onLobbyTournamentContinue(lobbyToken: string): Lobby;
     updateStats(): void;
 }
 
@@ -78,6 +79,18 @@ export default class SocketServer {
                     socket.emit('exception', {error: 'Unable to start tournament'});
                 } else {
                     this.io.in(lobby.token).emit('lobby tournament started', {
+                        lobby: lobby.toObject(),
+                    });
+                }
+            });
+
+            socket.on('lobby tournament continue', (data) => {
+                const token = data.lobbyToken;
+                const lobby = this.socketEvents.onLobbyTournamentContinue(token);
+                if(lobby == null) {
+                    socket.emit('exception', {error: 'Unable to continue tournament'});
+                } else {
+                    this.io.in(lobby.token).emit('lobby tournament continued', {
                         lobby: lobby.toObject(),
                     });
                 }

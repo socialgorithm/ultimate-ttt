@@ -45,6 +45,7 @@ export default class Server {
       onLobbyCreate: this.onLobbyCreate.bind(this),
       onLobbyJoin: this.onLobbyJoin.bind(this),
       onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
+      onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
       updateStats: this.updateStats.bind(this),
     });
 
@@ -157,6 +158,21 @@ export default class Server {
       foundLobby.tournament = new Tournament(tournamentOptions, this.socketServer, playersToPlay, foundLobby.token);
       foundLobby.tournament.start();
     }
+
+    return foundLobby;
+  }
+
+  private onLobbyTournamentContinue(lobbyToken: string): Lobby {
+    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
+    if(foundLobby == null) {
+      return null;
+    }
+
+    if(foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
+        return null;
+    }
+
+    foundLobby.tournament.continue();
 
     return foundLobby;
   }
