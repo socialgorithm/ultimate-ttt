@@ -1,12 +1,13 @@
 "use strict";
 exports.__esModule = true;
-var Match_1 = require("../match/Match");
+var DoubleEliminationMatch_1 = require("./DoubleEliminationMatch");
 var DoubleEliminationMatchmaker = (function () {
     function DoubleEliminationMatchmaker(players, options, sendStats) {
         var _this = this;
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.unlinkedMatches = [];
         this.processedMatches = [];
         this.playerStats = {};
         this.players.forEach(function (player) {
@@ -20,7 +21,7 @@ var DoubleEliminationMatchmaker = (function () {
     DoubleEliminationMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
         var _this = this;
         this.tournamentStats = tournamentStats;
-        var matches;
+        var matches = [];
         if (tournamentStats.matches.length === 0) {
             var matchResult = this.matchPlayers(this.players);
             this.zeroLossOddPlayer = matchResult.oddPlayer;
@@ -83,6 +84,8 @@ var DoubleEliminationMatchmaker = (function () {
         return matches;
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
+        var _this = this;
+        var _a;
         var matches = [];
         var oddPlayer;
         if (players.length < 2) {
@@ -95,9 +98,29 @@ var DoubleEliminationMatchmaker = (function () {
         for (var i = 0; i < players.length; i += 2) {
             var playerA = players[i];
             var playerB = players[i + 1];
-            matches.push(new Match_1["default"]([playerA, playerB], this.options, this.sendStats));
+            matches.push(new DoubleEliminationMatch_1["default"]([playerA, playerB], this.options, this.sendStats));
         }
+        matches.forEach(function (match) {
+            _this.setParentMatches(match);
+        });
+        (_a = this.unlinkedMatches).push.apply(_a, matches);
         return { matches: matches, oddPlayer: oddPlayer };
+    };
+    DoubleEliminationMatchmaker.prototype.setParentMatches = function (match) {
+        var _this = this;
+        var playerTokens = match.players.map(function (player) { return player.token; });
+        var parentMatches = this.unlinkedMatches.filter(function (match) {
+            var winner = match.players[match.stats.winner];
+            if (!winner) {
+                return false;
+            }
+            return playerTokens.indexOf(winner.token) > -1;
+        }).map(function (match) { return match.uuid; });
+        parentMatches.forEach(function (matchUUID) {
+            var unlinkedIndex = _this.unlinkedMatches.findIndex(function (eachMatch) { return eachMatch.uuid === matchUUID; });
+            _this.unlinkedMatches.splice(unlinkedIndex, 1);
+        });
+        match.parentMatches = parentMatches;
     };
     DoubleEliminationMatchmaker.prototype.getRanking = function () {
         var _this = this;
