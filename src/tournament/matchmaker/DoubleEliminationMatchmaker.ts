@@ -3,6 +3,7 @@ import Match from "../match/Match";
 import Player from "../model/Player";
 import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
+import { match } from "../../../node_modules/@types/minimatch";
 
 type PlayerStats = {
     player: Player;
@@ -25,7 +26,9 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private tournamentStats: TournamentStats;
     private processedMatches: string[];
     private playerStats: { [key: string]: PlayerStats }
-    private waitingToPlay: Player[];
+    private zeroLossOddPlayer: Player;
+    private oneLossOddPlayer: Player;
+    private waitingForFinal: Player[];
 
     constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
         this.processedMatches = [];
@@ -33,7 +36,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         this.players.forEach(player => {
             this.playerStats[player.token] = { player: player, wins: 0, losses: 0 };
         });
-        this.waitingToPlay = [];
+        this.waitingForFinal = [];
     }
 
     isFinished(): boolean {
@@ -43,10 +46,12 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     getRemainingMatches(tournamentStats: TournamentStats): Match[] {
         this.tournamentStats = tournamentStats
         
-        let matches: Match[] = [];
+        let matches: Match[];
 
         if(tournamentStats.matches.length === 0) {
-            return this.matchPlayers(this.players);
+            const matchResult = this.matchPlayers(this.players);
+            this.zeroLossOddPlayer = matchResult.oddPlayer;
+            return matchResult.matches;
         }
 
         const justPlayedMatches = this.tournamentStats.matches.filter(match =>
@@ -62,7 +67,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             }
         );
 
-        if(justPlayedMatches.length === 1 && this.waitingToPlay.length < 1) {
+        if(justPlayedMatches.length === 1 && this.waitingForFinal.length < 1) {
             this.finished = true;
             return [];
         }
@@ -71,34 +76,48 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         const oneLossPlayers = [];
         for(const playerToken in this.playerStats) {
             const stats = this.playerStats[playerToken];
-            if(stats.losses === 0 && this.waitingToPlay.indexOf(stats.player) === -1) {
+            if(stats.losses === 0 && this.waitingForFinal.indexOf(stats.player) === -1) {
                 zeroLossPlayers.push(stats.player);   
-            } else if(stats.losses === 1 && this.waitingToPlay.indexOf(stats.player) === -1) {
+            } else if(stats.losses === 1 && this.waitingForFinal.indexOf(stats.player) === -1) {
                 oneLossPlayers.push(stats.player);
             }
         }
 
-        if(zeroLossPlayers.length > 1) {
-            matches = matches.concat(this.matchPlayers(zeroLossPlayers));
-        } else if(zeroLossPlayers.length === 1) {
-            this.waitingToPlay.push(zeroLossPlayers[0]);
+        if(this.zeroLossOddPlayer != null) {
+            zeroLossPlayers.unshift(this.zeroLossOddPlayer);
+            delete this.zeroLossOddPlayer;
         }
-        if(oneLossPlayers.length > 1) {
-            matches = matches.concat(this.matchPlayers(oneLossPlayers));
-        } else if(oneLossPlayers.length === 1) {
-            this.waitingToPlay.push(oneLossPlayers[0]);
+        if(this.oneLossOddPlayer != null) {
+            oneLossPlayers.unshift(this.oneLossOddPlayer);
+            delete this.oneLossOddPlayer;
         }
 
-        if(this.waitingToPlay.length > 1) {
-            console.log("Matching waiters")
-            matches = matches.concat(this.matchPlayers(this.waitingToPlay));
-            this.waitingToPlay = [];
+        if(zeroLossPlayers.length > 1) {
+            const matchResult = this.matchPlayers(zeroLossPlayers);
+            matches.push(...matchResult.matches)
+            this.zeroLossOddPlayer = matchResult.oddPlayer
+        } else if(zeroLossPlayers.length === 1) {
+            this.waitingForFinal.push(zeroLossPlayers[0]);
+        }
+        if(oneLossPlayers.length > 1) {
+            const matchResult = this.matchPlayers(oneLossPlayers);
+            matches.push(...matchResult.matches)
+            this.oneLossOddPlayer = matchResult.oddPlayer
+        } else if(oneLossPlayers.length === 1) {
+            this.waitingForFinal.push(oneLossPlayers[0]);
+        }
+
+        if(this.waitingForFinal.length > 1) {
+            const matchResult = this.matchPlayers(this.waitingForFinal);
+            matches.push(...matchResult.matches)
+            this.waitingForFinal = [];
         }
         
         return matches
     }
 
     private matchPlayers(players: Player[]): MatchingResult {
+        const matches: Match[] = [];
         let oddPlayer: Player;
 
         if(players.length < 2) {
@@ -110,19 +129,13 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             players = players.slice(0, -1);
         }
 
-        for(let i = 0; i < evenLimit; i+=2) {
+        for(let i = 0; i < players.length; i+=2) {
             const playerA = players[i];
             const playerB = players[i+1];
             matches.push(new Match([playerA, playerB], this.options, this.sendStats));
         }
 
-        if(oddPlayerExists) {
-            const oddPlayer = players[evenLimit + 1]
-            const randomlyPickedPlayer = players[Math.floor(Math.random() * evenLimit)]
-            matches.push(new Match([oddPlayer, randomlyPickedPlayer], this.options, this.sendStats));
-        }
-
-        return matches
+        return { matches, oddPlayer }
     } 
 
     getRanking(): string[] {
