@@ -1,6 +1,6 @@
 import Match from "../match/Match";
 
-type MatchParent = {
+export type MatchParent = {
     playerIndex: number,
     parent: string,
 };

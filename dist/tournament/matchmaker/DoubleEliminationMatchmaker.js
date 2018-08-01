@@ -35,7 +35,7 @@ var DoubleEliminationMatchmaker = (function () {
         justPlayedMatches.forEach(function (match) {
             _this.processedMatches.push(match.uuid);
             if (match.stats.winner === constants_1.RESULT_TIE) {
-                matches.push(_this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }));
+                matches.push(_this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }, [{ playerIndex: 0, parent: match.uuid }, { playerIndex: 1, parent: match.uuid }]));
                 tiedPlayers.push.apply(tiedPlayers, match.players);
             }
             else {
@@ -117,9 +117,11 @@ var DoubleEliminationMatchmaker = (function () {
         (_a = this.unlinkedMatches).push.apply(_a, matches);
         return { matches: matches, oddPlayer: oddPlayer };
     };
-    DoubleEliminationMatchmaker.prototype.createMatch = function (playerA, playerB, optionOverrides) {
+    DoubleEliminationMatchmaker.prototype.createMatch = function (playerA, playerB, optionOverrides, parentMatches) {
         var finalOptions = Object.assign(this.options, optionOverrides || {});
-        return new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats);
+        var match = new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats);
+        match.parentMatches = parentMatches;
+        return match;
     };
     DoubleEliminationMatchmaker.prototype.playerIsWaitingForMatch = function (player) {
         return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer;

@@ -4,7 +4,7 @@ import Matchmaker from "./Matchmaker";
 import Player from "../model/Player";
 import { TournamentStats } from "../model/TournamentStats";
 import MatchOptions from "../match/MatchOptions";
-import DoubleEliminationMatch from "./DoubleEliminationMatch";
+import DoubleEliminationMatch, { MatchParent } from "./DoubleEliminationMatch";
 import Match from "../match/Match";
 
 type PlayerStats = {
@@ -66,7 +66,7 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
                 this.processedMatches.push(match.uuid);
                 if(match.stats.winner === RESULT_TIE) {
-                    matches.push(this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }))
+                    matches.push(this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }, [{playerIndex: 0, parent: match.uuid}, {playerIndex: 1, parent: match.uuid}]))
                     tiedPlayers.push(...match.players)
                 } else {
                     const winnerToken = match.players[match.stats.winner].token;
@@ -161,9 +161,11 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
         return { matches, oddPlayer }
     }
 
-    private createMatch(playerA: Player, playerB: Player, optionOverrides?: any): DoubleEliminationMatch {
+    private createMatch(playerA: Player, playerB: Player, optionOverrides?: any, parentMatches?: MatchParent[]): DoubleEliminationMatch {
         const finalOptions = Object.assign(this.options, optionOverrides || {});
-        return new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats)
+        const match = new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats)
+        match.parentMatches = parentMatches;
+        return match;
     }
 
     private playerIsWaitingForMatch(player: Player): boolean {

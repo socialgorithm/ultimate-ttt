@@ -146,19 +146,23 @@ describe('Double Elimination Matchmaker', () => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, sendStats);
         let matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: []});
         expect(matches).to.have.lengthOf(1);
-        expect(matches[0].players).to.deep.equal([p1, p2])
+        expect(matches[0].players).to.deep.equal([p1, p2]);
 
         matches[0].stats.winner = -1; //TIE
+        let tiedMatchUuid = matches[0].uuid
         matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
-        expect(matches).to.have.lengthOf(1)
-        expect(matches[0].players).to.deep.equal([p1, p2])
-        expect(matches[0].options.timeout).to.equal(50)
+        expect(matches).to.have.lengthOf(1);
+        expect(matches[0].players).to.deep.equal([p1, p2]);
+        expect(matches[0].options.timeout).to.equal(50);
+        expect(matches[0].parentMatches).to.deep.equal([{ playerIndex: 0, parent: tiedMatchUuid }, { playerIndex: 1, parent: tiedMatchUuid }]);
 
         matches[0].stats.winner = -1; //TIE
+        tiedMatchUuid = matches[0].uuid
         matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
-        expect(matches).to.have.lengthOf(1)
-        expect(matches[0].players).to.deep.equal([p1, p2])
-        expect(matches[0].options.timeout).to.equal(25)
+        expect(matches).to.have.lengthOf(1);
+        expect(matches[0].players).to.deep.equal([p1, p2]);
+        expect(matches[0].options.timeout).to.equal(25);
+        expect(matches[0].parentMatches).to.deep.equal([{ playerIndex: 0, parent: tiedMatchUuid }, { playerIndex: 1, parent: tiedMatchUuid }]);
 
         done();
     })
