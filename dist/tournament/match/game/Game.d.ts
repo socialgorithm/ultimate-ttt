@@ -12,17 +12,20 @@ export default class Game {
     private gameStart;
     private gamePromise;
     private resolve;
+    private playerMoveTimeout;
     winnerIndex: PlayerOrTie;
     gameTime: number;
+    timedoutPlayer: PlayerNumber;
     constructor(players: Player[], options: GameOptions, events: GameEvents, log: any);
     playGame(): Promise<boolean>;
-    handlePlayerMove(player: Player, playerIndex: number): (data: string) => void;
-    handleGameWon(winnerIndex: PlayerNumber): void;
-    handleGameTied(): void;
+    private resetPlayers;
+    private askForMove;
+    private handlePlayerMove;
+    private handlePlayerTimeout;
+    private handleGameWon;
+    private handleGameTied;
     private handleGameEnd;
     private parseMove;
     private writeMove;
     private switchPlayer;
-    private playerZero;
-    private playerOne;
 }

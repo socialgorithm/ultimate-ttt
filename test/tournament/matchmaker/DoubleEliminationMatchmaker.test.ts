@@ -103,7 +103,7 @@ describe('Double Elimination Matchmaker', () => {
         let matches: DoubleEliminationMatch[] = [];
 
         //Round 1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p2]);
@@ -112,7 +112,7 @@ describe('Double Elimination Matchmaker', () => {
         //Round 2
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 0; //p3
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p5, p1]); //winning bracket
@@ -121,7 +121,7 @@ describe('Double Elimination Matchmaker', () => {
         //Round 3
         matches[0].stats.winner = 0; //p5
         matches[1].stats.winner = 0; //p2
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p3, p5]);
@@ -130,21 +130,21 @@ describe('Double Elimination Matchmaker', () => {
         //Round 4
         matches[0].stats.winner = 0; //p3
         matches[1].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p5]);
 
         //Round 5
         matches[0].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p3, p1]);
 
         //Round 6
         matches[0].stats.winner = 1; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
         allMatches.push(...matches);
         expect(matches).to.be.empty;
 
@@ -156,13 +156,13 @@ describe('Double Elimination Matchmaker', () => {
 
     it('resolves ties', (done) => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, sendStats);
-        let matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: []});
+        let matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: []});
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
 
         matches[0].stats.winner = -1; //TIE
         let tiedMatchUuid = matches[0].uuid
-        matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: matches });
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[0].options.timeout).to.equal(50);
@@ -170,7 +170,7 @@ describe('Double Elimination Matchmaker', () => {
 
         matches[0].stats.winner = -1; //TIE
         tiedMatchUuid = matches[0].uuid
-        matches = matchmaker.getRemainingMatches({started: true, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: matches });
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[0].options.timeout).to.equal(25);
