@@ -16,7 +16,7 @@ describe('Double Elimination Matchmaker', () => {
     const matchOptions = { maxGames: 100, timeout: 100 }
     const sendStats = () => { };
 
-    it('matches players correctly', (done) => {
+     it('matches players correctly', (done) => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4], matchOptions, sendStats);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
@@ -101,7 +101,6 @@ describe('Double Elimination Matchmaker', () => {
 
         //Round 1
         let matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: [] });
-        console.log("round1")
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[1].players).to.deep.equal([p3, p4]);
@@ -110,8 +109,6 @@ describe('Double Elimination Matchmaker', () => {
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 0; //p3
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
-        matches.forEach(match => console.log(match.players.map(player => player.token), match.parentMatches))
-        console.log("round2")
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p5, p1]); //winning bracket
         expect(matches[1].players).to.deep.equals([p2, p4]); //losing bracket
@@ -120,23 +117,26 @@ describe('Double Elimination Matchmaker', () => {
         matches[0].stats.winner = 0; //p5
         matches[1].stats.winner = 0; //p2
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
-        console.log("round3")
         expect(matches).to.have.lengthOf(2);
-        expect(matches[0].players).to.deep.equal([p5, p3]);
-        expect(matches[1].players).to.deep.equal([p2, p1]);
+        expect(matches[0].players).to.deep.equal([p3, p5]);
+        expect(matches[1].players).to.deep.equal([p1, p2]);
 
         //Round 4
-        matches[0].stats.winner = 0; //p5
-        matches[1].stats.winner = 0; //p2
+        matches[0].stats.winner = 0; //p3
+        matches[1].stats.winner = 0; //p1
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
-        console.log("round4")
         expect(matches).to.have.lengthOf(1);
-        expect(matches[0].players).to.deep.equal([p5, p2]);
+        expect(matches[0].players).to.deep.equal([p1, p5]);
 
         //Round 5
-        matches[0].stats.winner = 1; //p2
+        matches[0].stats.winner = 0; //p1
         matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
-        console.log("round5")
+        expect(matches).to.have.lengthOf(1);
+        expect(matches[0].players).to.deep.equal([p3, p1]);
+
+        //Round 6
+        matches[0].stats.winner = 1; //p1
+        matches = matchmaker.getRemainingMatches({ started: true, finished: false, matches: matches });
         expect(matches).to.be.empty;
 
         done();

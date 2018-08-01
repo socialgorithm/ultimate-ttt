@@ -96,6 +96,14 @@ var Match = (function () {
             });
         });
     };
+    Match.prototype.getStats = function () {
+        return {
+            stats: this.stats,
+            players: this.players.map(function (player) { return ({
+                token: player.token
+            }); })
+        };
+    };
     Match.prototype.toString = function () {
         var winner = '';
         if (this.stats.winner > -1) {

@@ -45,10 +45,10 @@ var DoubleEliminationMatchmaker = (function () {
         var oneLossPlayers = [];
         for (var playerToken in this.playerStats) {
             var stats = this.playerStats[playerToken];
-            if (stats.losses === 0 && this.waitingForFinal.indexOf(stats.player) === -1) {
+            if (!this.playerIsWaitingForMatch(stats.player) && stats.losses === 0) {
                 zeroLossPlayers.push(stats.player);
             }
-            else if (stats.losses === 1 && this.waitingForFinal.indexOf(stats.player) === -1) {
+            else if (!this.playerIsWaitingForMatch(stats.player) && stats.losses === 1) {
                 oneLossPlayers.push(stats.player);
             }
         }
@@ -105,6 +105,9 @@ var DoubleEliminationMatchmaker = (function () {
         });
         (_a = this.unlinkedMatches).push.apply(_a, matches);
         return { matches: matches, oddPlayer: oddPlayer };
+    };
+    DoubleEliminationMatchmaker.prototype.playerIsWaitingForMatch = function (player) {
+        return this.waitingForFinal.indexOf(player) >= 0 || player === this.zeroLossOddPlayer || player === this.oneLossOddPlayer;
     };
     DoubleEliminationMatchmaker.prototype.setParentMatches = function (match) {
         var _this = this;

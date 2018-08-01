@@ -124,12 +124,7 @@ var Tournament = (function () {
             options: this.options,
             started: this.stats.started,
             finished: this.stats.finished,
-            matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return ({
-                stats: match.stats,
-                players: match.players.map(function (player) { return ({
-                    token: player.token
-                }); })
-            }); }),
+            matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return match.getStats(); }),
             ranking: this.matchmaker.getRanking()
         };
     };
