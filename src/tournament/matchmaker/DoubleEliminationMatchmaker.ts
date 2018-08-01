@@ -150,21 +150,20 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
             matches.push(this.createMatch(playerA, playerB));
         }
 
-        // set the parents for the new batch
-        matches.forEach(match => {
-            this.setParentMatches(match)
-        });
-
-        // store as unlinked
-        this.unlinkedMatches.push(...matches);
-
         return { matches, oddPlayer }
     }
 
     private createMatch(playerA: Player, playerB: Player, optionOverrides?: any, parentMatches?: MatchParent[]): DoubleEliminationMatch {
         const finalOptions = Object.assign(this.options, optionOverrides || {});
         const match = new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats)
-        match.parentMatches = parentMatches;
+        
+        if (parentMatches) {
+            match.parentMatches = parentMatches;
+        } else {
+            this.setParentMatches(match);
+        }
+        this.unlinkedMatches.push(match);
+        
         return match;
     }
 
