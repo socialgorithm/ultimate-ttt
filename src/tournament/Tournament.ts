@@ -108,12 +108,11 @@ export class Tournament {
                 this.stats.matches.push(...this.matchmaker.getRemainingMatches(this.stats));
             }
         }
-        if (!this.matchmaker.isFinished()) {
-            this.stats.waiting = true;
+        if (this.matchmaker.isFinished()) {
+            this.stats.finished = true;
             this.sendStats();
         } else {
-            const upcomingMatches = this.stats.matches.filter(match => match.stats.state === "upcoming" || match.stats.state === "playing");
-            this.stats.finished = upcomingMatches.length < 1;
+            this.stats.waiting = true;
             this.sendStats();
         }
     }
