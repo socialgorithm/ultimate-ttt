@@ -53,21 +53,29 @@ var Tournament = (function () {
         this.sendStats = function () {
             _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament stats", _this.getStats());
         };
-        this.sendMove = function (move) {
-            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament move update", move);
+        this.onGameInit = function () {
+            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament game init", []);
+        };
+        this.onGameMove = function (move) {
+            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament game move", move);
         };
         var matchOptions = {
             autoPlay: this.options.autoPlay,
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout
         };
+        var tournamentEventCallbacks = {
+            sendStats: this.sendStats,
+            onGameInit: this.onGameInit,
+            onGameMove: this.onGameMove
+        };
         switch (options.type) {
             case "DoubleElimination":
-                this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, this.sendStats, this.sendMove);
+                this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, tournamentEventCallbacks);
                 break;
             case "FreeForAll":
             default:
-                this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, this.sendStats, this.sendMove);
+                this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, tournamentEventCallbacks);
                 break;
         }
     }

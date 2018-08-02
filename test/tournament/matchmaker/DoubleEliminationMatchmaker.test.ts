@@ -15,10 +15,14 @@ describe('Double Elimination Matchmaker', () => {
     const p4 = new Player('P4', channelStub);
     const p5 = new Player('P5', channelStub);
     const matchOptions: IMatchOptions = { maxGames: 100, timeout: 100, autoPlay: true }
-    const sendStats = () => { };
+    const events = {
+        sendStats: () => {},
+        onGameInit: () => {},
+        onGameMove: (move) => {}
+    }
 
      it('matches even number of players', (done) => {
-        const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4], matchOptions, sendStats);
+        const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4], matchOptions, events);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
 
@@ -98,7 +102,7 @@ describe('Double Elimination Matchmaker', () => {
     });
 
     it('matches odd number of players', (done) => {
-        const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4, p5], matchOptions, sendStats);
+        const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4, p5], matchOptions, events);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
 
@@ -155,7 +159,7 @@ describe('Double Elimination Matchmaker', () => {
     });
 
     it('resolves ties', (done) => {
-        const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, sendStats);
+        const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, events);
         let matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: []});
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);

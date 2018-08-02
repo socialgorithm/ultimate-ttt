@@ -8,6 +8,7 @@ import IMatchmaker from "./matchmaker/Matchmaker";
 import Player from "./model/Player";
 import {ITournamentStats} from "./stats/TournamentStats";
 import { IMove } from "../tournament/match/game/GameStats";
+import TournamentEvents from "../tournament/TournamentEvents";
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -40,13 +41,18 @@ export class Tournament {
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout,
         };
+        const tournamentEventCallbacks: TournamentEvents = {
+            sendStats: this.sendStats, 
+            onGameInit: this.onGameInit, 
+            onGameMove: this.onGameMove 
+        }
         switch (options.type) {
             case "DoubleElimination":
-                this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, this.sendStats, this.sendMove);
+                this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, tournamentEventCallbacks);
                 break;
             case "FreeForAll":
             default:
-                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, this.sendStats, this.sendMove);
+                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, tournamentEventCallbacks);
                 break;
         }
     }
@@ -116,7 +122,11 @@ export class Tournament {
         this.socket.emitToLobbyInfo(this.lobbyToken, "tournament stats", this.getStats());
     }
 
-    private sendMove = (move: IMove): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament move update", move)
+    private onGameInit = (): void => {
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game init", [])
+    }
+
+    private onGameMove = (move: IMove): void => {
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game move", move)
     }
 }

@@ -5,11 +5,11 @@ var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var funcs = require("../../../lib/funcs");
 var AFTER_TIMEOUT_DELAY = 100;
 var Game = (function () {
-    function Game(players, options, sendMove, log) {
+    function Game(players, options, events, log) {
         var _this = this;
         this.players = players;
         this.options = options;
-        this.sendMove = sendMove;
+        this.events = events;
         this.log = log;
         this.game = new UTTT_1["default"]();
         this.gamePromise = new Promise(function (resolve) {
@@ -30,6 +30,7 @@ var Game = (function () {
     Game.prototype.resetPlayers = function () {
         this.players[0].channel.send("game", "init");
         this.players[1].channel.send("game", "init");
+        this.events.onGameInit();
     };
     Game.prototype.askForMove = function (move) {
         var _this = this;
@@ -63,7 +64,7 @@ var Game = (function () {
                 }
                 var coords = _this.parseMove(data);
                 _this.game = _this.game.move(_this.currentPlayerIndex, coords.board, coords.move);
-                _this.sendMove({ board: coords.board, move: coords.move, player: _this.currentPlayerIndex });
+                _this.events.onGameMove({ board: coords.board, move: coords.move, player: _this.currentPlayerIndex });
                 _this.currentPlayerIndex = _this.switchPlayer(_this.currentPlayerIndex);
                 _this.askForMove(_this.writeMove(coords));
                 if (_this.game.isFinished()) {

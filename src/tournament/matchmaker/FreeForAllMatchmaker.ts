@@ -5,6 +5,7 @@ import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
 import IMatchmaker from "./Matchmaker";
 import { IMove } from "../../tournament/match/game/GameStats";
+import TournamentEvents from "../../tournament/TournamentEvents";
 
 /**
  * FreeForAll is a strategy where only one round is played, in which every player
@@ -21,7 +22,7 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
     private stats: ITournamentStats;
     private index: number = 0;
 
-    constructor(private players: Player[], private options: IMatchOptions, private sendStats: () => void, private sendMove: (move: IMove) => void) {
+    constructor(private players: Player[], private options: IMatchOptions, private events: TournamentEvents) {
     }
 
     public isFinished(): boolean {
@@ -52,8 +53,7 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
                             maxGames: this.options.maxGames,
                             timeout: this.options.timeout,
                         },
-                        this.sendStats,
-                        this.sendMove,
+                        this.events
                     );
                 },
             );
