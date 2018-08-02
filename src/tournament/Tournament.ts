@@ -1,5 +1,7 @@
 import SocketServer from "../server/SocketServer";
 
+import { IMove } from "../tournament/match/game/GameStats";
+import ITournamentEvents from "../tournament/TournamentEvents";
 import Match from "./match/Match";
 import { IMatchOptions } from "./match/MatchOptions";
 import DoubleEliminationMatchmaker from "./matchmaker/DoubleEliminationMatchmaker";
@@ -7,8 +9,6 @@ import FreeForAllMatchmaker from "./matchmaker/FreeForAllMatchmaker";
 import IMatchmaker from "./matchmaker/Matchmaker";
 import Player from "./model/Player";
 import {ITournamentStats} from "./stats/TournamentStats";
-import { IMove } from "../tournament/match/game/GameStats";
-import TournamentEvents from "../tournament/TournamentEvents";
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -41,11 +41,11 @@ export class Tournament {
             maxGames: this.options.numberOfGames,
             timeout: this.options.timeout,
         };
-        const tournamentEventCallbacks: TournamentEvents = {
-            sendStats: this.sendStats, 
-            onGameInit: this.onGameInit, 
-            onGameMove: this.onGameMove 
-        }
+        const tournamentEventCallbacks: ITournamentEvents = {
+            onGameInit: this.onGameInit,
+            onGameMove: this.onGameMove,
+            sendStats: this.sendStats,
+        };
         switch (options.type) {
             case "DoubleElimination":
                 this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, tournamentEventCallbacks);
@@ -79,6 +79,7 @@ export class Tournament {
     }
 
     public getStats() {
+        this.matchmaker.updateStats(this.stats);
         return {
             finished: this.stats.finished,
             matches: this.stats.matches.filter((match: Match) => match && match.stats).map((match: Match) => match.getStats()),
@@ -105,7 +106,8 @@ export class Tournament {
                     break;
                 }
             } else {
-                this.stats.matches.push(...this.matchmaker.getRemainingMatches(this.stats));
+                this.matchmaker.updateStats(this.stats);
+                this.stats.matches.push(...this.matchmaker.getRemainingMatches());
             }
         }
         if (!this.matchmaker.isFinished()) {
@@ -123,10 +125,10 @@ export class Tournament {
     }
 
     private onGameInit = (): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game init", [])
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game init", []);
     }
 
     private onGameMove = (move: IMove): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game move", move)
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game move", move);
     }
 }

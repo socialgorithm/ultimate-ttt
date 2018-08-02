@@ -112,7 +112,7 @@ export default class SocketServer {
                     isAdmin: lobby.admin.token === player.token,
                     lobby: lobby.toObject(),
                 });
-                if(data.spectating) {
+                if (data.spectating) {
                     socket.join(`${lobby.token}-info`);
                 }
             });

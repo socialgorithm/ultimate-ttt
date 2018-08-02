@@ -65,9 +65,9 @@ var Tournament = (function () {
             timeout: this.options.timeout
         };
         var tournamentEventCallbacks = {
-            sendStats: this.sendStats,
             onGameInit: this.onGameInit,
-            onGameMove: this.onGameMove
+            onGameMove: this.onGameMove,
+            sendStats: this.sendStats
         };
         switch (options.type) {
             case "DoubleElimination":
@@ -125,6 +125,7 @@ var Tournament = (function () {
         return this.stats.finished;
     };
     Tournament.prototype.getStats = function () {
+        this.matchmaker.updateStats(this.stats);
         return {
             finished: this.stats.finished,
             matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return match.getStats(); }),
@@ -169,7 +170,8 @@ var Tournament = (function () {
                         }
                         return [3, 4];
                     case 3:
-                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
+                        this.matchmaker.updateStats(this.stats);
+                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches());
                         _b.label = 4;
                     case 4: return [3, 1];
                     case 5:

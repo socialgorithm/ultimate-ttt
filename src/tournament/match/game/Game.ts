@@ -3,10 +3,10 @@ import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
 
 import * as funcs from "../../../lib/funcs";
 import Player from "../../../tournament/model/Player";
+import ITournamentEvents from "../../../tournament/TournamentEvents";
 
 import IGameOptions from "./GameOptions";
 import { IGameStats, IMove } from "./GameStats";
-import TournamentEvents from "../../../tournament/TournamentEvents";
 
 /**
  * Delay in ms to be used before starting a new game after a player times out.
@@ -32,7 +32,7 @@ export default class Game {
      * Create a game between two players
      * * @param options Options for gameplay
      */
-    constructor(private players: Player[], private options: IGameOptions, private events: TournamentEvents, private log: any) {
+    constructor(private players: Player[], private options: IGameOptions, private events: ITournamentEvents, private log: any) {
         this.game = new UTTT();
         this.gamePromise = new Promise(resolve => {
             this.resolve = resolve;
@@ -114,7 +114,7 @@ export default class Game {
 
                 const coords = this.parseMove(data);
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
-                this.events.onGameMove({ board: coords.board, move: coords.move, player: this.currentPlayerIndex })
+                this.events.onGameMove({ board: coords.board, move: coords.move, player: this.currentPlayerIndex });
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
                 this.askForMove(this.writeMove(coords));
 
