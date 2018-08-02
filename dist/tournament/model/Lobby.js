@@ -10,10 +10,10 @@ var Lobby = (function () {
     }
     Lobby.prototype.toObject = function () {
         return {
-            token: this.token,
             players: this.players.map(function (player) { return ({
                 token: player.token
             }); }),
+            token: this.token,
             tournament: this.tournament ? this.tournament.getStats() : null
         };
     };

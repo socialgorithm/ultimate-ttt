@@ -8,8 +8,8 @@ exports.convertExecTime = function (nanosecs) {
 };
 exports.getPercentage = function (num, total) {
     if (total < 1) {
-        return '0%';
+        return "0%";
     }
-    return Math.floor(num * 100 / total) + '%';
+    return Math.floor(num * 100 / total) + "%";
 };
 //# sourceMappingURL=funcs.js.map

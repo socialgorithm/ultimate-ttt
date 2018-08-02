@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
+var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var funcs = require("lib/funcs");
 var AFTER_TIMEOUT_DELAY = 100;
 var Game = (function () {
@@ -20,23 +20,23 @@ var Game = (function () {
     Game.prototype.playGame = function () {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
-        this.players[0].channel.registerHandler('game', this.handlePlayerMove(0));
-        this.players[1].channel.registerHandler('game', this.handlePlayerMove(1));
+        this.players[0].channel.registerHandler("game", this.handlePlayerMove(0));
+        this.players[1].channel.registerHandler("game", this.handlePlayerMove(1));
         this.resetPlayers();
         this.askForMove();
         return this.gamePromise;
     };
     Game.prototype.resetPlayers = function () {
-        this.players[0].channel.send('game', 'init');
-        this.players[1].channel.send('game', 'init');
+        this.players[0].channel.send("game", "init");
+        this.players[1].channel.send("game", "init");
     };
     Game.prototype.askForMove = function (move) {
         var _this = this;
         if (move) {
-            this.players[this.currentPlayerIndex].channel.send('game', "opponent " + move);
+            this.players[this.currentPlayerIndex].channel.send("game", "opponent " + move);
         }
         else {
-            this.players[this.currentPlayerIndex].channel.send('game', 'move');
+            this.players[this.currentPlayerIndex].channel.send("game", "move");
         }
         this.playerMoveTimeout = setTimeout(function () {
             _this.handlePlayerTimeout(_this.currentPlayerIndex);
@@ -50,12 +50,12 @@ var Game = (function () {
             }
             if (_this.currentPlayerIndex !== playerIndex) {
                 var player = _this.players[playerIndex];
-                _this.log("Game " + _this.options.gameId + ": Player " + player.token + " played out of turn (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
+                _this.log("Game " + _this.options.gameId + ": Player " + player.token + " played out of turn\n                    (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
                 _this.handleGameWon(_this.currentPlayerIndex);
                 return;
             }
             clearTimeout(_this.playerMoveTimeout);
-            if (data === 'fail') {
+            if (data === "fail") {
                 _this.handleGameWon(_this.switchPlayer(_this.currentPlayerIndex));
                 return;
             }
@@ -105,19 +105,19 @@ var Game = (function () {
         var hrend = process.hrtime(this.gameStart);
         this.gameTime = funcs.convertExecTime(hrend[1]);
         this.players.forEach(function (player, index) {
-            var gameState = 'tied';
+            var gameState = "tied";
             if (_this.winnerIndex > constants_1.RESULT_TIE) {
                 if (_this.winnerIndex === index) {
-                    gameState = 'won';
+                    gameState = "won";
                 }
                 else {
-                    gameState = 'lost';
+                    gameState = "lost";
                 }
             }
             if (_this.timedoutPlayer === index) {
-                gameState += '-timedOut';
+                gameState += "-timedOut";
             }
-            player.channel.send('game', "end " + gameState);
+            player.channel.send("game", "end " + gameState);
             player.channel.removeAllHandlers();
         });
         this.resetPlayers();
@@ -131,13 +131,13 @@ var Game = (function () {
         }
     };
     Game.prototype.parseMove = function (data) {
-        var _a = data.trim().split(';')
-            .map(function (part) { return part.split(',').map(function (n) { return parseInt(n); }); }), board = _a[0], move = _a[1];
+        var _a = data.trim().split(";")
+            .map(function (part) { return part.split(",").map(function (n) { return parseInt(n, 10); }); }), board = _a[0], move = _a[1];
         return { board: board, move: move };
     };
     Game.prototype.writeMove = function (coords) {
         var board = coords.board, move = coords.move;
-        return [board, move].map(function (p) { return p.join(','); }).join(';');
+        return [board, move].map(function (p) { return p.join(","); }).join(";");
     };
     Game.prototype.switchPlayer = function (playerNumber) {
         return playerNumber === 0 ? 1 : 0;

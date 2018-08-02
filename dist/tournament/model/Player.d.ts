@@ -1,4 +1,4 @@
-import Channel from './Channel';
+import Channel from "./Channel";
 export default class Player {
     token: string;
     channel: Channel;

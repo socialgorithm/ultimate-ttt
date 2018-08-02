@@ -9,38 +9,26 @@ var State = (function () {
         this.wins = [0, 0];
         this.times = [];
         this.timeouts = [0, 0];
-        this.state = 'upcoming';
+        this.state = "upcoming";
         this.winner = -1;
     }
-    State.prototype.toJSON = function () {
-        return {
-            games: this.games,
-            gamesCompleted: this.gamesCompleted,
-            gamesTied: this.gamesTied,
-            wins: this.wins,
-            times: this.times,
-            timeouts: this.timeouts,
-            state: this.state,
-            winner: this.winner
-        };
-    };
     State.prototype.printState = function () {
         var stats = this.getStats();
-        console.log('');
-        console.log('Games played: %d', this.games);
-        console.log('Winner: %d', stats.winner);
-        console.log('');
-        console.log('Player 1 wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
-        console.log('Player 2 wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
-        console.log('Ties: %d (%s)', this.gamesTied, stats.tiePercentage);
-        console.log('');
-        console.log('Player 1 timeouts: %d', this.timeouts[0]);
-        console.log('Player 2 timeouts: %d', this.timeouts[1]);
-        console.log('');
-        console.log('Total time: %dms', stats.total);
-        console.log('Avg game: %dms', stats.avg);
-        console.log('Max game: %dms', stats.max);
-        console.log('Min game: %dms', stats.min);
+        console.log("");
+        console.log("Games played: %d", this.games);
+        console.log("Winner: %d", stats.winner);
+        console.log("");
+        console.log("Player 1 wins: %d (%s)", this.wins[0], stats.winPercentages[0]);
+        console.log("Player 2 wins: %d (%s)", this.wins[1], stats.winPercentages[1]);
+        console.log("Ties: %d (%s)", this.gamesTied, stats.tiePercentage);
+        console.log("");
+        console.log("Player 1 timeouts: %d", this.timeouts[0]);
+        console.log("Player 2 timeouts: %d", this.timeouts[1]);
+        console.log("");
+        console.log("Total time: %dms", stats.total);
+        console.log("Avg game: %dms", stats.avg);
+        console.log("Max game: %dms", stats.max);
+        console.log("Min game: %dms", stats.min);
     };
     State.prototype.getStats = function () {
         var stats = {};
@@ -55,7 +43,7 @@ var State = (function () {
         }
         stats.winPercentages = [
             funcs.getPercentage(this.wins[0], this.gamesCompleted),
-            funcs.getPercentage(this.wins[1], this.gamesCompleted)
+            funcs.getPercentage(this.wins[1], this.gamesCompleted),
         ];
         stats.tiePercentage = funcs.getPercentage(this.gamesTied, this.gamesCompleted);
         var sum = 0;
@@ -64,12 +52,12 @@ var State = (function () {
         stats.avg = 0;
         stats.min = 1000;
         if (this.times.length > 0) {
-            for (var i = 0; i < this.times.length; i++) {
-                stats.total += this.times[i];
-                sum += this.times[i];
-                stats.max = Math.max(stats.max, this.times[i]);
-                stats.min = Math.min(stats.min, this.times[i]);
-            }
+            this.times.forEach(function (eachTime) {
+                stats.total += eachTime;
+                sum += eachTime;
+                stats.max = Math.max(stats.max, eachTime);
+                stats.min = Math.min(stats.min, eachTime);
+            });
             stats.avg = funcs.round(sum / this.times.length);
             stats.total = funcs.round(stats.total);
             stats.max = funcs.round(stats.max);

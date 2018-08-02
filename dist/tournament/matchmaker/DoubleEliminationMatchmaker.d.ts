@@ -1,9 +1,9 @@
+import IMatchOptions from "tournament/match/MatchOptions";
 import Player from "tournament/model/Player";
-import MatchOptions from "tournament/match/MatchOptions";
-import { TournamentStats } from "tournament/stats/TournamentStats";
-import Matchmaker from "./Matchmaker";
+import { ITournamentStats } from "tournament/stats/TournamentStats";
 import DoubleEliminationMatch from "./DoubleEliminationMatch";
-export default class DoubleEliminationMatchmaker implements Matchmaker {
+import IMatchmaker from "./Matchmaker";
+export default class DoubleEliminationMatchmaker implements IMatchmaker {
     private players;
     private options;
     private sendStats;
@@ -15,13 +15,13 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
     private oneLossOddPlayer;
     private waitingForFinal;
     private unlinkedMatches;
-    constructor(players: Player[], options: MatchOptions, sendStats: Function);
+    constructor(players: Player[], options: IMatchOptions, sendStats: () => void);
     isFinished(): boolean;
-    getRemainingMatches(tournamentStats: TournamentStats): DoubleEliminationMatch[];
+    getRemainingMatches(tournamentStats: ITournamentStats): DoubleEliminationMatch[];
+    getRanking(): string[];
     private matchPlayers;
     private createMatch;
     private playerIsWaitingForMatch;
     private anyPlayersWaiting;
     private setParentMatches;
-    getRanking(): string[];
 }

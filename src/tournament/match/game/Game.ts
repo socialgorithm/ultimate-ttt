@@ -1,10 +1,10 @@
-import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
 
-import * as funcs from 'lib/funcs';
-import Player from 'tournament/model/Player';
+import * as funcs from "lib/funcs";
+import Player from "tournament/model/Player";
 
-import GameOptions from './GameOptions';
+import IGameOptions from "./GameOptions";
 
 /**
  * Delay in ms to be used before starting a new game after a player times out.
@@ -16,23 +16,23 @@ const AFTER_TIMEOUT_DELAY = 100;
  * A game between two players
  */
 export default class Game {
+    public winnerIndex: PlayerOrTie;
+    public gameTime: number;
+    public timedoutPlayer: PlayerNumber;
     private game: UTTT;
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
     private gamePromise: Promise<boolean>;
-    private resolve: Function;
+    private resolve: (state: boolean) => void;
     private playerMoveTimeout: NodeJS.Timer;
-    public winnerIndex: PlayerOrTie;
-    public gameTime: number;
-    public timedoutPlayer: PlayerNumber;
 
     /**
      * Create a game between two players
      * * @param options Options for gameplay
      */
-    constructor(private players: Player[], private options: GameOptions, private log: any) {
+    constructor(private players: Player[], private options: IGameOptions, private log: any) {
         this.game = new UTTT();
-        this.gamePromise = new Promise((resolve) => {
+        this.gamePromise = new Promise(resolve => {
             this.resolve = resolve;
         });
         this.winnerIndex = null;
@@ -46,9 +46,9 @@ export default class Game {
         this.gameStart = process.hrtime();
         this.currentPlayerIndex = 0;
 
-        this.players[0].channel.registerHandler('game', this.handlePlayerMove(0));
-        this.players[1].channel.registerHandler('game', this.handlePlayerMove(1));
-        
+        this.players[0].channel.registerHandler("game", this.handlePlayerMove(0));
+        this.players[1].channel.registerHandler("game", this.handlePlayerMove(1));
+
         this.resetPlayers();
         this.askForMove();
 
@@ -56,21 +56,21 @@ export default class Game {
     }
 
     private resetPlayers() {
-        this.players[0].channel.send('game', 'init');
-        this.players[1].channel.send('game', 'init');
+        this.players[0].channel.send("game", "init");
+        this.players[1].channel.send("game", "init");
     }
 
     /**
      * Send a request for a move to the current player index
      * It will also start the timeout that will make the player lose if they haven't answered in time
      * @param playerIndex
-     * @param move 
+     * @param move
      */
     private askForMove(move?: string) {
         if (move) {
-            this.players[this.currentPlayerIndex].channel.send('game', `opponent ${move}`);
+            this.players[this.currentPlayerIndex].channel.send("game", `opponent ${move}`);
         } else {
-            this.players[this.currentPlayerIndex].channel.send('game', 'move');
+            this.players[this.currentPlayerIndex].channel.send("game", "move");
         }
         // Start the timer for this player's move
         this.playerMoveTimeout = setTimeout(() => {
@@ -79,8 +79,8 @@ export default class Game {
     }
 
     /**
-     * Handles a specific player move - this returns a function configured for the specified player, it's intended to be used
-     * as the callback for the player socket.
+     * Handles a specific player move - this returns a function configured for the specified player,
+     * it's intended to be used as the callback for the player socket.
      * @param player Player number (0-1)
      * @returns {Function} Move handler with the player number embedded for logging
      */
@@ -92,7 +92,10 @@ export default class Game {
             }
             if (this.currentPlayerIndex !== playerIndex) {
                 const player = this.players[playerIndex];
-                this.log(`Game ${this.options.gameId}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
+                this.log(
+                    `Game ${this.options.gameId}: Player ${player.token} played out of turn
+                    (it was ${this.players[this.currentPlayerIndex].token}'s turn)`,
+                );
                 this.handleGameWon(this.currentPlayerIndex);
                 return;
             }
@@ -101,7 +104,7 @@ export default class Game {
             clearTimeout(this.playerMoveTimeout);
 
             // Parse the response
-            if (data === 'fail') {
+            if (data === "fail") {
                 // this is weird and probably won't ever happen
                 this.handleGameWon(this.switchPlayer(this.currentPlayerIndex));
                 return;
@@ -114,8 +117,8 @@ export default class Game {
                 this.askForMove(this.writeMove(coords));
 
                 if (this.game.isFinished()) {
-                    if(this.game.winner === -1) {
-                        this.handleGameTied()
+                    if (this.game.winner === -1) {
+                        this.handleGameTied();
                     } else {
                         this.handleGameWon(this.game.winner);
                     }
@@ -154,7 +157,7 @@ export default class Game {
             return;
         }
         this.winnerIndex = RESULT_TIE;
-        this.handleGameEnd()
+        this.handleGameEnd();
     }
 
     /**
@@ -166,18 +169,18 @@ export default class Game {
         const hrend = process.hrtime(this.gameStart);
         this.gameTime = funcs.convertExecTime(hrend[1]);
         this.players.forEach((player, index) => {
-            let gameState = 'tied';
+            let gameState = "tied";
             if (this.winnerIndex > RESULT_TIE) {
                 if (this.winnerIndex === index) {
-                    gameState = 'won';
+                    gameState = "won";
                 } else {
-                    gameState = 'lost';
+                    gameState = "lost";
                 }
             }
             if (this.timedoutPlayer === index) {
-                gameState += '-timedOut';
+                gameState += "-timedOut";
             }
-            player.channel.send('game', `end ${gameState}`);
+            player.channel.send("game", `end ${gameState}`);
             player.channel.removeAllHandlers();
         });
         this.resetPlayers();
@@ -185,7 +188,7 @@ export default class Game {
         // Continue to next game
         if (delay && delay > 0) {
             setTimeout(() => {
-                this.resolve(true)
+                this.resolve(true);
             }, delay);
         } else {
             this.resolve(true);
@@ -199,8 +202,8 @@ export default class Game {
      * @returns {{board: Array, move: Array}}
      */
     private parseMove(data: string): Coords {
-        const [board, move] = data.trim().split(';')
-            .map(part => part.split(',').map(n => parseInt(n)) as [number, number]);
+        const [board, move] = data.trim().split(";")
+            .map(part => part.split(",").map(n => parseInt(n, 10)) as [number, number]);
         return { board, move };
     }
 
@@ -211,7 +214,7 @@ export default class Game {
      */
     private writeMove(coords: Coords) {
         const {board, move} = coords;
-        return [board, move].map(p => p.join(',')).join(';');
+        return [board, move].map(p => p.join(",")).join(";");
     }
 
     /**

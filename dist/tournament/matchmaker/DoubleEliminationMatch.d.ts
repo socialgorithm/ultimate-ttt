@@ -1,9 +1,9 @@
 import Match from "tournament/match/Match";
-export declare type MatchParent = {
+export interface IMatchParent {
     playerIndex: number;
     parent: string;
-};
+}
 export default class DoubleEliminationMatch extends Match {
-    parentMatches: Array<MatchParent>;
+    parentMatches: IMatchParent[];
     getStats(): any;
 }

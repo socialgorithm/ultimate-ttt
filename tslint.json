@@ -1,0 +1,7 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "max-line-length": [true, 200],
+        "arrow-parens": [true, "ban-single-arg-parens"]
+    }
+}

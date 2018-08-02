@@ -35,8 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var FreeForAllMatchmaker_1 = require("./matchmaker/FreeForAllMatchmaker");
 var DoubleEliminationMatchmaker_1 = require("./matchmaker/DoubleEliminationMatchmaker");
+var FreeForAllMatchmaker_1 = require("./matchmaker/FreeForAllMatchmaker");
 var Tournament = (function () {
     function Tournament(options, socket, players, lobbyToken) {
         var _this = this;
@@ -45,24 +45,24 @@ var Tournament = (function () {
         this.players = players;
         this.lobbyToken = lobbyToken;
         this.stats = {
-            started: false,
             finished: false,
-            waiting: false,
-            matches: []
+            matches: [],
+            started: false,
+            waiting: false
         };
         this.sendStats = function () {
-            _this.socket.emitInLobby(_this.lobbyToken, 'tournament stats', _this.getStats());
+            _this.socket.emitInLobby(_this.lobbyToken, "tournament stats", _this.getStats());
         };
         var matchOptions = {
+            autoPlay: this.options.autoPlay,
             maxGames: this.options.numberOfGames,
-            timeout: this.options.timeout,
-            autoPlay: this.options.autoPlay
+            timeout: this.options.timeout
         };
         switch (options.type) {
-            case 'DoubleElimination':
+            case "DoubleElimination":
                 this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
                 break;
-            case 'FreeForAll':
+            case "FreeForAll":
             default:
                 this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
                 break;
@@ -84,46 +84,6 @@ var Tournament = (function () {
             return __generator(this, function (_a) {
                 this.playTournament();
                 return [2];
-            });
-        });
-    };
-    Tournament.prototype.playTournament = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, upcomingMatches, upcomingMatches;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        this.stats.waiting = false;
-                        _b.label = 1;
-                    case 1:
-                        if (!!this.matchmaker.isFinished()) return [3, 4];
-                        upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === 'upcoming'; });
-                        if (!(upcomingMatches.length > 0)) return [3, 3];
-                        return [4, this.playMatches(upcomingMatches)];
-                    case 2:
-                        _b.sent();
-                        _b.label = 3;
-                    case 3:
-                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
-                        if (this.options.autoPlay) {
-                            this.sendStats();
-                        }
-                        else {
-                            return [3, 4];
-                        }
-                        return [3, 1];
-                    case 4:
-                        if (!this.matchmaker.isFinished()) {
-                            this.stats.waiting = true;
-                            this.sendStats();
-                        }
-                        else {
-                            upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === 'upcoming' || match.stats.state === 'playing'; });
-                            this.stats.finished = upcomingMatches.length < 1;
-                            this.sendStats();
-                        }
-                        return [2];
-                }
             });
         });
     };
@@ -155,13 +115,53 @@ var Tournament = (function () {
     };
     Tournament.prototype.getStats = function () {
         return {
-            options: this.options,
-            started: this.stats.started,
             finished: this.stats.finished,
             matches: this.stats.matches.filter(function (match) { return match && match.stats; }).map(function (match) { return match.getStats(); }),
+            options: this.options,
             ranking: this.matchmaker.getRanking(),
+            started: this.stats.started,
             waiting: this.stats.waiting
         };
+    };
+    Tournament.prototype.playTournament = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, upcomingMatches, upcomingMatches;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        this.stats.waiting = false;
+                        _b.label = 1;
+                    case 1:
+                        if (!!this.matchmaker.isFinished()) return [3, 4];
+                        upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === "upcoming"; });
+                        if (!(upcomingMatches.length > 0)) return [3, 3];
+                        return [4, this.playMatches(upcomingMatches)];
+                    case 2:
+                        _b.sent();
+                        _b.label = 3;
+                    case 3:
+                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
+                        if (this.options.autoPlay) {
+                            this.sendStats();
+                        }
+                        else {
+                            return [3, 4];
+                        }
+                        return [3, 1];
+                    case 4:
+                        if (!this.matchmaker.isFinished()) {
+                            this.stats.waiting = true;
+                            this.sendStats();
+                        }
+                        else {
+                            upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === "upcoming" || match.stats.state === "playing"; });
+                            this.stats.finished = upcomingMatches.length < 1;
+                            this.sendStats();
+                        }
+                        return [2];
+                }
+            });
+        });
     };
     return Tournament;
 }());

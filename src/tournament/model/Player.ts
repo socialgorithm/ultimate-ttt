@@ -1,10 +1,10 @@
-import Channel from './Channel';
+import Channel from "./Channel";
 
 export default class Player {
 
     constructor(public token: string, public channel: Channel) { }
 
-    alive(): boolean {
+    public alive(): boolean {
         return this.channel.isConnected();
     }
 

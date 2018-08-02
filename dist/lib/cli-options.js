@@ -1,55 +1,55 @@
 "use strict";
 exports.__esModule = true;
-var commandLineArgs = require('command-line-args');
-var getUsage = require('command-line-usage');
-var info = require('../../package.json');
+var commandLineArgs = require("command-line-args");
+var getUsage = require("command-line-usage");
+var info = require("./calls.json");
 exports.DEFAULT_OPTIONS = {
     port: parseInt(process.env.PORT, 10) || 3141
 };
 var optionDefinitions = [
     {
-        name: 'verbose',
-        type: Boolean,
-        description: 'The input to process.'
+        description: "The input to process.",
+        name: "verbose",
+        type: Boolean
     },
     {
-        name: 'version',
-        alias: 'v',
-        type: Boolean,
-        description: 'Display the server version'
+        alias: "v",
+        description: "Display the server version",
+        name: "version",
+        type: Boolean
     },
     {
-        name: 'port',
-        alias: 'p',
-        type: Number,
+        alias: "p",
         defaultValue: exports.DEFAULT_OPTIONS.port,
-        typeLabel: '[underline]{3141}',
-        description: 'Port on which the server should be started (defaults to 3141)'
+        description: "Port on which the server should be started (defaults to 3141)",
+        name: "port",
+        type: Number,
+        typeLabel: "[underline]{3141}"
     },
     {
-        name: 'help',
-        alias: 'h',
-        type: Boolean,
-        description: 'Print this guide'
-    }
+        alias: "h",
+        description: "Print this guide",
+        name: "help",
+        type: Boolean
+    },
 ];
 var sections = [
     {
-        header: 'uttt',
-        content: 'Ultimate Tic Tac Toe - Game Server'
+        content: "Ultimate Tic Tac Toe - Game Server",
+        header: "uttt"
     },
     {
-        header: 'Options',
+        header: "Options",
         optionList: optionDefinitions
     },
     {
-        header: 'Synopsis',
         content: [
-            '$ uttt --games 100',
-            '$ uttt --port 5000',
-            '$ uttt [bold]{--help}'
-        ]
-    }
+            "$ uttt --games 100",
+            "$ uttt --port 5000",
+            "$ uttt [bold]{--help}",
+        ],
+        header: "Synopsis"
+    },
 ];
 exports["default"] = (function () {
     var options = commandLineArgs(optionDefinitions);
@@ -69,7 +69,7 @@ exports["default"] = (function () {
     if (options.port) {
         options.port = parseInt(options.port, 10);
     }
-    options.host = options.host || 'localhost';
+    options.host = options.host || "localhost";
     options.port = options.port || 3141;
     return options;
 });

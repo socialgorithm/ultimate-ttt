@@ -51,16 +51,17 @@ var DoubleEliminationMatchmaker = (function () {
         }
         var zeroLossPlayers = [];
         var oneLossPlayers = [];
-        for (var playerToken in this.playerStats) {
-            var stats = this.playerStats[playerToken];
-            if (!this.playerIsWaitingForMatch(stats.player) && tiedPlayers.indexOf(stats.player) === -1)
+        Object.keys(this.playerStats).forEach(function (playerToken) {
+            var stats = _this.playerStats[playerToken];
+            if (!_this.playerIsWaitingForMatch(stats.player) && tiedPlayers.indexOf(stats.player) === -1) {
                 if (stats.losses === 0) {
                     zeroLossPlayers.push(stats.player);
                 }
                 else if (stats.losses === 1) {
                     oneLossPlayers.push(stats.player);
                 }
-        }
+            }
+        });
         if (this.zeroLossOddPlayer != null) {
             zeroLossPlayers.unshift(this.zeroLossOddPlayer);
             delete this.zeroLossOddPlayer;
@@ -85,14 +86,29 @@ var DoubleEliminationMatchmaker = (function () {
         else if (oneLossPlayers.length === 1) {
             this.waitingForFinal.push(oneLossPlayers[0]);
         }
-        if (tiedPlayers.length > 0) {
-        }
         if (this.waitingForFinal.length > 1) {
             var matchResult = this.matchPlayers(this.waitingForFinal);
             matches.push.apply(matches, matchResult.matches);
             this.waitingForFinal = [];
         }
         return matches;
+    };
+    DoubleEliminationMatchmaker.prototype.getRanking = function () {
+        var ranking = [];
+        var matches = this.tournamentStats.matches.map(function (match) { return match; });
+        matches.reverse().forEach(function (match) {
+            if (match.stats.winner !== constants_1.RESULT_TIE) {
+                var winner = match.players[match.stats.winner].token;
+                var loser = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                if (ranking.indexOf(winner) === -1) {
+                    ranking.push(winner);
+                }
+                if (ranking.indexOf(loser) === -1) {
+                    ranking.push(loser);
+                }
+            }
+        });
+        return ranking;
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
         var matches = [];
@@ -132,17 +148,17 @@ var DoubleEliminationMatchmaker = (function () {
     DoubleEliminationMatchmaker.prototype.setParentMatches = function (match) {
         var _this = this;
         var playerTokens = match.players.map(function (player) { return player.token; });
-        var parentMatches = this.unlinkedMatches.filter(function (match) {
-            var winner = match.players[match.stats.winner];
+        var parentMatches = this.unlinkedMatches.filter(function (eachMatch) {
+            var winner = eachMatch.players[eachMatch.stats.winner];
             if (!winner) {
                 return false;
             }
             return playerTokens.indexOf(winner.token) > -1;
-        }).map(function (match) {
-            var winner = match.players[match.stats.winner];
+        }).map(function (eachMatch) {
+            var winner = eachMatch.players[eachMatch.stats.winner];
             return {
-                playerIndex: playerTokens.indexOf(winner.token),
-                parent: match.uuid
+                parent: eachMatch.uuid,
+                playerIndex: playerTokens.indexOf(winner.token)
             };
         });
         parentMatches.forEach(function (matchParent) {
@@ -150,23 +166,6 @@ var DoubleEliminationMatchmaker = (function () {
             _this.unlinkedMatches.splice(unlinkedIndex, 1);
         });
         match.parentMatches = parentMatches;
-    };
-    DoubleEliminationMatchmaker.prototype.getRanking = function () {
-        var ranking = [];
-        var matches = this.tournamentStats.matches.map(function (match) { return match; });
-        matches.reverse().forEach(function (match) {
-            if (match.stats.winner !== constants_1.RESULT_TIE) {
-                var winner = match.players[match.stats.winner].token;
-                var loser = match.players[match.stats.winner === 1 ? 0 : 1].token;
-                if (ranking.indexOf(winner) === -1) {
-                    ranking.push(winner);
-                }
-                if (ranking.indexOf(loser) === -1) {
-                    ranking.push(loser);
-                }
-            }
-        });
-        return ranking;
     };
     return DoubleEliminationMatchmaker;
 }());

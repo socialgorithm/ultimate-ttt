@@ -1,22 +1,22 @@
-import Player from 'tournament/model/Player';
-import State from 'tournament/model/State';
-import MatchOptions from './MatchOptions';
-import Game from './game/Game';
+import Player from "tournament/model/Player";
+import State from "tournament/model/State";
+import Game from "./game/Game";
+import IMatchOptions from "./MatchOptions";
 export default class Match {
     players: Player[];
-    options: MatchOptions;
+    options: IMatchOptions;
     private sendStats;
     uuid: string;
     games: Game[];
     stats: State;
-    constructor(players: Player[], options: MatchOptions, sendStats: Function);
+    constructor(players: Player[], options: IMatchOptions, sendStats: () => void);
     playGames(): Promise<void>;
     getStats(): {
-        uuid: string;
-        stats: State;
         players: {
             token: string;
         }[];
+        stats: State;
+        uuid: string;
     };
     toString(): string;
 }

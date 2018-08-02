@@ -1,8 +1,8 @@
-import { TournamentOptions } from "tournament/Tournament";
+import { ITournamentOptions } from "tournament/Tournament";
 
-export const DEFAULT_TOURNAMENT_OPTIONS: TournamentOptions = {
-    numberOfGames: 10,
-    type: 'FreeForAll',
-    timeout: 100,
-    autoPlay: true
-  };
+export const DEFAULT_TOURNAMENT_OPTIONS: ITournamentOptions = {
+  autoPlay: true,
+  numberOfGames: 10,
+  timeout: 100,
+  type: "FreeForAll",
+};

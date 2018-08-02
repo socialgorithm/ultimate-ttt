@@ -1,9 +1,9 @@
 "use strict";
 exports.__esModule = true;
 exports.DEFAULT_TOURNAMENT_OPTIONS = {
+    autoPlay: true,
     numberOfGames: 10,
-    type: 'FreeForAll',
     timeout: 100,
-    autoPlay: true
+    type: "FreeForAll"
 };
 //# sourceMappingURL=constants.js.map

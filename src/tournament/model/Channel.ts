@@ -6,30 +6,30 @@ type Handler = (...args: any[]) => void;
  */
 export default class Channel {
 
-  private handlers: [string, Handler][] = [];
+  private handlers: Array<[string, Handler]> = [];
 
   constructor(private socket: SocketIO.Socket) { }
 
-  registerHandler(type: string, handler: Handler) {
+  public registerHandler(type: string, handler: Handler) {
     this.handlers.push([type, handler]);
     this.socket.on(type, handler);
   }
 
-  removeAllHandlers() {
-    for (let [type, handler] of this.handlers) {
+  public removeAllHandlers() {
+    for (const [type, handler] of this.handlers) {
       this.socket.removeListener(type, handler);
     }
   }
 
-  send(type: string, ...args: any[]) {
-    this.socket.emit(type, ...args)
+  public send(type: string, ...args: any[]) {
+    this.socket.emit(type, ...args);
   }
 
-  isConnected(): boolean {
-    return this.socket.connected
+  public isConnected(): boolean {
+    return this.socket.connected;
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     this.socket.disconnect();
   }
 

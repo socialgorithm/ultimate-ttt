@@ -48,8 +48,8 @@ var Match = (function () {
         this.stats = new State_1["default"]();
         for (var i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game_1["default"](this.players, {
-                timeout: options.timeout,
-                gameId: i
+                gameId: i,
+                timeout: options.timeout
             }, console.log);
         }
     }
@@ -59,7 +59,7 @@ var Match = (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        this.stats.state = 'playing';
+                        this.stats.state = "playing";
                         _i = 0, _a = this.games;
                         _b.label = 1;
                     case 1:
@@ -86,7 +86,7 @@ var Match = (function () {
                         _i++;
                         return [3, 1];
                     case 4:
-                        this.stats.state = 'finished';
+                        this.stats.state = "finished";
                         if (this.stats.wins[0] > this.stats.wins[1]) {
                             this.stats.winner = 0;
                         }
@@ -100,19 +100,19 @@ var Match = (function () {
     };
     Match.prototype.getStats = function () {
         return {
-            uuid: this.uuid,
-            stats: this.stats,
             players: this.players.map(function (player) { return ({
                 token: player.token
-            }); })
+            }); }),
+            stats: this.stats,
+            uuid: this.uuid
         };
     };
     Match.prototype.toString = function () {
-        var winner = '';
+        var winner = "";
         if (this.stats.winner > -1) {
-            winner = ' [W ' + this.players[this.stats.winner].token + ']';
+            winner = " [W " + this.players[this.stats.winner].token + "]";
         }
-        return 'Match ' + this.uuid + ' (' + this.players.map(function (player) { return player.token; }) + ') [' + this.stats.state + '] ' + winner;
+        return "Match " + this.uuid + " (" + this.players.map(function (player) { return player.token; }) + ") [" + this.stats.state + "] " + winner;
     };
     return Match;
 }());

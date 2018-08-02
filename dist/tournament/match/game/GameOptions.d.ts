@@ -1,5 +1,5 @@
-export declare type GameOptions = {
+export interface IGameOptions {
     timeout: number;
     gameId: number;
-};
-export default GameOptions;
+}
+export default IGameOptions;

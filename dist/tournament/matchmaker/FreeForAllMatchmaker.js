@@ -19,18 +19,19 @@ var FreeForAllMatchmaker = (function () {
         }
         var match = [];
         var matches = this.players.map(function (playerA, $index) {
-            if (_this.index === $index)
+            if (_this.index === $index) {
                 return [];
+            }
             return [_this.players[_this.index]].filter(function (playerB) {
-                return !(tournamentStats.matches.find(function (match) {
-                    return match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
-                        match.players[1].token === playerA.token && match.players[0].token === playerB.token;
+                return !(tournamentStats.matches.find(function (eachMatch) {
+                    return eachMatch.players[0].token === playerA.token && eachMatch.players[1].token === playerB.token ||
+                        eachMatch.players[1].token === playerA.token && eachMatch.players[0].token === playerB.token;
                 }));
             }).map(function (playerB) {
                 return new Match_1["default"]([playerA, playerB], {
+                    autoPlay: _this.options.autoPlay,
                     maxGames: _this.options.maxGames,
-                    timeout: _this.options.timeout,
-                    autoPlay: _this.options.autoPlay
+                    timeout: _this.options.timeout
                 }, _this.sendStats);
             });
         }).reduce(function (result, current, idx) { return result.concat(current); }, []);
@@ -60,8 +61,8 @@ var FreeForAllMatchmaker = (function () {
             }
         });
         return Object.keys(playerStats).map(function (token) { return ({
-            player: token,
-            gamesWon: playerStats[token]
+            gamesWon: playerStats[token],
+            player: token
         }); }).sort(function (a, b) { return b.gamesWon - a.gamesWon; }).map(function (playerRank) { return playerRank.player; });
     };
     return FreeForAllMatchmaker;

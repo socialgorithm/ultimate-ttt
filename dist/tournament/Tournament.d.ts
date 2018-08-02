@@ -1,12 +1,12 @@
-import SocketServer from 'server/SocketServer';
-import Player from './model/Player';
-import Match from './match/Match';
-export declare type TournamentOptions = {
+import SocketServer from "server/SocketServer";
+import Match from "./match/Match";
+import Player from "./model/Player";
+export interface ITournamentOptions {
     numberOfGames: number;
     type: string;
     timeout: number;
     autoPlay: boolean;
-};
+}
 export declare class Tournament {
     private options;
     private socket;
@@ -15,25 +15,25 @@ export declare class Tournament {
     private player;
     private stats;
     private matchmaker;
-    constructor(options: TournamentOptions, socket: SocketServer, players: Player[], lobbyToken: string);
+    constructor(options: ITournamentOptions, socket: SocketServer, players: Player[], lobbyToken: string);
     start(): Promise<void>;
     continue(): Promise<void>;
-    private playTournament;
     playMatches(matches: Match[]): Promise<void>;
     isFinished(): boolean;
     getStats(): {
-        options: TournamentOptions;
-        started: boolean;
         finished: boolean;
         matches: {
-            uuid: string;
-            stats: import("tournament/model/State").default;
             players: {
                 token: string;
             }[];
+            stats: import("tournament/model/State").default;
+            uuid: string;
         }[];
+        options: ITournamentOptions;
         ranking: string[];
+        started: boolean;
         waiting: boolean;
     };
+    private playTournament;
     private sendStats;
 }

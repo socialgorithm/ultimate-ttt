@@ -1,6 +1,6 @@
-export declare type MatchOptions = {
+export interface IMatchOptions {
     maxGames: number;
     timeout: number;
     autoPlay: boolean;
-};
-export default MatchOptions;
+}
+export default IMatchOptions;

@@ -13,7 +13,7 @@ export const round = (time: number): number => {
  * @returns {number} Exec time in ms
  */
 export const convertExecTime = (nanosecs: number): number => {
-  return round(nanosecs/1000000);
+  return round(nanosecs / 1000000);
 };
 
 /**
@@ -23,8 +23,8 @@ export const convertExecTime = (nanosecs: number): number => {
  * @returns {string} Percentage string
  */
 export const getPercentage = (num: number, total: number): string => {
-  if(total < 1){
-    return '0%';
+  if (total < 1) {
+    return "0%";
   }
-  return Math.floor(num * 100 / total) + '%';
+  return Math.floor(num * 100 / total) + "%";
 };

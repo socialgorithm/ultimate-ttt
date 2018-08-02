@@ -1,20 +1,20 @@
 import { PlayerNumber, PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import Player from 'tournament/model/Player';
-import GameOptions from './GameOptions';
+import Player from "tournament/model/Player";
+import IGameOptions from "./GameOptions";
 export default class Game {
     private players;
     private options;
     private log;
+    winnerIndex: PlayerOrTie;
+    gameTime: number;
+    timedoutPlayer: PlayerNumber;
     private game;
     private currentPlayerIndex;
     private gameStart;
     private gamePromise;
     private resolve;
     private playerMoveTimeout;
-    winnerIndex: PlayerOrTie;
-    gameTime: number;
-    timedoutPlayer: PlayerNumber;
-    constructor(players: Player[], options: GameOptions, log: any);
+    constructor(players: Player[], options: IGameOptions, log: any);
     playGame(): Promise<boolean>;
     private resetPlayers;
     private askForMove;

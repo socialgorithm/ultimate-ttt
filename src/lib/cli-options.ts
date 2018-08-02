@@ -1,12 +1,14 @@
-const commandLineArgs = require('command-line-args');
-const getUsage = require('command-line-usage');
-const info = require('../../package.json');
+import * as commandLineArgs from "command-line-args";
+import * as getUsage from "command-line-usage";
+
+// tslint:disable-next-line:no-var-requires
+const info = require("./calls.json");
 
 /**
  * Server Options
  * If launching from the terminal these options can be set as `--{option name}[ value]`
  */
-export interface Options {
+export interface IOptions {
   version?: boolean;
   verbose?: boolean;
   port?: number;
@@ -14,55 +16,55 @@ export interface Options {
   help?: number;
 }
 
-export const DEFAULT_OPTIONS: Options = {
+export const DEFAULT_OPTIONS: IOptions = {
   port: parseInt(process.env.PORT, 10) || 3141,
 };
 
 const optionDefinitions = [
   {
-    name: 'verbose',
+    description: "The input to process.",
+    name: "verbose",
     type: Boolean,
-    description: 'The input to process.'
   },
   {
-    name: 'version',
-    alias: 'v',
+    alias: "v",
+    description: "Display the server version",
+    name: "version",
     type: Boolean,
-    description: 'Display the server version'
   },
   {
-    name: 'port',
-    alias: 'p',
-    type: Number,
+    alias: "p",
     defaultValue: DEFAULT_OPTIONS.port,
-    typeLabel: '[underline]{3141}',
-    description: 'Port on which the server should be started (defaults to 3141)'
+    description: "Port on which the server should be started (defaults to 3141)",
+    name: "port",
+    type: Number,
+    typeLabel: "[underline]{3141}",
   },
   {
-    name: 'help',
-    alias: 'h',
+    alias: "h",
+    description: "Print this guide",
+    name: "help",
     type: Boolean,
-    description: 'Print this guide'
-  }
+  },
 ];
 
 const sections = [
   {
-    header: 'uttt',
-    content: 'Ultimate Tic Tac Toe - Game Server'
+    content: "Ultimate Tic Tac Toe - Game Server",
+    header: "uttt",
   },
   {
-    header: 'Options',
-    optionList: optionDefinitions
+    header: "Options",
+    optionList: optionDefinitions,
   },
   {
-    header: 'Synopsis',
     content: [
-      '$ uttt --games 100',
-      '$ uttt --port 5000',
-      '$ uttt [bold]{--help}'
-    ]
-  }
+      "$ uttt --games 100",
+      "$ uttt --port 5000",
+      "$ uttt [bold]{--help}",
+    ],
+    header: "Synopsis",
+  },
 ];
 
 // ------------------------------------------- //
@@ -71,8 +73,8 @@ const sections = [
  * Parse the options from the command line and then return the options object
  * @returns {any}
  */
-export default (): Options => {
-  const options = commandLineArgs(optionDefinitions);
+export default (): IOptions => {
+  const options: any = commandLineArgs(optionDefinitions);
 
   Object.keys(options).map((key: string) => {
     if (options[key] === null) {
@@ -81,11 +83,13 @@ export default (): Options => {
   });
 
   if (options.version) {
+    // tslint:disable-next-line:no-console
     console.log(info.version);
     process.exit(0);
   }
 
   if (options.help) {
+    // tslint:disable-next-line:no-console
     console.log(getUsage(sections));
     process.exit(0);
   }
@@ -95,10 +99,10 @@ export default (): Options => {
   }
 
   // defaults
-  options.host = options.host || 'localhost';
+  options.host = options.host || "localhost";
   options.port = options.port || 3141;
 
   return options;
-}
+};
 
 // ------------------------------------------- //

@@ -1,62 +1,60 @@
 import Match from "tournament/match/Match";
+import IMatchOptions from "tournament/match/MatchOptions";
 import Player from "tournament/model/Player";
-import { TournamentStats } from "tournament/stats/TournamentStats";
-import MatchOptions from "tournament/match/MatchOptions";
+import { ITournamentStats } from "tournament/stats/TournamentStats";
 
-import Matchmaker from "./Matchmaker";
+import IMatchmaker from "./Matchmaker";
 
 /**
  * FreeForAll is a strategy where only one round is played, in which every player
  * plays against every other player in the tournament.
- * 
+ *
  * The winner will be the player that has won the most games.
- * 
+ *
  * In case of a tie the tied players will play against each other once more.
  */
-export default class FreeForAllMatchmaker implements Matchmaker {
+export default class FreeForAllMatchmaker implements IMatchmaker {
 
     private maxMatches: number;
     private finished: boolean;
-    private stats: TournamentStats;
+    private stats: ITournamentStats;
     private index: number = 0;
 
-    constructor(private players: Player[], private options: MatchOptions, private sendStats: Function) {
+    constructor(private players: Player[], private options: IMatchOptions, private sendStats: () => void) {
     }
 
-    isFinished(): boolean {
+    public isFinished(): boolean {
         return this.finished;
     }
 
-    getRemainingMatches(tournamentStats: TournamentStats): Match[] {
+    public getRemainingMatches(tournamentStats: ITournamentStats): Match[] {
         this.stats = tournamentStats;
 
         if (this.index >= this.players.length) {
             return [];
         }
 
-        let match: Match[] = [];
+        const match: Match[] = [];
         const matches = this.players.map((playerA, $index) => {
-            if (this.index === $index) return [];
-            return [this.players[this.index]].filter(
-                playerB => {
-                    return !(tournamentStats.matches.find(match =>
-                        match.players[0].token === playerA.token && match.players[1].token === playerB.token ||
-                        match.players[1].token === playerA.token && match.players[0].token === playerB.token
+            if (this.index === $index) { return []; }
+            return [this.players[this.index]].filter(playerB => {
+                    return !(tournamentStats.matches.find(eachMatch =>
+                        eachMatch.players[0].token === playerA.token && eachMatch.players[1].token === playerB.token ||
+                        eachMatch.players[1].token === playerA.token && eachMatch.players[0].token === playerB.token,
                     ));
-                }
-            ).map(
-                playerB => {
+                },
+            ).map(playerB => {
                     return new Match(
                         [playerA, playerB],
                         {
+                            autoPlay: this.options.autoPlay,
                             maxGames: this.options.maxGames,
                             timeout: this.options.timeout,
-                            autoPlay: this.options.autoPlay
                         },
-                        this.sendStats
+                        this.sendStats,
                     );
-                }
-            )
+                },
+            );
         }).reduce((result, current, idx) => result.concat(current), []);
 
         ++this.index;
@@ -65,7 +63,7 @@ export default class FreeForAllMatchmaker implements Matchmaker {
         return matches;
     }
 
-    getRanking(): string[] {
+    public getRanking(): string[] {
         const playerStats: any = {};
         this.stats.matches.forEach(match => {
             if (!playerStats[match.players[0].token]) {
@@ -87,12 +85,11 @@ export default class FreeForAllMatchmaker implements Matchmaker {
             }
         });
         return Object.keys(playerStats).map(token => ({
-            player: token,
             gamesWon: playerStats[token],
+            player: token,
         })).sort(
-            (a: any, b: any) => b.gamesWon - a.gamesWon
-        ).map(
-            playerRank => playerRank.player
+            (a: any, b: any) => b.gamesWon - a.gamesWon,
+        ).map(playerRank => playerRank.player,
         );
     }
 }

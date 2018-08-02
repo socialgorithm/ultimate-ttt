@@ -1,12 +1,12 @@
 import Match from "tournament/match/Match";
 
-export type MatchParent = {
-    playerIndex: number,
-    parent: string,
-};
+export interface IMatchParent {
+    playerIndex: number;
+    parent: string;
+}
 
 export default class DoubleEliminationMatch extends Match {
-    public parentMatches: Array<MatchParent> = [];
+    public parentMatches: IMatchParent[] = [];
 
     public getStats() {
         const stats: any = super.getStats();
