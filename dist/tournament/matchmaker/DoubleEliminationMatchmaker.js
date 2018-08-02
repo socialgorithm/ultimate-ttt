@@ -153,7 +153,8 @@ var DoubleEliminationMatchmaker = (function () {
     };
     DoubleEliminationMatchmaker.prototype.getRanking = function () {
         var ranking = [];
-        this.tournamentStats.matches.reverse().forEach(function (match) {
+        var matches = this.tournamentStats.matches.map(function (match) { return match; });
+        matches.reverse().forEach(function (match) {
             if (match.stats.winner !== constants_1.RESULT_TIE) {
                 var winner = match.players[match.stats.winner].token;
                 var loser = match.players[match.stats.winner === 1 ? 0 : 1].token;

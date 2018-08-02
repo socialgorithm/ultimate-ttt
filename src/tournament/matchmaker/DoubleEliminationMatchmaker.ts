@@ -211,7 +211,8 @@ export default class DoubleEliminationMatchmaker implements Matchmaker {
 
     getRanking(): string[] {
         const ranking: string[] = [];
-        this.tournamentStats.matches.reverse().forEach(match => {
+        const matches = this.tournamentStats.matches.map(match => match); //mapping to copy
+        matches.reverse().forEach(match => {
             if(match.stats.winner !== RESULT_TIE) {
                 const winner = match.players[match.stats.winner].token
                 const loser = match.players[match.stats.winner === 1 ? 0 : 1].token
