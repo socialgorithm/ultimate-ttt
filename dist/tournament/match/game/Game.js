@@ -10,6 +10,7 @@ var Game = (function () {
         this.players = players;
         this.options = options;
         this.log = log;
+        this.moves = [];
         this.game = new UTTT_1["default"]();
         this.gamePromise = new Promise(function (resolve) {
             _this.resolve = resolve;
@@ -84,6 +85,7 @@ var Game = (function () {
             }
             catch (e) {
                 _this.log("Game " + _this.options.gameId + ": Player " + _this.players[_this.currentPlayerIndex].token + " errored: " + e.message);
+                console.error(e);
                 _this.handleGameWon(_this.switchPlayer(_this.currentPlayerIndex));
             }
         };

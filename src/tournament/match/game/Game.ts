@@ -21,7 +21,7 @@ export default class Game {
     public gameTime: number;
     public timedoutPlayer: PlayerNumber;
     private game: UTTT;
-    private moves: IMove[];
+    private moves: IMove[] = [];
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
     private gamePromise: Promise<boolean>;
@@ -135,6 +135,8 @@ export default class Game {
                 }
             } catch (e) {
                 this.log(`Game ${this.options.gameId}: Player ${this.players[this.currentPlayerIndex].token} errored: ${e.message}`);
+                // tslint:disable-next-line:no-console
+                console.error(e);
                 this.handleGameWon(this.switchPlayer(this.currentPlayerIndex));
             }
         };
