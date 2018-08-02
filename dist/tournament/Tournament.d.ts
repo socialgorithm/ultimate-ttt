@@ -34,6 +34,7 @@ export declare class Tournament {
         started: boolean;
         waiting: boolean;
     };
+    private playMatch;
     private playTournament;
     private sendStats;
 }

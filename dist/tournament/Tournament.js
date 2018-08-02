@@ -123,6 +123,18 @@ var Tournament = (function () {
             waiting: this.stats.waiting
         };
     };
+    Tournament.prototype.playMatch = function (match) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, match.playGames()];
+                    case 1:
+                        _a.sent();
+                        return [2];
+                }
+            });
+        });
+    };
     Tournament.prototype.playTournament = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, upcomingMatches, upcomingMatches;
@@ -132,23 +144,24 @@ var Tournament = (function () {
                         this.stats.waiting = false;
                         _b.label = 1;
                     case 1:
-                        if (!!this.matchmaker.isFinished()) return [3, 4];
+                        if (!!this.matchmaker.isFinished()) return [3, 5];
                         upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === "upcoming"; });
                         if (!(upcomingMatches.length > 0)) return [3, 3];
-                        return [4, this.playMatches(upcomingMatches)];
+                        return [4, this.playMatch(upcomingMatches[0])];
                     case 2:
                         _b.sent();
-                        _b.label = 3;
-                    case 3:
-                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
                         if (this.options.autoPlay) {
                             this.sendStats();
                         }
                         else {
-                            return [3, 4];
+                            return [3, 5];
                         }
-                        return [3, 1];
-                    case 4:
+                        return [3, 4];
+                    case 3:
+                        (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches(this.stats));
+                        _b.label = 4;
+                    case 4: return [3, 1];
+                    case 5:
                         if (!this.matchmaker.isFinished()) {
                             this.stats.waiting = true;
                             this.sendStats();
