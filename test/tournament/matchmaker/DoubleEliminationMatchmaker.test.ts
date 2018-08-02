@@ -1,10 +1,13 @@
+/* tslint:disable */
+
 import { expect } from 'chai';
-import { mock, instance, when } from 'ts-mockito';
-import Player from '../../../src/tournament/model/Player';
-import DoubleEliminationMatchmaker from '../../../src/tournament/matchmaker/DoubleEliminationMatchmaker';
-import Channel from '../../../src/tournament/model/Channel';
+import { instance, mock } from 'ts-mockito';
+
+import Channel from "../../../src/tournament/model/Channel";
 import DoubleEliminationMatch from '../../../src/tournament/matchmaker/DoubleEliminationMatch';
+import DoubleEliminationMatchmaker from '../../../src/tournament/matchmaker/DoubleEliminationMatchmaker';
 import { IMatchOptions } from '../../../src/tournament/match/MatchOptions';
+import Player from '../../../src/tournament/model/Player';
 
 describe('Double Elimination Matchmaker', () => {
     const channelMock = mock(Channel)
@@ -16,18 +19,19 @@ describe('Double Elimination Matchmaker', () => {
     const p5 = new Player('P5', channelStub);
     const matchOptions: IMatchOptions = { maxGames: 100, timeout: 100, autoPlay: true }
     const events = {
-        sendStats: () => {},
         onGameInit: () => {},
-        onGameMove: (move) => {}
+        onGameMove: (move: any) => {},
+        sendStats: () => {},
     }
 
-     it('matches even number of players', (done) => {
+    it('matches even number of players',done => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4], matchOptions, events);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
 
-        //Round 1
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        // Round 1
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p2]);
@@ -36,12 +40,13 @@ describe('Double Elimination Matchmaker', () => {
         expect(matches[0].parentMatches).to.have.length(0);
         expect(matches[1].parentMatches).to.have.length(0);
 
-        //Round 2
+        // Round 2
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 1; //p4
         matches[0].stats.state = 'finished';
         matches[1].stats.state = 'finished';
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p4]); //winning bracket
@@ -65,7 +70,8 @@ describe('Double Elimination Matchmaker', () => {
         matches[1].stats.winner = 0; //p2
         matches[0].stats.state = 'finished';
         matches[1].stats.state = 'finished';
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
@@ -78,10 +84,11 @@ describe('Double Elimination Matchmaker', () => {
             },
         ]);
 
-        //Round 4
+        // Round 4
         matches[0].stats.winner = 0; //p1
         matches[0].stats.state = 'finished';
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p4, p1]);
@@ -101,80 +108,89 @@ describe('Double Elimination Matchmaker', () => {
         done();
     });
 
-    it('matches odd number of players', (done) => {
+    it('matches odd number of players',done => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2, p3, p4, p5], matchOptions, events);
         const allMatches: DoubleEliminationMatch[] = [];
         let matches: DoubleEliminationMatch[] = [];
 
-        //Round 1
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        // Round 1
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[1].players).to.deep.equal([p3, p4]);
 
-        //Round 2
+        // Round 2
         matches[0].stats.winner = 0; //p1
         matches[1].stats.winner = 0; //p3
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p5, p1]); //winning bracket
         expect(matches[1].players).to.deep.equals([p2, p4]); //losing bracket
 
-        //Round 3
+        // Round 3
         matches[0].stats.winner = 0; //p5
         matches[1].stats.winner = 0; //p2
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(2);
         expect(matches[0].players).to.deep.equal([p3, p5]);
         expect(matches[1].players).to.deep.equal([p1, p2]);
 
-        //Round 4
+        // Round 4
         matches[0].stats.winner = 0; //p3
         matches[1].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p5]);
 
-        //Round 5
+        // Round 5
         matches[0].stats.winner = 0; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p3, p1]);
 
-        //Round 6
+        // Round 6
         matches[0].stats.winner = 1; //p1
-        matches = matchmaker.getRemainingMatches({ started: true, waiting: false, finished: false, matches: allMatches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: true, matches: allMatches });
+        matches = matchmaker.getRemainingMatches();
         allMatches.push(...matches);
         expect(matches).to.be.empty;
 
-        //Test Ranking
+        // Test Ranking
         expect(matchmaker.getRanking()).to.deep.equal(['P1', 'P3', 'P5', 'P2', 'P4'])
 
         done();
     });
 
-    it('resolves ties', (done) => {
+    it('resolves ties',done => {
         const matchmaker = new DoubleEliminationMatchmaker([p1, p2], matchOptions, events);
-        let matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: []});
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: [] });
+        let matches = matchmaker.getRemainingMatches();
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
 
-        matches[0].stats.winner = -1; //TIE
+        matches[0].stats.winner = -1; // TIE
         let tiedMatchUuid = matches[0].uuid
-        matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: matches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches();
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[0].options.timeout).to.equal(50);
         expect(matches[0].parentMatches).to.deep.equal([{ playerIndex: 0, parent: tiedMatchUuid }, { playerIndex: 1, parent: tiedMatchUuid }]);
 
-        matches[0].stats.winner = -1; //TIE
+        matches[0].stats.winner = -1; // TIE
         tiedMatchUuid = matches[0].uuid
-        matches = matchmaker.getRemainingMatches({started: true, waiting: false, finished: false, matches: matches });
+        matchmaker.updateStats({ started: true, waiting: false, finished: false, matches: matches });
+        matches = matchmaker.getRemainingMatches();
         expect(matches).to.have.lengthOf(1);
         expect(matches[0].players).to.deep.equal([p1, p2]);
         expect(matches[0].options.timeout).to.equal(25);

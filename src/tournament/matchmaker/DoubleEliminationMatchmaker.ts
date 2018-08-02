@@ -4,10 +4,10 @@ import IMatchOptions from "../../tournament/match/MatchOptions";
 import Player from "../../tournament/model/Player";
 import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
+import { IMove } from "../../tournament/match/game/GameStats";
+import ITournamentEvents from "../../tournament/TournamentEvents";
 import DoubleEliminationMatch, { IMatchParent } from "./DoubleEliminationMatch";
 import IMatchmaker from "./Matchmaker";
-import { IMove } from "../../tournament/match/game/GameStats";
-import TournamentEvents from "../../tournament/TournamentEvents";
 
 interface IPlayerStats {
     player: Player;
@@ -35,7 +35,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     private waitingForFinal: Player[];
     private unlinkedMatches: DoubleEliminationMatch[] = [];
 
-    constructor(private players: Player[], private options: IMatchOptions, private events: TournamentEvents) {
+    constructor(private players: Player[], private options: IMatchOptions, private events: ITournamentEvents) {
         this.processedMatches = [];
         this.playerStats = {};
         this.players.forEach(player => {
@@ -48,12 +48,27 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
         return this.finished;
     }
 
-    public getRemainingMatches(tournamentStats: ITournamentStats): DoubleEliminationMatch[] {
+    public updateStats(tournamentStats: ITournamentStats) {
         this.tournamentStats = tournamentStats;
 
+        const justPlayedMatches = this.tournamentStats.matches.filter(match =>
+            this.processedMatches.indexOf(match.uuid) === -1,
+        );
+
+        justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
+            if (match.stats.winner !== RESULT_TIE) {
+                const winnerToken = match.players[match.stats.winner].token;
+                const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                this.playerStats[winnerToken].wins++;
+                this.playerStats[loserToken].losses++;
+            }
+        });
+    }
+
+    public getRemainingMatches(): DoubleEliminationMatch[] {
         const matches: DoubleEliminationMatch[] = [];
 
-        if (tournamentStats.matches.length === 0) {
+        if (this.tournamentStats.matches.length === 0) {
             const matchResult = this.matchPlayers(this.players);
             this.zeroLossOddPlayer = matchResult.oddPlayer;
             return matchResult.matches;
@@ -77,11 +92,6 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
                         ),
                     );
                     tiedPlayers.push(...match.players);
-                } else {
-                    const winnerToken = match.players[match.stats.winner].token;
-                    const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
-                    this.playerStats[winnerToken].wins++;
-                    this.playerStats[loserToken].losses++;
                 }
             },
         );
@@ -129,10 +139,6 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
             this.waitingForFinal.push(oneLossPlayers[0]);
         }
 
-        // if (tiedPlayers.length > 0) {
-
-        // }
-
         if (this.waitingForFinal.length > 1) {
             const matchResult = this.matchPlayers(this.waitingForFinal);
             matches.push(...matchResult.matches);
@@ -143,10 +149,10 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     }
 
     public getRanking(): string[] {
-        if(this.tournamentStats.finished) {
-            return this.finishedRanking()
+        if (this.tournamentStats.finished) {
+            return this.finishedRanking();
         } else {
-            return this.unfinishedRanking()
+            return this.unfinishedRanking();
         }
     }
 
@@ -172,8 +178,13 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
 
     private unfinishedRanking(): string[] {
         return this.players
-            .sort((a: Player, b: Player) => this.playerStats[b.token].wins - this.playerStats[a.token].wins)
-            .map(player => player.token);
+            .sort(
+                (a: Player, b: Player) => this.getPlayerScore(b) - this.getPlayerScore(a),
+            ).map(player => player.token);
+    }
+
+    private getPlayerScore(player: Player): number {
+        return this.playerStats[player.token].wins / (this.playerStats[player.token].losses + this.playerStats[player.token].losses);
     }
 
     private matchPlayers(players: Player[]): IMatchingResult {

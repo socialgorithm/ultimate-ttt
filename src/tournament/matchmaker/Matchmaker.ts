@@ -9,6 +9,7 @@ import { ITournamentStats } from "../../tournament/stats/TournamentStats";
  */
 export default interface IMatchmaker {
     isFinished(): boolean;
-    getRemainingMatches(stats: ITournamentStats): Match[];
+    updateStats(stats: ITournamentStats): void;
+    getRemainingMatches(): Match[];
     getRanking(): string[];
 }

@@ -19,11 +19,25 @@ var DoubleEliminationMatchmaker = (function () {
     DoubleEliminationMatchmaker.prototype.isFinished = function () {
         return this.finished;
     };
-    DoubleEliminationMatchmaker.prototype.getRemainingMatches = function (tournamentStats) {
+    DoubleEliminationMatchmaker.prototype.updateStats = function (tournamentStats) {
         var _this = this;
         this.tournamentStats = tournamentStats;
+        var justPlayedMatches = this.tournamentStats.matches.filter(function (match) {
+            return _this.processedMatches.indexOf(match.uuid) === -1;
+        });
+        justPlayedMatches.forEach(function (match) {
+            if (match.stats.winner !== constants_1.RESULT_TIE) {
+                var winnerToken = match.players[match.stats.winner].token;
+                var loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
+                _this.playerStats[winnerToken].wins++;
+                _this.playerStats[loserToken].losses++;
+            }
+        });
+    };
+    DoubleEliminationMatchmaker.prototype.getRemainingMatches = function () {
+        var _this = this;
         var matches = [];
-        if (tournamentStats.matches.length === 0) {
+        if (this.tournamentStats.matches.length === 0) {
             var matchResult = this.matchPlayers(this.players);
             this.zeroLossOddPlayer = matchResult.oddPlayer;
             return matchResult.matches;
@@ -37,12 +51,6 @@ var DoubleEliminationMatchmaker = (function () {
             if (match.stats.winner === constants_1.RESULT_TIE) {
                 matches.push(_this.createMatch(match.players[0], match.players[1], { timeout: match.options.timeout / 2 }, [{ playerIndex: 0, parent: match.uuid }, { playerIndex: 1, parent: match.uuid }]));
                 tiedPlayers.push.apply(tiedPlayers, match.players);
-            }
-            else {
-                var winnerToken = match.players[match.stats.winner].token;
-                var loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
-                _this.playerStats[winnerToken].wins++;
-                _this.playerStats[loserToken].losses++;
             }
         });
         if (matches.length < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
@@ -123,8 +131,10 @@ var DoubleEliminationMatchmaker = (function () {
     DoubleEliminationMatchmaker.prototype.unfinishedRanking = function () {
         var _this = this;
         return this.players
-            .sort(function (a, b) { return _this.playerStats[b.token].wins - _this.playerStats[a.token].wins; })
-            .map(function (player) { return player.token; });
+            .sort(function (a, b) { return _this.getPlayerScore(b) - _this.getPlayerScore(a); }).map(function (player) { return player.token; });
+    };
+    DoubleEliminationMatchmaker.prototype.getPlayerScore = function (player) {
+        return this.playerStats[player.token].wins / (this.playerStats[player.token].losses + this.playerStats[player.token].losses);
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
         var matches = [];

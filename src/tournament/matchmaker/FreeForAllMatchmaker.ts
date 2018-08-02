@@ -3,9 +3,9 @@ import IMatchOptions from "../../tournament/match/MatchOptions";
 import Player from "../../tournament/model/Player";
 import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
-import IMatchmaker from "./Matchmaker";
 import { IMove } from "../../tournament/match/game/GameStats";
-import TournamentEvents from "../../tournament/TournamentEvents";
+import ITournamentEvents from "../../tournament/TournamentEvents";
+import IMatchmaker from "./Matchmaker";
 
 /**
  * FreeForAll is a strategy where only one round is played, in which every player
@@ -19,19 +19,21 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
 
     private maxMatches: number;
     private finished: boolean;
-    private stats: ITournamentStats;
+    private tournamentStats: ITournamentStats;
     private index: number = 0;
 
-    constructor(private players: Player[], private options: IMatchOptions, private events: TournamentEvents) {
+    constructor(private players: Player[], private options: IMatchOptions, private events: ITournamentEvents) {
     }
 
     public isFinished(): boolean {
         return this.finished;
     }
 
-    public getRemainingMatches(tournamentStats: ITournamentStats): Match[] {
-        this.stats = tournamentStats;
+    public updateStats(tournamentStats: ITournamentStats) {
+        this.tournamentStats = tournamentStats;
+    }
 
+    public getRemainingMatches(): Match[] {
         if (this.index >= this.players.length) {
             return [];
         }
@@ -40,7 +42,7 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
         const matches = this.players.map((playerA, $index) => {
             if (this.index === $index) { return []; }
             return [this.players[this.index]].filter(playerB => {
-                    return !(tournamentStats.matches.find(eachMatch =>
+                    return !(this.tournamentStats.matches.find(eachMatch =>
                         eachMatch.players[0].token === playerA.token && eachMatch.players[1].token === playerB.token ||
                         eachMatch.players[1].token === playerA.token && eachMatch.players[0].token === playerB.token,
                     ));
@@ -53,7 +55,7 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
                             maxGames: this.options.maxGames,
                             timeout: this.options.timeout,
                         },
-                        this.events
+                        this.events,
                     );
                 },
             );
@@ -67,7 +69,7 @@ export default class FreeForAllMatchmaker implements IMatchmaker {
 
     public getRanking(): string[] {
         const playerStats: any = {};
-        this.stats.matches.forEach(match => {
+        this.tournamentStats.matches.forEach(match => {
             if (!playerStats[match.players[0].token]) {
                 playerStats[match.players[0].token] = 0;
             }

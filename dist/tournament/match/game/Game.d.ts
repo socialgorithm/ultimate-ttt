@@ -1,7 +1,7 @@
 import { PlayerNumber, PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import Player from "../../../tournament/model/Player";
+import ITournamentEvents from "../../../tournament/TournamentEvents";
 import IGameOptions from "./GameOptions";
-import TournamentEvents from "../../../tournament/TournamentEvents";
 export default class Game {
     private players;
     private options;
@@ -16,7 +16,7 @@ export default class Game {
     private gamePromise;
     private resolve;
     private playerMoveTimeout;
-    constructor(players: Player[], options: IGameOptions, events: TournamentEvents, log: any);
+    constructor(players: Player[], options: IGameOptions, events: ITournamentEvents, log: any);
     playGame(): Promise<boolean>;
     private resetPlayers;
     private askForMove;

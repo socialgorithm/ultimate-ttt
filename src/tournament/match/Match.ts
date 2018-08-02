@@ -3,10 +3,10 @@ import * as uuid from "uuid/v4";
 import Player from "../../tournament/model/Player";
 import State from "../../tournament/model/State";
 
+import { IMove } from "../../tournament/match/game/GameStats";
+import ITournamentEvents from "../../tournament/TournamentEvents";
 import Game from "./game/Game";
 import IMatchOptions from "./MatchOptions";
-import { IMove } from "../../tournament/match/game/GameStats";
-import TournamentEvents from "../../tournament/TournamentEvents";
 
 /**
  * A set of games between two players
@@ -16,7 +16,7 @@ export default class Match {
     public games: Game[];
     public stats: State;
 
-    constructor(public players: Player[], public options: IMatchOptions, private events: TournamentEvents) {
+    constructor(public players: Player[], public options: IMatchOptions, private events: ITournamentEvents) {
         this.uuid = uuid();
         this.games = [];
         this.stats = new State();
