@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
 import * as funcs from "lib/funcs";
-import Game from "tournament/match/game/Game";
+import { IGameStats } from "tournament/match/game/GameStats";
 
 /**
  * Game stats calculated from a given state
@@ -21,7 +21,7 @@ export interface IStats {
  * Used to track the state across multiple games between two players
  */
 export default class State {
-  public games: Game[];
+  public games: IGameStats[];
   public gamesCompleted: number; // Number of games won
   public gamesTied: number; // Number of ties
   public wins: number[]; // Array with only two elements, 0 is wins by player 0, 1 is wins by player 1

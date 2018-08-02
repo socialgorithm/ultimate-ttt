@@ -1,4 +1,4 @@
-import Game from "tournament/match/game/Game";
+import { IGameStats } from "tournament/match/game/GameStats";
 export interface IStats {
     winner?: number;
     total?: number;
@@ -9,7 +9,7 @@ export interface IStats {
     tiePercentage?: string;
 }
 export default class State {
-    games: Game[];
+    games: IGameStats[];
     gamesCompleted: number;
     gamesTied: number;
     wins: number[];

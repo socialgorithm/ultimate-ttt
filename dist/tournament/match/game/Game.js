@@ -26,6 +26,9 @@ var Game = (function () {
         this.askForMove();
         return this.gamePromise;
     };
+    Game.prototype.getStats = function () {
+        return { moves: this.moves, uttt: this.game };
+    };
     Game.prototype.resetPlayers = function () {
         this.players[0].channel.send("game", "init");
         this.players[1].channel.send("game", "init");
@@ -48,20 +51,25 @@ var Game = (function () {
             if (_this.timedoutPlayer !== null || _this.winnerIndex !== null) {
                 return;
             }
-            if (_this.currentPlayerIndex !== playerIndex) {
-                var player = _this.players[playerIndex];
-                _this.log("Game " + _this.options.gameId + ": Player " + player.token + " played out of turn\n                    (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
-                _this.handleGameWon(_this.currentPlayerIndex);
-                return;
-            }
-            clearTimeout(_this.playerMoveTimeout);
-            if (data === "fail") {
-                _this.handleGameWon(_this.switchPlayer(_this.currentPlayerIndex));
-                return;
-            }
             try {
+                if (_this.currentPlayerIndex !== playerIndex) {
+                    var player = _this.players[playerIndex];
+                    _this.log("Game " + _this.options.gameId + ": Player " + player.token + " played out of turn (it was " + _this.players[_this.currentPlayerIndex].token + "'s turn)");
+                    _this.handleGameWon(_this.currentPlayerIndex);
+                    return;
+                }
+                clearTimeout(_this.playerMoveTimeout);
+                if (data === "fail") {
+                    _this.handleGameWon(_this.switchPlayer(_this.currentPlayerIndex));
+                    return;
+                }
                 var coords = _this.parseMove(data);
                 _this.game = _this.game.move(_this.currentPlayerIndex, coords.board, coords.move);
+                _this.moves.push({
+                    board: coords.board,
+                    move: coords.move,
+                    player: _this.currentPlayerIndex
+                });
                 _this.currentPlayerIndex = _this.switchPlayer(_this.currentPlayerIndex);
                 _this.askForMove(_this.writeMove(coords));
                 if (_this.game.isFinished()) {
