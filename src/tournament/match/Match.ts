@@ -24,9 +24,6 @@ export default class Match {
                     timeout: options.timeout,
                     gameId: i,
                 },
-                {
-                    onGameStart: () => {}
-                },
                 console.log
             )
         }
@@ -39,10 +36,11 @@ export default class Match {
         this.stats.state = 'playing';
         for (let game of this.games) {
             await game.playGame();
+            this.stats.games.push(game);
             this.stats.times.push(game.gameTime);
-            this.stats.games++;
+            this.stats.gamesCompleted++;
             if (game.winnerIndex === -1) {
-                this.stats.ties++;
+                this.stats.gamesTied++;
             } else {
                 this.stats.wins[game.winnerIndex]++;
             }

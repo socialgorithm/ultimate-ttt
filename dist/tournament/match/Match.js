@@ -50,8 +50,6 @@ var Match = (function () {
             this.games[i] = new Game_1["default"](this.players, {
                 timeout: options.timeout,
                 gameId: i
-            }, {
-                onGameStart: function () { }
             }, console.log);
         }
     }
@@ -70,10 +68,11 @@ var Match = (function () {
                         return [4, game.playGame()];
                     case 2:
                         _b.sent();
+                        this.stats.games.push(game);
                         this.stats.times.push(game.gameTime);
-                        this.stats.games++;
+                        this.stats.gamesCompleted++;
                         if (game.winnerIndex === -1) {
-                            this.stats.ties++;
+                            this.stats.gamesTied++;
                         }
                         else {
                             this.stats.wins[game.winnerIndex]++;

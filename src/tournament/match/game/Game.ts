@@ -4,7 +4,6 @@ import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ulti
 import * as funcs from '../../../lib/funcs';
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
-import GameEvents from './GameEvents';
 
 /**
  * Delay in ms to be used before starting a new game after a player times out.
@@ -30,7 +29,7 @@ export default class Game {
      * Create a game between two players
      * * @param options Options for gameplay
      */
-    constructor(private players: Player[], private options: GameOptions, private events: GameEvents, private log: any) {
+    constructor(private players: Player[], private options: GameOptions, private log: any) {
         this.game = new UTTT();
         this.gamePromise = new Promise((resolve) => {
             this.resolve = resolve;

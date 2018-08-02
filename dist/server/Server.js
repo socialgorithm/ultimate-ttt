@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var GUI_1 = require("./GUI");
 var SocketServer_1 = require("./SocketServer");
 var Tournament_1 = require("../tournament/Tournament");
 var Lobby_1 = require("../tournament/model/Lobby");
@@ -85,17 +84,9 @@ var Server = (function () {
             updateStats: this.updateStats.bind(this)
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
-        if (options.gui) {
-            this.ui = new GUI_1["default"](title, this.options.port);
-        }
-        else {
-            this.log(title);
-            this.log("Listening on localhost:" + this.options.port);
-        }
-        this.log('Server started', true);
-        if (this.ui) {
-            this.ui.render();
-        }
+        this.log(title);
+        this.log("Listening on localhost:" + this.options.port);
+        this.log('Server started');
     }
     Server.prototype.onPlayerConnect = function (player) {
         this.addPlayer(player);
@@ -140,11 +131,8 @@ var Server = (function () {
             if (_this.players.filter(function (p) { return p.token === player.token; }).length === 0) {
                 _this.players.push(player);
             }
-            _this.log("Connected \"" + player.token + "\"", true);
+            _this.log("Connected \"" + player.token + "\"");
             _this.socketServer.emitPayload('stats', 'connect', player.token);
-            if (_this.ui) {
-                _this.ui.renderOnlinePlayers(_this.players.map(function (p) { return p.token; }));
-            }
         });
     };
     Server.prototype.removePlayer = function (player) {
@@ -155,21 +143,12 @@ var Server = (function () {
         else {
             return;
         }
-        this.log("Disconnected " + player.token, true);
+        this.log("Disconnected " + player.token);
         this.socketServer.emitPayload('stats', 'disconnect', player.token);
-        if (this.ui) {
-            this.ui.renderOnlinePlayers(this.players.map(function (p) { return p.token; }));
-        }
     };
-    Server.prototype.log = function (message, skipRender) {
-        if (skipRender === void 0) { skipRender = false; }
+    Server.prototype.log = function (message) {
         var time = (new Date()).toTimeString().substr(0, 5);
-        if (this.ui) {
-            this.ui.log(message, skipRender);
-        }
-        else {
-            console.log("[" + time + "]", message);
-        }
+        console.log("[" + time + "]", message);
     };
     return Server;
 }());

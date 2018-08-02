@@ -3,7 +3,6 @@ export default class Server {
     private options;
     private players;
     private lobbies;
-    private ui?;
     private socketServer;
     constructor(options: Options);
     private onPlayerConnect;

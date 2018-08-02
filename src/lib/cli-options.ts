@@ -10,7 +10,6 @@ export interface Options {
   version?: boolean;
   verbose?: boolean;
   port?: number;
-  gui?: boolean;
   host?: string;
   help?: number;
 }
@@ -40,12 +39,6 @@ const optionDefinitions = [
     description: 'Port on which the server should be started (defaults to 3141)'
   },
   {
-    name: 'gui',
-    alias: 'u',
-    type: Boolean,
-    description: 'Display a fancy GUI in the terminal (only available in online mode)'
-  },
-  {
     name: 'help',
     alias: 'h',
     type: Boolean,
@@ -65,7 +58,6 @@ const sections = [
   {
     header: 'Synopsis',
     content: [
-      '$ uttt --gui',
       '$ uttt --games 100',
       '$ uttt --port 5000',
       '$ uttt [bold]{--help}'

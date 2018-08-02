@@ -1,4 +1,5 @@
 import * as funcs from '../../lib/funcs';
+import Game from '../match/game/Game';
 
 /**
  * Game stats calculated from a given state
@@ -18,8 +19,9 @@ export interface Stats {
  * Used to track the state across multiple games between two players
  */
 export default class State {
-  public games: number; // Number of games won
-  public ties: number; // Number of ties
+  public games: Game[];
+  public gamesCompleted: number; // Number of games won
+  public gamesTied: number; // Number of ties
   public wins: Array<number>; // Array with only two elements, 0 is wins by player 0, 1 is wins by player 1
   public times: Array<number>; // Array with the times for all the games
   public timeouts: Array<number>; // Array for all timeouts
@@ -27,8 +29,9 @@ export default class State {
   public winner: number; // The index (in players) of the winner of the match
 
   constructor() {
-    this.games = 0;
-    this.ties = 0;
+    this.games = [];
+    this.gamesCompleted = 0;
+    this.gamesTied = 0;
     this.wins = [0, 0];
     this.times = [];
     this.timeouts = [0, 0];
@@ -39,7 +42,8 @@ export default class State {
   public toJSON() {
     return {
       games: this.games,
-      ties: this.ties,
+      gamesCompleted: this.gamesCompleted,
+      gamesTied: this.gamesTied,
       wins: this.wins,
       times: this.times,
       timeouts: this.timeouts,
@@ -60,7 +64,7 @@ export default class State {
     console.log('');
     console.log('Player 1 wins: %d (%s)', this.wins[0], stats.winPercentages[0]);
     console.log('Player 2 wins: %d (%s)', this.wins[1], stats.winPercentages[1]);
-    console.log('Ties: %d (%s)', this.ties, stats.tiePercentage);
+    console.log('Ties: %d (%s)', this.gamesTied, stats.tiePercentage);
     console.log('');
     console.log('Player 1 timeouts: %d', this.timeouts[0]);
     console.log('Player 2 timeouts: %d', this.timeouts[1]);
@@ -87,11 +91,11 @@ export default class State {
     }
 
     stats.winPercentages = [
-      funcs.getPercentage(this.wins[0], this.games),
-      funcs.getPercentage(this.wins[1], this.games)
+      funcs.getPercentage(this.wins[0], this.gamesCompleted),
+      funcs.getPercentage(this.wins[1], this.gamesCompleted)
     ];
 
-    stats.tiePercentage = funcs.getPercentage(this.ties, this.games);
+    stats.tiePercentage = funcs.getPercentage(this.gamesTied, this.gamesCompleted);
 
     // Get avg exec time
     let sum = 0;

@@ -31,17 +31,14 @@ If you open our [web client](https://uttt.socialgorithm.org), you can then conne
 ### Run in online mode
 
 By default, the server will start in online mode and listen for players on port `3141`.
-The server starts up a terminal GUI displaying the current online players and game stats. Players are paired automatically as soon as there are two available players.
 
 By default the server will have players play 1000 games per session.
 
 You can launch the server using:
 
 ```bash
-$ uttt --gui
+$ uttt
 ```
-
-[![Online demo](https://github.com/aurbano/ultimate-ttt-server/raw/master/demos/online.gif "Online demo")](https://asciinema.org/a/105087)
 
 Options:
 
@@ -55,14 +52,12 @@ Options
   --verbose           The input to process.
   -v, --version       Display the server version
   -p, --port 3141     Port on which the server should be started (defaults to 3141)
-  -u, --gui           Display a fancy GUI in the terminal (only available in online mode)
   -g, --games 1000    Number of games to play, defaults to 1000
   -t, --timeout 100   Milliseconds after which a player loses (defaults to 100)
   -h, --help          Print this guide
 
 Synopsis
 
-  $ uttt --gui
   $ uttt --games 100
   $ uttt --port 5000
   $ uttt --help
