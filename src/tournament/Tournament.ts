@@ -65,15 +65,14 @@ export class Tournament {
         while(!this.matchmaker.isFinished()) {
             const upcomingMatches = this.stats.matches.filter(match => match.stats.state === 'upcoming');
             if (upcomingMatches.length > 0) {
-                await this.playMatches(upcomingMatches);
-            }
-
-            this.stats.matches.push(...this.matchmaker.getRemainingMatches(this.stats));
-
-            if (this.options.autoPlay) {
-                this.sendStats();
+                await this.playMatch(upcomingMatches[0]);
+                if (this.options.autoPlay) {
+                    this.sendStats();
+                } else {
+                    break;
+                }
             } else {
-                break;
+                this.stats.matches.push(...this.matchmaker.getRemainingMatches(this.stats));
             }
         }
         if (!this.matchmaker.isFinished()) {
@@ -86,10 +85,8 @@ export class Tournament {
         }
     }
 
-    async playMatches(matches: Match[]) {
-        for(let match of matches) {
-            await match.playGames();
-        }
+    async playMatch(match: Match) {
+        await match.playGames();
     }
     
     isFinished(): boolean {

@@ -19,7 +19,7 @@ export declare class Tournament {
     start(): Promise<void>;
     continue(): Promise<void>;
     private playTournament;
-    playMatches(matches: Match[]): Promise<void>;
+    playMatch(match: Match): Promise<void>;
     isFinished(): boolean;
     getStats(): {
         options: TournamentOptions;
