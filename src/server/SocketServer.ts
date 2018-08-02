@@ -112,6 +112,9 @@ export default class SocketServer {
                     isAdmin: lobby.admin.token === player.token,
                     lobby: lobby.toObject(),
                 });
+                if(data.spectating) {
+                    socket.join(`${lobby.token}-info`);
+                }
             });
 
             socket.on("lobby player kick", (data: any) => {
@@ -165,6 +168,16 @@ export default class SocketServer {
      */
     public emitInLobby(lobby: string, type: string, data: any): void {
         this.io.to(lobby).emit(type, data);
+    }
+
+    /**
+     * Send a message to spectators in the lobby
+     * @param lobby Lobby token
+     * @param type Message type (determines who receives the data)
+     * @param data Data to be sent
+     */
+    public emitToLobbyInfo(lobby: string, type: string, data: any): void {
+        this.io.to(`${lobby}-info`).emit(type, data);
     }
 
     public emitPayload(emitType: string, type: string, payload: any): void {

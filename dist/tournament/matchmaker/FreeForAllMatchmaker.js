@@ -2,10 +2,11 @@
 exports.__esModule = true;
 var Match_1 = require("../../tournament/match/Match");
 var FreeForAllMatchmaker = (function () {
-    function FreeForAllMatchmaker(players, options, sendStats) {
+    function FreeForAllMatchmaker(players, options, sendStats, sendMove) {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.sendMove = sendMove;
         this.index = 0;
     }
     FreeForAllMatchmaker.prototype.isFinished = function () {
@@ -32,7 +33,7 @@ var FreeForAllMatchmaker = (function () {
                     autoPlay: _this.options.autoPlay,
                     maxGames: _this.options.maxGames,
                     timeout: _this.options.timeout
-                }, _this.sendStats);
+                }, _this.sendStats, _this.sendMove);
             });
         }).reduce(function (result, current, idx) { return result.concat(current); }, []);
         ++this.index;

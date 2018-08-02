@@ -51,7 +51,10 @@ var Tournament = (function () {
             waiting: false
         };
         this.sendStats = function () {
-            _this.socket.emitInLobby(_this.lobbyToken, "tournament stats", _this.getStats());
+            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament stats", _this.getStats());
+        };
+        this.sendMove = function (move) {
+            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament move update", move);
         };
         var matchOptions = {
             autoPlay: this.options.autoPlay,
@@ -60,11 +63,11 @@ var Tournament = (function () {
         };
         switch (options.type) {
             case "DoubleElimination":
-                this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
+                this.matchmaker = new DoubleEliminationMatchmaker_1["default"](this.players, matchOptions, this.sendStats, this.sendMove);
                 break;
             case "FreeForAll":
             default:
-                this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, this.sendStats);
+                this.matchmaker = new FreeForAllMatchmaker_1["default"](this.players, matchOptions, this.sendStats, this.sendMove);
                 break;
         }
     }

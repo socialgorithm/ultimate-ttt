@@ -37,4 +37,5 @@ export declare class Tournament {
     private playMatch;
     private playTournament;
     private sendStats;
+    private sendMove;
 }

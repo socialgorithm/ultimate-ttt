@@ -80,6 +80,9 @@ var SocketServer = (function () {
                     isAdmin: lobby.admin.token === player.token,
                     lobby: lobby.toObject()
                 });
+                if (data.spectating) {
+                    socket.join(lobby.token + "-info");
+                }
             });
             socket.on("lobby player kick", function (data) {
                 var lobbyToken = data.lobbyToken, playerToken = data.playerToken;
@@ -118,6 +121,9 @@ var SocketServer = (function () {
     };
     SocketServer.prototype.emitInLobby = function (lobby, type, data) {
         this.io.to(lobby).emit(type, data);
+    };
+    SocketServer.prototype.emitToLobbyInfo = function (lobby, type, data) {
+        this.io.to(lobby + "-info").emit(type, data);
     };
     SocketServer.prototype.emitPayload = function (emitType, type, payload) {
         this.emit(emitType, { type: type, payload: payload });

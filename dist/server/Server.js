@@ -16,7 +16,7 @@ var Server = (function () {
                     return;
                 }
                 lobby.players.splice(playerIndex, 1);
-                _this.socketServer.emitInLobby(lobby.token, "lobby disconnected", {
+                _this.socketServer.emitToLobbyInfo(lobby.token, "lobby disconnected", {
                     payload: {
                         lobby: lobby.toObject()
                     },

@@ -21,7 +21,6 @@ export default class Game {
     public gameTime: number;
     public timedoutPlayer: PlayerNumber;
     private game: UTTT;
-    private moves: IMove[] = [];
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
     private gamePromise: Promise<boolean>;
@@ -32,7 +31,7 @@ export default class Game {
      * Create a game between two players
      * * @param options Options for gameplay
      */
-    constructor(private players: Player[], private options: IGameOptions, private log: any) {
+    constructor(private players: Player[], private options: IGameOptions, private sendMove: (move: IMove) => void, private log: any) {
         this.game = new UTTT();
         this.gamePromise = new Promise(resolve => {
             this.resolve = resolve;
@@ -55,10 +54,6 @@ export default class Game {
         this.askForMove();
 
         return this.gamePromise;
-    }
-
-    public getStats(): IGameStats {
-        return { moves: this.moves, uttt: this.game };
     }
 
     private resetPlayers() {
@@ -117,11 +112,7 @@ export default class Game {
 
                 const coords = this.parseMove(data);
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
-                this.moves.push({
-                    board: coords.board,
-                    move: coords.move,
-                    player: this.currentPlayerIndex,
-                });
+                this.sendMove({ board: coords.board, move: coords.move, player: this.currentPlayerIndex })
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
                 this.askForMove(this.writeMove(coords));
 

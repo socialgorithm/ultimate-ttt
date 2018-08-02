@@ -21,6 +21,7 @@ export default class SocketServer {
         payload: any;
     }): void;
     emitInLobby(lobby: string, type: string, data: any): void;
+    emitToLobbyInfo(lobby: string, type: string, data: any): void;
     emitPayload(emitType: string, type: string, payload: any): void;
     private handler;
 }

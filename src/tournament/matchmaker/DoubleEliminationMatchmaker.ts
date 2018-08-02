@@ -6,6 +6,7 @@ import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
 import DoubleEliminationMatch, { IMatchParent } from "./DoubleEliminationMatch";
 import IMatchmaker from "./Matchmaker";
+import { IMove } from "../../tournament/match/game/GameStats";
 
 interface IPlayerStats {
     player: Player;
@@ -33,7 +34,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     private waitingForFinal: Player[];
     private unlinkedMatches: DoubleEliminationMatch[] = [];
 
-    constructor(private players: Player[], private options: IMatchOptions, private sendStats: () => void) {
+    constructor(private players: Player[], private options: IMatchOptions, private sendStats: () => void, private sendMove: (move: IMove) => void) {
         this.processedMatches = [];
         this.playerStats = {};
         this.players.forEach(player => {
@@ -182,7 +183,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
 
     private createMatch(playerA: Player, playerB: Player, optionOverrides?: any, parentMatches?: IMatchParent[]): DoubleEliminationMatch {
         const finalOptions = Object.assign(this.options, optionOverrides || {});
-        const match = new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats);
+        const match = new DoubleEliminationMatch([playerA, playerB], finalOptions, this.sendStats, this.sendMove);
 
         if (parentMatches) {
             match.parentMatches = parentMatches;

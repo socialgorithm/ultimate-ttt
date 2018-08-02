@@ -3,11 +3,12 @@ exports.__esModule = true;
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var DoubleEliminationMatch_1 = require("./DoubleEliminationMatch");
 var DoubleEliminationMatchmaker = (function () {
-    function DoubleEliminationMatchmaker(players, options, sendStats) {
+    function DoubleEliminationMatchmaker(players, options, sendStats, sendMove) {
         var _this = this;
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.sendMove = sendMove;
         this.unlinkedMatches = [];
         this.processedMatches = [];
         this.playerStats = {};
@@ -129,7 +130,7 @@ var DoubleEliminationMatchmaker = (function () {
     };
     DoubleEliminationMatchmaker.prototype.createMatch = function (playerA, playerB, optionOverrides, parentMatches) {
         var finalOptions = Object.assign(this.options, optionOverrides || {});
-        var match = new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats);
+        var match = new DoubleEliminationMatch_1["default"]([playerA, playerB], finalOptions, this.sendStats, this.sendMove);
         if (parentMatches) {
             match.parentMatches = parentMatches;
         }

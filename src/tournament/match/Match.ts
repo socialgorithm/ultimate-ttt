@@ -5,6 +5,7 @@ import State from "../../tournament/model/State";
 
 import Game from "./game/Game";
 import IMatchOptions from "./MatchOptions";
+import { IMove } from "../../tournament/match/game/GameStats";
 
 /**
  * A set of games between two players
@@ -14,7 +15,7 @@ export default class Match {
     public games: Game[];
     public stats: State;
 
-    constructor(public players: Player[], public options: IMatchOptions, private sendStats: () => void) {
+    constructor(public players: Player[], public options: IMatchOptions, private sendStats: () => void, private sendMove: (move: IMove) => void) {
         this.uuid = uuid();
         this.games = [];
         this.stats = new State();
@@ -26,6 +27,7 @@ export default class Match {
                     gameId: i,
                     timeout: options.timeout,
                 },
+                this.sendMove,
                 // tslint:disable-next-line:no-console
                 console.log,
             );
@@ -39,7 +41,6 @@ export default class Match {
         this.stats.state = "playing";
         for (const game of this.games) {
             await game.playGame();
-            //this.stats.games.push(game.getStats());
             this.stats.times.push(game.gameTime);
             this.stats.gamesCompleted++;
             if (game.winnerIndex === -1) {

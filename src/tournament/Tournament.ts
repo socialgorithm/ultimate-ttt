@@ -7,6 +7,7 @@ import FreeForAllMatchmaker from "./matchmaker/FreeForAllMatchmaker";
 import IMatchmaker from "./matchmaker/Matchmaker";
 import Player from "./model/Player";
 import {ITournamentStats} from "./stats/TournamentStats";
+import { IMove } from "../tournament/match/game/GameStats";
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -41,11 +42,11 @@ export class Tournament {
         };
         switch (options.type) {
             case "DoubleElimination":
-                this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, this.sendStats);
+                this.matchmaker = new DoubleEliminationMatchmaker(this.players, matchOptions, this.sendStats, this.sendMove);
                 break;
             case "FreeForAll":
             default:
-                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, this.sendStats);
+                this.matchmaker = new FreeForAllMatchmaker(this.players, matchOptions, this.sendStats, this.sendMove);
                 break;
         }
     }
@@ -112,6 +113,10 @@ export class Tournament {
     }
 
     private sendStats = (): void => {
-        this.socket.emitInLobby(this.lobbyToken, "tournament stats", this.getStats());
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament stats", this.getStats());
+    }
+
+    private sendMove = (move: IMove): void => {
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament move update", move)
     }
 }

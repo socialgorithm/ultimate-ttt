@@ -68,7 +68,7 @@ export default class Server {
       }
       // Remove the player, and notify lobby of changes
       lobby.players.splice(playerIndex, 1);
-      this.socketServer.emitInLobby(lobby.token, "lobby disconnected", {
+      this.socketServer.emitToLobbyInfo(lobby.token, "lobby disconnected", {
         payload: {
           lobby: lobby.toObject(),
         },

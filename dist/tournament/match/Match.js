@@ -39,10 +39,11 @@ var uuid = require("uuid/v4");
 var State_1 = require("../../tournament/model/State");
 var Game_1 = require("./game/Game");
 var Match = (function () {
-    function Match(players, options, sendStats) {
+    function Match(players, options, sendStats, sendMove) {
         this.players = players;
         this.options = options;
         this.sendStats = sendStats;
+        this.sendMove = sendMove;
         this.uuid = uuid();
         this.games = [];
         this.stats = new State_1["default"]();
@@ -50,7 +51,7 @@ var Match = (function () {
             this.games[i] = new Game_1["default"](this.players, {
                 gameId: i,
                 timeout: options.timeout
-            }, console.log);
+            }, this.sendMove, console.log);
         }
     }
     Match.prototype.playGames = function () {
