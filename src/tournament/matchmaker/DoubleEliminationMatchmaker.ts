@@ -143,6 +143,14 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     }
 
     public getRanking(): string[] {
+        if(this.tournamentStats.finished) {
+            return this.finishedRanking()
+        } else {
+            return this.unfinishedRanking()
+        }
+    }
+
+    private finishedRanking(): string[] {
         const ranking: string[] = [];
         const matches = this.tournamentStats.matches.map(match => match); // mapping to copy
         matches.reverse().forEach(match => {
@@ -160,6 +168,12 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
         const playersAwaitingMatch = this.players.map(player => player.token).filter(token => ranking.indexOf(token) === -1);
         ranking.push(...playersAwaitingMatch);
         return ranking;
+    }
+
+    private unfinishedRanking(): string[] {
+        return this.players
+            .sort((a: Player, b: Player) => this.playerStats[b.token].wins - this.playerStats[a.token].wins)
+            .map(player => player.token);
     }
 
     private matchPlayers(players: Player[]): IMatchingResult {

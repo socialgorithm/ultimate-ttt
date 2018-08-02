@@ -94,6 +94,14 @@ var DoubleEliminationMatchmaker = (function () {
         return matches;
     };
     DoubleEliminationMatchmaker.prototype.getRanking = function () {
+        if (this.tournamentStats.finished) {
+            return this.finishedRanking();
+        }
+        else {
+            return this.unfinishedRanking();
+        }
+    };
+    DoubleEliminationMatchmaker.prototype.finishedRanking = function () {
         var ranking = [];
         var matches = this.tournamentStats.matches.map(function (match) { return match; });
         matches.reverse().forEach(function (match) {
@@ -111,6 +119,12 @@ var DoubleEliminationMatchmaker = (function () {
         var playersAwaitingMatch = this.players.map(function (player) { return player.token; }).filter(function (token) { return ranking.indexOf(token) === -1; });
         ranking.push.apply(ranking, playersAwaitingMatch);
         return ranking;
+    };
+    DoubleEliminationMatchmaker.prototype.unfinishedRanking = function () {
+        var _this = this;
+        return this.players
+            .sort(function (a, b) { return _this.playerStats[b.token].wins - _this.playerStats[a.token].wins; })
+            .map(function (player) { return player.token; });
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
         var matches = [];

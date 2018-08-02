@@ -20,6 +20,8 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     isFinished(): boolean;
     getRemainingMatches(tournamentStats: ITournamentStats): DoubleEliminationMatch[];
     getRanking(): string[];
+    private finishedRanking;
+    private unfinishedRanking;
     private matchPlayers;
     private createMatch;
     private playerIsWaitingForMatch;
