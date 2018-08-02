@@ -1,8 +1,8 @@
 import { RESULT_TIE } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-import IMatchOptions from "tournament/match/MatchOptions";
-import Player from "tournament/model/Player";
-import { ITournamentStats } from "tournament/stats/TournamentStats";
+import IMatchOptions from "../../tournament/match/MatchOptions";
+import Player from "../../tournament/model/Player";
+import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
 import DoubleEliminationMatch, { IMatchParent } from "./DoubleEliminationMatch";
 import IMatchmaker from "./Matchmaker";

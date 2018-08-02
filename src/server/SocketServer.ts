@@ -2,10 +2,10 @@ import * as fs from "fs";
 import * as http from "http";
 import * as io from "socket.io";
 
-import Channel from "tournament/model/Channel";
-import { Lobby } from "tournament/model/Lobby";
-import Player from "tournament/model/Player";
-import { ITournamentOptions } from "tournament/Tournament";
+import Channel from "../tournament/model/Channel";
+import { Lobby } from "../tournament/model/Lobby";
+import Player from "../tournament/model/Player";
+import { ITournamentOptions } from "../tournament/Tournament";
 
 import { DEFAULT_TOURNAMENT_OPTIONS } from "./constants";
 

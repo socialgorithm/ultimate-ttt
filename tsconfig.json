@@ -10,7 +10,12 @@
     "sourceMap": true,
     "outDir": "dist",
     "moduleResolution": "node",
-    "baseUrl": "./src"
+    "baseUrl": "./",
+    "paths": {
+      "../*": [
+        "src/*"
+      ]
+    },
   },
   "include": [
       "src/**/*"

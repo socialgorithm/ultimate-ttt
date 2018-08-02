@@ -1,4 +1,4 @@
-import { Tournament } from "tournament/Tournament";
+import { Tournament } from "../../tournament/Tournament";
 import Player from "./Player";
 export declare class Lobby {
     admin: Player;
@@ -18,10 +18,10 @@ export declare class Lobby {
                 players: {
                     token: string;
                 }[];
-                stats: import("tournament/model/State").default;
+                stats: import("../tournament/model/State").default;
                 uuid: string;
             }[];
-            options: import("tournament/Tournament").ITournamentOptions;
+            options: import("../tournament/Tournament").ITournamentOptions;
             ranking: string[];
             started: boolean;
             waiting: boolean;

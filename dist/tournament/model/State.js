@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var funcs = require("lib/funcs");
+var funcs = require("../../lib/funcs");
 var State = (function () {
     function State() {
         this.games = [];

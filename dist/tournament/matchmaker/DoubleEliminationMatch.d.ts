@@ -1,4 +1,4 @@
-import Match from "tournament/match/Match";
+import Match from "../../tournament/match/Match";
 export interface IMatchParent {
     playerIndex: number;
     parent: string;

@@ -1,4 +1,4 @@
-import Match from "tournament/match/Match";
+import Match from "../../tournament/match/Match";
 
 /**
  * Statistics for matches played in a tournament

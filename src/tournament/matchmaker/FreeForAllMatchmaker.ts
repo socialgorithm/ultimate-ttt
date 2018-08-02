@@ -1,7 +1,7 @@
-import Match from "tournament/match/Match";
-import IMatchOptions from "tournament/match/MatchOptions";
-import Player from "tournament/model/Player";
-import { ITournamentStats } from "tournament/stats/TournamentStats";
+import Match from "../../tournament/match/Match";
+import IMatchOptions from "../../tournament/match/MatchOptions";
+import Player from "../../tournament/model/Player";
+import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
 import IMatchmaker from "./Matchmaker";
 

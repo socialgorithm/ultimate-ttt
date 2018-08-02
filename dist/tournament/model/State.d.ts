@@ -1,4 +1,4 @@
-import { IGameStats } from "tournament/match/game/GameStats";
+import { IGameStats } from "../../tournament/match/game/GameStats";
 export interface IStats {
     winner?: number;
     total?: number;

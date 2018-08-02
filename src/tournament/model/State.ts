@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
-import * as funcs from "lib/funcs";
-import { IGameStats } from "tournament/match/game/GameStats";
+import * as funcs from "../../lib/funcs";
+import { IGameStats } from "../../tournament/match/game/GameStats";
 
 /**
  * Game stats calculated from a given state

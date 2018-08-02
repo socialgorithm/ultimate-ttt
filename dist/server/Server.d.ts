@@ -1,4 +1,4 @@
-import { IOptions } from "lib/cli-options";
+import { IOptions } from "../lib/cli-options";
 export default class Server {
     private options;
     private players;

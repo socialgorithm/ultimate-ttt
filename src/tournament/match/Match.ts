@@ -1,7 +1,7 @@
 import * as uuid from "uuid/v4";
 
-import Player from "tournament/model/Player";
-import State from "tournament/model/State";
+import Player from "../../tournament/model/Player";
+import State from "../../tournament/model/State";
 
 import Game from "./game/Game";
 import IMatchOptions from "./MatchOptions";

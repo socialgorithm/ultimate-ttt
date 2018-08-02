@@ -1,4 +1,4 @@
-import { ITournamentOptions } from "tournament/Tournament";
+import { ITournamentOptions } from "../tournament/Tournament";
 
 export const DEFAULT_TOURNAMENT_OPTIONS: ITournamentOptions = {
   autoPlay: true,

@@ -1,6 +1,6 @@
-import IMatchOptions from "tournament/match/MatchOptions";
-import Player from "tournament/model/Player";
-import { ITournamentStats } from "tournament/stats/TournamentStats";
+import IMatchOptions from "../../tournament/match/MatchOptions";
+import Player from "../../tournament/model/Player";
+import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 import DoubleEliminationMatch from "./DoubleEliminationMatch";
 import IMatchmaker from "./Matchmaker";
 export default class DoubleEliminationMatchmaker implements IMatchmaker {

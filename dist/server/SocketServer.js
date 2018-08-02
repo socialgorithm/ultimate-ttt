@@ -3,8 +3,8 @@ exports.__esModule = true;
 var fs = require("fs");
 var http = require("http");
 var io = require("socket.io");
-var Channel_1 = require("tournament/model/Channel");
-var Player_1 = require("tournament/model/Player");
+var Channel_1 = require("../tournament/model/Channel");
+var Player_1 = require("../tournament/model/Player");
 var constants_1 = require("./constants");
 var SocketServer = (function () {
     function SocketServer(port, socketEvents) {

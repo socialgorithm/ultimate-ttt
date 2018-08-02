@@ -1,4 +1,4 @@
-import SocketServer from "server/SocketServer";
+import SocketServer from "../server/SocketServer";
 import Match from "./match/Match";
 import Player from "./model/Player";
 export interface ITournamentOptions {
@@ -26,7 +26,7 @@ export declare class Tournament {
             players: {
                 token: string;
             }[];
-            stats: import("tournament/model/State").default;
+            stats: import("../tournament/model/State").default;
             uuid: string;
         }[];
         options: ITournamentOptions;

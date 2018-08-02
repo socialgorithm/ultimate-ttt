@@ -1,5 +1,5 @@
 import { PlayerNumber, PlayerOrTie } from "@socialgorithm/ultimate-ttt/dist/model/constants";
-import Player from "tournament/model/Player";
+import Player from "../../../tournament/model/Player";
 import IGameOptions from "./GameOptions";
 import { IGameStats } from "./GameStats";
 export default class Game {

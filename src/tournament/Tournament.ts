@@ -1,4 +1,4 @@
-import SocketServer from "server/SocketServer";
+import SocketServer from "../server/SocketServer";
 
 import Match from "./match/Match";
 import { IMatchOptions } from "./match/MatchOptions";

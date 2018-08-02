@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Match_1 = require("tournament/match/Match");
+var Match_1 = require("../../tournament/match/Match");
 var DoubleEliminationMatch = (function (_super) {
     __extends(DoubleEliminationMatch, _super);
     function DoubleEliminationMatch() {

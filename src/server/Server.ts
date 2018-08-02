@@ -1,7 +1,7 @@
-import {IOptions} from "lib/cli-options";
-import { Lobby } from "tournament/model/Lobby";
-import Player from "tournament/model/Player";
-import { ITournamentOptions, Tournament } from "tournament/Tournament";
+import {IOptions} from "../lib/cli-options";
+import { Lobby } from "../tournament/model/Lobby";
+import Player from "../tournament/model/Player";
+import { ITournamentOptions, Tournament } from "../tournament/Tournament";
 
 import SocketServer from "./SocketServer";
 

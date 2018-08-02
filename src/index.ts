@@ -3,8 +3,8 @@
  * Ultimate Tic Tac Toe Algorithm Battle - Game Server
  */
 
-import { IOptions } from "lib/cli-options";
-import Server from "server/Server";
+import { IOptions } from "./lib/cli-options";
+import Server from "./server/Server";
 
 /**
  * Start a server with the given options

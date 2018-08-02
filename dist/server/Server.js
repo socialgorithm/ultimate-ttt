@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var Lobby_1 = require("tournament/model/Lobby");
-var Tournament_1 = require("tournament/Tournament");
+var Lobby_1 = require("../tournament/model/Lobby");
+var Tournament_1 = require("../tournament/Tournament");
 var SocketServer_1 = require("./SocketServer");
 var pjson = require("../../package.json");
 var Server = (function () {

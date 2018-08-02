@@ -1,5 +1,5 @@
-import Match from "tournament/match/Match";
-import { ITournamentStats } from "tournament/stats/TournamentStats";
+import Match from "../../tournament/match/Match";
+import { ITournamentStats } from "../../tournament/stats/TournamentStats";
 
 /**
  * MatchMaker defines a strategy for matching players.

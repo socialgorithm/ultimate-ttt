@@ -4,7 +4,7 @@
   "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
   "main": "dist/standalone.js",
   "scripts": {
-    "start": "node dist/standalone.js",
+    "start": "node --prof dist/standalone.js",
     "start:dev": "nodemon",
     "dev": "tsc && ts-node -r tsconfig-paths/register --files src/standalone.ts",
     "start:opts": "tsc && ts-node bin/index.js",
