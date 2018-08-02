@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>State | @socialgorithm/uttt</title>
+	<title>IStats | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_tournament_model_state_.html">&quot;tournament/model/State&quot;</a>
 				</li>
 				<li>
-					<a href="_tournament_model_state_.state.html">State</a>
+					<a href="_tournament_model_state_.istats.html">IStats</a>
 				</li>
 			</ul>
-			<h1>Class State</h1>
+			<h1>Interface IStats</h1>
 		</div>
 	</div>
 </header>
@@ -72,8 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Games State holder
-						Used to track the state across multiple games between two players</p>
+						<p>Game stats calculated from a given state</p>
 					</div>
 				</div>
 			</section>
@@ -81,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">State</span>
+						<span class="target">IStats</span>
 					</li>
 				</ul>
 			</section>
@@ -90,182 +89,91 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#games" class="tsd-kind-icon">games</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#gamescompleted" class="tsd-kind-icon">games<wbr>Completed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#gamestied" class="tsd-kind-icon">games<wbr>Tied</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#timeouts" class="tsd-kind-icon">timeouts</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#times" class="tsd-kind-icon">times</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#winner" class="tsd-kind-icon">winner</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#wins" class="tsd-kind-icon">wins</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#getstats" class="tsd-kind-icon">get<wbr>Stats</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_model_state_.state.html#printstate" class="tsd-kind-icon">print<wbr>State</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#avg" class="tsd-kind-icon">avg</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#max" class="tsd-kind-icon">max</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#min" class="tsd-kind-icon">min</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#tiepercentage" class="tsd-kind-icon">tie<wbr>Percentage</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#total" class="tsd-kind-icon">total</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#winpercentages" class="tsd-kind-icon">win<wbr>Percentages</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tournament_model_state_.istats.html#winner" class="tsd-kind-icon">winner</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_model_state_.state.html" class="tsd-signature-type">State</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L31">tournament/model/State.ts:31</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_tournament_model_state_.state.html" class="tsd-signature-type">State</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="games" class="tsd-anchor"></a>
-					<h3>games</h3>
-					<div class="tsd-signature tsd-kind-icon">games<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_match_game_gamestats_.igamestats.html" class="tsd-signature-type">IGameStats</a><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="avg" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> avg</h3>
+					<div class="tsd-signature tsd-kind-icon">avg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L24">tournament/model/State.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L13">tournament/model/State.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="gamescompleted" class="tsd-anchor"></a>
-					<h3>games<wbr>Completed</h3>
-					<div class="tsd-signature tsd-kind-icon">games<wbr>Completed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="max" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> max</h3>
+					<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L25">tournament/model/State.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L12">tournament/model/State.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="gamestied" class="tsd-anchor"></a>
-					<h3>games<wbr>Tied</h3>
-					<div class="tsd-signature tsd-kind-icon">games<wbr>Tied<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="min" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> min</h3>
+					<div class="tsd-signature tsd-kind-icon">min<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L26">tournament/model/State.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L14">tournament/model/State.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="state" class="tsd-anchor"></a>
-					<h3>state</h3>
-					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"playing"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"finished"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"upcoming"</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tiepercentage" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tie<wbr>Percentage</h3>
+					<div class="tsd-signature tsd-kind-icon">tie<wbr>Percentage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L30">tournament/model/State.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L16">tournament/model/State.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="timeouts" class="tsd-anchor"></a>
-					<h3>timeouts</h3>
-					<div class="tsd-signature tsd-kind-icon">timeouts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="total" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> total</h3>
+					<div class="tsd-signature tsd-kind-icon">total<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L29">tournament/model/State.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L11">tournament/model/State.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="times" class="tsd-anchor"></a>
-					<h3>times</h3>
-					<div class="tsd-signature tsd-kind-icon">times<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="winpercentages" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> win<wbr>Percentages</h3>
+					<div class="tsd-signature tsd-kind-icon">win<wbr>Percentages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L28">tournament/model/State.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L15">tournament/model/State.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="winner" class="tsd-anchor"></a>
-					<h3>winner</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> winner</h3>
 					<div class="tsd-signature tsd-kind-icon">winner<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L31">tournament/model/State.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L10">tournament/model/State.ts:10</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="wins" class="tsd-anchor"></a>
-					<h3>wins</h3>
-					<div class="tsd-signature tsd-kind-icon">wins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L27">tournament/model/State.ts:27</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getstats" class="tsd-anchor"></a>
-					<h3>get<wbr>Stats</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Stats<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_model_state_.istats.html" class="tsd-signature-type">IStats</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L71">tournament/model/State.ts:71</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get some useful stats from the current game state</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_tournament_model_state_.istats.html" class="tsd-signature-type">IStats</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="printstate" class="tsd-anchor"></a>
-					<h3>print<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">print<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/model/State.ts#L47">tournament/model/State.ts:47</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Prints the current state to the console</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -348,51 +256,39 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_tournament_model_state_.state.html" class="tsd-kind-icon">State</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_tournament_model_state_.state.html" class="tsd-kind-icon">State</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_tournament_model_state_.istats.html" class="tsd-kind-icon">IStats</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#avg" class="tsd-kind-icon">avg</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#games" class="tsd-kind-icon">games</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#max" class="tsd-kind-icon">max</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#gamescompleted" class="tsd-kind-icon">games<wbr>Completed</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#min" class="tsd-kind-icon">min</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#gamestied" class="tsd-kind-icon">games<wbr>Tied</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#tiepercentage" class="tsd-kind-icon">tie<wbr>Percentage</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#state" class="tsd-kind-icon">state</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#total" class="tsd-kind-icon">total</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#timeouts" class="tsd-kind-icon">timeouts</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#winpercentages" class="tsd-kind-icon">win<wbr>Percentages</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#times" class="tsd-kind-icon">times</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#winner" class="tsd-kind-icon">winner</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#wins" class="tsd-kind-icon">wins</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#getstats" class="tsd-kind-icon">get<wbr>Stats</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_tournament_model_state_.state.html#printstate" class="tsd-kind-icon">print<wbr>State</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tournament_model_state_.istats.html#winner" class="tsd-kind-icon">winner</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_tournament_model_state_.istats.html" class="tsd-kind-icon">IStats</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

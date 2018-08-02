@@ -98,6 +98,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_match_game_game_.game.html#currentplayerindex" class="tsd-kind-icon">current<wbr>Player<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_match_game_game_.game.html#events" class="tsd-kind-icon">events</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_match_game_game_.game.html#game" class="tsd-kind-icon">game</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_match_game_game_.game.html#gamepromise" class="tsd-kind-icon">game<wbr>Promise</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_match_game_game_.game.html#gamestart" class="tsd-kind-icon">game<wbr>Start</a></li>
@@ -136,13 +137,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Game<span class="tsd-signature-symbol">(</span>players<span class="tsd-signature-symbol">: </span><a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../modules/_tournament_match_game_gameoptions_.html#gameoptions" class="tsd-signature-type">GameOptions</a>, log<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_match_game_game_.game.html" class="tsd-signature-type">Game</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Game<span class="tsd-signature-symbol">(</span>players<span class="tsd-signature-symbol">: </span><a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_match_game_gameoptions_.igameoptions.html" class="tsd-signature-type">IGameOptions</a>, events<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a>, log<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_match_game_game_.game.html" class="tsd-signature-type">Game</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L26">tournament/match/game/Game.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L29">tournament/match/game/Game.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -159,7 +160,10 @@
 									<h5>players: <a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../modules/_tournament_match_game_gameoptions_.html#gameoptions" class="tsd-signature-type">GameOptions</a></h5>
+									<h5>options: <a href="../interfaces/_tournament_match_game_gameoptions_.igameoptions.html" class="tsd-signature-type">IGameOptions</a></h5>
+								</li>
+								<li>
+									<h5>events: <a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a></h5>
 								</li>
 								<li>
 									<h5>log: <span class="tsd-signature-type">any</span></h5>
@@ -178,7 +182,17 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Player<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PlayerNumber</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L19">tournament/match/game/Game.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L25">tournament/match/game/Game.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="events" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> events</h3>
+					<div class="tsd-signature tsd-kind-icon">events<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L35">tournament/match/game/Game.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -188,7 +202,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">UTTT</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L18">tournament/match/game/Game.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L24">tournament/match/game/Game.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -198,7 +212,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L21">tournament/match/game/Game.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L27">tournament/match/game/Game.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,7 +222,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>Start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L20">tournament/match/game/Game.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L26">tournament/match/game/Game.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -218,7 +232,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L25">tournament/match/game/Game.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L22">tournament/match/game/Game.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -228,17 +242,17 @@
 					<div class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L32">tournament/match/game/Game.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L35">tournament/match/game/Game.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="options" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../modules/_tournament_match_game_gameoptions_.html#gameoptions" class="tsd-signature-type">GameOptions</a></div>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_match_game_gameoptions_.igameoptions.html" class="tsd-signature-type">IGameOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L32">tournament/match/game/Game.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L35">tournament/match/game/Game.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -248,7 +262,7 @@
 					<div class="tsd-signature tsd-kind-icon">player<wbr>Move<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Timer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L23">tournament/match/game/Game.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L29">tournament/match/game/Game.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -258,19 +272,40 @@
 					<div class="tsd-signature tsd-kind-icon">players<span class="tsd-signature-symbol">:</span> <a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L32">tournament/match/game/Game.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L35">tournament/match/game/Game.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="resolve" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> resolve</h3>
-					<div class="tsd-signature tsd-kind-icon">resolve<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
+					<div class="tsd-signature tsd-kind-icon">resolve<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L22">tournament/match/game/Game.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L28">tournament/match/game/Game.ts:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>state: <span class="tsd-signature-type">boolean</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="timedoutplayer" class="tsd-anchor"></a>
@@ -278,7 +313,7 @@
 					<div class="tsd-signature tsd-kind-icon">timedout<wbr>Player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PlayerNumber</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L26">tournament/match/game/Game.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L23">tournament/match/game/Game.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -288,7 +323,7 @@
 					<div class="tsd-signature tsd-kind-icon">winner<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PlayerOrTie</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L24">tournament/match/game/Game.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L21">tournament/match/game/Game.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -305,7 +340,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L68">tournament/match/game/Game.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L72">tournament/match/game/Game.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +371,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L163">tournament/match/game/Game.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L171">tournament/match/game/Game.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -367,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L150">tournament/match/game/Game.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L158">tournament/match/game/Game.ts:158</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -384,7 +419,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L141">tournament/match/game/Game.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L149">tournament/match/game/Game.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,13 +453,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L86">tournament/match/game/Game.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L90">tournament/match/game/Game.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Handles a specific player move - this returns a function configured for the specified player, it&#39;s intended to be used
-									as the callback for the player socket.</p>
+									<p>Handles a specific player move - this returns a function configured for the specified player,
+									it&#39;s intended to be used as the callback for the player socket.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -448,7 +483,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L130">tournament/match/game/Game.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L138">tournament/match/game/Game.ts:138</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -471,7 +506,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L200">tournament/match/game/Game.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L208">tournament/match/game/Game.ts:208</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -503,7 +538,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L44">tournament/match/game/Game.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L47">tournament/match/game/Game.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -525,7 +560,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L57">tournament/match/game/Game.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L60">tournament/match/game/Game.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -542,7 +577,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L219">tournament/match/game/Game.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L227">tournament/match/game/Game.ts:227</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -570,7 +605,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/match/game/Game.ts#L211">tournament/match/game/Game.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/match/game/Game.ts#L219">tournament/match/game/Game.ts:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -621,6 +656,9 @@
 						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_tournamentevents_.html">"tournament/<wbr>Tournament<wbr>Events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -631,6 +669,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gamestats_.html">"tournament/match/game/<wbr>Game<wbr>Stats"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
@@ -673,6 +714,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tournament_match_game_game_.game.html#currentplayerindex" class="tsd-kind-icon">current<wbr>Player<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_tournament_match_game_game_.game.html#events" class="tsd-kind-icon">events</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tournament_match_game_game_.game.html#game" class="tsd-kind-icon">game</a>

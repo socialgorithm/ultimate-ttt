@@ -90,7 +90,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html" class="tsd-signature-type">Matchmaker</a></li>
+					<li><a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html" class="tsd-signature-type">IMatchmaker</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -106,13 +106,13 @@
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#events" class="tsd-kind-icon">events</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#finished" class="tsd-kind-icon">finished</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#index" class="tsd-kind-icon">index</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#maxmatches" class="tsd-kind-icon">max<wbr>Matches</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#options" class="tsd-kind-icon">options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#players" class="tsd-kind-icon">players</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#sendstats" class="tsd-kind-icon">send<wbr>Stats</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#stats" class="tsd-kind-icon">stats</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#tournamentstats" class="tsd-kind-icon">tournament<wbr>Stats</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -121,6 +121,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#getranking" class="tsd-kind-icon">get<wbr>Ranking</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#getremainingmatches" class="tsd-kind-icon">get<wbr>Remaining<wbr>Matches</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#isfinished" class="tsd-kind-icon">is<wbr>Finished</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#updatestats" class="tsd-kind-icon">update<wbr>Stats</a></li>
 							</ul>
 						</section>
 					</div>
@@ -132,13 +133,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Free<wbr>For<wbr>All<wbr>Matchmaker<span class="tsd-signature-symbol">(</span>players<span class="tsd-signature-symbol">: </span><a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../modules/_tournament_match_matchoptions_.html#matchoptions" class="tsd-signature-type">MatchOptions</a>, sendStats<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html" class="tsd-signature-type">FreeForAllMatchmaker</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Free<wbr>For<wbr>All<wbr>Matchmaker<span class="tsd-signature-symbol">(</span>players<span class="tsd-signature-symbol">: </span><a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_match_matchoptions_.imatchoptions.html" class="tsd-signature-type">IMatchOptions</a>, events<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html" class="tsd-signature-type">FreeForAllMatchmaker</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L20">tournament/matchmaker/FreeForAllMatchmaker.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L23">tournament/matchmaker/FreeForAllMatchmaker.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -147,10 +148,10 @@
 									<h5>players: <a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../modules/_tournament_match_matchoptions_.html#matchoptions" class="tsd-signature-type">MatchOptions</a></h5>
+									<h5>options: <a href="../interfaces/_tournament_match_matchoptions_.imatchoptions.html" class="tsd-signature-type">IMatchOptions</a></h5>
 								</li>
 								<li>
-									<h5>sendStats: <span class="tsd-signature-type">Function</span></h5>
+									<h5>events: <a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html" class="tsd-signature-type">FreeForAllMatchmaker</a></h4>
@@ -161,12 +162,22 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="events" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> events</h3>
+					<div class="tsd-signature tsd-kind-icon">events<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_tournamentevents_.itournamentevents.html" class="tsd-signature-type">ITournamentEvents</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L25">tournament/matchmaker/FreeForAllMatchmaker.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="finished" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> finished</h3>
 					<div class="tsd-signature tsd-kind-icon">finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L18">tournament/matchmaker/FreeForAllMatchmaker.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L21">tournament/matchmaker/FreeForAllMatchmaker.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L20">tournament/matchmaker/FreeForAllMatchmaker.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L23">tournament/matchmaker/FreeForAllMatchmaker.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,17 +197,17 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Matches<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L17">tournament/matchmaker/FreeForAllMatchmaker.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L20">tournament/matchmaker/FreeForAllMatchmaker.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="options" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../modules/_tournament_match_matchoptions_.html#matchoptions" class="tsd-signature-type">MatchOptions</a></div>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_match_matchoptions_.imatchoptions.html" class="tsd-signature-type">IMatchOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L22">tournament/matchmaker/FreeForAllMatchmaker.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L25">tournament/matchmaker/FreeForAllMatchmaker.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -206,27 +217,17 @@
 					<div class="tsd-signature tsd-kind-icon">players<span class="tsd-signature-symbol">:</span> <a href="_tournament_model_player_.player.html" class="tsd-signature-type">Player</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L22">tournament/matchmaker/FreeForAllMatchmaker.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L25">tournament/matchmaker/FreeForAllMatchmaker.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="sendstats" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> send<wbr>Stats</h3>
-					<div class="tsd-signature tsd-kind-icon">send<wbr>Stats<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
+					<a name="tournamentstats" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tournament<wbr>Stats</h3>
+					<div class="tsd-signature tsd-kind-icon">tournament<wbr>Stats<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tournament_stats_tournamentstats_.itournamentstats.html" class="tsd-signature-type">ITournamentStats</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L22">tournament/matchmaker/FreeForAllMatchmaker.ts:22</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="stats" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> stats</h3>
-					<div class="tsd-signature tsd-kind-icon">stats<span class="tsd-signature-symbol">:</span> <a href="../modules/_tournament_stats_tournamentstats_.html#tournamentstats" class="tsd-signature-type">TournamentStats</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L19">tournament/matchmaker/FreeForAllMatchmaker.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L22">tournament/matchmaker/FreeForAllMatchmaker.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -242,9 +243,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html">Matchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html#getranking">getRanking</a></p>
+								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html">IMatchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html#getranking">getRanking</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L67">tournament/matchmaker/FreeForAllMatchmaker.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L70">tournament/matchmaker/FreeForAllMatchmaker.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -255,22 +256,16 @@
 					<a name="getremainingmatches" class="tsd-anchor"></a>
 					<h3>get<wbr>Remaining<wbr>Matches</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Remaining<wbr>Matches<span class="tsd-signature-symbol">(</span>tournamentStats<span class="tsd-signature-symbol">: </span><a href="../modules/_tournament_stats_tournamentstats_.html#tournamentstats" class="tsd-signature-type">TournamentStats</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_match_match_.match.html" class="tsd-signature-type">Match</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Remaining<wbr>Matches<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tournament_match_match_.match.html" class="tsd-signature-type">Match</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html">Matchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html#getremainingmatches">getRemainingMatches</a></p>
+								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html">IMatchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html#getremainingmatches">getRemainingMatches</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L29">tournament/matchmaker/FreeForAllMatchmaker.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L36">tournament/matchmaker/FreeForAllMatchmaker.ts:36</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>tournamentStats: <a href="../modules/_tournament_stats_tournamentstats_.html#tournamentstats" class="tsd-signature-type">TournamentStats</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_tournament_match_match_.match.html" class="tsd-signature-type">Match</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -284,12 +279,36 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html">Matchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.matchmaker.html#isfinished">isFinished</a></p>
+								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html">IMatchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html#isfinished">isFinished</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L25">tournament/matchmaker/FreeForAllMatchmaker.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L28">tournament/matchmaker/FreeForAllMatchmaker.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatestats" class="tsd-anchor"></a>
+					<h3>update<wbr>Stats</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Stats<span class="tsd-signature-symbol">(</span>tournamentStats<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tournament_stats_tournamentstats_.itournamentstats.html" class="tsd-signature-type">ITournamentStats</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html">IMatchmaker</a>.<a href="../interfaces/_tournament_matchmaker_matchmaker_.imatchmaker.html#updatestats">updateStats</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/tournament/matchmaker/FreeForAllMatchmaker.ts#L32">tournament/matchmaker/FreeForAllMatchmaker.ts:32</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tournamentStats: <a href="../interfaces/_tournament_stats_tournamentstats_.itournamentstats.html" class="tsd-signature-type">ITournamentStats</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -326,6 +345,9 @@
 						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_tournamentevents_.html">"tournament/<wbr>Tournament<wbr>Events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -336,6 +358,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_tournament_match_game_gamestats_.html">"tournament/match/game/<wbr>Game<wbr>Stats"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
@@ -377,6 +402,9 @@
 								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#events" class="tsd-kind-icon">events</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#finished" class="tsd-kind-icon">finished</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -392,10 +420,7 @@
 								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#players" class="tsd-kind-icon">players</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#sendstats" class="tsd-kind-icon">send<wbr>Stats</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#stats" class="tsd-kind-icon">stats</a>
+								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#tournamentstats" class="tsd-kind-icon">tournament<wbr>Stats</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#getranking" class="tsd-kind-icon">get<wbr>Ranking</a>
@@ -405,6 +430,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#isfinished" class="tsd-kind-icon">is<wbr>Finished</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tournament_matchmaker_freeforallmatchmaker_.freeforallmatchmaker.html#updatestats" class="tsd-kind-icon">update<wbr>Stats</a>
 							</li>
 						</ul>
 					</li>

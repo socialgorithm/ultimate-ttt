@@ -73,14 +73,12 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_lib_cli_options_.options.html" class="tsd-kind-icon">Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_lib_cli_options_.ioptions.html" class="tsd-kind-icon">IOptions</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_cli_options_.html#commandlineargs" class="tsd-kind-icon">command<wbr>Line<wbr>Args</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_cli_options_.html#getusage" class="tsd-kind-icon">get<wbr>Usage</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_cli_options_.html#info" class="tsd-kind-icon">info</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_cli_options_.html#optiondefinitions" class="tsd-kind-icon">option<wbr>Definitions</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_lib_cli_options_.html#sections" class="tsd-kind-icon">sections</a></li>
@@ -98,52 +96,32 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="commandlineargs" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> command<wbr>Line<wbr>Args</h3>
-					<div class="tsd-signature tsd-kind-icon">command<wbr>Line<wbr>Args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;command-line-args&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L1">lib/cli-options.ts:1</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="getusage" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Usage</h3>
-					<div class="tsd-signature tsd-kind-icon">get<wbr>Usage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;command-line-usage&#x27;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L2">lib/cli-options.ts:2</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="info" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> info</h3>
-					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&#x27;../../package.json&#x27;)</span></div>
+					<div class="tsd-signature tsd-kind-icon">info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;require(&quot;../../package.json&quot;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L3">lib/cli-options.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/lib/cli-options.ts#L5">lib/cli-options.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="optiondefinitions" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> option<wbr>Definitions</h3>
-					<div class="tsd-signature tsd-kind-icon">option<wbr>Definitions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{name: &#x27;verbose&#x27;,type: Boolean,description: &#x27;The input to process.&#x27;},{name: &#x27;version&#x27;,alias: &#x27;v&#x27;,type: Boolean,description: &#x27;Display the server version&#x27;},{name: &#x27;port&#x27;,alias: &#x27;p&#x27;,type: Number,defaultValue: DEFAULT_OPTIONS.port,typeLabel: &#x27;[underline]{3141}&#x27;,description: &#x27;Port on which the server should be started (defaults to 3141)&#x27;},{name: &#x27;help&#x27;,alias: &#x27;h&#x27;,type: Boolean,description: &#x27;Print this guide&#x27;}]</span></div>
+					<div class="tsd-signature tsd-kind-icon">option<wbr>Definitions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{description: &quot;The input to process.&quot;,name: &quot;verbose&quot;,type: Boolean,},{alias: &quot;v&quot;,description: &quot;Display the server version&quot;,name: &quot;version&quot;,type: Boolean,},{alias: &quot;p&quot;,defaultValue: DEFAULT_OPTIONS.port,description: &quot;Port on which the server should be started (defaults to 3141)&quot;,name: &quot;port&quot;,type: Number,typeLabel: &quot;[underline]{3141}&quot;,},{alias: &quot;h&quot;,description: &quot;Print this guide&quot;,name: &quot;help&quot;,type: Boolean,},]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L21">lib/cli-options.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/lib/cli-options.ts#L23">lib/cli-options.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="sections" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> sections</h3>
-					<div class="tsd-signature tsd-kind-icon">sections<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{header: &#x27;uttt&#x27;,content: &#x27;Ultimate Tic Tac Toe - Game Server&#x27;},{header: &#x27;Options&#x27;,optionList: optionDefinitions},{header: &#x27;Synopsis&#x27;,content: [&#x27;$ uttt --games 100&#x27;,&#x27;$ uttt --port 5000&#x27;,&#x27;$ uttt [bold]{--help}&#x27;]}]</span></div>
+					<div class="tsd-signature tsd-kind-icon">sections<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{content: &quot;Ultimate Tic Tac Toe - Game Server&quot;,header: &quot;uttt&quot;,},{header: &quot;Options&quot;,optionList: optionDefinitions,},{content: [&quot;$ uttt --games 100&quot;,&quot;$ uttt --port 5000&quot;,&quot;$ uttt [bold]{--help}&quot;,],header: &quot;Synopsis&quot;,},]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L49">lib/cli-options.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/lib/cli-options.ts#L51">lib/cli-options.ts:51</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -156,7 +134,7 @@
 					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>OPTIONS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L17">lib/cli-options.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/lib/cli-options.ts#L19">lib/cli-options.ts:19</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -165,7 +143,7 @@
 						<div class="tsd-signature tsd-kind-icon">port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;parseInt(process.env.PORT, 10) || 3141</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/lib/cli-options.ts#L18">lib/cli-options.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/ed167d3/src/lib/cli-options.ts#L20">lib/cli-options.ts:20</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -203,6 +181,9 @@
 						<a href="_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_tournament_tournamentevents_.html">"tournament/<wbr>Tournament<wbr>Events"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -213,6 +194,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_match_game_gamestats_.html">"tournament/match/game/<wbr>Game<wbr>Stats"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
@@ -246,13 +230,7 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_lib_cli_options_.options.html" class="tsd-kind-icon">Options</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_lib_cli_options_.html#commandlineargs" class="tsd-kind-icon">command<wbr>Line<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_lib_cli_options_.html#getusage" class="tsd-kind-icon">get<wbr>Usage</a>
+						<a href="../interfaces/_lib_cli_options_.ioptions.html" class="tsd-kind-icon">IOptions</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_lib_cli_options_.html#info" class="tsd-kind-icon">info</a>
