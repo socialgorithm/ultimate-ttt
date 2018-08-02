@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var Match_1 = require("../match/Match");
+var Match_1 = require("tournament/match/Match");
 var FreeForAllMatchmaker = (function () {
     function FreeForAllMatchmaker(players, options, sendStats) {
         this.players = players;

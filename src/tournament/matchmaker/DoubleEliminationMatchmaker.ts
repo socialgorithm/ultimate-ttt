@@ -1,10 +1,11 @@
 import { RESULT_TIE } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
+import Player from "tournament/model/Player";
+import MatchOptions from "tournament/match/MatchOptions";
+import { TournamentStats } from "tournament/stats/TournamentStats";
+
 import Matchmaker from "./Matchmaker";
-import Player from "../model/Player";
-import MatchOptions from "../match/MatchOptions";
 import DoubleEliminationMatch, { MatchParent } from "./DoubleEliminationMatch";
-import { TournamentStats } from "../stats/TournamentStats";
 
 type PlayerStats = {
     player: Player;

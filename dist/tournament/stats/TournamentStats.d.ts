@@ -1,4 +1,4 @@
-import Match from "../match/Match";
+import Match from "tournament/match/Match";
 export declare type TournamentStats = {
     started: boolean;
     finished: boolean;

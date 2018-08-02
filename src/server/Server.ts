@@ -1,8 +1,9 @@
-import {Options} from "../lib/cli-options";
+import {Options} from "lib/cli-options";
+import Player from "tournament/model/Player";
+import { Tournament, TournamentOptions } from 'tournament/Tournament';
+import { Lobby } from "tournament/model/Lobby";
+
 import SocketServer from "./SocketServer";
-import Player from "../tournament/model/Player";
-import { Tournament, TournamentOptions } from '../tournament/Tournament';
-import { Lobby } from "../tournament/model/Lobby";
 
 /**
  * Load the package.json to get the version number

@@ -1,5 +1,5 @@
-import * as funcs from '../../lib/funcs';
-import Game from '../match/game/Game';
+import * as funcs from 'lib/funcs';
+import Game from 'tournament/match/game/Game';
 
 /**
  * Game stats calculated from a given state

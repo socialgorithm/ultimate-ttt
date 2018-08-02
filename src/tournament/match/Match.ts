@@ -1,8 +1,10 @@
+import * as uuid from 'uuid/v4';
+
+import Player from 'tournament/model/Player';
+import State from 'tournament/model/State';
+
 import MatchOptions from './MatchOptions';
 import Game from './game/Game';
-import Player from '../model/Player';
-import State from '../model/State';
-import * as uuid from 'uuid/v4';
 
 /**
  * A set of games between two players

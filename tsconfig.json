@@ -9,7 +9,8 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "./src"
   },
   "include": [
       "src/**/*"
@@ -21,5 +22,5 @@
   "typeRoots": [
     "node_modules/@types",
     "src/definitions"
-  ],
+  ]
 }

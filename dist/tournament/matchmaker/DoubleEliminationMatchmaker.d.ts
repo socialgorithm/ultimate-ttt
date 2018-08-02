@@ -1,8 +1,8 @@
+import Player from "tournament/model/Player";
+import MatchOptions from "tournament/match/MatchOptions";
+import { TournamentStats } from "tournament/stats/TournamentStats";
 import Matchmaker from "./Matchmaker";
-import Player from "../model/Player";
-import MatchOptions from "../match/MatchOptions";
 import DoubleEliminationMatch from "./DoubleEliminationMatch";
-import { TournamentStats } from "../stats/TournamentStats";
 export default class DoubleEliminationMatchmaker implements Matchmaker {
     private players;
     private options;

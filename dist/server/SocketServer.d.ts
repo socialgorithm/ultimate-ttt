@@ -1,6 +1,6 @@
-import Player from "../tournament/model/Player";
-import { Lobby } from '../tournament/model/Lobby';
-import { TournamentOptions } from '../tournament/Tournament';
+import Player from "tournament/model/Player";
+import { Lobby } from 'tournament/model/Lobby';
+import { TournamentOptions } from 'tournament/Tournament';
 export interface SocketEvents {
     onPlayerConnect(player: Player): void;
     onPlayerDisconnect(player: Player): void;

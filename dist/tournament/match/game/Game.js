@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
-var funcs = require("../../../lib/funcs");
+var funcs = require("lib/funcs");
 var AFTER_TIMEOUT_DELAY = 100;
 var Game = (function () {
     function Game(players, options, log) {

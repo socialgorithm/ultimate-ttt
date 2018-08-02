@@ -1,6 +1,3 @@
-import Player from './Player';
-import State, {Stats} from "./State";
-
 type Handler = (...args: any[]) => void;
 
 /**

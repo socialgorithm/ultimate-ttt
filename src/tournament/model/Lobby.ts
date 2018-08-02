@@ -1,7 +1,8 @@
 import * as randomWord from 'random-word'
 
+import { Tournament } from 'tournament/Tournament';
+
 import Player from './Player';
-import { Tournament } from '../Tournament';
 
 export class Lobby {
     public admin: Player;

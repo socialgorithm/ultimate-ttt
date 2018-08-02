@@ -1,4 +1,4 @@
-import { Options } from "../lib/cli-options";
+import { Options } from "lib/cli-options";
 export default class Server {
     private options;
     private players;

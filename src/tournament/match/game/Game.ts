@@ -1,8 +1,9 @@
 import UTTT from '@socialgorithm/ultimate-ttt/dist/UTTT';
 import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
 
-import * as funcs from '../../../lib/funcs';
-import Player from '../../model/Player';
+import * as funcs from 'lib/funcs';
+import Player from 'tournament/model/Player';
+
 import GameOptions from './GameOptions';
 
 /**

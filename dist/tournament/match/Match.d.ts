@@ -1,7 +1,7 @@
+import Player from 'tournament/model/Player';
+import State from 'tournament/model/State';
 import MatchOptions from './MatchOptions';
 import Game from './game/Game';
-import Player from '../model/Player';
-import State from '../model/State';
 export default class Match {
     players: Player[];
     options: MatchOptions;

@@ -35,9 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var Game_1 = require("./game/Game");
-var State_1 = require("../model/State");
 var uuid = require("uuid/v4");
+var State_1 = require("tournament/model/State");
+var Game_1 = require("./game/Game");
 var Match = (function () {
     function Match(players, options, sendStats) {
         this.players = players;

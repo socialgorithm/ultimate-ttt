@@ -1,5 +1,5 @@
+import { Tournament } from 'tournament/Tournament';
 import Player from './Player';
-import { Tournament } from '../Tournament';
 export declare class Lobby {
     admin: Player;
     token: string;
@@ -13,12 +13,12 @@ export declare class Lobby {
             token: string;
         }[];
         tournament: {
-            options: import("../../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/Tournament").TournamentOptions;
+            options: import("tournament/Tournament").TournamentOptions;
             started: boolean;
             finished: boolean;
             matches: {
                 uuid: string;
-                stats: import("../../../../../../../../../Users/bharat/code/sg/uttt/ultimate-ttt-server/src/tournament/model/State").default;
+                stats: import("tournament/model/State").default;
                 players: {
                     token: string;
                 }[];

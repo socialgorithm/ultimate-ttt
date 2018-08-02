@@ -1,8 +1,8 @@
+import Match from "tournament/match/Match";
+import Player from "tournament/model/Player";
+import { TournamentStats } from "tournament/stats/TournamentStats";
+import MatchOptions from "tournament/match/MatchOptions";
 import Matchmaker from "./Matchmaker";
-import Match from "../match/Match";
-import Player from "../model/Player";
-import { TournamentStats } from "../stats/TournamentStats";
-import MatchOptions from "../match/MatchOptions";
 export default class FreeForAllMatchmaker implements Matchmaker {
     private players;
     private options;

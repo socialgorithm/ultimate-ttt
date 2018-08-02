@@ -1,4 +1,4 @@
-import Game from '../match/game/Game';
+import Game from 'tournament/match/game/Game';
 export interface Stats {
     winner?: number;
     total?: number;
