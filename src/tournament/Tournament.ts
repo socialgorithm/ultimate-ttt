@@ -100,18 +100,25 @@ export class Tournament {
             const upcomingMatches = this.stats.matches.filter(match => match.stats.state === "upcoming");
             if (upcomingMatches.length > 0) {
                 await this.playMatch(upcomingMatches[0]);
+                this.updateStats();
                 if (this.options.autoPlay) {
                     this.sendStats();
                 } else {
                     break;
                 }
             } else {
-                this.matchmaker.updateStats(this.stats);
+                this.updateStats();
                 this.stats.matches.push(...this.matchmaker.getRemainingMatches());
             }
         }
+        this.updateStats();
+    }
+
+    private updateStats() {
+        this.matchmaker.updateStats(this.stats);
         if (this.matchmaker.isFinished()) {
             this.stats.finished = true;
+            this.stats.waiting = false;
             this.sendStats();
         } else {
             this.stats.waiting = true;

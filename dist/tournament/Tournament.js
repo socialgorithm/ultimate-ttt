@@ -149,7 +149,7 @@ var Tournament = (function () {
     };
     Tournament.prototype.playTournament = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, upcomingMatches, upcomingMatches;
+            var _a, upcomingMatches;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -162,6 +162,7 @@ var Tournament = (function () {
                         return [4, this.playMatch(upcomingMatches[0])];
                     case 2:
                         _b.sent();
+                        this.updateStats();
                         if (this.options.autoPlay) {
                             this.sendStats();
                         }
@@ -170,24 +171,28 @@ var Tournament = (function () {
                         }
                         return [3, 4];
                     case 3:
-                        this.matchmaker.updateStats(this.stats);
+                        this.updateStats();
                         (_a = this.stats.matches).push.apply(_a, this.matchmaker.getRemainingMatches());
                         _b.label = 4;
                     case 4: return [3, 1];
                     case 5:
-                        if (!this.matchmaker.isFinished()) {
-                            this.stats.waiting = true;
-                            this.sendStats();
-                        }
-                        else {
-                            upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === "upcoming" || match.stats.state === "playing"; });
-                            this.stats.finished = upcomingMatches.length < 1;
-                            this.sendStats();
-                        }
+                        this.updateStats();
                         return [2];
                 }
             });
         });
+    };
+    Tournament.prototype.updateStats = function () {
+        this.matchmaker.updateStats(this.stats);
+        if (this.matchmaker.isFinished()) {
+            this.stats.finished = true;
+            this.stats.waiting = false;
+            this.sendStats();
+        }
+        else {
+            this.stats.waiting = true;
+            this.sendStats();
+        }
     };
     return Tournament;
 }());

@@ -25,6 +25,7 @@ var DoubleEliminationMatchmaker = (function () {
         var justPlayedMatches = this.tournamentStats.matches.filter(function (match) {
             return _this.processedMatches.indexOf(match.uuid) === -1;
         });
+        var tiedMatches = 0;
         justPlayedMatches.forEach(function (match) {
             if (match.stats.winner !== constants_1.RESULT_TIE) {
                 var winnerToken = match.players[match.stats.winner].token;
@@ -32,7 +33,13 @@ var DoubleEliminationMatchmaker = (function () {
                 _this.playerStats[winnerToken].wins++;
                 _this.playerStats[loserToken].losses++;
             }
+            else {
+                tiedMatches++;
+            }
         });
+        if (tiedMatches < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
+            this.finished = true;
+        }
     };
     DoubleEliminationMatchmaker.prototype.getRemainingMatches = function () {
         var _this = this;

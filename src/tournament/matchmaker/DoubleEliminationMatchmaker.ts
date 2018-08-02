@@ -54,6 +54,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
         const justPlayedMatches = this.tournamentStats.matches.filter(match =>
             this.processedMatches.indexOf(match.uuid) === -1,
         );
+        let tiedMatches = 0;
 
         justPlayedMatches.forEach((match: DoubleEliminationMatch) => {
             if (match.stats.winner !== RESULT_TIE) {
@@ -61,8 +62,14 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
                 const loserToken = match.players[match.stats.winner === 1 ? 0 : 1].token;
                 this.playerStats[winnerToken].wins++;
                 this.playerStats[loserToken].losses++;
+            } else {
+                tiedMatches++;
             }
         });
+
+        if (tiedMatches < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
+            this.finished = true;
+        }
     }
 
     public getRemainingMatches(): DoubleEliminationMatch[] {

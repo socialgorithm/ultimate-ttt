@@ -36,6 +36,7 @@ export declare class Tournament {
     };
     private playMatch;
     private playTournament;
+    private updateStats;
     private sendStats;
     private onGameInit;
     private onGameMove;
