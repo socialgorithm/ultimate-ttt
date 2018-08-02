@@ -3,7 +3,7 @@
 
 [![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-server.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-server)
 [![npm](https://img.shields.io/npm/v/@socialgorithm/uttt.svg)](https://www.npmjs.com/package/@socialgorithm/uttt )
-[![Coverage Status](https://coveralls.io/repos/github/socialgorithm/ultimate-ttt-server/badge.svg?branch=master)](https://coveralls.io/github/socialgorithm/ultimate-ttt-server?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/github/socialgorithm/ultimate-ttt-server/master.svg)](https://coveralls.io/github/socialgorithm/ultimate-ttt-server )
 [![npm](https://img.shields.io/npm/l/@socialgorithm/uttt.svg)](https://www.npmjs.com/package/@socialgorithm/uttt )
 
 This is a system intended for games & hackathons mainly, for teams to write their own bot and compete against other bots.
