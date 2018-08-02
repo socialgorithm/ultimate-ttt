@@ -36,7 +36,7 @@ export default class Match {
         this.stats.state = 'playing';
         for (let game of this.games) {
             await game.playGame();
-            this.stats.games.push(game);
+            this.stats.games.push(game.getStats());
             this.stats.times.push(game.gameTime);
             this.stats.gamesCompleted++;
             if (game.winnerIndex === -1) {

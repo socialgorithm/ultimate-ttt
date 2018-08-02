@@ -1,5 +1,5 @@
 import * as funcs from '../../lib/funcs';
-import Game from '../match/game/Game';
+import { GameStats } from '../match/game/GameStats';
 
 /**
  * Game stats calculated from a given state
@@ -19,7 +19,7 @@ export interface Stats {
  * Used to track the state across multiple games between two players
  */
 export default class State {
-  public games: Game[];
+  public games: GameStats[];
   public gamesCompleted: number; // Number of games won
   public gamesTied: number; // Number of ties
   public wins: Array<number>; // Array with only two elements, 0 is wins by player 0, 1 is wins by player 1

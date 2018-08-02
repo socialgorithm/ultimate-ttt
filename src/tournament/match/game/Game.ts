@@ -4,6 +4,7 @@ import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ulti
 import * as funcs from '../../../lib/funcs';
 import Player from '../../model/Player';
 import GameOptions from './GameOptions';
+import { Move, GameStats } from './GameStats';
 
 /**
  * Delay in ms to be used before starting a new game after a player times out.
@@ -16,6 +17,7 @@ const AFTER_TIMEOUT_DELAY = 100;
  */
 export default class Game {
     private game: UTTT;
+    private moves: Move[]
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
     private gamePromise: Promise<boolean>;
@@ -54,6 +56,10 @@ export default class Game {
         return this.gamePromise;
     }
 
+    public getStats(): GameStats {
+        return { moves: this.moves, uttt: this.game };
+    }
+
     private resetPlayers() {
         this.players[0].channel.send('game', 'init');
         this.players[1].channel.send('game', 'init');
@@ -89,26 +95,32 @@ export default class Game {
                 // This game is already over
                 return;
             }
-            if (this.currentPlayerIndex !== playerIndex) {
-                const player = this.players[playerIndex];
-                this.log(`Game ${this.options.gameId}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
-                this.handleGameWon(this.currentPlayerIndex);
-                return;
-            }
 
-            // Reset the timer
-            clearTimeout(this.playerMoveTimeout);
+            try {          
+                if (this.currentPlayerIndex !== playerIndex) {
+                    const player = this.players[playerIndex];
+                    this.log(`Game ${this.options.gameId}: Player ${player.token} played out of turn (it was ${this.players[this.currentPlayerIndex].token}'s turn)`);
+                    this.handleGameWon(this.currentPlayerIndex);
+                    return;
+                }
 
-            // Parse the response
-            if (data === 'fail') {
-                // this is weird and probably won't ever happen
-                this.handleGameWon(this.switchPlayer(this.currentPlayerIndex));
-                return;
-            }
-            try {
+                // Reset the timer
+                clearTimeout(this.playerMoveTimeout);
+
+                // Parse the response
+                if (data === 'fail') {
+                    // this is weird and probably won't ever happen
+                    this.handleGameWon(this.switchPlayer(this.currentPlayerIndex));
+                    return;
+                }
+
                 const coords = this.parseMove(data);
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
-
+                this.moves.push({ 
+                    board: coords.board, 
+                    move: coords.move,
+                    player: this.currentPlayerIndex
+                });
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
                 this.askForMove(this.writeMove(coords));
 

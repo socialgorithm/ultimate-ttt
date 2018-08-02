@@ -68,7 +68,7 @@ var Match = (function () {
                         return [4, game.playGame()];
                     case 2:
                         _b.sent();
-                        this.stats.games.push(game);
+                        this.stats.games.push(game.getStats());
                         this.stats.times.push(game.gameTime);
                         this.stats.gamesCompleted++;
                         if (game.winnerIndex === -1) {
