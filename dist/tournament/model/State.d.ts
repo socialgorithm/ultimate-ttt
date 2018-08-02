@@ -1,3 +1,4 @@
+import Game from '../match/game/Game';
 export interface Stats {
     winner?: number;
     total?: number;
@@ -8,8 +9,9 @@ export interface Stats {
     tiePercentage?: string;
 }
 export default class State {
-    games: number;
-    ties: number;
+    games: Game[];
+    gamesCompleted: number;
+    gamesTied: number;
     wins: Array<number>;
     times: Array<number>;
     timeouts: Array<number>;
@@ -17,8 +19,9 @@ export default class State {
     winner: number;
     constructor();
     toJSON(): {
-        games: number;
-        ties: number;
+        games: Game[];
+        gamesCompleted: number;
+        gamesTied: number;
         wins: number[];
         times: number[];
         timeouts: number[];

@@ -5,11 +5,10 @@ var constants_1 = require("@socialgorithm/ultimate-ttt/dist/model/constants");
 var funcs = require("../../../lib/funcs");
 var AFTER_TIMEOUT_DELAY = 100;
 var Game = (function () {
-    function Game(players, options, events, log) {
+    function Game(players, options, log) {
         var _this = this;
         this.players = players;
         this.options = options;
-        this.events = events;
         this.log = log;
         this.game = new UTTT_1["default"]();
         this.gamePromise = new Promise(function (resolve) {

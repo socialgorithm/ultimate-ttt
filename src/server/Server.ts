@@ -1,5 +1,4 @@
 import {Options} from "../lib/cli-options";
-import GUI from "./GUI";
 import SocketServer from "./SocketServer";
 import Player from "../tournament/model/Player";
 import { Tournament, TournamentOptions } from '../tournament/Tournament';
@@ -24,11 +23,6 @@ export default class Server {
   private lobbies: Array<Lobby>;
   
   /**
-   * Optional reference to the server GUI (if it has been enabled in the options)
-   */
-  private ui?: GUI;
-  
-  /**
    * Socket.IO Server reference
    */
   private socketServer: SocketServer;
@@ -51,18 +45,10 @@ export default class Server {
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
 
-    if (options.gui) {
-      this.ui = new GUI(title, this.options.port);
-    } else {
-      this.log(title);
-      this.log(`Listening on localhost:${this.options.port}`);
-    }
+    this.log(title);
+    this.log(`Listening on localhost:${this.options.port}`);
 
-    this.log('Server started', true);
-
-    if (this.ui) {
-      this.ui.render();
-    }
+    this.log('Server started');
   }
 
   private onPlayerConnect(player: Player): void {
@@ -197,11 +183,8 @@ export default class Server {
       if (this.players.filter(p => p.token === player.token).length === 0) {
         this.players.push(player);
       }
-      this.log(`Connected "${player.token}"`, true);
+      this.log(`Connected "${player.token}"`);
       this.socketServer.emitPayload('stats', 'connect', player.token);
-      if (this.ui) {
-        this.ui.renderOnlinePlayers(this.players.map(p => p.token));
-      }
     });
   }
 
@@ -216,25 +199,17 @@ export default class Server {
     } else {
       return;
     }
-    this.log(`Disconnected ${player.token}`, true);
+    this.log(`Disconnected ${player.token}`);
     this.socketServer.emitPayload('stats', 'disconnect', player.token);
-    if (this.ui) {
-      this.ui.renderOnlinePlayers(this.players.map(p => p.token));
-    }
   }
 
   /**
-   * Log a message to the console or the GUI if it's enabled
+   * Log a message to the console
    * @param message
-   * @param skipRender only for GUI mode, set to true to avoid rerendering
    */
-  private log(message: string, skipRender: boolean = false): void {
+  private log(message: string): void {
     const time = (new Date()).toTimeString().substr(0,5);
-    if (this.ui) {
-      this.ui.log(message, skipRender);
-    } else {
-      console.log(`[${time}]`, message);
-    }
+    console.log(`[${time}]`, message);
   }
 }
 

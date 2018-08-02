@@ -2,7 +2,6 @@ export interface Options {
     version?: boolean;
     verbose?: boolean;
     port?: number;
-    gui?: boolean;
     host?: string;
     help?: number;
 }
