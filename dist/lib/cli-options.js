@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var commandLineArgs = require("command-line-args");
 var getUsage = require("command-line-usage");
-var info = require("./calls.json");
+var info = require("../../package.json");
 exports.DEFAULT_OPTIONS = {
     port: parseInt(process.env.PORT, 10) || 3141
 };

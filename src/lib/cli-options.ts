@@ -2,7 +2,7 @@ import * as commandLineArgs from "command-line-args";
 import * as getUsage from "command-line-usage";
 
 // tslint:disable-next-line:no-var-requires
-const info = require("./calls.json");
+const info = require("../../package.json");
 
 /**
  * Server Options

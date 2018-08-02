@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/standalone.js",
     "start:dev": "nodemon",
-    "dev": "tsc && ts-node --files src/standalone.ts",
+    "dev": "tsc && ts-node -r tsconfig-paths/register --files src/standalone.ts",
     "start:opts": "tsc && ts-node bin/index.js",
     "build": "tsc -w",
     "test": "npm run lint && cross-env TS_NODE_FILES=true nyc mocha -r ts-node/register -r tsconfig-paths/register --recursive 'test/**/*.test.ts'",
