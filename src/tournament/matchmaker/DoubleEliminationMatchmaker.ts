@@ -156,6 +156,8 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
                 }
             }
         });
+        const playersAwaitingMatch = this.players.map(player => player.token).filter(token => ranking.indexOf(token) === -1);
+        ranking.push(...playersAwaitingMatch);
         return ranking;
     }
 

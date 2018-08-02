@@ -109,6 +109,8 @@ var DoubleEliminationMatchmaker = (function () {
                 }
             }
         });
+        var playersAwaitingMatch = this.players.map(function (player) { return player.token; }).filter(function (token) { return ranking.indexOf(token) === -1; });
+        ranking.push.apply(ranking, playersAwaitingMatch);
         return ranking;
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
