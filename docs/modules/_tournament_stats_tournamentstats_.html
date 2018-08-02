@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GameUI | @socialgorithm/uttt</title>
+	<title>&quot;tournament/stats/TournamentStats&quot; | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,80 +56,62 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_server_gui_.html">&quot;server/GUI&quot;</a>
-				</li>
-				<li>
-					<a href="_server_gui_.gameui.html">GameUI</a>
+					<a href="_tournament_stats_tournamentstats_.html">&quot;tournament/stats/TournamentStats&quot;</a>
 				</li>
 			</ul>
-			<h1>Interface GameUI</h1>
+			<h1>External module &quot;tournament/stats/TournamentStats&quot;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>UI Holder for each game in the server</p>
-					</div>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">GameUI</span>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_server_gui_.gameui.html#box" class="tsd-kind-icon">box</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_server_gui_.gameui.html#players" class="tsd-kind-icon">players</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_server_gui_.gameui.html#progressbar" class="tsd-kind-icon">progress<wbr>Bar</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_tournament_stats_tournamentstats_.html#tournamentstats" class="tsd-kind-icon">Tournament<wbr>Stats</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="box" class="tsd-anchor"></a>
-					<h3>box</h3>
-					<div class="tsd-signature tsd-kind-icon">box<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BoxElement</span></div>
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="tournamentstats" class="tsd-anchor"></a>
+					<h3>Tournament<wbr>Stats</h3>
+					<div class="tsd-signature tsd-kind-icon">Tournament<wbr>Stats<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/server/GUI.ts#L10">server/GUI.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/stats/TournamentStats.ts#L6">tournament/stats/TournamentStats.ts:6</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="players" class="tsd-anchor"></a>
-					<h3>players</h3>
-					<div class="tsd-signature tsd-kind-icon">players<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/server/GUI.ts#L12">server/GUI.ts:12</a></li>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Statistics for matches played in a tournament</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>finished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>matches<span class="tsd-signature-symbol">: </span><a href="../classes/_tournament_match_match_.match.html" class="tsd-signature-type">Match</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>started<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>waiting<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+							</li>
 						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="progressbar" class="tsd-anchor"></a>
-					<h3>progress<wbr>Bar</h3>
-					<div class="tsd-signature tsd-kind-icon">progress<wbr>Bar<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ProgressBarElement</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/server/GUI.ts#L11">server/GUI.ts:11</a></li>
-						</ul>
-					</aside>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -140,95 +122,74 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_index_.html">"index"</a>
+						<a href="_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
+						<a href="_lib_cli_options_.html">"lib/cli-<wbr>options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_lib_funcs_.html">"lib/funcs"</a>
+						<a href="_lib_funcs_.html">"lib/funcs"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_server_server_.html">"server/<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_server_constants_.html">"server/constants"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_standalone_.html">"standalone"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_server_gui_.html">"server/GUI"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_server_server_.html">"server/<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_server_socketserver_.html">"server/<wbr>Socket<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_server_constants_.html">"server/constants"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_standalone_.html">"standalone"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_tournament_.html">"tournament/<wbr>Tournament"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_match_match_.html">"tournament/match/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_match_matchoptions_.html">"tournament/match/<wbr>Match<wbr>Options"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_matchmaker_matchmaker_.html">"tournament/matchmaker/<wbr>Matchmaker"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_model_channel_.html">"tournament/model/<wbr>Channel"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_model_lobby_.html">"tournament/model/<wbr>Lobby"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_model_player_.html">"tournament/model/<wbr>Player"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
+						<a href="_tournament_stats_tournamentstats_.html">"tournament/stats/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_server_gui_.gui.html" class="tsd-kind-icon">GUI</a>
-					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_server_gui_.gameui.html" class="tsd-kind-icon">GameUI</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_server_gui_.gameui.html#box" class="tsd-kind-icon">box</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_server_gui_.gameui.html#players" class="tsd-kind-icon">players</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_server_gui_.gameui.html#progressbar" class="tsd-kind-icon">progress<wbr>Bar</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_server_gui_.html#pjson" class="tsd-kind-icon">pjson</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_tournament_stats_tournamentstats_.html#tournamentstats" class="tsd-kind-icon">Tournament<wbr>Stats</a>
 					</li>
 				</ul>
 			</nav>

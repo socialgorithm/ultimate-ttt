@@ -70,7 +70,7 @@
 				</blockquote>
 				<p><a href="https://travis-ci.org/socialgorithm/ultimate-ttt-server"><img src="https://img.shields.io/travis/socialgorithm/ultimate-ttt-server.svg" alt="Travis"></a>
 					<a href="https://www.npmjs.com/package/@socialgorithm/uttt"><img src="https://img.shields.io/npm/v/@socialgorithm/uttt.svg" alt="npm"></a>
-					<a href="https://coveralls.io/github/socialgorithm/ultimate-ttt-server?branch=master"><img src="https://coveralls.io/repos/github/socialgorithm/ultimate-ttt-server/badge.svg?branch=master" alt="Coverage Status"></a>
+					<a href="https://coveralls.io/github/socialgorithm/ultimate-ttt-server"><img src="https://img.shields.io/coveralls/github/socialgorithm/ultimate-ttt-server/master.svg" alt="Coverage Status"></a>
 				<a href="https://www.npmjs.com/package/@socialgorithm/uttt"><img src="https://img.shields.io/npm/l/@socialgorithm/uttt.svg" alt="npm"></a></p>
 				<p>This is a system intended for games &amp; hackathons mainly, for teams to write their own bot and compete against other bots.</p>
 				<p>They will be playing games of <a href="https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/">&quot;Ultimate Tic Tac Toe&quot;</a>, which provides a great opportunity for learning, predicting moves...</p>
@@ -84,13 +84,11 @@
 				<pre><code class="lang-bash"> $ npm install -g @socialgorithm/uttt
 </code></pre>
 				<h3 id="run-in-online-mode">Run in online mode</h3>
-				<p>By default, the server will start in online mode and listen for players on port <code>3141</code>.
-				The server starts up a terminal GUI displaying the current online players and game stats. Players are paired automatically as soon as there are two available players.</p>
+				<p>By default, the server will start in online mode and listen for players on port <code>3141</code>.</p>
 				<p>By default the server will have players play 1000 games per session.</p>
 				<p>You can launch the server using:</p>
-				<pre><code class="lang-bash">$ uttt --gui
+				<pre><code class="lang-bash">$ uttt
 </code></pre>
-				<p><a href="https://asciinema.org/a/105087"><img src="https://github.com/aurbano/ultimate-ttt-server/raw/master/demos/online.gif" alt="Online demo" title="Online demo"></a></p>
 				<p>Options:</p>
 				<pre><code>uttt
 
@@ -101,14 +99,12 @@ Options
   --verbose           The input <span class="hljs-keyword">to</span> process.
   -v, --version       Display the<span class="hljs-built_in"> server </span>version
   -p, --port 3141    <span class="hljs-built_in"> Port </span>on which the<span class="hljs-built_in"> server </span>should be started (defaults <span class="hljs-keyword">to</span> 3141)
-  -u, --gui           Display a fancy GUI <span class="hljs-keyword">in</span> the terminal (only available <span class="hljs-keyword">in</span> online mode)
   -g, --games 1000    Number of games <span class="hljs-keyword">to</span> play, defaults <span class="hljs-keyword">to</span> 1000
   -t, --timeout 100   Milliseconds after which a player loses (defaults <span class="hljs-keyword">to</span> 100)
   -h, --help          <span class="hljs-builtin-name">Print</span> this guide
 
 Synopsis
 
-  $ uttt --gui
   $ uttt --games 100
   $ uttt --port 5000
   $ uttt --help
@@ -149,9 +145,6 @@ Synopsis
 						<a href="modules/_lib_funcs_.html">"lib/funcs"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_gui_.html">"server/GUI"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_server_server_.html">"server/<wbr>Server"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -176,10 +169,13 @@ Synopsis
 						<a href="modules/_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
+						<a href="modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+						<a href="modules/_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_tournament_matchmaker_doubleeliminationmatchmaker_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Matchmaker"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
@@ -200,7 +196,7 @@ Synopsis
 						<a href="modules/_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
+						<a href="modules/_tournament_stats_tournamentstats_.html">"tournament/stats/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>

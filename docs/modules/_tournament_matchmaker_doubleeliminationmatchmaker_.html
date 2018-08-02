@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;tournament/model/TournamentStats&quot; | @socialgorithm/uttt</title>
+	<title>&quot;tournament/matchmaker/DoubleEliminationMatchmaker&quot; | @socialgorithm/uttt</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_tournament_model_tournamentstats_.html">&quot;tournament/model/TournamentStats&quot;</a>
+					<a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html">&quot;tournament/matchmaker/DoubleEliminationMatchmaker&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;tournament/model/TournamentStats&quot;</h1>
+			<h1>External module &quot;tournament/matchmaker/DoubleEliminationMatchmaker&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -71,41 +71,64 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_tournament_matchmaker_doubleeliminationmatchmaker_.doubleeliminationmatchmaker.html" class="tsd-kind-icon">Double<wbr>Elimination<wbr>Matchmaker</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_tournament_model_tournamentstats_.html#tournamentstats" class="tsd-kind-icon">Tournament<wbr>Stats</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html#matchingresult" class="tsd-kind-icon">Matching<wbr>Result</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html#playerstats" class="tsd-kind-icon">Player<wbr>Stats</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
-					<a name="tournamentstats" class="tsd-anchor"></a>
-					<h3>Tournament<wbr>Stats</h3>
-					<div class="tsd-signature tsd-kind-icon">Tournament<wbr>Stats<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="matchingresult" class="tsd-anchor"></a>
+					<h3>Matching<wbr>Result</h3>
+					<div class="tsd-signature tsd-kind-icon">Matching<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/d33427c/src/tournament/model/TournamentStats.ts#L6">tournament/model/TournamentStats.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/DoubleEliminationMatchmaker.ts#L15">tournament/matchmaker/DoubleEliminationMatchmaker.ts:15</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Statistics for matches played in a tournament</p>
-						</div>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
-								<h5>finished<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> matches<span class="tsd-signature-symbol">?: </span><a href="../classes/_tournament_matchmaker_doubleeliminationmatch_.doubleeliminationmatch.html" class="tsd-signature-type">DoubleEliminationMatch</a><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>matches<span class="tsd-signature-symbol">: </span><a href="../classes/_tournament_match_match_.match.html" class="tsd-signature-type">Match</a><span class="tsd-signature-symbol">[]</span></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> odd<wbr>Player<span class="tsd-signature-symbol">?: </span><a href="../classes/_tournament_model_player_.player.html" class="tsd-signature-type">Player</a></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="playerstats" class="tsd-anchor"></a>
+					<h3>Player<wbr>Stats</h3>
+					<div class="tsd-signature tsd-kind-icon">Player<wbr>Stats<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/socialgorithm/ultimate-ttt-server/blob/fa6ba1a/src/tournament/matchmaker/DoubleEliminationMatchmaker.ts#L9">tournament/matchmaker/DoubleEliminationMatchmaker.ts:9</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>losses<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>started<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								<h5>player<span class="tsd-signature-symbol">: </span><a href="../classes/_tournament_model_player_.player.html" class="tsd-signature-type">Player</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>wins<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 						</ul>
 					</div>
@@ -126,9 +149,6 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_lib_funcs_.html">"lib/funcs"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_server_gui_.html">"server/GUI"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_server_server_.html">"server/<wbr>Server"</a>
@@ -155,10 +175,13 @@
 						<a href="_tournament_match_game_game_.html">"tournament/match/game/<wbr>Game"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_game_gameevents_.html">"tournament/match/game/<wbr>Game<wbr>Events"</a>
+						<a href="_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tournament_match_game_gameoptions_.html">"tournament/match/game/<wbr>Game<wbr>Options"</a>
+						<a href="_tournament_matchmaker_doubleeliminationmatch_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Match"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html">"tournament/matchmaker/<wbr>Double<wbr>Elimination<wbr>Matchmaker"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_tournament_matchmaker_freeforallmatchmaker_.html">"tournament/matchmaker/<wbr>Free<wbr>For<wbr>All<wbr>Matchmaker"</a>
@@ -178,15 +201,21 @@
 					<li class=" tsd-kind-external-module">
 						<a href="_tournament_model_state_.html">"tournament/model/<wbr>State"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="_tournament_model_tournamentstats_.html">"tournament/model/<wbr>Tournament<wbr>Stats"</a>
+					<li class=" tsd-kind-external-module">
+						<a href="_tournament_stats_tournamentstats_.html">"tournament/stats/<wbr>Tournament<wbr>Stats"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="_tournament_model_tournamentstats_.html#tournamentstats" class="tsd-kind-icon">Tournament<wbr>Stats</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/_tournament_matchmaker_doubleeliminationmatchmaker_.doubleeliminationmatchmaker.html" class="tsd-kind-icon">Double<wbr>Elimination<wbr>Matchmaker</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html#matchingresult" class="tsd-kind-icon">Matching<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="_tournament_matchmaker_doubleeliminationmatchmaker_.html#playerstats" class="tsd-kind-icon">Player<wbr>Stats</a>
 					</li>
 				</ul>
 			</nav>
