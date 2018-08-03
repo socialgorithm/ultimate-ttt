@@ -53,11 +53,8 @@ var Tournament = (function () {
         this.sendStats = function () {
             _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament stats", _this.getStats());
         };
-        this.onGameInit = function () {
-            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament game init", []);
-        };
-        this.onGameMove = function (move) {
-            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament game move", move);
+        this.onMatchEnd = function (detailedMatchStats) {
+            _this.socket.emitToLobbyInfo(_this.lobbyToken, "tournament match end", detailedMatchStats);
         };
         var matchOptions = {
             autoPlay: this.options.autoPlay,
@@ -65,8 +62,7 @@ var Tournament = (function () {
             timeout: this.options.timeout
         };
         var tournamentEventCallbacks = {
-            onGameInit: this.onGameInit,
-            onGameMove: this.onGameMove,
+            onMatchEnd: this.onMatchEnd,
             sendStats: this.sendStats
         };
         switch (options.type) {
@@ -149,7 +145,7 @@ var Tournament = (function () {
     };
     Tournament.prototype.playTournament = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, upcomingMatches;
+            var _a, upcomingMatches, nextMatch;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -159,9 +155,11 @@ var Tournament = (function () {
                         if (!!this.matchmaker.isFinished()) return [3, 5];
                         upcomingMatches = this.stats.matches.filter(function (match) { return match.stats.state === "upcoming"; });
                         if (!(upcomingMatches.length > 0)) return [3, 3];
-                        return [4, this.playMatch(upcomingMatches[0])];
+                        nextMatch = upcomingMatches[0];
+                        return [4, this.playMatch(nextMatch)];
                     case 2:
                         _b.sent();
+                        this.onMatchEnd(nextMatch.getDetailedStats());
                         this.updateStats();
                         if (this.options.autoPlay) {
                             this.sendStats();

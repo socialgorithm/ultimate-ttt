@@ -38,6 +38,7 @@ exports.__esModule = true;
 var uuid = require("uuid/v4");
 var State_1 = require("../../tournament/model/State");
 var Game_1 = require("./game/Game");
+var DetailedMatchStats_1 = require("../../tournament/match/DetailedMatchStats");
 var Match = (function () {
     function Match(players, options, events) {
         this.players = players;
@@ -46,6 +47,7 @@ var Match = (function () {
         this.uuid = uuid();
         this.games = [];
         this.stats = new State_1["default"]();
+        this.detailedStats = new DetailedMatchStats_1["default"]();
         for (var i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game_1["default"](this.players, {
                 gameId: i,
@@ -79,6 +81,7 @@ var Match = (function () {
                         if (game.timedoutPlayer) {
                             this.stats.timeouts[game.timedoutPlayer]++;
                         }
+                        this.detailedStats.games.push(game.getStats());
                         this.events.sendStats();
                         _b.label = 3;
                     case 3:
@@ -105,6 +108,9 @@ var Match = (function () {
             stats: this.stats,
             uuid: this.uuid
         };
+    };
+    Match.prototype.getDetailedStats = function () {
+        return this.detailedStats;
     };
     Match.prototype.toString = function () {
         var winner = "";
