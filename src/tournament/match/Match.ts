@@ -22,7 +22,7 @@ export default class Match {
         this.uuid = uuid();
         this.games = [];
         this.stats = new State();
-        this.detailedStats = new DetailedMatchStats();
+        this.detailedStats = new DetailedMatchStats(this.uuid);
 
         for (let i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game(
