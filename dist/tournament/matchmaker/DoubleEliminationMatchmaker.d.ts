@@ -10,6 +10,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     private events;
     private finished;
     private tournamentStats;
+    private ranking;
     private processedMatches;
     private playerStats;
     private zeroLossOddPlayer;

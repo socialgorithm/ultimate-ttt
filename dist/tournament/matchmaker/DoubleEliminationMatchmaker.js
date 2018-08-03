@@ -10,6 +10,7 @@ var DoubleEliminationMatchmaker = (function () {
         this.events = events;
         this.unlinkedMatches = [];
         this.processedMatches = [];
+        this.ranking = this.players.map(function (player) { return player.token; });
         this.playerStats = {};
         this.players.forEach(function (player) {
             _this.playerStats[player.token] = { player: player, wins: 0, losses: 0 };
@@ -37,8 +38,12 @@ var DoubleEliminationMatchmaker = (function () {
                 tiedMatches++;
             }
         });
+        if (!this.tournamentStats.finished) {
+            this.ranking = this.unfinishedRanking();
+        }
         if (tiedMatches < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
+            this.ranking = this.finishedRanking();
         }
     };
     DoubleEliminationMatchmaker.prototype.getRemainingMatches = function () {
@@ -62,6 +67,7 @@ var DoubleEliminationMatchmaker = (function () {
         });
         if (matches.length < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
+            this.ranking = this.finishedRanking();
             return [];
         }
         var zeroLossPlayers = [];
@@ -109,12 +115,7 @@ var DoubleEliminationMatchmaker = (function () {
         return matches;
     };
     DoubleEliminationMatchmaker.prototype.getRanking = function () {
-        if (this.tournamentStats.finished) {
-            return this.finishedRanking();
-        }
-        else {
-            return this.unfinishedRanking();
-        }
+        return this.ranking;
     };
     DoubleEliminationMatchmaker.prototype.finishedRanking = function () {
         var ranking = [];
@@ -138,10 +139,11 @@ var DoubleEliminationMatchmaker = (function () {
     DoubleEliminationMatchmaker.prototype.unfinishedRanking = function () {
         var _this = this;
         return this.players
+            .map(function (player) { return player; })
             .sort(function (a, b) { return _this.getPlayerScore(b) - _this.getPlayerScore(a); }).map(function (player) { return player.token; });
     };
     DoubleEliminationMatchmaker.prototype.getPlayerScore = function (player) {
-        return this.playerStats[player.token].wins / (this.playerStats[player.token].losses + this.playerStats[player.token].losses);
+        return this.playerStats[player.token].wins / (this.playerStats[player.token].wins + this.playerStats[player.token].losses);
     };
     DoubleEliminationMatchmaker.prototype.matchPlayers = function (players) {
         var matches = [];

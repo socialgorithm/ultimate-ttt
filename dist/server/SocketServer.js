@@ -72,7 +72,7 @@ var SocketServer = (function () {
                     socket.emit("lobby exception", { error: "Unable to join lobby, ensure token is correct" });
                     return;
                 }
-                _this.io["in"](data.token).emit("connected", {
+                _this.io["in"](lobby.token).emit("connected", {
                     lobby: lobby.toObject()
                 });
                 socket.join(lobby.token);
@@ -116,17 +116,8 @@ var SocketServer = (function () {
             _this.socketEvents.onPlayerConnect(player);
         });
     }
-    SocketServer.prototype.emit = function (type, data) {
-        this.io.emit(type, data);
-    };
-    SocketServer.prototype.emitInLobby = function (lobby, type, data) {
-        this.io.to(lobby).emit(type, data);
-    };
     SocketServer.prototype.emitToLobbyInfo = function (lobby, type, data) {
         this.io.to(lobby + "-info").emit(type, data);
-    };
-    SocketServer.prototype.emitPayload = function (emitType, type, payload) {
-        this.emit(emitType, { type: type, payload: payload });
     };
     SocketServer.prototype.handler = function (req, res) {
         fs.readFile(__dirname + "/../../public/index.html", function (err, data) {

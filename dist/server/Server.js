@@ -80,8 +80,7 @@ var Server = (function () {
             onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
             onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
             onPlayerConnect: this.onPlayerConnect.bind(this),
-            onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
-            updateStats: this.updateStats.bind(this)
+            onPlayerDisconnect: this.onPlayerDisconnect.bind(this)
         });
         var title = "Ultimate TTT Algorithm Battle v" + pjson.version;
         this.log(title);
@@ -116,10 +115,6 @@ var Server = (function () {
         foundLobby.tournament["continue"]();
         return foundLobby;
     };
-    Server.prototype.updateStats = function () {
-        var payload = { players: this.players.map(function (p) { return p.token; }), games: [] };
-        this.socketServer.emitPayload("stats", "stats", payload);
-    };
     Server.prototype.addPlayer = function (player) {
         var _this = this;
         var matches = this.players.filter(function (p) { return p.token === player.token; });
@@ -132,7 +127,6 @@ var Server = (function () {
                 _this.players.push(player);
             }
             _this.log("Connected \"" + player.token + "\"");
-            _this.socketServer.emitPayload("stats", "connect", player.token);
         });
     };
     Server.prototype.removePlayer = function (player) {
@@ -144,7 +138,6 @@ var Server = (function () {
             return;
         }
         this.log("Disconnected " + player.token);
-        this.socketServer.emitPayload("stats", "disconnect", player.token);
     };
     Server.prototype.log = function (message) {
         var time = (new Date()).toTimeString().substr(0, 5);

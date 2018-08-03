@@ -42,7 +42,6 @@ export default class Server {
       onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
       onPlayerConnect: this.onPlayerConnect.bind(this),
       onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
-      updateStats: this.updateStats.bind(this),
     });
 
     const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
@@ -165,11 +164,6 @@ export default class Server {
     return foundLobby;
   }
 
-  private updateStats(): void {
-    const payload = { players: this.players.map(p => p.token), games: [] as any[] };
-    this.socketServer.emitPayload("stats", "stats", payload);
-  }
-
   /**
    * Add a player to the server
    * @param player Player token
@@ -186,7 +180,6 @@ export default class Server {
         this.players.push(player);
       }
       this.log(`Connected "${player.token}"`);
-      this.socketServer.emitPayload("stats", "connect", player.token);
     });
   }
 
@@ -202,7 +195,6 @@ export default class Server {
       return;
     }
     this.log(`Disconnected ${player.token}`);
-    this.socketServer.emitPayload("stats", "disconnect", player.token);
   }
 
   /**

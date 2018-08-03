@@ -47,7 +47,7 @@ var Match = (function () {
         this.uuid = uuid();
         this.games = [];
         this.stats = new State_1["default"]();
-        this.detailedStats = new DetailedMatchStats_1["default"]();
+        this.detailedStats = new DetailedMatchStats_1["default"](this.uuid);
         for (var i = 0; i < options.maxGames; i++) {
             this.games[i] = new Game_1["default"](this.players, {
                 gameId: i,

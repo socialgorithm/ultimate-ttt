@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import { expect } from 'chai';
 import * as io from 'socket.io-client';
 

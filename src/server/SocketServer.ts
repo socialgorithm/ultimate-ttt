@@ -21,7 +21,6 @@ export interface ISocketEvents {
     onLobbyJoin(player: Player, lobbyToken: string, spectating: boolean): Lobby;
     onLobbyTournamentStart(lobbyToken: string, options: ITournamentOptions, players: string[]): Lobby;
     onLobbyTournamentContinue(lobbyToken: string): Lobby;
-    updateStats(): void;
 }
 
 /**
@@ -104,7 +103,7 @@ export default class SocketServer {
                     socket.emit("lobby exception", {error: "Unable to join lobby, ensure token is correct"});
                     return;
                 }
-                this.io.in(data.token).emit("connected", {
+                this.io.in(lobby.token).emit("connected", {
                     lobby: lobby.toObject(),
                 });
                 socket.join(lobby.token);
@@ -152,25 +151,6 @@ export default class SocketServer {
     }
 
     /**
-     * Send a message to any client listening on the socket
-     * @param type Message type (determines who receives the data)
-     * @param data Data to be sent
-     */
-    public emit(type: string, data: { type: string, payload: any }): void {
-        this.io.emit(type, data);
-    }
-
-    /**
-     * Send a message to a lobby
-     * @param lobby Lobby token
-     * @param type Message type (determines who receives the data)
-     * @param data Data to be sent
-     */
-    public emitInLobby(lobby: string, type: string, data: any): void {
-        this.io.to(lobby).emit(type, data);
-    }
-
-    /**
      * Send a message to spectators in the lobby
      * @param lobby Lobby token
      * @param type Message type (determines who receives the data)
@@ -178,10 +158,6 @@ export default class SocketServer {
      */
     public emitToLobbyInfo(lobby: string, type: string, data: any): void {
         this.io.to(`${lobby}-info`).emit(type, data);
-    }
-
-    public emitPayload(emitType: string, type: string, payload: any): void {
-        this.emit(emitType, { type, payload });
     }
 
     /**
