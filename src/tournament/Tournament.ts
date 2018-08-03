@@ -9,6 +9,7 @@ import FreeForAllMatchmaker from "./matchmaker/FreeForAllMatchmaker";
 import IMatchmaker from "./matchmaker/Matchmaker";
 import Player from "./model/Player";
 import {ITournamentStats} from "./stats/TournamentStats";
+import DetailedMatchStats from "../tournament/match/DetailedMatchStats";
 
 /**
  * Tournament Options, these can be modified by the web interface
@@ -42,8 +43,7 @@ export class Tournament {
             timeout: this.options.timeout,
         };
         const tournamentEventCallbacks: ITournamentEvents = {
-            onGameInit: this.onGameInit,
-            onGameMove: this.onGameMove,
+            onMatchEnd: this.onMatchEnd,
             sendStats: this.sendStats,
         };
         switch (options.type) {
@@ -99,7 +99,9 @@ export class Tournament {
         while (!this.matchmaker.isFinished()) {
             const upcomingMatches = this.stats.matches.filter(match => match.stats.state === "upcoming");
             if (upcomingMatches.length > 0) {
-                await this.playMatch(upcomingMatches[0]);
+                const nextMatch = upcomingMatches[0];
+                await this.playMatch(nextMatch);
+                this.onMatchEnd(nextMatch.getDetailedStats());
                 this.updateStats();
                 if (this.options.autoPlay) {
                     this.sendStats();
@@ -130,11 +132,7 @@ export class Tournament {
         this.socket.emitToLobbyInfo(this.lobbyToken, "tournament stats", this.getStats());
     }
 
-    private onGameInit = (): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game init", []);
-    }
-
-    private onGameMove = (move: IMove): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament game move", move);
+    private onMatchEnd = (detailedMatchStats: DetailedMatchStats): void => {
+        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament match end", detailedMatchStats);
     }
 }
