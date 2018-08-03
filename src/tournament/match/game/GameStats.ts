@@ -15,5 +15,4 @@ export interface IMove {
  */
 export interface IGameStats {
   moves: IMove[];
-  uttt: UTTT;
 }

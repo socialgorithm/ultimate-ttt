@@ -22,6 +22,7 @@ export default class Game {
     public gameTime: number;
     public timedoutPlayer: PlayerNumber;
     private game: UTTT;
+    private moves: IMove[];
     private currentPlayerIndex: PlayerNumber;
     private gameStart: [number, number];
     private gamePromise: Promise<boolean>;
@@ -34,6 +35,7 @@ export default class Game {
      */
     constructor(private players: Player[], private options: IGameOptions, private events: ITournamentEvents, private log: any) {
         this.game = new UTTT();
+        this.moves = [];
         this.gamePromise = new Promise(resolve => {
             this.resolve = resolve;
         });
@@ -57,10 +59,18 @@ export default class Game {
         return this.gamePromise;
     }
 
+    /**
+     * Returns a subset of game information for analysis
+     */
+    public getStats(): IGameStats {
+        return {
+            moves: this.moves
+        }
+    }
+
     private resetPlayers() {
         this.players[0].channel.send("game", "init");
         this.players[1].channel.send("game", "init");
-        this.events.onGameInit();
     }
 
     /**
@@ -114,7 +124,7 @@ export default class Game {
 
                 const coords = this.parseMove(data);
                 this.game = this.game.move(this.currentPlayerIndex, coords.board, coords.move);
-                this.events.onGameMove({ board: coords.board, move: coords.move, player: this.currentPlayerIndex });
+                this.moves.push({ board: coords.board, move: coords.move, player: this.currentPlayerIndex });
                 this.currentPlayerIndex = this.switchPlayer(this.currentPlayerIndex);
                 this.askForMove(this.writeMove(coords));
 

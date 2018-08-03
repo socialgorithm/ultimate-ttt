@@ -12,6 +12,7 @@ var Game = (function () {
         this.events = events;
         this.log = log;
         this.game = new UTTT_1["default"]();
+        this.moves = [];
         this.gamePromise = new Promise(function (resolve) {
             _this.resolve = resolve;
         });
@@ -27,10 +28,14 @@ var Game = (function () {
         this.askForMove();
         return this.gamePromise;
     };
+    Game.prototype.getStats = function () {
+        return {
+            moves: this.moves
+        };
+    };
     Game.prototype.resetPlayers = function () {
         this.players[0].channel.send("game", "init");
         this.players[1].channel.send("game", "init");
-        this.events.onGameInit();
     };
     Game.prototype.askForMove = function (move) {
         var _this = this;
@@ -64,7 +69,7 @@ var Game = (function () {
                 }
                 var coords = _this.parseMove(data);
                 _this.game = _this.game.move(_this.currentPlayerIndex, coords.board, coords.move);
-                _this.events.onGameMove({ board: coords.board, move: coords.move, player: _this.currentPlayerIndex });
+                _this.moves.push({ board: coords.board, move: coords.move, player: _this.currentPlayerIndex });
                 _this.currentPlayerIndex = _this.switchPlayer(_this.currentPlayerIndex);
                 _this.askForMove(_this.writeMove(coords));
                 if (_this.game.isFinished()) {
