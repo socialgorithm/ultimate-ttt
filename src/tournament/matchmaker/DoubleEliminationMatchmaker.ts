@@ -28,6 +28,7 @@ interface IMatchingResult {
 export default class DoubleEliminationMatchmaker implements IMatchmaker {
     private finished: boolean;
     private tournamentStats: ITournamentStats;
+    private ranking: string[];
     private processedMatches: string[];
     private playerStats: { [key: string]: IPlayerStats };
     private zeroLossOddPlayer: Player;
@@ -37,6 +38,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
 
     constructor(private players: Player[], private options: IMatchOptions, private events: ITournamentEvents) {
         this.processedMatches = [];
+        this.ranking = this.players.map(player => player.token);
         this.playerStats = {};
         this.players.forEach(player => {
             this.playerStats[player.token] = { player, wins: 0, losses: 0 };
@@ -67,8 +69,13 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
             }
         });
 
+        if (!this.tournamentStats.finished) {
+            this.ranking = this.unfinishedRanking();
+        }
+
         if (tiedMatches < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
+            this.ranking = this.finishedRanking();
         }
     }
 
@@ -105,6 +112,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
 
         if (matches.length < 1 && justPlayedMatches.length === 1 && !this.anyPlayersWaiting()) {
             this.finished = true;
+            this.ranking = this.finishedRanking();
             return [];
         }
 
@@ -156,11 +164,7 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
     }
 
     public getRanking(): string[] {
-        if (this.tournamentStats.finished) {
-            return this.finishedRanking();
-        } else {
-            return this.unfinishedRanking();
-        }
+        return this.ranking;
     }
 
     private finishedRanking(): string[] {
@@ -185,13 +189,14 @@ export default class DoubleEliminationMatchmaker implements IMatchmaker {
 
     private unfinishedRanking(): string[] {
         return this.players
+            .map(player => player) // mapping to copy
             .sort(
                 (a: Player, b: Player) => this.getPlayerScore(b) - this.getPlayerScore(a),
             ).map(player => player.token);
     }
 
     private getPlayerScore(player: Player): number {
-        return this.playerStats[player.token].wins / (this.playerStats[player.token].losses + this.playerStats[player.token].losses);
+        return this.playerStats[player.token].wins / (this.playerStats[player.token].wins + this.playerStats[player.token].losses);
     }
 
     private matchPlayers(players: Player[]): IMatchingResult {
