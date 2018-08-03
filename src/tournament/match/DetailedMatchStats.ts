@@ -1,7 +1,9 @@
 import { IGameStats } from "../../tournament/match/game/GameStats";
 
 export default class DetailedMatchStats {
-    games: IGameStats[];
+    public games: IGameStats[];
 
-    constructor(public uuid: string) {}
+    constructor(public uuid: string) {
+        this.games = [];
+    }
 }
