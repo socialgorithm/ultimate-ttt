@@ -8,6 +8,7 @@ import DoubleEliminationMatch from '../../../src/tournament/matchmaker/DoubleEli
 import DoubleEliminationMatchmaker from '../../../src/tournament/matchmaker/DoubleEliminationMatchmaker';
 import { IMatchOptions } from '../../../src/tournament/match/MatchOptions';
 import Player from '../../../src/tournament/model/Player';
+import DetailedMatchStats from '../../../src/tournament/match/DetailedMatchStats';
 
 describe('Double Elimination Matchmaker', () => {
     const channelMock = mock(Channel)
@@ -19,8 +20,7 @@ describe('Double Elimination Matchmaker', () => {
     const p5 = new Player('P5', channelStub);
     const matchOptions: IMatchOptions = { maxGames: 100, timeout: 100, autoPlay: true }
     const events = {
-        onGameInit: () => {},
-        onGameMove: (move: any) => {},
+        onMatchEnd: (stats: DetailedMatchStats) => {},
         sendStats: () => {},
     }
 
