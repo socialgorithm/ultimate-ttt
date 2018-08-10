@@ -1,5 +1,3 @@
-import SocketServer from "../server/SocketServer";
-
 import { IMove } from "../tournament/match/game/GameStats";
 import ITournamentEvents from "../tournament/TournamentEvents";
 import Match from "./match/Match";
@@ -36,7 +34,7 @@ export class Tournament {
     };
     private matchmaker: IMatchmaker;
 
-    constructor(private options: ITournamentOptions, private socket: SocketServer, public players: Player[], private lobbyToken: string) {
+    constructor(private options: ITournamentOptions, public players: Player[], private lobbyToken: string) {
         const matchOptions: IMatchOptions = {
             autoPlay: this.options.autoPlay,
             maxGames: this.options.numberOfGames,
@@ -103,17 +101,14 @@ export class Tournament {
                 await this.playMatch(nextMatch);
                 this.onMatchEnd(nextMatch.getDetailedStats());
                 this.updateStats();
-                if (this.options.autoPlay) {
-                    this.sendStats();
-                } else {
+                if (!this.options.autoPlay) {
                     break;
                 }
             } else {
-                this.updateStats();
                 this.stats.matches.push(...this.matchmaker.getRemainingMatches());
             }
+            this.updateStats();
         }
-        this.updateStats();
     }
 
     private updateStats() {
@@ -129,10 +124,10 @@ export class Tournament {
     }
 
     private sendStats = (): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament stats", this.getStats());
+        PubSub.publish('tournament start', this.getStats());
     }
 
     private onMatchEnd = (detailedMatchStats: DetailedMatchStats): void => {
-        this.socket.emitToLobbyInfo(this.lobbyToken, "tournament match end", detailedMatchStats);
+        PubSub.publish('tournament match end', detailedMatchStats);
     }
 }

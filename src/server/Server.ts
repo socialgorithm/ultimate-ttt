@@ -3,7 +3,7 @@ import * as http from "http";
 import * as io from "socket.io";
 
 import Channel from "../tournament/model/Channel";
-import { Lobby } from "../tournament/model/Lobby";
+import Lobby  from "../tournament/model/Lobby";
 import Player from "../tournament/model/Player";
 import { ITournamentOptions } from "../tournament/Tournament";
 

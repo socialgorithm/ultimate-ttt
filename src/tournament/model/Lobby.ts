@@ -4,7 +4,7 @@ import { Tournament } from "../../tournament/Tournament";
 
 import Player from "./Player";
 
-export class Lobby {
+export default class Lobby {
     public admin: Player;
     public token: string;
     public players: Map<String, Player>

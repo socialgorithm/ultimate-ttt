@@ -18,8 +18,8 @@ export default class TournamentManager {
     private startTournament(msg: any, data: any) {
         const players = data.players;
         const tournament = this.createTournament(players);
-        tournament.start;
-        PubSub.publish('tournament created', tournament);
+        tournament.start();
+        PubSub.publish('tournament started', tournament);
     }
 
     private createTournament(players: Player[]) {

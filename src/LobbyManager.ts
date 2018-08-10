@@ -1,14 +1,12 @@
-import { Lobby } from './tournament/model/Lobby';
+import Lobby  from './tournament/model/Lobby';
 import PubSub from 'pubsub-js';
 import Player from './tournament/model/Player';
 
 export default class LobbyManager {
 
-    lobbies: Map<String, Lobby>;
+    lobbies: Map<String, Lobby> = new Map<String, Lobby>();;
 
     constructor() {
-        this.lobbies = new Map<String, Lobby>();
-
         PubSub.subscribe('lobby create', this.createLobby);
         PubSub.subscribe('lobby tournament start', this.startTournament);
         PubSub.subscribe('lobby join', this.joinLobby);
@@ -24,9 +22,9 @@ export default class LobbyManager {
 
     private startTournament(msg: any, data: any): void {
         const lobby: Lobby = this.getLobbyFrom(data);
-            if (lobby) {
-                PubSub.publish('tournament start', lobby.players);
-            }
+        if (lobby) {
+            PubSub.publish('tournament start', lobby.players.values);
+        }
     }
 
     private joinLobby(msg: any, data: any): void{
@@ -34,6 +32,7 @@ export default class LobbyManager {
         if (lobby) {
             const player: Player = new Player(data.playerId);
             lobby.addPlayer(player); 
+            PubSub.publish('lobby joined', lobby);
         }
     }
 
@@ -41,6 +40,7 @@ export default class LobbyManager {
         const lobby = this.getLobbyFrom(data);
         if (lobby) {
             lobby.removePlayer(data.playerId);
+            PubSub.publish('player kicked', lobby);
         }
     }
 
@@ -48,6 +48,7 @@ export default class LobbyManager {
         const lobby = this.getLobbyFrom(data);
         if (lobby) {
             lobby.banPlayer(data.playerId);
+            PubSub.publish('player banned', lobby);
         }
     }
 
