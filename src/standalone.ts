@@ -13,4 +13,4 @@ import {DEFAULT_OPTIONS} from "./lib/cli-options";
 import Server from "./server/Server";
 
 // tslint:disable-next-line:no-unused-expression
-new Server(DEFAULT_OPTIONS);
+new Server(DEFAULT_OPTIONS.port);

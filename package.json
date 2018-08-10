@@ -47,7 +47,9 @@
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
     "ip": "^1.1.5",
+    "pubsub-js": "^1.6.0",
     "random-word": "^2.0.0",
+    "rxjs": "^6.2.2",
     "socket.io": "^2.0.1",
     "uuid": "^3.3.2"
   },

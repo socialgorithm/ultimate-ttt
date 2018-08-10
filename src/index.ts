@@ -10,4 +10,4 @@ import Server from "./server/Server";
  * Start a server with the given options
  * @param options Server options
  */
-export default (options: IOptions) => new Server(options);
+export default (options: IOptions) => new Server(options.port);

@@ -1,209 +1,75 @@
-import {IOptions} from "../lib/cli-options";
+import * as fs from "fs";
+import * as http from "http";
+import * as io from "socket.io";
+
+import Channel from "../tournament/model/Channel";
 import { Lobby } from "../tournament/model/Lobby";
 import Player from "../tournament/model/Player";
-import { ITournamentOptions, Tournament } from "../tournament/Tournament";
+import { ITournamentOptions } from "../tournament/Tournament";
 
-import SocketServer from "./SocketServer";
+import PubSub from 'pubsub-js';
 
-/**
- * Load the package.json to get the version number
- */
-// tslint:disable-next-line:no-var-requires
-const pjson = require("../../package.json");
+import { DEFAULT_TOURNAMENT_OPTIONS } from "./constants";
 
-/**
- * Online Server class
- * Handles the sockets, players, games...
- */
+
 export default class Server {
+    private io: SocketIO.Server;
+    private connections: Map<String, SocketIO.Socket> = new Map<String, SocketIO.Socket>();
 
-  /**
-   * List of players in the server
-   */
-  private players: Player[];
+    constructor(port: number) {
+        const app = http.createServer(this.handler);
+        this.io = io(app);
+        app.listen(port);
 
-  private lobbies: Lobby[];
+        this.io.use((socket: SocketIO.Socket, next: any) => {
+            const isClient = socket.request._query.client || false;
+            if (isClient) {
+                return next();
+            }
+            const { token } = socket.request._query;
+            if (!token) {
+                return next(new Error("Missing token"));
+            }
+            socket.request.testToken = token;
+            next();
+        });
 
-  /**
-   * Socket.IO Server reference
-   */
-  private socketServer: SocketServer;
+        this.io.on("connection", (socket: SocketIO.Socket) => {
+            this.connections.set(socket.handshake.query.token, socket);
+            const userId: String = socket.handshake.query.token;
 
-  constructor(private options: IOptions) {
-    this.players = [];
-    this.lobbies = [];
+            socket.on('lobby create', () => PubSub.publish('lobby create', userId));
+            socket.on('lobby tournament start', (data) => this.publishLobbyEvent('lobby tournament start', userId, data));
+            socket.on('lobby join', (data) => this.publishLobbyEvent('lobby tournament start', userId, data));
+            socket.on('lobby player kick', (data) => this.publishLobbyEvent('lobby tournament start', userId, data));
+            socket.on('lobby player ban', (data) => this.publishLobbyEvent('lobby tournament start', userId, data));
+        });
 
-    this.socketServer = new SocketServer(this.options.port, {
-      onLobbyBan: this.onLobbyBan.bind(this),
-      onLobbyCreate: this.onLobbyCreate.bind(this),
-      onLobbyJoin: this.onLobbyJoin.bind(this),
-      onLobbyKick: this.onLobbyKick.bind(this),
-      onLobbyTournamentContinue: this.onLobbyTournamentContinue.bind(this),
-      onLobbyTournamentStart: this.onLobbyTournamentStart.bind(this),
-      onPlayerConnect: this.onPlayerConnect.bind(this),
-      onPlayerDisconnect: this.onPlayerDisconnect.bind(this),
-    });
-
-    const title = `Ultimate TTT Algorithm Battle v${pjson.version}`;
-
-    this.log(title);
-    this.log(`Listening on localhost:${this.options.port}`);
-
-    this.log("Server started");
-  }
-
-  private onPlayerConnect(player: Player): void {
-    this.addPlayer(player);
-    player.channel.send("waiting");
-  }
-
-  private onPlayerDisconnect = (player: Player): void => {
-    this.log("Handle player disconnect on his active games");
-    // TODO Remove the player from any lobbies
-    this.lobbies.forEach(lobby => {
-      const playerIndex = lobby.players.findIndex(eachPlayer => eachPlayer.token === player.token);
-      if (playerIndex < 0) {
-        return;
-      }
-      // Remove the player, and notify lobby of changes
-      lobby.players.splice(playerIndex, 1);
-      this.socketServer.emitToLobbyInfo(lobby.token, "lobby disconnected", {
-        payload: {
-          lobby: lobby.toObject(),
-        },
-        type: "player left",
-      });
-    });
-  }
-
-    private onLobbyKick = (lobbyToken: string, playerToken: string): Lobby => {
-        this.log("Player " + playerToken + " is being kicked from " + lobbyToken);
-        const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
-        if (foundLobby == null) {
-            this.log("Lobby not found (" + lobbyToken + ")");
-            return null;
-        }
-
-        const playerIndex = foundLobby.players.findIndex(p => p.token === playerToken);
-        foundLobby.players.splice(playerIndex, 1);
-
-        return foundLobby;
+        this.io.on("disconnection", (socket: SocketIO.Socket) => {
+            const userId: String = socket.handshake.query.token;
+            this.connections.delete(userId);
+        });
     }
 
-  private onLobbyBan = (lobbyToken: string, playerToken: string): Lobby => {
-    this.log("Player " + playerToken + " is being banned from " + lobbyToken);
-    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
-    if (foundLobby == null) {
-      this.log("Lobby not found (" + lobbyToken + ")");
-      return null;
+    private publishLobbyEvent(eventType: String, userId: String, data: any) {
+        const lobbyId: String = data.lobbyId;
+        PubSub.publish(eventType, {'userId': userId, 'lobbyId': lobbyId});
     }
 
-    const playerIndex = foundLobby.players.findIndex(p => p.token === playerToken);
-    foundLobby.players.splice(playerIndex, 1);
-    foundLobby.bannedPlayers.push(playerToken);
+    // why is this needed?
+    private handler(req: http.IncomingMessage, res: http.ServerResponse) {
+        fs.readFile(__dirname + "/../../public/index.html",
+            (err: any, data: any) => {
+                if (err) {
+                    res.writeHead(500);
+                    return res.end("Error loading index.html");
+                }
 
-    return foundLobby;
-  }
-
-  private onLobbyCreate = (creator: Player): Lobby => {
-    const lobby = new Lobby(creator);
-    this.lobbies.push(lobby);
-    this.log("Created lobby " + lobby.token);
-    return lobby;
-  }
-
-  private onLobbyJoin = (player: Player, lobbyToken: string, spectating: boolean = false): Lobby => {
-    this.log("Player " + player.token + " wants to join " + lobbyToken + " - spectating? " + spectating);
-    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
-    if (foundLobby == null) {
-      this.log("Lobby not found (" + lobbyToken + ")");
-      return null;
+                res.writeHead(200);
+                res.end(data);
+            });
     }
 
-    if (foundLobby.bannedPlayers.find(p => p === player.token)) {
-      return null;
-    }
+    //TODO: subscription logic to send messages to client
 
-    // If the user is spectating, we wont add it to the players list (e.g. web client)
-    if (!spectating && foundLobby.players.find(p => p.token === player.token) == null) {
-      foundLobby.players.push(player);
-      this.log("Player " + player.token + " joined " + lobbyToken);
-    }
-
-    return foundLobby;
-  }
-
-  private onLobbyTournamentStart(lobbyToken: string, tournamentOptions: ITournamentOptions, players: string[]): Lobby {
-    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
-    if (foundLobby == null) {
-      return null;
-    }
-
-    if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
-      this.log(`Starting tournament in lobby ${foundLobby.token}!`);
-      const playersToPlay = foundLobby.players.filter(p => players.includes(p.token));
-      foundLobby.tournament = new Tournament(tournamentOptions, this.socketServer, playersToPlay, foundLobby.token);
-      foundLobby.tournament.start();
-    }
-
-    return foundLobby;
-  }
-
-  private onLobbyTournamentContinue(lobbyToken: string): Lobby {
-    const foundLobby = this.lobbies.find(l => l.token === lobbyToken);
-    if (foundLobby == null) {
-      return null;
-    }
-
-    if (foundLobby.tournament == null || foundLobby.tournament.isFinished()) {
-        return null;
-    }
-
-    foundLobby.tournament.continue();
-
-    return foundLobby;
-  }
-
-  /**
-   * Add a player to the server
-   * @param player Player token
-   */
-  private addPlayer(player: Player): void {
-    const matches = this.players.filter(p => p.token === player.token);
-    if (matches.length > 0) {
-      matches[0].channel.disconnect();
-      this.removePlayer(matches[0]);
-    }
-
-    process.nextTick(() => {
-      if (this.players.filter(p => p.token === player.token).length === 0) {
-        this.players.push(player);
-      }
-      this.log(`Connected "${player.token}"`);
-    });
-  }
-
-  /**
-   * Remove a player from the server
-   * @param player Player token
-   */
-  private removePlayer(player: Player): void {
-    const index = this.players.indexOf(player);
-    if (index > -1) {
-      this.players.splice(index, 1);
-    } else {
-      return;
-    }
-    this.log(`Disconnected ${player.token}`);
-  }
-
-  /**
-   * Log a message to the console
-   * @param message
-   */
-  private log(message: string): void {
-    const time = (new Date()).toTimeString().substr(0, 5);
-    // tslint:disable-next-line:no-console
-    console.log(`[${time}]`, message);
-  }
 }
