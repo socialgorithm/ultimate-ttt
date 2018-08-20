@@ -1,5 +1,5 @@
 import Lobby  from './tournament/model/Lobby';
-import PubSub from 'pubsub-js';
+import * as PubSub from 'pubsub-js';
 import Player from './tournament/model/Player';
 
 export default class LobbyManager {

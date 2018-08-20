@@ -1,4 +1,4 @@
-import PubSub from 'pubsub-js';
+import * as PubSub from 'pubsub-js';
 import Player from './tournament/model/Player';
 import { Tournament, ITournamentOptions } from './tournament/Tournament';
 

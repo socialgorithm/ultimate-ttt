@@ -7,7 +7,7 @@ import Lobby  from "../tournament/model/Lobby";
 import Player from "../tournament/model/Player";
 import { ITournamentOptions } from "../tournament/Tournament";
 
-import PubSub from 'pubsub-js';
+import * as PubSub from 'pubsub-js';
 
 import { DEFAULT_TOURNAMENT_OPTIONS } from "./constants";
 
