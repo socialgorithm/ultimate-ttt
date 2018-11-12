@@ -1,6 +1,6 @@
 import SocketServer from "../server/SocketServer";
 
-import { IMove } from "../tournament/match/game/GameStats";
+import DetailedMatchStats from "../tournament/match/DetailedMatchStats";
 import ITournamentEvents from "../tournament/TournamentEvents";
 import Match from "./match/Match";
 import { IMatchOptions } from "./match/MatchOptions";
@@ -8,8 +8,7 @@ import DoubleEliminationMatchmaker from "./matchmaker/DoubleEliminationMatchmake
 import FreeForAllMatchmaker from "./matchmaker/FreeForAllMatchmaker";
 import IMatchmaker from "./matchmaker/Matchmaker";
 import Player from "./model/Player";
-import {ITournamentStats} from "./stats/TournamentStats";
-import DetailedMatchStats from "../tournament/match/DetailedMatchStats";
+import { ITournamentStats } from "./stats/TournamentStats";
 
 /**
  * Tournament Options, these can be modified by the web interface

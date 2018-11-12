@@ -1,4 +1,4 @@
-import {Coords, PlayerNumber, PlayerOrTie, RESULT_TIE} from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import { Coords, PlayerNumber, PlayerOrTie, RESULT_TIE } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
 
 import * as funcs from "../../../lib/funcs";
@@ -64,8 +64,8 @@ export default class Game {
      */
     public getStats(): IGameStats {
         return {
-            moves: this.moves
-        }
+            moves: this.moves,
+        };
     }
 
     private resetPlayers() {
@@ -227,7 +227,7 @@ export default class Game {
      * @returns {string}
      */
     private writeMove(coords: Coords) {
-        const {board, move} = coords;
+        const { board, move } = coords;
         return [board, move].map(p => p.join(",")).join(";");
     }
 

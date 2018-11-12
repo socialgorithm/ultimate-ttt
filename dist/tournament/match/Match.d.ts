@@ -1,9 +1,9 @@
 import Player from "../../tournament/model/Player";
 import State from "../../tournament/model/State";
+import DetailedMatchStats from "../../tournament/match/DetailedMatchStats";
 import ITournamentEvents from "../../tournament/TournamentEvents";
 import Game from "./game/Game";
 import IMatchOptions from "./MatchOptions";
-import DetailedMatchStats from "../../tournament/match/DetailedMatchStats";
 export default class Match {
     players: Player[];
     options: IMatchOptions;

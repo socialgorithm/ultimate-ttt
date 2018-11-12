@@ -37,8 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var uuid = require("uuid/v4");
 var State_1 = require("../../tournament/model/State");
-var Game_1 = require("./game/Game");
 var DetailedMatchStats_1 = require("../../tournament/match/DetailedMatchStats");
+var Game_1 = require("./game/Game");
 var Match = (function () {
     function Match(players, options, events) {
         this.players = players;

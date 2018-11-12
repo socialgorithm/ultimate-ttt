@@ -3,11 +3,10 @@ import * as uuid from "uuid/v4";
 import Player from "../../tournament/model/Player";
 import State from "../../tournament/model/State";
 
-import { IMove } from "../../tournament/match/game/GameStats";
+import DetailedMatchStats from "../../tournament/match/DetailedMatchStats";
 import ITournamentEvents from "../../tournament/TournamentEvents";
 import Game from "./game/Game";
 import IMatchOptions from "./MatchOptions";
-import DetailedMatchStats from "../../tournament/match/DetailedMatchStats";
 
 /**
  * A set of games between two players
@@ -16,7 +15,7 @@ export default class Match {
     public uuid: string;
     public games: Game[];
     public stats: State;
-    public detailedStats: DetailedMatchStats
+    public detailedStats: DetailedMatchStats;
 
     constructor(public players: Player[], public options: IMatchOptions, private events: ITournamentEvents) {
         this.uuid = uuid();
@@ -55,7 +54,7 @@ export default class Match {
             if (game.timedoutPlayer) {
                 this.stats.timeouts[game.timedoutPlayer]++;
             }
-            this.detailedStats.games.push(game.getStats())
+            this.detailedStats.games.push(game.getStats());
             this.events.sendStats();
         }
         this.stats.state = "finished";
@@ -77,7 +76,7 @@ export default class Match {
     }
 
     public getDetailedStats(): DetailedMatchStats {
-        return this.detailedStats
+        return this.detailedStats;
     }
 
     public toString() {
