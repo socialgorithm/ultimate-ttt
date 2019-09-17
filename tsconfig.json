@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es7"],
+    "lib": ["es2017"],
     "module": "commonjs",
     "noImplicitAny": true,
     "noEmitOnError": true,
@@ -18,11 +18,11 @@
     },
   },
   "include": [
-      "src/**/*"
+    "src/**/*"
   ],
   "exclude": [
-      "node_modules",
-      "test"
+    "node_modules",
+    "test"
   ],
   "typeRoots": [
     "node_modules/@types",

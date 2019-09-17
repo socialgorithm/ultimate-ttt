@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var Server_1 = require("./server/Server");
-exports["default"] = (function (options) { return new Server_1["default"](options); });
+var options_1 = require("./cli/options");
+var Server_1 = require("./Server");
+var server = new Server_1["default"](options_1.DEFAULT_OPTIONS);
 //# sourceMappingURL=index.js.map

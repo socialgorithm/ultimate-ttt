@@ -1,13 +1,4 @@
+import { DEFAULT_OPTIONS } from "./cli/options";
+import Server from "./Server";
 
-/**
- * Ultimate Tic Tac Toe Algorithm Battle - Game Server
- */
-
-import { IOptions } from "./lib/cli-options";
-import Server from "./server/Server";
-
-/**
- * Start a server with the given options
- * @param options Server options
- */
-export default (options: IOptions) => new Server(options);
+const server = new Server(DEFAULT_OPTIONS);
