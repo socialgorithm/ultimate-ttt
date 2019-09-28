@@ -2,6 +2,7 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import UTTTGame from "../src/UTTTGame";
+import { Messages } from "@socialgorithm/model";
 
 type TestGame = {
     game: UTTTGame,
@@ -12,8 +13,8 @@ type TestGame = {
 };
 
 const players = [
-    "player1",
-    "player2",
+    "p0",
+    "p1",
 ];
 
 const getGame = (): TestGame => {
@@ -35,6 +36,23 @@ const getGame = (): TestGame => {
     };
 };
 
+const printCoords = (coords: [Coord, Coord]): string  => {
+    return coords[0].join(",") + ";" + coords[1].join(",");
+};
+
+type Coord = [number, number];
+
+const sequenceOfPairs = (pairs: Coord[]): Array<[Coord, Coord]> => {
+    return pairs.map((current, index): [Coord, Coord] => {
+      if (index === 0) {
+        return undefined;
+      } else {
+        const previous = pairs[index - 1];
+        return [previous, current];
+      }
+    }).slice(1);
+  };
+
 describe("UTTTGame", () => {
     it("start() sends relevant messages", () => {
         const testGame = getGame();
@@ -52,18 +70,35 @@ describe("UTTTGame", () => {
         expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[1]).to.equal("move");
     });
 
-    it("accepts valid player moves", () => {
+    it("winning game sends correct stats", () => {
         const testGame = getGame();
 
         testGame.game.start();
 
-        const firstMove = "0,0;1,1";
+        const winningMoves: Array<[Coord, Coord]> = sequenceOfPairs([
+            [0, 0], [0, 0], [1, 1], [1, 0], [0, 0], [1, 0],
+            [1, 1], [1, 1], [0, 0], [2, 0], [1, 1], [1, 2],
+            [2, 2], [2, 0], [2, 2], [2, 1], [2, 2], [2, 2],
+        ]);
+        let nextPlayer = 0;
 
-        testGame.game.onMessageFromPlayer(players[0], "0,0;1,1");
+        winningMoves.forEach((move, index) => {
+            const moveStr = printCoords(move);
+            testGame.game.onMessageFromPlayer(players[nextPlayer], moveStr);
 
-        expect(testGame.channel.sendMessageToPlayer.getCall(3).args[0]).to.equal(players[1]);
-        expect(testGame.channel.sendMessageToPlayer.getCall(3).args[1]).to.equal(`opponent ${firstMove}`);
+            if (index === winningMoves.length - 1) {
+                return;
+            }
 
-        testGame.game.onMessageFromPlayer(players[0], "1,1;0,1");
+            nextPlayer = 1 - nextPlayer;
+
+            expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
+            expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
+        });
+
+        // Game should be over now
+        const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
+        expect(stats.winner).to.equal(players[0]);
+        expect(stats.tie).to.be.false;
     });
 });
