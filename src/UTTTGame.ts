@@ -49,16 +49,21 @@ export default class UTTTGame {
     }
   }
 
+  /**
+   * Converts a move string into an object
+   * @param data board.row,board.col;move.row,move.col
+   */
   private parseMove(data: string): Coords {
     const [board, move] = data.trim().split(";")
         .map(part => part.split(",").map(n => parseInt(n, 10)) as [number, number]);
     return { board, move };
   }
 
-  private askForMoveFromNextPlayer(previousMove?: any) {
+  private askForMoveFromNextPlayer(previousMove?: Coords) {
     const nextPlayer = this.players[this.nextPlayerIndex];
     if (previousMove) {
-      this.sendMessageToPlayer(nextPlayer, `opponent ${previousMove}` );
+      const coords = this.printCoords(previousMove);
+      this.sendMessageToPlayer(nextPlayer, `opponent ${coords}` );
     } else {
       this.sendMessageToPlayer(nextPlayer, "move");
     }
@@ -104,5 +109,9 @@ export default class UTTTGame {
   private getTimeFromStart() {
     const timeNow = Math.round(Date.now() / 1000);
     return timeNow - this.startTime;
+  }
+
+  private printCoords(coords: Coords): string {
+    return coords.board.join(",") + ";" + coords.move.join(",");
   }
 }

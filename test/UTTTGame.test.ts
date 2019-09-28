@@ -51,4 +51,19 @@ describe("UTTTGame", () => {
         expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[0]).to.equal(players[0]);
         expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[1]).to.equal("move");
     });
+
+    it("accepts valid player moves", () => {
+        const testGame = getGame();
+
+        testGame.game.start();
+
+        const firstMove = "0,0;1,1";
+
+        testGame.game.onMessageFromPlayer(players[0], "0,0;1,1");
+
+        expect(testGame.channel.sendMessageToPlayer.getCall(3).args[0]).to.equal(players[1]);
+        expect(testGame.channel.sendMessageToPlayer.getCall(3).args[1]).to.equal(`opponent ${firstMove}`);
+
+        testGame.game.onMessageFromPlayer(players[0], "1,1;0,1");
+    });
 });

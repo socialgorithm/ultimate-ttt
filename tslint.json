@@ -4,6 +4,7 @@
         "max-line-length": [true, 200],
         "arrow-parens": [true, "ban-single-arg-parens"],
         "interface-over-type-literal": false,
-        "ordered-imports": false
+        "ordered-imports": false,
+        "no-console": false
     }
 }
