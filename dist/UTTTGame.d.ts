@@ -17,4 +17,5 @@ export default class UTTTGame {
     private handleGameTied;
     private handleGameWon;
     private getTimeFromStart;
+    private printCoords;
 }

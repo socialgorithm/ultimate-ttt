@@ -48,7 +48,8 @@ var UTTTGame = (function () {
     UTTTGame.prototype.askForMoveFromNextPlayer = function (previousMove) {
         var nextPlayer = this.players[this.nextPlayerIndex];
         if (previousMove) {
-            this.sendMessageToPlayer(nextPlayer, "opponent " + previousMove);
+            var coords = this.printCoords(previousMove);
+            this.sendMessageToPlayer(nextPlayer, "opponent " + coords);
         }
         else {
             this.sendMessageToPlayer(nextPlayer, "move");
@@ -91,6 +92,9 @@ var UTTTGame = (function () {
     UTTTGame.prototype.getTimeFromStart = function () {
         var timeNow = Math.round(Date.now() / 1000);
         return timeNow - this.startTime;
+    };
+    UTTTGame.prototype.printCoords = function (coords) {
+        return coords.board.join(",") + ";" + coords.move.join(",");
     };
     return UTTTGame;
 }());
