@@ -1,24 +1,18 @@
 {
-  "name": "@socialgorithm/uttt",
-  "version": "6.3.0",
-  "description": "Ultimate Tic Tac Toe Algorithm - Game Server Edit",
-  "main": "dist/standalone.js",
+  "name": "@socialgorithm/ultimate-ttt-game-server",
+  "version": "8.0.0",
+  "description": "Ultimate Tic Tac Toe Game Server",
+  "main": "dist/index.js",
+  "bin": "bin/index.js",
   "scripts": {
-    "start": "node --prof dist/standalone.js",
+    "start": "node dist/index.js",
     "start:dev": "nodemon",
-    "dev": "tsc && ts-node -r tsconfig-paths/register --files src/standalone.ts",
+    "dev": "tsc && ts-node -r tsconfig-paths/register --files src/index.ts",
     "start:opts": "tsc && ts-node bin/index.js",
     "build": "tsc -w",
     "test": "npm run lint && cross-env TS_NODE_FILES=true nyc mocha -r ts-node/register -r tsconfig-paths/register --recursive 'test/**/*.test.ts'",
     "lint": "tslint -p tsconfig.json -t stylish 'src/**/*.ts'",
-    "lint:fix": "tslint -p tsconfig.json -t stylish --fix 'src/**/*.ts'",
     "docs": "typedoc --out docs/ --mode modules ./src"
-  },
-  "engines": {
-    "node": ">= 8"
-  },
-  "bin": {
-    "uttt": "bin/index.js"
   },
   "repository": {
     "type": "git",
@@ -33,63 +27,42 @@
     "algorithm",
     "battle"
   ],
+  "engines": {
+    "node": ">= 8"
+  },
   "author": "Socialgorithm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/socialgorithm/ultimate-ttt-server/issues"
+    "url": "https://github.com/socialgorithm/ultimate-ttt-game-server/issues"
   },
-  "homepage": "https://github.com/socialgorithm/ultimate-ttt-server#readme",
+  "homepage": "https://github.com/socialgorithm/ultimate-ttt-game-server#readme",
   "dependencies": {
+    "@socialgorithm/game-server": "^8.2.0",
     "@socialgorithm/ultimate-ttt": "^4.19.0",
-    "@types/command-line-args": "^5.0.0",
-    "@types/command-line-usage": "^5.0.1",
-    "blessed": "^0.1.81",
-    "command-line-args": "^4.0.6",
-    "command-line-usage": "^4.0.0",
-    "ip": "^1.1.5",
-    "random-word": "^2.0.0",
-    "socket.io": "^2.0.1",
-    "uuid": "^3.3.2"
+    "command-line-args": "^5.1.1",
+    "command-line-usage": "^5.0.5",
+    "debug": "^4.1.1",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "@types/blessed": "^0.1.10",
-    "@types/chai": "^3.5.2",
-    "@types/ip": "0.0.31",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^10.5.5",
-    "@types/socket.io": "^1.4.36",
+    "@types/chai": "^4.2.3",
+    "@types/command-line-args": "^5.0.0",
+    "@types/command-line-usage": "^5.0.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.0.7",
+    "@types/sinon": "^7.0.13",
+    "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
-    "@types/uuid": "^3.4.3",
-    "chai": "^4.0.0",
-    "coveralls": "^2.13.1",
+    "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "gulp-file": "^0.3.0",
-    "mocha": "^3.4.2",
-    "nodemon": "^1.18.3",
-    "nyc": "^10.3.2",
-    "socket.io-client": "^2.1.1",
-    "ts-mockito": "^2.3.0",
-    "ts-node": "^7.0.0",
-    "tsconfig-paths": "^3.5.0",
-    "tslint": "^5.11.0",
-    "typedoc": "^0.11.1",
-    "typescript": "^3.0.1"
-  },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "include": [
-      "src/*.ts",
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "**/*.js",
-      "**/*.d.ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "all": true
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0",
+    "ts-node": "^8.2.0",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.17.0",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.1"
   }
 }

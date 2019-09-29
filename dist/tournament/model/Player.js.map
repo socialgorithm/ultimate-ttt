@@ -1,1 +1,0 @@
-{"version":3,"file":"Player.js","sourceRoot":"","sources":["../../../src/tournament/model/Player.ts"],"names":[],"mappings":";;AAEA;IAEI,gBAAmB,KAAa,EAAS,OAAgB;QAAtC,UAAK,GAAL,KAAK,CAAQ;QAAS,YAAO,GAAP,OAAO,CAAS;IAAI,CAAC;IAEvD,sBAAK,GAAZ;QACI,OAAO,IAAI,CAAC,OAAO,CAAC,WAAW,EAAE,CAAC;IACtC,CAAC;IAEL,aAAC;AAAD,CAAC,AARD,IAQC"}

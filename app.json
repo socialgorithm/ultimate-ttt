@@ -1,18 +1,9 @@
 {
   "name": "Ultimate TTT Server",
   "description": "Game server for Ultimate TTT games",
-  "repository": "https://github.com/socialgorithm/ultimate-ttt-server",
+  "repository": "https://github.com/socialgorithm/ultimate-ttt-game-server",
   "logo": "https://socialgorithm.org/assets/avatar.png",
-  "keywords": ["ultimate", "ttt", "socialgorithm"],
+  "keywords": ["tournament", "game", "socialgorithm"],
   "image": "heroku/nodejs",
-  "env": {
-    "TTT_GAMES": {
-      "description": "Number of games to play per round",
-      "value": "100"
-    },
-    "TTT_TIMEOUT": {
-      "description": "Timeout for player moves, in milliseconds",
-      "value": "100"
-    }
-  }
+  "env": {}
 }
