@@ -1,7 +1,6 @@
 # Ultimate Tic-Tac-Toe - Server
 
 [![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-game-server.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-game-server)
-[![npm](https://img.shields.io/npm/v/@socialgorithm/ultimate-ttt-game-server.svg)](https://www.npmjs.com/package/@socialgorithm/ultimate-ttt-game-server )
 
 An Ultimate Tic-Tac-Toe game server, used by hte Socialgorithm Tournament server to run games. See more info at https://socialgorithm.org/docs.
 
