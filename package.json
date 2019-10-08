@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "bin": "bin/index.js",
   "scripts": {
-    "start": "export DEBUG=* && node dist/index.js",
+    "start": "export DEBUG= && node dist/index.js",
+    "start:debug": "export DEBUG=* && node dist/index.js",
     "start:dev": "nodemon",
     "dev": "tsc && ts-node -r tsconfig-paths/register --files src/index.ts",
     "start:opts": "tsc && ts-node bin/index.js",
