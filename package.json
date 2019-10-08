@@ -9,7 +9,7 @@
     "start:dev": "nodemon",
     "dev": "tsc && ts-node -r tsconfig-paths/register --files src/index.ts",
     "start:opts": "tsc && ts-node bin/index.js",
-    "build": "tsc -w",
+    "build": "tsc",
     "test": "npm run lint && cross-env TS_NODE_FILES=true nyc mocha -r ts-node/register -r tsconfig-paths/register --recursive 'test/**/*.test.ts'",
     "lint": "tslint -p tsconfig.json -t stylish 'src/**/*.ts'",
     "docs": "typedoc --out docs/ --mode modules ./src"
