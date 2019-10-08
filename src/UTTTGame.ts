@@ -12,7 +12,7 @@ export default class UTTTGame {
 
   constructor(private players: Player[], private sendMessageToPlayer: (player: Player, message: any) => void, private sendGameEnded: (stats: Messages.GameEndedMessage) => void) {
     this.board = new UTTT(3);
-    this.nextPlayerIndex = 0;
+    this.nextPlayerIndex = Math.round(Math.random());
   }
 
   public start(): void {
