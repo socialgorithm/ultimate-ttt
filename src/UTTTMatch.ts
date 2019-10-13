@@ -7,7 +7,7 @@ import UTTTGame from "./UTTTGame";
 
 export default class UTTTMatch implements IMatch {
   private currentGame: UTTTGame;
-  private gamesCompleted: number = 0;
+  private gamesCompleted: Game[] = [];
   private missingPlayers: Player[] = [];
 
   constructor(public options: MatchOptions, public players: Player[], private outputChannel: MatchOutputChannel) {
@@ -58,9 +58,9 @@ export default class UTTTMatch implements IMatch {
 
   private onGameEnded = (stats: Game) => {
     this.outputChannel.sendGameEnded(stats);
+    this.gamesCompleted.push(stats);
 
-    this.gamesCompleted++;
-    if (this.gamesCompleted < this.options.maxGames) {
+    if (this.gamesCompleted.length < this.options.maxGames) {
       this.playNextGame();
     } else {
       this.endMatch();
@@ -68,7 +68,27 @@ export default class UTTTMatch implements IMatch {
   }
 
   private endMatch = () => {
-    this.outputChannel.sendMatchEnded();
+    const gamesTied : number = this.gamesCompleted.filter((game: Game) => game.tie).length;
+    const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => game.tie && this.players[0] === game.winner).length;
+    const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => game.tie && this.players[1] === game.winner).length;
+    const winner : 0 | 1 | -1 = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
+    const winningMessage = winner === -1 ? `${this.players[winner]} Won` : `Game Drawn`;
+
+    const matchEndedMessage: Messages.MatchEndedMessage = {
+      games: this.gamesCompleted,
+      matchID: "--",
+      messages: [ winningMessage ],
+      options: this.options,
+      players: this.players,
+      state: "finished",
+      stats: {
+        gamesCompleted: this.gamesCompleted.length,
+        gamesTied: gamesTied,
+        wins: [gameWonPlayer1, gameWonPlayer2],
+      },
+      winner: winner,
+    };
+    this.outputChannel.sendMatchEnded(matchEndedMessage);
   }
 
   private sendMatchEndDueToTimeout = (missingPlayer?: Player) => {
