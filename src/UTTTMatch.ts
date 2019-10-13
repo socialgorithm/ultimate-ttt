@@ -69,8 +69,8 @@ export default class UTTTMatch implements IMatch {
 
   private endMatch = () => {
     const gamesTied : number = this.gamesCompleted.filter((game: Game) => game.tie).length;
-    const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => game.tie && this.players[0] === game.winner).length;
-    const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => game.tie && this.players[1] === game.winner).length;
+    const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
+    const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
     const winner : 0 | 1 | -1 = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
     const winningMessage = winner === -1 ? `${this.players[winner]} Won` : `Game Drawn`;
 
