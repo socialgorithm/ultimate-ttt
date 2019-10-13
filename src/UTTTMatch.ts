@@ -61,10 +61,45 @@ export default class UTTTMatch implements IMatch {
     this.gamesCompleted.push(stats);
 
     if (this.gamesCompleted.length < this.options.maxGames) {
-      this.playNextGame();
-    } else {
+      if (this.isMatchWinnable()) this.playNextGame();
+      else this.endMatch();
+    } else if (this.hasUnaminusWinner()) {
       this.endMatch();
+    } else {
+      this.playNextGame();
     }
+  }
+
+  private isMatchWinnable() : boolean {
+    const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
+    const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
+    const matchesLeft : number = this.options.maxGames - this.gamesCompleted.length;
+    const diffBetweenScore = Math.abs(gameWonPlayer1 - gameWonPlayer2);
+
+    if (matchesLeft > 0) {
+      return matchesLeft >= diffBetweenScore;
+    }
+    return false;
+  }
+
+  private hasUnaminusWinner() : boolean {
+    const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
+    const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
+
+    // Assuming Games > Max Games
+    // Even Number Of Games
+    // Just Have To Be One Ahead
+    // Odd Number Games
+    // Have To Be Two Ahead
+    if (this.gamesCompleted.length % 2 === 0) {
+      if (gameWonPlayer1 > gameWonPlayer2) return true;
+      if (gameWonPlayer2 > gameWonPlayer1) return true;
+    } else {
+      if (gameWonPlayer1 - 1 > gameWonPlayer2) return true;
+      if (gameWonPlayer2 - 1 > gameWonPlayer1) return true;
+    }
+
+    return false;
   }
 
   private endMatch = () => {
@@ -72,7 +107,7 @@ export default class UTTTMatch implements IMatch {
     const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
     const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
     const winner : 0 | 1 | -1 = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
-    const winningMessage = winner === -1 ? `${this.players[winner]} Won` : `Game Drawn`;
+    const winningMessage = winner === -1 ? `Game Tie` : `${this.players[winner]} Won`;
 
     const matchEndedMessage: Messages.MatchEndedMessage = {
       games: this.gamesCompleted,
