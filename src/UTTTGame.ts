@@ -37,16 +37,24 @@ export default class UTTTGame {
       return;
     }
 
-    this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
+    try {
+      this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
 
-    if (this.board.isFinished()) {
-      const previousMove = coords;
-      this.handleGameEnd(previousMove, playedPlayerIndex);
+      if (this.board.isFinished()) {
+        const previousMove = coords;
+        this.handleGameEnd(previousMove, playedPlayerIndex);
+        return;
+      } else {
+        const previousMove = coords;
+        this.switchNextPlayer();
+        this.askForMoveFromNextPlayer(previousMove);
+      }
+    } catch (e) {
+      const expectedPlayer = this.players[expectedPlayerIndex];
+      const winningPlayer = this.players[1 - expectedPlayerIndex];
+      debug(`${expectedPlayer} Caused An Error, so ${winningPlayer} won`);
+      this.handleGameWon(winningPlayer);
       return;
-    } else {
-      const previousMove = coords;
-      this.switchNextPlayer();
-      this.askForMoveFromNextPlayer(previousMove);
     }
   }
 

@@ -15,6 +15,8 @@ export default class UTTTMatch implements IMatch {
     private playNextGame;
     private onGameMessageToPlayer;
     private onGameEnded;
+    private isMatchWinnable;
+    private hasUnaminusWinner;
     private endMatch;
     private sendMatchEndDueToTimeout;
 }
