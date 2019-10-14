@@ -79,7 +79,7 @@ export default class UTTTGame {
       this.handleGameTied(previousMove, playedPlayerIndex);
     } else {
       const winnerName = this.players[this.board.winner];
-      this.handleGameWon(previousMove, playedPlayerIndex, winnerName);
+      this.handleGameWon(winnerName, previousMove, playedPlayerIndex);
     }
   }
 
@@ -97,7 +97,7 @@ export default class UTTTGame {
     });
   }
 
-  private handleGameWon(previousMove : Coords, playedPlayerIndex: number, winner: string) {
+  private handleGameWon(winner: string, previousMove?: Coords, playedPlayerIndex?: number) {
     this.sendGameEnded({
       duration: this.getTimeFromStart(),
       players: this.players,
