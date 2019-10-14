@@ -97,7 +97,7 @@ export default class UTTTGame {
       players: this.players,
       stats: {
         board: this.board,
-        previousMove,
+        previousMove: previousMove ? this.printCoords(previousMove) : '',
         playedPlayerIndex,
       },
       tie: true,
@@ -111,7 +111,7 @@ export default class UTTTGame {
       players: this.players,
       stats: {
         board: this.board,
-        previousMove,
+        previousMove: previousMove ? this.printCoords(previousMove) : '',
         playedPlayerIndex,
       },
       tie: false,
