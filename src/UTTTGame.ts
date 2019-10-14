@@ -40,7 +40,8 @@ export default class UTTTGame {
     this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
 
     if (this.board.isFinished()) {
-      this.handleGameEnd();
+      const previousMove = coords;
+      this.handleGameEnd(previousMove, playedPlayerIndex);
       return;
     } else {
       const previousMove = coords;
@@ -73,33 +74,37 @@ export default class UTTTGame {
     this.nextPlayerIndex = this.nextPlayerIndex === 0 ? 1 : 0;
   }
 
-  private handleGameEnd() {
+  private handleGameEnd(previousMove : Coords, playedPlayerIndex: number) {
     if (this.board.winner === -1) {
-      this.handleGameTied();
+      this.handleGameTied(previousMove, playedPlayerIndex);
     } else {
       const winnerName = this.players[this.board.winner];
-      this.handleGameWon(winnerName);
+      this.handleGameWon(previousMove, playedPlayerIndex, winnerName);
     }
   }
 
-  private handleGameTied() {
+  private handleGameTied(previousMove : Coords, playedPlayerIndex: number) {
     this.sendGameEnded({
       duration: this.getTimeFromStart(),
       players: this.players,
       stats: {
         board: this.board,
+        previousMove,
+        playedPlayerIndex,
       },
       tie: true,
       winner: null,
     });
   }
 
-  private handleGameWon(winner: string) {
+  private handleGameWon(previousMove : Coords, playedPlayerIndex: number, winner: string) {
     this.sendGameEnded({
       duration: this.getTimeFromStart(),
       players: this.players,
       stats: {
         board: this.board,
+        previousMove,
+        playedPlayerIndex,
       },
       tie: false,
       winner,

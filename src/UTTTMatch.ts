@@ -64,11 +64,11 @@ export default class UTTTMatch implements IMatch {
       const winningIndex = this.players.indexOf(stats.winner);
       if (winningIndex !== -1) {
         this.onGameMessageToPlayer(this.players[winningIndex], "game win");
-        this.onGameMessageToPlayer(this.players[1 - winningIndex], "game lose");
+        this.onGameMessageToPlayer(this.players[1 - winningIndex], "game lose " + (stats.stats.previousMove));
       }
     } else {
-      this.onGameMessageToPlayer(this.players[0], "game tie");
-      this.onGameMessageToPlayer(this.players[1], "game tie");
+      this.onGameMessageToPlayer(this.players[0], "game tie" + (stats.stats.playedPlayerIndex !== 0 ? ` ${stats.stats.previousMove}` : ''));
+      this.onGameMessageToPlayer(this.players[1], "game tie" + (stats.stats.playedPlayerIndex !== 1 ? ` ${stats.stats.previousMove}` : ''));
     }
 
     if (this.gamesCompleted.length < this.options.maxGames) {
