@@ -8,7 +8,7 @@ var UTTTGame = (function () {
         this.sendMessageToPlayer = sendMessageToPlayer;
         this.sendGameEnded = sendGameEnded;
         this.board = new UTTT_1["default"](3);
-        this.nextPlayerIndex = 0;
+        this.nextPlayerIndex = Math.round(Math.random());
     }
     UTTTGame.prototype.start = function () {
         this.startTime = Math.round(Date.now() / 1000);
@@ -29,15 +29,25 @@ var UTTTGame = (function () {
             this.handleGameWon(expectedPlayerIndex);
             return;
         }
-        this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
-        if (this.board.isFinished()) {
-            this.handleGameEnd();
-            return;
+        try {
+            this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
+            if (this.board.isFinished()) {
+                var previousMove = coords;
+                this.handleGameEnd(previousMove, playedPlayerIndex);
+                return;
+            }
+            else {
+                var previousMove = coords;
+                this.switchNextPlayer();
+                this.askForMoveFromNextPlayer(previousMove);
+            }
         }
-        else {
-            var previousMove = coords;
-            this.switchNextPlayer();
-            this.askForMoveFromNextPlayer(previousMove);
+        catch (e) {
+            var expectedPlayer = this.players[expectedPlayerIndex];
+            var winningPlayer = this.players[1 - expectedPlayerIndex];
+            debug(expectedPlayer + " Caused An Error, so " + winningPlayer + " won");
+            this.handleGameWon(winningPlayer);
+            return;
         }
     };
     UTTTGame.prototype.parseMove = function (data) {
@@ -58,32 +68,36 @@ var UTTTGame = (function () {
     UTTTGame.prototype.switchNextPlayer = function () {
         this.nextPlayerIndex = this.nextPlayerIndex === 0 ? 1 : 0;
     };
-    UTTTGame.prototype.handleGameEnd = function () {
+    UTTTGame.prototype.handleGameEnd = function (previousMove, playedPlayerIndex) {
         if (this.board.winner === -1) {
-            this.handleGameTied();
+            this.handleGameTied(previousMove, playedPlayerIndex);
         }
         else {
             var winnerName = this.players[this.board.winner];
-            this.handleGameWon(winnerName);
+            this.handleGameWon(winnerName, previousMove, playedPlayerIndex);
         }
     };
-    UTTTGame.prototype.handleGameTied = function () {
+    UTTTGame.prototype.handleGameTied = function (previousMove, playedPlayerIndex) {
         this.sendGameEnded({
             duration: this.getTimeFromStart(),
             players: this.players,
             stats: {
-                board: this.board
+                board: this.board,
+                previousMove: previousMove,
+                playedPlayerIndex: playedPlayerIndex
             },
             tie: true,
             winner: null
         });
     };
-    UTTTGame.prototype.handleGameWon = function (winner) {
+    UTTTGame.prototype.handleGameWon = function (winner, previousMove, playedPlayerIndex) {
         this.sendGameEnded({
             duration: this.getTimeFromStart(),
             players: this.players,
             stats: {
-                board: this.board
+                board: this.board,
+                previousMove: previousMove,
+                playedPlayerIndex: playedPlayerIndex
             },
             tie: false,
             winner: winner
