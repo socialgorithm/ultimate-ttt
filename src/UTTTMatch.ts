@@ -67,8 +67,8 @@ export default class UTTTMatch implements IMatch {
         this.onGameMessageToPlayer(this.players[1 - winningIndex], "game lose" + (stats.stats.previousMove ? ` ${stats.stats.previousMove}` : ''));
       }
     } else {
-      this.onGameMessageToPlayer(this.players[0], "game tie" + (stats.stats.playedPlayerIndex !== 0 && stats.stats.previousMove ? ` ${stats.stats.previousMove}` : ''));
-      this.onGameMessageToPlayer(this.players[1], "game tie" + (stats.stats.playedPlayerIndex !== 1 && stats.stats.previousMove ? ` ${stats.stats.previousMove}` : ''));
+      this.onGameMessageToPlayer(this.players[0], "game tie" + (stats.stats.playedPlayerIndex !== 0 ? ` ${stats.stats.previousMove}` : ''));
+      this.onGameMessageToPlayer(this.players[1], "game tie" + (stats.stats.playedPlayerIndex !== 1 ? ` ${stats.stats.previousMove}` : ''));
     }
 
     if (this.gamesCompleted.length < this.options.maxGames) {
