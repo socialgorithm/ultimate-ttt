@@ -60,6 +60,17 @@ export default class UTTTMatch implements IMatch {
     this.outputChannel.sendGameEnded(stats);
     this.gamesCompleted.push(stats);
 
+    if (stats.winner) {
+      const winningIndex = this.players.indexOf(stats.winner);
+      if (winningIndex !== -1) {
+        this.onGameMessageToPlayer(this.players[winningIndex], "game win");
+        this.onGameMessageToPlayer(this.players[1 - winningIndex], "game lose");
+      }
+    } else {
+      this.onGameMessageToPlayer(this.players[0], "game tie");
+      this.onGameMessageToPlayer(this.players[1], "game tie");
+    }
+
     if (this.gamesCompleted.length < this.options.maxGames) {
       if (this.isMatchWinnable()) this.playNextGame();
       else this.endMatch();
@@ -108,6 +119,14 @@ export default class UTTTMatch implements IMatch {
     const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
     const winner : 0 | 1 | -1 = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
     const winningMessage = winner === -1 ? `Game Tie` : `${this.players[winner]} Won`;
+
+    if (winner !== -1) {
+      this.onGameMessageToPlayer(this.players[winner], "match win");
+      this.onGameMessageToPlayer(this.players[1 - winner], "match lose");
+    } else {
+      this.onGameMessageToPlayer(this.players[winner], "match tie");
+      this.onGameMessageToPlayer(this.players[1 - winner], "match tie");
+    }
 
     const matchEndedMessage: Messages.MatchEndedMessage = {
       games: this.gamesCompleted,
