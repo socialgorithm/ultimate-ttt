@@ -76,6 +76,8 @@ export default class UTTTMatch implements IMatch {
       else this.endMatch();
     } else if (this.hasUnaminusWinner()) {
       this.endMatch();
+    } else if (this.gamesCompleted.length >= Math.round(this.options.maxGames * 1.5)) {
+      this.sendEndMatchMessages(Math.round(Math.random()), this.getGameStats());
     } else {
       this.playNextGame();
     }
@@ -114,12 +116,24 @@ export default class UTTTMatch implements IMatch {
   }
 
   private endMatch = () => {
+    const stats = this.getGameStats();
+    const winner : 0 | 1 | -1 = stats.wins[0] === stats.wins[1] ? -1 : stats.wins[0] > stats.wins[1] ? 0 : 1;
+    this.sendEndMatchMessages(winner, stats);
+  }
+
+  private getGameStats = () => {
     const gamesTied : number = this.gamesCompleted.filter((game: Game) => game.tie).length;
     const gameWonPlayer1 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
     const gameWonPlayer2 : number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
-    const winner : 0 | 1 | -1 = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
-    const winningMessage = winner === -1 ? `Game Tie` : `${this.players[winner]} Won`;
+    return {
+      gamesCompleted: this.gamesCompleted.length,
+      gamesTied: gamesTied,
+      wins: [gameWonPlayer1, gameWonPlayer2],
+    };
+  }
 
+  private sendEndMatchMessages = (winner : number, stats: any) => {
+    const winningMessage = winner === -1 ? `Match Tie` : `Match Won${this.players[winner]}`;
     if (winner !== -1) {
       this.onGameMessageToPlayer(this.players[winner], "match win");
       this.onGameMessageToPlayer(this.players[1 - winner], "match lose");
@@ -135,11 +149,7 @@ export default class UTTTMatch implements IMatch {
       options: this.options,
       players: this.players,
       state: "finished",
-      stats: {
-        gamesCompleted: this.gamesCompleted.length,
-        gamesTied: gamesTied,
-        wins: [gameWonPlayer1, gameWonPlayer2],
-      },
+      stats: stats,
       winner: winner,
     };
     this.outputChannel.sendMatchEnded(matchEndedMessage);

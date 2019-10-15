@@ -41,16 +41,30 @@ var UTTTMatch = (function () {
             else if (_this.hasUnaminusWinner()) {
                 _this.endMatch();
             }
+            else if (_this.gamesCompleted.length >= Math.round(_this.options.maxGames * 1.5)) {
+                _this.sendEndMatchMessages(Math.round(Math.random()), _this.getGameStats());
+            }
             else {
                 _this.playNextGame();
             }
         };
         this.endMatch = function () {
+            var stats = _this.getGameStats();
+            var winner = stats.wins[0] === stats.wins[1] ? -1 : stats.wins[0] > stats.wins[1] ? 0 : 1;
+            _this.sendEndMatchMessages(winner, stats);
+        };
+        this.getGameStats = function () {
             var gamesTied = _this.gamesCompleted.filter(function (game) { return game.tie; }).length;
             var gameWonPlayer1 = _this.gamesCompleted.filter(function (game) { return !game.tie && _this.players[0] === game.winner; }).length;
             var gameWonPlayer2 = _this.gamesCompleted.filter(function (game) { return !game.tie && _this.players[1] === game.winner; }).length;
-            var winner = gameWonPlayer1 === gameWonPlayer2 ? -1 : gameWonPlayer1 > gameWonPlayer2 ? 0 : 1;
-            var winningMessage = winner === -1 ? "Game Tie" : _this.players[winner] + " Won";
+            return {
+                gamesCompleted: _this.gamesCompleted.length,
+                gamesTied: gamesTied,
+                wins: [gameWonPlayer1, gameWonPlayer2]
+            };
+        };
+        this.sendEndMatchMessages = function (winner, stats) {
+            var winningMessage = winner === -1 ? "Match Tie" : "Match Won" + _this.players[winner];
             if (winner !== -1) {
                 _this.onGameMessageToPlayer(_this.players[winner], "match win");
                 _this.onGameMessageToPlayer(_this.players[1 - winner], "match lose");
@@ -66,11 +80,7 @@ var UTTTMatch = (function () {
                 options: _this.options,
                 players: _this.players,
                 state: "finished",
-                stats: {
-                    gamesCompleted: _this.gamesCompleted.length,
-                    gamesTied: gamesTied,
-                    wins: [gameWonPlayer1, gameWonPlayer2]
-                },
+                stats: stats,
                 winner: winner
             };
             _this.outputChannel.sendMatchEnded(matchEndedMessage);

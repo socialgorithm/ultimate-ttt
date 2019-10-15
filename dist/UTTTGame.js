@@ -31,8 +31,13 @@ var UTTTGame = (function () {
         if (expectedPlayerIndex !== playedPlayerIndex) {
             var expectedPlayer = this.players[expectedPlayerIndex];
             debug("Expected " + expectedPlayer + " to play, but " + player + " played");
-            this.handleGameWon(expectedPlayerIndex);
+            this.handleGameWon(expectedPlayer);
             return;
+        }
+        if (coords === undefined) {
+            var winner = this.players[1 - playedPlayerIndex];
+            debug(player + " Sent Invalid Message");
+            this.handleGameWon(winner);
         }
         try {
             this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
@@ -56,6 +61,8 @@ var UTTTGame = (function () {
         }
     };
     UTTTGame.prototype.parseMove = function (data) {
+        if (!data.match("\\d,\\d;\\d,\\d"))
+            return;
         var _a = data.trim().split(";")
             .map(function (part) { return part.split(",").map(function (n) { return parseInt(n, 10); }); }), board = _a[0], move = _a[1];
         return { board: board, move: move };
