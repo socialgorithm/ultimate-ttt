@@ -3,10 +3,11 @@ exports.__esModule = true;
 var debug = require("debug")("sg:uttt:game");
 var UTTT_1 = require("@socialgorithm/ultimate-ttt/dist/UTTT");
 var UTTTGame = (function () {
-    function UTTTGame(players, sendMessageToPlayer, sendGameEnded) {
+    function UTTTGame(players, sendMessageToPlayer, sendGameEnded, options) {
         this.players = players;
         this.sendMessageToPlayer = sendMessageToPlayer;
         this.sendGameEnded = sendGameEnded;
+        this.options = options;
         this.board = new UTTT_1["default"](3);
         this.nextPlayerIndex = Math.round(Math.random());
     }
@@ -20,6 +21,10 @@ var UTTTGame = (function () {
         this.onPlayerMove(player, payload);
     };
     UTTTGame.prototype.onPlayerMove = function (player, moveStr) {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = undefined;
+        }
         var coords = this.parseMove(moveStr);
         var expectedPlayerIndex = this.nextPlayerIndex;
         var playedPlayerIndex = this.players.indexOf(player);
@@ -56,6 +61,7 @@ var UTTTGame = (function () {
         return { board: board, move: move };
     };
     UTTTGame.prototype.askForMoveFromNextPlayer = function (previousMove) {
+        var _this = this;
         var nextPlayer = this.players[this.nextPlayerIndex];
         if (previousMove) {
             var coords = this.printCoords(previousMove);
@@ -64,6 +70,9 @@ var UTTTGame = (function () {
         else {
             this.sendMessageToPlayer(nextPlayer, "move");
         }
+        this.timeout = setTimeout(function () {
+            _this.handleGameWon(_this.players[1 - _this.nextPlayerIndex]);
+        }, this.options.timeout * 1.2);
     };
     UTTTGame.prototype.switchNextPlayer = function () {
         this.nextPlayerIndex = this.nextPlayerIndex === 0 ? 1 : 0;
@@ -83,7 +92,7 @@ var UTTTGame = (function () {
             players: this.players,
             stats: {
                 board: this.board,
-                previousMove: previousMove,
+                previousMove: previousMove ? this.printCoords(previousMove) : '',
                 playedPlayerIndex: playedPlayerIndex
             },
             tie: true,
@@ -96,7 +105,7 @@ var UTTTGame = (function () {
             players: this.players,
             stats: {
                 board: this.board,
-                previousMove: previousMove,
+                previousMove: previousMove ? this.printCoords(previousMove) : '',
                 playedPlayerIndex: playedPlayerIndex
             },
             tie: false,

@@ -12,7 +12,7 @@ var UTTTMatch = (function () {
         this.gamesCompleted = [];
         this.missingPlayers = [];
         this.playNextGame = function () {
-            _this.currentGame = new UTTTGame_1["default"](_this.players, _this.onGameMessageToPlayer, _this.onGameEnded);
+            _this.currentGame = new UTTTGame_1["default"](_this.players, _this.onGameMessageToPlayer, _this.onGameEnded, _this.options);
             _this.currentGame.start();
         };
         this.onGameMessageToPlayer = function (player, message) {
@@ -29,8 +29,8 @@ var UTTTMatch = (function () {
                 }
             }
             else {
-                _this.onGameMessageToPlayer(_this.players[0], "game tie" + (stats.stats.playedPlayerIndex !== 0 && stats.stats.previousMove ? " " + stats.stats.previousMove : ''));
-                _this.onGameMessageToPlayer(_this.players[1], "game tie" + (stats.stats.playedPlayerIndex !== 1 && stats.stats.previousMove ? " " + stats.stats.previousMove : ''));
+                _this.onGameMessageToPlayer(_this.players[0], "game tie" + (stats.stats.playedPlayerIndex !== 0 ? " " + stats.stats.previousMove : ''));
+                _this.onGameMessageToPlayer(_this.players[1], "game tie" + (stats.stats.playedPlayerIndex !== 1 ? " " + stats.stats.previousMove : ''));
             }
             if (_this.gamesCompleted.length < _this.options.maxGames) {
                 if (_this.isMatchWinnable())
