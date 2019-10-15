@@ -4,13 +4,15 @@ const debug = require("debug")("sg:uttt:game");
 import { Messages, Player } from "@socialgorithm/game-server";
 import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
 import { Coords } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import { MatchOptions } from "@socialgorithm/model";
 
 export default class UTTTGame {
   private board: UTTT;
   private nextPlayerIndex: number;
   private startTime: number;
+  private timeout: NodeJS.Timeout;
 
-  constructor(private players: Player[], private sendMessageToPlayer: (player: Player, message: any) => void, private sendGameEnded: (stats: Messages.GameEndedMessage) => void) {
+  constructor(private players: Player[], private sendMessageToPlayer: (player: Player, message: any) => void, private sendGameEnded: (stats: Messages.GameEndedMessage) => void, private options: MatchOptions) {
     this.board = new UTTT(3);
     this.nextPlayerIndex = Math.round(Math.random());
   }
@@ -27,6 +29,10 @@ export default class UTTTGame {
   }
 
   private onPlayerMove(player: Player, moveStr: any) {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = undefined;
+    }
     const coords = this.parseMove(moveStr);
     const expectedPlayerIndex: any = this.nextPlayerIndex;
     const playedPlayerIndex: any = this.players.indexOf(player);
@@ -76,6 +82,9 @@ export default class UTTTGame {
     } else {
       this.sendMessageToPlayer(nextPlayer, "move");
     }
+    this.timeout = setTimeout(() => {
+      this.handleGameWon(this.players[1 - this.nextPlayerIndex]);
+    }, this.options.timeout * 1.2);
   }
 
   private switchNextPlayer() {

@@ -11,7 +11,6 @@ export default class UTTTMatch implements IMatch {
   private missingPlayers: Player[] = [];
 
   constructor(public options: MatchOptions, public players: Player[], private outputChannel: MatchOutputChannel) {
-    // console.log(options);
     this.missingPlayers.push(...players);
     // Start a timeout for player connects
     setTimeout(() => {
@@ -49,7 +48,7 @@ export default class UTTTMatch implements IMatch {
   }
 
   private playNextGame = () => {
-    this.currentGame = new UTTTGame(this.players, this.onGameMessageToPlayer, this.onGameEnded);
+    this.currentGame = new UTTTGame(this.players, this.onGameMessageToPlayer, this.onGameEnded, this.options);
     this.currentGame.start();
   }
 
