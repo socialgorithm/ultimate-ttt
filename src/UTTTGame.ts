@@ -34,13 +34,19 @@ export default class UTTTGame {
       this.timeout = undefined;
     }
     const coords = this.parseMove(moveStr);
-    const expectedPlayerIndex: any = this.nextPlayerIndex;
-    const playedPlayerIndex: any = this.players.indexOf(player);
+    const expectedPlayerIndex: number = this.nextPlayerIndex;
+    const playedPlayerIndex: number = this.players.indexOf(player);
     if (expectedPlayerIndex !== playedPlayerIndex) {
-      const expectedPlayer = this.players[expectedPlayerIndex];
+      const expectedPlayer : Player = this.players[expectedPlayerIndex];
       debug(`Expected ${expectedPlayer} to play, but ${player} played`);
-      this.handleGameWon(expectedPlayerIndex);
+      this.handleGameWon(expectedPlayer);
       return;
+    }
+
+    if (coords === undefined) {
+      const winner : Player = this.players[1 - playedPlayerIndex];
+      debug(`${player} Sent Invalid Message`);
+      this.handleGameWon(winner);
     }
 
     try {
@@ -68,7 +74,8 @@ export default class UTTTGame {
    * Converts a move string into an object
    * @param data board.row,board.col;move.row,move.col
    */
-  private parseMove(data: string): Coords {
+  private parseMove(data: string): Coords | undefined {
+    if (!data.match("\\d,\\d;\\d,\\d")) return;
     const [board, move] = data.trim().split(";")
         .map(part => part.split(",").map(n => parseInt(n, 10)) as [number, number]);
     return { board, move };

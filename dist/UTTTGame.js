@@ -72,6 +72,7 @@ var UTTTGame = (function () {
         }
         this.timeout = setTimeout(function () {
             _this.handleGameWon(_this.players[1 - _this.nextPlayerIndex]);
+            _this.sendMessageToPlayer(_this.players[_this.nextPlayerIndex], "timeout");
         }, this.options.timeout * 1.2);
     };
     UTTTGame.prototype.switchNextPlayer = function () {
