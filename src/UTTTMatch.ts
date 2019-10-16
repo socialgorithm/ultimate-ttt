@@ -155,7 +155,7 @@ export default class UTTTMatch implements IMatch {
     this.outputChannel.sendMatchEnded(matchEndedMessage);
   }
 
-  private sendMatchEndDueToTimeout = (missingPlayer?: Player) => {
+  private sendMatchEndDueToTimeout = (missingPlayer: Player = this.players[Math.round(Math.random())]) => {
     let winnerIndex = -1;
     let timeoutMessage = "Players did not connect in time";
     if (missingPlayer) {
