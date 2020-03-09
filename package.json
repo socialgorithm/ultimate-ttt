@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sociagorithm/ultimate-ttt-server.git"
+    "url": "git+https://github.com/socialgorithm/ultimate-ttt-game-server.git"
   },
   "keywords": [
     "ultimate",
