@@ -1,7 +1,7 @@
 {
   "name": "Ultimate TTT Server",
   "description": "Game server for Ultimate TTT games",
-  "repository": "https://github.com/socialgorithm/ultimate-ttt-game-server",
+  "repository": "https://github.com/socialgorithm/ultimate-ttt",
   "logo": "https://socialgorithm.org/assets/avatar.png",
   "keywords": ["tournament", "game", "socialgorithm"],
   "image": "heroku/nodejs",

@@ -1,5 +1,5 @@
 {
-  "name": "@socialgorithm/ultimate-ttt-game-server",
+  "name": "@socialgorithm/ultimate-ttt",
   "version": "8.1.0",
   "description": "Ultimate Tic Tac Toe Game Server",
   "main": "dist/index.js",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/socialgorithm/ultimate-ttt-game-server.git"
+    "url": "git+https://github.com/socialgorithm/ultimate-ttt.git"
   },
   "keywords": [
     "ultimate",
@@ -33,9 +33,9 @@
   "author": "Socialgorithm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/socialgorithm/ultimate-ttt-game-server/issues"
+    "url": "https://github.com/socialgorithm/ultimate-ttt/issues"
   },
-  "homepage": "https://github.com/socialgorithm/ultimate-ttt-game-server#readme",
+  "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
   "dependencies": {
     "@socialgorithm/game-server": "^8.2.0",
     "@socialgorithm/ultimate-ttt": "^4.19.0",
