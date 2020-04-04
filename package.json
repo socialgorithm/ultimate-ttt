@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/ultimate-ttt",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "Ultimate Tic Tac Toe Game Server",
   "main": "dist/index.js",
   "bin": "bin/index.js",
