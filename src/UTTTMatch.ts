@@ -50,7 +50,7 @@ export default class UTTTMatch implements IMatch {
   }
 
   private playNextGame = () => {
-    this.nextGamePlayers = [...this.nextGamePlayers].reverse()
+    this.nextGamePlayers = [...this.nextGamePlayers].reverse();
     this.currentGame = new UTTTGame(this.nextGamePlayers, this.onGameMessageToPlayer, this.onGameEnded);
     this.currentGame.start();
   }
