@@ -1,18 +1,24 @@
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var debug = require("debug")("sg:uttt:match");
 var UTTTGame_1 = require("./UTTTGame");
 var UTTTMatch = (function () {
     function UTTTMatch(options, players, outputChannel) {
-        var _a;
         var _this = this;
         this.options = options;
         this.players = players;
         this.outputChannel = outputChannel;
         this.gamesCompleted = 0;
-        this.missingPlayers = [];
         this.playNextGame = function () {
-            _this.currentGame = new UTTTGame_1["default"](_this.players, _this.onGameMessageToPlayer, _this.onGameEnded);
+            _this.nextGamePlayers = __spreadArrays(_this.nextGamePlayers).reverse();
+            _this.currentGame = new UTTTGame_1["default"](_this.nextGamePlayers, _this.onGameMessageToPlayer, _this.onGameEnded);
             _this.currentGame.start();
         };
         this.onGameMessageToPlayer = function (player, message) {
@@ -56,7 +62,8 @@ var UTTTMatch = (function () {
             debug("Sending match ended due to timeout %O", matchEndedMessage);
             _this.outputChannel.sendMatchEnded(matchEndedMessage);
         };
-        (_a = this.missingPlayers).push.apply(_a, players);
+        this.missingPlayers = __spreadArrays(players);
+        this.nextGamePlayers = __spreadArrays(players);
         setTimeout(function () {
             if (_this.missingPlayers.length === 1) {
                 debug(_this.missingPlayers[0] + " did not connect to match, sending match end");

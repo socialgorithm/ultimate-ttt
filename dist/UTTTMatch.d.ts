@@ -7,6 +7,7 @@ export default class UTTTMatch implements IMatch {
     private currentGame;
     private gamesCompleted;
     private missingPlayers;
+    private nextGamePlayers;
     constructor(options: MatchOptions, players: Player[], outputChannel: MatchOutputChannel);
     onPlayerConnected(player: Player): void;
     onPlayerDisconnected(player: Player): void;

@@ -8,10 +8,12 @@ import UTTTGame from "./UTTTGame";
 export default class UTTTMatch implements IMatch {
   private currentGame: UTTTGame;
   private gamesCompleted: number = 0;
-  private missingPlayers: Player[] = [];
+  private missingPlayers: Player[];
+  private nextGamePlayers: Player[];
 
   constructor(public options: MatchOptions, public players: Player[], private outputChannel: MatchOutputChannel) {
-    this.missingPlayers.push(...players);
+    this.missingPlayers = [...players];
+    this.nextGamePlayers = [...players];
     // Start a timeout for player connects
     setTimeout(() => {
       // If one of the players didn't connect, they lose
@@ -48,7 +50,8 @@ export default class UTTTMatch implements IMatch {
   }
 
   private playNextGame = () => {
-    this.currentGame = new UTTTGame(this.players, this.onGameMessageToPlayer, this.onGameEnded);
+    this.nextGamePlayers = [...this.nextGamePlayers].reverse()
+    this.currentGame = new UTTTGame(this.nextGamePlayers, this.onGameMessageToPlayer, this.onGameEnded);
     this.currentGame.start();
   }
 
