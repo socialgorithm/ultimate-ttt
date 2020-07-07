@@ -4,16 +4,25 @@ const debug = require("debug")("sg:uttt:game");
 import { Messages, Player } from "@socialgorithm/game-server";
 import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
 import { Coords } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import { MatchOptions } from "@socialgorithm/model";
 
 export default class UTTTGame {
   private board: UTTT;
   private nextPlayerIndex: number;
   private startTime: number;
+  private timeout: NodeJS.Timeout;
+  private hasTimedOut: boolean;
 
-  constructor(private players: Player[], private sendMessageToPlayer: (player: Player, message: any) => void, private sendGameEnded: (stats: Messages.GameEndedMessage) => void) {
-    this.board = new UTTT(3);
-    this.nextPlayerIndex = 0;
-  }
+  constructor(
+    private players: Player[],
+    private sendMessageToPlayer: (player: Player, message: any) => void,
+    private sendGameEnded: (stats: Messages.GameEndedMessage) => void,
+    private options: MatchOptions,
+    ) {
+      this.board = new UTTT(3);
+      this.nextPlayerIndex = 0;
+      this.hasTimedOut = false;
+    }
 
   public start(): void {
     this.startTime = Math.round(Date.now() / 1000);
@@ -27,13 +36,20 @@ export default class UTTTGame {
   }
 
   private onPlayerMove(player: Player, moveStr: any) {
+    if (this.hasTimedOut) {
+      return;
+    }
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = undefined;
+    }
     const coords = this.parseMove(moveStr);
     const expectedPlayerIndex: any = this.nextPlayerIndex;
     const playedPlayerIndex: any = this.players.indexOf(player);
     if (expectedPlayerIndex !== playedPlayerIndex) {
       const expectedPlayer = this.players[expectedPlayerIndex];
       debug(`Expected ${expectedPlayer} to play, but ${player} played`);
-      this.handleGameWon(expectedPlayerIndex);
+      this.handleGameWon(this.players[expectedPlayerIndex]);
       return;
     }
 
@@ -67,6 +83,11 @@ export default class UTTTGame {
     } else {
       this.sendMessageToPlayer(nextPlayer, "move");
     }
+    this.timeout = setTimeout(() => {
+      this.hasTimedOut = true;
+      this.sendMessageToPlayer(this.players[this.nextPlayerIndex], "timeout");
+      this.handleGameWon(this.players[1 - this.nextPlayerIndex]);
+    }, this.options.timeout * 1.2);
   }
 
   private switchNextPlayer() {

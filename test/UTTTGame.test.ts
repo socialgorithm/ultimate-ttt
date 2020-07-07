@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import UTTTGame from "../src/UTTTGame";
-import { Messages } from "@socialgorithm/model";
+import { Messages, MatchOptions } from "@socialgorithm/model";
 
 type TestGame = {
     game: UTTTGame,
@@ -17,6 +17,12 @@ const players = [
     "p1",
 ];
 
+const options : MatchOptions = {
+    maxGames: 50,
+    timeout: 20,
+    autoPlay: false,
+}
+
 const getGame = (): TestGame => {
     const sendMessageToPlayer = sinon.spy();
     const sendGameEnded = sinon.spy();
@@ -25,6 +31,7 @@ const getGame = (): TestGame => {
         players,
         sendMessageToPlayer,
         sendGameEnded,
+        options
     );
 
     return {
@@ -52,6 +59,12 @@ const sequenceOfPairs = (pairs: Coord[]): Array<[Coord, Coord]> => {
       }
     }).slice(1);
   };
+
+  const sleep = (ms : number) : Promise<NodeJS.Timeout> => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }  
 
 describe("UTTTGame", () => {
     it("start() sends relevant messages", () => {
@@ -100,5 +113,50 @@ describe("UTTTGame", () => {
         const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
         expect(stats.winner).to.equal(players[0]);
         expect(stats.tie).to.be.false;
+    });
+
+    it("timeout game send correct message", async () => {
+        const testGame = getGame();
+
+        testGame.game.start();
+
+        let nextPlayer = 0;
+        const moveStr = printCoords([[0, 0], [0, 0]]);
+        testGame.game.onMessageFromPlayer(players[nextPlayer], moveStr);
+        nextPlayer = 1 - nextPlayer;
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
+
+        await sleep((options.timeout * 1.2) + 1)
+        const respondStr = printCoords([[0, 0], [1, 0]]);
+        testGame.game.onMessageFromPlayer(players[nextPlayer], respondStr);
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`timeout`);
+        // // Game should be over now
+        const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
+        expect(stats.winner).to.equal(players[0]);
+        expect(stats.tie).to.be.false;
+        
+    });
+
+    it("wrong player game send correct message", async () => {
+        const testGame = getGame();
+
+        testGame.game.start();
+
+        let nextPlayer = 0;
+        const moveStr = printCoords([[0, 0], [0, 0]]);
+        testGame.game.onMessageFromPlayer(players[nextPlayer], moveStr);
+        nextPlayer = 1 - nextPlayer;
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
+        expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
+        nextPlayer = 1 - nextPlayer;
+        const respondStr = printCoords([[0, 0], [1, 0]]);
+        testGame.game.onMessageFromPlayer(players[nextPlayer], respondStr);
+        // // Game should be over now
+        const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
+        expect(stats.winner).to.equal(players[1]);
+        expect(stats.tie).to.be.false;
+        
     });
 });
