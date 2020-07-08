@@ -12,7 +12,7 @@ export default class UTTTGame {
 
   constructor(private players: Player[], private sendMessageToPlayer: (player: Player, message: any) => void, private sendGameEnded: (stats: Messages.GameEndedMessage) => void) {
     this.board = new UTTT(3);
-    this.nextPlayerIndex = 0;
+    this.nextPlayerIndex = Math.round(Math.random());
   }
 
   public start(): void {
@@ -24,6 +24,10 @@ export default class UTTTGame {
 
   public onMessageFromPlayer(player: string, payload: any): void {
     this.onPlayerMove(player, payload);
+  }
+
+  public getNextPlayer(): Player {
+    return this.players[this.nextPlayerIndex];
   }
 
   private onPlayerMove(player: Player, moveStr: any) {
@@ -114,4 +118,5 @@ export default class UTTTGame {
   private printCoords(coords: Coords): string {
     return coords.board.join(",") + ";" + coords.move.join(",");
   }
+
 }
