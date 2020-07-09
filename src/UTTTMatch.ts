@@ -7,7 +7,7 @@ import UTTTGame from "./UTTTGame";
 
 export default class UTTTMatch implements IMatch {
   private currentGame: UTTTGame;
-  private gamesCompleted: number = 0;
+  private gamesCompleted: Game[] = [];
   private missingPlayers: Player[] = [];
 
   constructor(public options: MatchOptions, public players: Player[], private outputChannel: MatchOutputChannel) {
@@ -58,17 +58,67 @@ export default class UTTTMatch implements IMatch {
 
   private onGameEnded = (stats: Game) => {
     this.outputChannel.sendGameEnded(stats);
+    this.gamesCompleted.push(stats);
 
-    this.gamesCompleted++;
-    if (this.gamesCompleted < this.options.maxGames) {
+    if (this.gamesCompleted.length < this.options.maxGames) {
+      this.messageGameEnd(stats);
       this.playNextGame();
     } else {
       this.endMatch();
     }
   }
 
+  private messageGameEnd = (stats: Game) => {
+    if (stats.winner) {
+      const winningIndex = this.players.indexOf(stats.winner);
+      if (winningIndex !== -1) {
+        this.onGameMessageToPlayer(this.players[winningIndex], "game win");
+        this.onGameMessageToPlayer(this.players[1 - winningIndex], stats.stats.previousMove ? `game lose ${stats.stats.previousMove}` : "game lose");
+      }
+    } else {
+      this.onGameMessageToPlayer(this.players[0], stats.stats.playedPlayerIndex !== 0 ? `game tie ${stats.stats.previousMove}` : "game tie");
+      this.onGameMessageToPlayer(this.players[1], stats.stats.playedPlayerIndex !== 1 ? `game tie ${stats.stats.previousMove}` : "game tie");
+    }
+  }
+
   private endMatch = () => {
-    this.outputChannel.sendMatchEnded();
+    const stats = this.getGameStats();
+    const winner: 0 | 1 | -1 = stats.wins[0] === stats.wins[1] ? -1 : stats.wins[0] > stats.wins[1] ? 0 : 1;
+    this.sendEndMatchMessages(winner, stats);
+  }
+
+  private getGameStats = () => {
+    const gamesTied: number = this.gamesCompleted.filter((game: Game) => game.tie).length;
+    const gameWonPlayer1: number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[0] === game.winner).length;
+    const gameWonPlayer2: number = this.gamesCompleted.filter((game: Game) => !game.tie && this.players[1] === game.winner).length;
+    return {
+      gamesCompleted: this.gamesCompleted.length,
+      gamesTied,
+      wins: [gameWonPlayer1, gameWonPlayer2],
+    };
+  }
+
+  private sendEndMatchMessages = (winner: number, stats: any) => {
+    const winningMessage = winner === -1 ? `Match Tie` : `Match Won${this.players[winner]}`;
+    if (winner !== -1) {
+      this.onGameMessageToPlayer(this.players[winner], "match win");
+      this.onGameMessageToPlayer(this.players[1 - winner], "match lose");
+    } else {
+      this.onGameMessageToPlayer(this.players[winner], "match tie");
+      this.onGameMessageToPlayer(this.players[1 - winner], "match tie");
+    }
+
+    const matchEndedMessage: Messages.MatchEndedMessage = {
+      games: this.gamesCompleted,
+      matchID: "--",
+      messages: [ winningMessage ],
+      options: this.options,
+      players: this.players,
+      state: "finished",
+      stats,
+      winner,
+    };
+    this.outputChannel.sendMatchEnded(matchEndedMessage);
   }
 
   private sendMatchEndDueToTimeout = (missingPlayer?: Player) => {
