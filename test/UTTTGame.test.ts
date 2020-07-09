@@ -107,7 +107,11 @@ describe("UTTTGame", () => {
             nextPlayer = 1 - nextPlayer;
 
             expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
-            expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
+            if (index === 0) { // First move returns move keyword
+                expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`move`);
+            } else {
+                expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
+            }
         });
 
         // Game should be over now

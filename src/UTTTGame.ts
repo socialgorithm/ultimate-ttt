@@ -90,7 +90,7 @@ export default class UTTTGame {
     this.timeout = setTimeout(() => {
       this.hasTimedOut = true;
       this.sendMessageToPlayer(this.players[this.nextPlayerIndex], "timeout");
-      this.handleGameWon(this.players[1 - this.nextPlayerIndex]);
+      this.handleGameWon(this.players[1 - this.nextPlayerIndex], undefined, this.nextPlayerIndex);
     }, this.options.timeout * 1.2);
   }
 

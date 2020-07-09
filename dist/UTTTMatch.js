@@ -9,10 +9,10 @@ var UTTTMatch = (function () {
         this.options = options;
         this.players = players;
         this.outputChannel = outputChannel;
-        this.gamesCompleted = 0;
+        this.gamesCompleted = [];
         this.missingPlayers = [];
         this.playNextGame = function () {
-            _this.currentGame = new UTTTGame_1["default"](_this.players, _this.onGameMessageToPlayer, _this.onGameEnded);
+            _this.currentGame = new UTTTGame_1["default"](_this.players, _this.onGameMessageToPlayer, _this.onGameEnded, _this.options);
             _this.currentGame.start();
         };
         this.onGameMessageToPlayer = function (player, message) {
@@ -20,16 +20,64 @@ var UTTTMatch = (function () {
         };
         this.onGameEnded = function (stats) {
             _this.outputChannel.sendGameEnded(stats);
-            _this.gamesCompleted++;
-            if (_this.gamesCompleted < _this.options.maxGames) {
+            _this.gamesCompleted.push(stats);
+            if (_this.gamesCompleted.length < _this.options.maxGames) {
+                _this.messageGameEnd(stats);
                 _this.playNextGame();
             }
             else {
                 _this.endMatch();
             }
         };
+        this.messageGameEnd = function (stats) {
+            if (stats.winner) {
+                var winningIndex = _this.players.indexOf(stats.winner);
+                if (winningIndex !== -1) {
+                    _this.onGameMessageToPlayer(_this.players[winningIndex], "game win");
+                    _this.onGameMessageToPlayer(_this.players[1 - winningIndex], stats.stats.previousMove ? "game lose " + stats.stats.previousMove : "game lose");
+                }
+            }
+            else {
+                _this.onGameMessageToPlayer(_this.players[0], stats.stats.playedPlayerIndex !== 0 ? "game tie " + stats.stats.previousMove : "game tie");
+                _this.onGameMessageToPlayer(_this.players[1], stats.stats.playedPlayerIndex !== 1 ? "game tie " + stats.stats.previousMove : "game tie");
+            }
+        };
         this.endMatch = function () {
-            _this.outputChannel.sendMatchEnded();
+            var stats = _this.getGameStats();
+            var winner = stats.wins[0] === stats.wins[1] ? -1 : stats.wins[0] > stats.wins[1] ? 0 : 1;
+            _this.sendEndMatchMessages(winner, stats);
+        };
+        this.getGameStats = function () {
+            var gamesTied = _this.gamesCompleted.filter(function (game) { return game.tie; }).length;
+            var gameWonPlayer1 = _this.gamesCompleted.filter(function (game) { return !game.tie && _this.players[0] === game.winner; }).length;
+            var gameWonPlayer2 = _this.gamesCompleted.filter(function (game) { return !game.tie && _this.players[1] === game.winner; }).length;
+            return {
+                gamesCompleted: _this.gamesCompleted.length,
+                gamesTied: gamesTied,
+                wins: [gameWonPlayer1, gameWonPlayer2]
+            };
+        };
+        this.sendEndMatchMessages = function (winner, stats) {
+            var winningMessage = winner === -1 ? "Match Tie" : "Match Won" + _this.players[winner];
+            if (winner !== -1) {
+                _this.onGameMessageToPlayer(_this.players[winner], "match win");
+                _this.onGameMessageToPlayer(_this.players[1 - winner], "match lose");
+            }
+            else {
+                _this.onGameMessageToPlayer(_this.players[winner], "match tie");
+                _this.onGameMessageToPlayer(_this.players[1 - winner], "match tie");
+            }
+            var matchEndedMessage = {
+                games: _this.gamesCompleted,
+                matchID: "--",
+                messages: [winningMessage],
+                options: _this.options,
+                players: _this.players,
+                state: "finished",
+                stats: stats,
+                winner: winner
+            };
+            _this.outputChannel.sendMatchEnded(matchEndedMessage);
         };
         this.sendMatchEndDueToTimeout = function (missingPlayer) {
             var winnerIndex = -1;
