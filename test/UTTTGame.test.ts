@@ -3,6 +3,7 @@ import * as sinon from "sinon";
 
 import UTTTGame from "../src/UTTTGame";
 import { Messages, MatchOptions } from "@socialgorithm/model";
+import { Player } from "@socialgorithm/game-server";
 
 type TestGame = {
     game: UTTTGame,
@@ -69,7 +70,7 @@ const sequenceOfPairs = (pairs: Coord[]): Array<[Coord, Coord]> => {
 describe("UTTTGame", () => {
     it("start() sends relevant messages", () => {
         const testGame = getGame();
-
+        const firstPlayer: Player = testGame.game.getNextPlayer();
         testGame.game.start();
 
         players.forEach((player, $index) => {
@@ -79,7 +80,7 @@ describe("UTTTGame", () => {
 
         // First move
         const nextCall = players.length;
-        expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[0]).to.equal(players[0]);
+        expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[0]).to.equal(firstPlayer);
         expect(testGame.channel.sendMessageToPlayer.getCall(nextCall).args[1]).to.equal("move");
     });
 
