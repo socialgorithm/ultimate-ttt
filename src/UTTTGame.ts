@@ -47,25 +47,33 @@ export default class UTTTGame {
       clearTimeout(this.timeout);
       this.timeout = undefined;
     }
-    const coords = this.parseMove(moveStr);
-    const expectedPlayerIndex: any = this.nextPlayerIndex;
-    const playedPlayerIndex: any = this.players.indexOf(player);
-    if (expectedPlayerIndex !== playedPlayerIndex) {
-      const expectedPlayer = this.players[expectedPlayerIndex];
-      debug(`Expected ${expectedPlayer} to play, but ${player} played`);
-      this.handleGameWon(this.players[expectedPlayerIndex], undefined, playedPlayerIndex);
-      return;
-    }
+    try {
+      const coords = this.parseMove(moveStr);
+      const expectedPlayerIndex: any = this.nextPlayerIndex;
+      const playedPlayerIndex: any = this.players.indexOf(player);
+      if (expectedPlayerIndex !== playedPlayerIndex) {
+        const expectedPlayer = this.players[expectedPlayerIndex];
+        debug(`Expected ${expectedPlayer} to play, but ${player} played`);
+        this.handleGameWon(this.players[expectedPlayerIndex], undefined, playedPlayerIndex);
+        return;
+      }
 
-    this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
+      this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
 
-    const previousMove = coords;
-    if (this.board.isFinished()) {
-      this.handleGameEnd(previousMove, playedPlayerIndex);
-      return;
-    } else {
-      this.switchNextPlayer();
-      this.askForMoveFromNextPlayer(previousMove);
+      const previousMove = coords;
+      if (this.board.isFinished()) {
+        this.handleGameEnd(previousMove, playedPlayerIndex);
+        return;
+      } else {
+        this.switchNextPlayer();
+        this.askForMoveFromNextPlayer(previousMove);
+      }
+    } catch (e) {
+      debug(
+        `Player ${player} played a move that cause the board to be in an unsteady state.
+        To preserve the server, we will ignore this command and forfit this user`
+      );
+      this.handleGameEnd(undefined, 1 - this.players.indexOf(player));
     }
   }
 
