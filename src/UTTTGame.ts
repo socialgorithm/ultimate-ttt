@@ -71,7 +71,7 @@ export default class UTTTGame {
     } catch (e) {
       debug(
         `Player ${player} played a move that cause the board to be in an unsteady state.
-        To preserve the server, we will ignore this command and forfit this user`
+        To preserve the server, we will ignore this command and forfit this user`,
       );
       this.handleGameEnd(undefined, 1 - this.players.indexOf(player));
     }
