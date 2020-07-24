@@ -60,8 +60,8 @@ export default class UTTTMatch implements IMatch {
     this.outputChannel.sendGameEnded(stats);
     this.gamesCompleted.push(stats);
 
+    this.messageGameEnd(stats);
     if (this.gamesCompleted.length < this.options.maxGames) {
-      this.messageGameEnd(stats);
       this.playNextGame();
     } else {
       this.endMatch();
@@ -99,13 +99,13 @@ export default class UTTTMatch implements IMatch {
   }
 
   private sendEndMatchMessages = (winner: number, stats: any) => {
-    const winningMessage = winner === -1 ? `Match Tie` : `Match Won${this.players[winner]}`;
+    const winningMessage = winner === -1 ? `Match Tie` : `Match Won ${this.players[winner]}`;
     if (winner !== -1) {
       this.onGameMessageToPlayer(this.players[winner], "match win");
       this.onGameMessageToPlayer(this.players[1 - winner], "match lose");
     } else {
-      this.onGameMessageToPlayer(this.players[winner], "match tie");
-      this.onGameMessageToPlayer(this.players[1 - winner], "match tie");
+      this.onGameMessageToPlayer(this.players[0], "match tie");
+      this.onGameMessageToPlayer(this.players[1], "match tie");
     }
 
     const matchEndedMessage: Messages.MatchEndedMessage = {

@@ -32,24 +32,30 @@ var UTTTGame = (function () {
             clearTimeout(this.timeout);
             this.timeout = undefined;
         }
-        var coords = this.parseMove(moveStr);
-        var expectedPlayerIndex = this.nextPlayerIndex;
-        var playedPlayerIndex = this.players.indexOf(player);
-        if (expectedPlayerIndex !== playedPlayerIndex) {
-            var expectedPlayer = this.players[expectedPlayerIndex];
-            debug("Expected " + expectedPlayer + " to play, but " + player + " played");
-            this.handleGameWon(this.players[expectedPlayerIndex], undefined, playedPlayerIndex);
-            return;
+        try {
+            var coords = this.parseMove(moveStr);
+            var expectedPlayerIndex = this.nextPlayerIndex;
+            var playedPlayerIndex = this.players.indexOf(player);
+            if (expectedPlayerIndex !== playedPlayerIndex) {
+                var expectedPlayer = this.players[expectedPlayerIndex];
+                debug("Expected " + expectedPlayer + " to play, but " + player + " played");
+                this.handleGameWon(this.players[expectedPlayerIndex], undefined, playedPlayerIndex);
+                return;
+            }
+            this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
+            var previousMove = coords;
+            if (this.board.isFinished()) {
+                this.handleGameEnd(previousMove, playedPlayerIndex);
+                return;
+            }
+            else {
+                this.switchNextPlayer();
+                this.askForMoveFromNextPlayer(previousMove);
+            }
         }
-        this.board = this.board.move(playedPlayerIndex, coords.board, coords.move);
-        var previousMove = coords;
-        if (this.board.isFinished()) {
-            this.handleGameEnd(previousMove, playedPlayerIndex);
-            return;
-        }
-        else {
-            this.switchNextPlayer();
-            this.askForMoveFromNextPlayer(previousMove);
+        catch (e) {
+            debug("Player " + player + " played a move that cause the board to be in an unsteady state.\n        To preserve the server, we will ignore this command and forfit this user");
+            this.handleGameEnd(undefined, 1 - this.players.indexOf(player));
         }
     };
     UTTTGame.prototype.parseMove = function (data) {

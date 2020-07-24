@@ -21,8 +21,8 @@ var UTTTMatch = (function () {
         this.onGameEnded = function (stats) {
             _this.outputChannel.sendGameEnded(stats);
             _this.gamesCompleted.push(stats);
+            _this.messageGameEnd(stats);
             if (_this.gamesCompleted.length < _this.options.maxGames) {
-                _this.messageGameEnd(stats);
                 _this.playNextGame();
             }
             else {
@@ -58,14 +58,14 @@ var UTTTMatch = (function () {
             };
         };
         this.sendEndMatchMessages = function (winner, stats) {
-            var winningMessage = winner === -1 ? "Match Tie" : "Match Won" + _this.players[winner];
+            var winningMessage = winner === -1 ? "Match Tie" : "Match Won " + _this.players[winner];
             if (winner !== -1) {
                 _this.onGameMessageToPlayer(_this.players[winner], "match win");
                 _this.onGameMessageToPlayer(_this.players[1 - winner], "match lose");
             }
             else {
-                _this.onGameMessageToPlayer(_this.players[winner], "match tie");
-                _this.onGameMessageToPlayer(_this.players[1 - winner], "match tie");
+                _this.onGameMessageToPlayer(_this.players[0], "match tie");
+                _this.onGameMessageToPlayer(_this.players[1], "match tie");
             }
             var matchEndedMessage = {
                 games: _this.gamesCompleted,
