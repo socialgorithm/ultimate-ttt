@@ -9,7 +9,7 @@ export default class UTTTGame {
     private nextPlayerIndex;
     private startTime;
     private timeout;
-    private hasTimedOut;
+    hasTimedOut: boolean;
     constructor(players: Player[], sendMessageToPlayer: (player: Player, message: any) => void, sendGameEnded: (stats: Messages.GameEndedMessage) => void, options: MatchOptions);
     start(): void;
     onMessageFromPlayer(player: string, payload: any): void;
