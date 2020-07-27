@@ -23,7 +23,12 @@ var UTTTMatch = (function () {
             _this.gamesCompleted.push(stats);
             _this.messageGameEnd(stats);
             if (_this.gamesCompleted.length < _this.options.maxGames) {
-                _this.playNextGame();
+                if (_this.currentGame.hasTimedOut) {
+                    setTimeout(function () { return _this.playNextGame(); }, _this.options.timeout * 3);
+                }
+                else {
+                    _this.playNextGame();
+                }
             }
             else {
                 _this.endMatch();

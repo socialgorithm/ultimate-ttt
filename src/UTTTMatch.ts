@@ -4,6 +4,7 @@ const debug = require("debug")("sg:uttt:match");
 import { IMatch, MatchOutputChannel, Player } from "@socialgorithm/game-server";
 import { Game, MatchOptions, Messages } from "@socialgorithm/model";
 import UTTTGame from "./UTTTGame";
+import { TIMEOUT } from "dns";
 
 export default class UTTTMatch implements IMatch {
   private currentGame: UTTTGame;
@@ -62,7 +63,11 @@ export default class UTTTMatch implements IMatch {
 
     this.messageGameEnd(stats);
     if (this.gamesCompleted.length < this.options.maxGames) {
-      this.playNextGame();
+      if (this.currentGame.hasTimedOut) {
+        setTimeout(() => this.playNextGame(), this.options.timeout * 3);
+      } else {
+        this.playNextGame();
+      }
     } else {
       this.endMatch();
     }

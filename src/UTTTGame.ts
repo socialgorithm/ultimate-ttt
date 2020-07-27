@@ -11,7 +11,7 @@ export default class UTTTGame {
   private nextPlayerIndex: number;
   private startTime: number;
   private timeout: NodeJS.Timeout;
-  private hasTimedOut: boolean;
+  public hasTimedOut: boolean;
 
   constructor(
     private players: Player[],
