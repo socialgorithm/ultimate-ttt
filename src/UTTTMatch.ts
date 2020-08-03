@@ -4,6 +4,7 @@ const debug = require("debug")("sg:uttt:match");
 import { IMatch, MatchOutputChannel, Player } from "@socialgorithm/game-server";
 import { Game, MatchOptions, Messages } from "@socialgorithm/model";
 import UTTTGame from "./UTTTGame";
+import { TIMEOUT } from "dns";
 
 export default class UTTTMatch implements IMatch {
   private currentGame: UTTTGame;
@@ -60,9 +61,13 @@ export default class UTTTMatch implements IMatch {
     this.outputChannel.sendGameEnded(stats);
     this.gamesCompleted.push(stats);
 
+    this.messageGameEnd(stats);
     if (this.gamesCompleted.length < this.options.maxGames) {
-      this.messageGameEnd(stats);
-      this.playNextGame();
+      if (this.currentGame.hasTimedOut) {
+        setTimeout(() => this.playNextGame(), this.options.timeout * 3);
+      } else {
+        this.playNextGame();
+      }
     } else {
       this.endMatch();
     }
@@ -99,13 +104,13 @@ export default class UTTTMatch implements IMatch {
   }
 
   private sendEndMatchMessages = (winner: number, stats: any) => {
-    const winningMessage = winner === -1 ? `Match Tie` : `Match Won${this.players[winner]}`;
+    const winningMessage = winner === -1 ? `Match Tie` : `Match Won ${this.players[winner]}`;
     if (winner !== -1) {
       this.onGameMessageToPlayer(this.players[winner], "match win");
       this.onGameMessageToPlayer(this.players[1 - winner], "match lose");
     } else {
-      this.onGameMessageToPlayer(this.players[winner], "match tie");
-      this.onGameMessageToPlayer(this.players[1 - winner], "match tie");
+      this.onGameMessageToPlayer(this.players[0], "match tie");
+      this.onGameMessageToPlayer(this.players[1], "match tie");
     }
 
     const matchEndedMessage: Messages.MatchEndedMessage = {

@@ -11,7 +11,7 @@ export default class UTTTGame {
   private nextPlayerIndex: number;
   private startTime: number;
   private timeout: NodeJS.Timeout;
-  private hasTimedOut: boolean;
+  public hasTimedOut: boolean;
 
   constructor(
     private players: Player[],
@@ -47,6 +47,7 @@ export default class UTTTGame {
       clearTimeout(this.timeout);
       this.timeout = undefined;
     }
+    try {
     const coords = this.parseMove(moveStr);
     const expectedPlayerIndex: any = this.nextPlayerIndex;
     const playedPlayerIndex: any = this.players.indexOf(player);
@@ -66,6 +67,13 @@ export default class UTTTGame {
     } else {
       this.switchNextPlayer();
       this.askForMoveFromNextPlayer(previousMove);
+    }
+    } catch (e) {
+      debug(
+        `Player ${player} played a move that cause the board to be in an unsteady state.
+        To preserve the server, we will ignore this command and forfit this user`,
+      );
+      this.handleGameEnd(undefined, 1 - this.players.indexOf(player));
     }
   }
 
