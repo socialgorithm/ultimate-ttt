@@ -3,7 +3,7 @@ const debug = require("debug")("sg:uttt:game");
 
 import { Messages, Player } from "@socialgorithm/game-server";
 import MainBoard from "./MainBoard";
-import { Coords } from "./constants";
+import { ICoords } from "./Constants";
 import { MatchOptions } from "@socialgorithm/model";
 
 export default class UTTTGame {
@@ -73,13 +73,13 @@ export default class UTTTGame {
    * Converts a move string into an object
    * @param data board.row,board.col;move.row,move.col
    */
-  private parseMove(data: string): Coords {
+  private parseMove(data: string): ICoords {
     const [board, move] = data.trim().split(";")
         .map(part => part.split(",").map(n => parseInt(n, 10)) as [number, number]);
     return { board, move };
   }
 
-  private askForMoveFromNextPlayer(previousMove?: Coords) {
+  private askForMoveFromNextPlayer(previousMove?: ICoords) {
     const nextPlayer = this.players[this.nextPlayerIndex];
     if (previousMove) {
       const coords = this.printCoords(previousMove);
@@ -98,7 +98,7 @@ export default class UTTTGame {
     this.nextPlayerIndex = this.nextPlayerIndex === 0 ? 1 : 0;
   }
 
-  private handleGameEnd(previousMove: Coords, playedPlayerIndex: number) {
+  private handleGameEnd(previousMove: ICoords, playedPlayerIndex: number) {
     if (this.board.winner === -1) {
       this.handleGameTied(previousMove, playedPlayerIndex);
     } else {
@@ -107,7 +107,7 @@ export default class UTTTGame {
     }
   }
 
-  private handleGameTied(previousMove: Coords, playedPlayerIndex: number) {
+  private handleGameTied(previousMove: ICoords, playedPlayerIndex: number) {
     this.sendGameEnded({
       duration: this.getTimeFromStart(),
       players: this.players,
@@ -120,7 +120,7 @@ export default class UTTTGame {
     });
   }
 
-  private handleGameWon(winner: string, previousMove: Coords, playedPlayerIndex: number) {
+  private handleGameWon(winner: string, previousMove: ICoords, playedPlayerIndex: number) {
     this.sendGameEnded({
       duration: this.getTimeFromStart(),
       players: this.players,
@@ -138,7 +138,7 @@ export default class UTTTGame {
     return timeNow - this.startTime;
   }
 
-  private printCoords(coords: Coords): string {
+  private printCoords(coords: ICoords): string {
     return coords.board.join(",") + ";" + coords.move.join(",");
   }
 

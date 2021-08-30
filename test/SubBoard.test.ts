@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import SubBoard from '../src/SubBoard';
-import {Coord, ME, OPPONENT, PlayerNumber, RESULT_TIE, UNPLAYED} from '../src/model/constants';
+import { ME, OPPONENT, PlayerNumber, RESULT_TIE, UNPLAYED } from '../src/Constants';
 
 const playerPairs = [['player 0', ME], ['player 1', OPPONENT]] as [string, PlayerNumber][];
 const coordinates = [0,1,2].map(x => [0,1,2].map(y => [x, y] as [number, number])).reduce((a, b) => a.concat(b), []);

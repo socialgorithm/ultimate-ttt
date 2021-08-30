@@ -17,7 +17,7 @@ const sequenceOfPairs = (...pairs: [number, number][]): [[number, number], [numb
   }).slice(1);
 };
 
-describe('UTTT', () => {
+describe('MainBoard', () => {
 
   let subject: UTTT;
 

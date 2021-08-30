@@ -104,9 +104,9 @@ export default class MainBoard extends Board<SubBoard> {
    * Adds your move to the board, throws exception if move is invalid or board is already finished.
    * @param boardRowCol Board coordinates [row, col]
    * @param move Move coordinates [row, col]
-   * @returns {UTTT} Updated copy of the current game with the move added and the state updated
+   * @returns {MainBoard} Updated copy of the current game with the move added and the state updated
    */
-  public addMyMove(boardRowCol: Coord, move: Coord): UTTT {
+  public addMyMove(boardRowCol: Coord, move: Coord): MainBoard {
     return this.move(ME, boardRowCol, move);
   }
 
@@ -114,9 +114,9 @@ export default class MainBoard extends Board<SubBoard> {
    * Adds an opponent move to the board, throws exception if move is invalid or board is already finished.
    * @param boardRowCol Board coordinates [row, col]
    * @param move Move coordinates [row, col]
-   * @returns {UTTT} Updated copy of the current game with the move added and the state updated
+   * @returns {MainBoard} Updated copy of the current game with the move added and the state updated
    */
-  public addOpponentMove(boardRowCol: Coord, move: Coord): UTTT {
+  public addOpponentMove(boardRowCol: Coord, move: Coord): MainBoard {
     return this.move(OPPONENT, boardRowCol, move);
   }
 
@@ -125,9 +125,9 @@ export default class MainBoard extends Board<SubBoard> {
    * @param player Player identifier (1 || 2)
    * @param board Board coordinates as an array [x, y]
    * @param move Move coordinates as an array [x, y]
-   * @returns {UTTT} Updated copy of the current game with the move added and the state updated
+   * @returns {MainBoard} Updated copy of the current game with the move added and the state updated
    */
-  public move(player: number, board: Coord, move: Coord): UTTT {
+  public move(player: number, board: Coord, move: Coord): MainBoard {
     if (this.isFinished()) {
       throw Error(ErrorMessages.gameFinished);
     }
