@@ -42,9 +42,9 @@ export type Coord = [number, number];
 /**
  * Coordinates for moves on the big board
  */
-export interface Coords {
+export interface ICoords {
     board: Coord;
-    move: Coord
+    move: Coord;
 }
 
 /**

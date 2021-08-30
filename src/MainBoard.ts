@@ -1,13 +1,13 @@
-import SubBoard from './SubBoard';
-import errors from './model/errors';
-import error from './error';
+import SubBoard from "./SubBoard";
+import ErrorMessages from "./ErrorMessages";
+import Error from "./Error";
 
-import {Coord, ME, OPPONENT, RESULT_TIE} from './model/constants';
-import TTT from "./model/TTT";
-import { isInteger } from './utility';
+import {Coord, ME, OPPONENT, RESULT_TIE} from "./Constants";
+import Board from "./Board";
+import { isInteger } from "./Utility";
 
 /**
- * Ultimate Tic Tac Toe Class
+ * Main Board Class
  *
  * This holds a full game, with all the associated state, and exposes several methods to interact with it.
  *
@@ -15,12 +15,12 @@ import { isInteger } from './utility';
  * they return a modified game, but don't change the original one.
  * This has been done to make tree searching easier, since your root nodes at each step won't be accidentally modified.
  */
-export default class UTTT extends TTT<SubBoard> {
+export default class MainBoard extends Board<SubBoard> {
   /**
    * Holds the state of the game board as a two dimensional array
    * each element of the inner array is a SubBoard
    */
-  public board: Array<Array<SubBoard>>;
+  public board: SubBoard[][];
   /**
    * The state board is a typical 3x3 TTT board that holds the "state" of the big game
    * so if a cell of the big game has been won, it will be 0 or 1 on this state board.
@@ -28,7 +28,7 @@ export default class UTTT extends TTT<SubBoard> {
    */
   public stateBoard: SubBoard;
 
-  constructor(size: number = 3){
+  constructor(size: number = 3) {
     super();
     this.size = size;
     this.moves = 0;
@@ -41,9 +41,9 @@ export default class UTTT extends TTT<SubBoard> {
     // The state board holds the ultimate game state
     this.stateBoard = new SubBoard(this.size);
 
-    for(let x = 0; x < this.size; x++){
+    for (let x = 0; x < this.size; x++) {
       this.board[x] = [];
-      for(let y = 0; y < this.size; y++){
+      for (let y = 0; y < this.size; y++) {
         this.board[x][y] = new SubBoard(this.size);
       }
     }
@@ -72,7 +72,7 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {boolean} true if the board is playable
    */
   public isValidBoardRowCol(board: Coord): boolean {
-    if(this.nextBoard === undefined){
+    if (this.nextBoard === undefined) {
       return Array.isArray(board) &&
         board.length === 2 &&
         isInteger(board[0]) &&
@@ -128,12 +128,12 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {UTTT} Updated copy of the current game with the move added and the state updated
    */
   public move(player: number, board: Coord, move: Coord): UTTT {
-    if(this.isFinished()) {
-      throw error(errors.gameFinished);
+    if (this.isFinished()) {
+      throw Error(ErrorMessages.gameFinished);
     }
 
     if (!this.isValidBoardRowCol(board)) {
-      throw error(errors.board, board.toString());
+      throw Error(ErrorMessages.board, board.toString());
     }
 
     const game = this.copy();
@@ -144,7 +144,7 @@ export default class UTTT extends TTT<SubBoard> {
     } else if (player === OPPONENT) {
       updatedBoard = updatedBoard.addOpponentMove(move, game.moves);
     } else {
-      throw error(errors.player, player);
+      throw Error(ErrorMessages.player, player);
     }
 
     // update the copy
@@ -152,7 +152,7 @@ export default class UTTT extends TTT<SubBoard> {
     game.moves++;
 
     game.nextBoard = move;
-    if(game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()){
+    if (game.board[game.nextBoard[0]][game.nextBoard[1]].isFinished()) {
       game.nextBoard = undefined;
     }
 
@@ -164,7 +164,7 @@ export default class UTTT extends TTT<SubBoard> {
       game.stateBoard = game.stateBoard.move(
           game.board[board[0]][board[1]].winner,
           board,
-          true
+          true,
       );
     }
 
@@ -175,15 +175,14 @@ export default class UTTT extends TTT<SubBoard> {
   /**
    * Get a list of all the valid sub-boards in the main board
    */
-  public getValidBoards(): Array<Coord> {
+  public getValidBoards(): Coord[] {
     // Short-circuit if the board is already decided
-    if ((this.nextBoard) && (!this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished()))
-    {
+    if ((this.nextBoard) && (!this.board[this.nextBoard[0]][this.nextBoard[1]].isFinished())) {
         return [this.nextBoard];
     }
 
-    const boards: Array<Coord> = [];
-    for(let x = 0; x < this.size; x++) {
+    const boards: Coord[] = [];
+    for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         if (!this.board[x][y].isFinished()) {
           boards.push([x, y]);
@@ -199,32 +198,32 @@ export default class UTTT extends TTT<SubBoard> {
    * @returns {string} Printable version of the game board
    */
   public prettyPrint(): string {
-    let rows: Array<Array<string>> = [];
-    for(let x = 0; x < this.size; x++) {
+    const rows: string[][] = [];
+    for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         const small = this.board[x][y].prettyPrint().split("\n");
 
-        for(let row = 0; row < this.size; row++){
+        for (let row = 0; row < this.size; row++) {
           const xCoord = x * this.size + row;
-          if(!rows[xCoord]){
+          if (!rows[xCoord]) {
             rows[xCoord] = [];
           }
           rows[xCoord][y] = small[row];
         }
       }
     }
-    let ret = [];
-    for(let x = 0; x < rows.length; x++){
-      ret.push(rows[x].join('| '));
-      if((x + 1) % this.size === 0) {
-        let sepChars = '';
-        for(let i = 0; i < this.size * 2; i++){
-          sepChars += '-';
+    const ret = [];
+    for (let x = 0; x < rows.length; x++) {
+      ret.push(rows[x].join("| "));
+      if ((x + 1) % this.size === 0) {
+        let sepChars = "";
+        for (let i = 0; i < this.size * 2; i++) {
+          sepChars += "-";
         }
-        sepChars += '+';
+        sepChars += "+";
         let sep = sepChars;
-        for(let i = 1; i < this.size; i++){
-          sep += '-' + sepChars;
+        for (let i = 1; i < this.size; i++) {
+          sep += "-" + sepChars;
         }
         ret.push(sep.substr(0, sep.length - 1));
       }
@@ -233,11 +232,11 @@ export default class UTTT extends TTT<SubBoard> {
   }
 
   /**
-   * Return a new UTTT board as a copy of this one
-   * @returns {UTTT} Copy of the current game
+   * Return a new main board as a copy of this one
+   * @returns {MainBoard} Copy of the current game
    */
-  public copy(): UTTT {
-    const copy = new UTTT(this.size);
+  public copy(): MainBoard {
+    const copy = new MainBoard(this.size);
     copy.board = this.board.map(row => row.map(subBoard => subBoard.copy()));
     copy.moves = this.moves;
     copy.winner = this.winner;

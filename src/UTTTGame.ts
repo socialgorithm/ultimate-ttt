@@ -2,12 +2,12 @@
 const debug = require("debug")("sg:uttt:game");
 
 import { Messages, Player } from "@socialgorithm/game-server";
-import UTTT from "@socialgorithm/ultimate-ttt/dist/UTTT";
-import { Coords } from "@socialgorithm/ultimate-ttt/dist/model/constants";
+import MainBoard from "./MainBoard";
+import { Coords } from "./constants";
 import { MatchOptions } from "@socialgorithm/model";
 
 export default class UTTTGame {
-  private board: UTTT;
+  private board: MainBoard;
   private nextPlayerIndex: number;
   private startTime: number;
   private timeout: NodeJS.Timeout;
@@ -19,7 +19,7 @@ export default class UTTTGame {
     private sendGameEnded: (stats: Messages.GameEndedMessage) => void,
     private options: MatchOptions,
     ) {
-      this.board = new UTTT(3);
+      this.board = new MainBoard(3);
       this.nextPlayerIndex = Math.round(Math.random());
       this.hasTimedOut = false;
     }

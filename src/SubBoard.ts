@@ -1,22 +1,22 @@
-import errors from './model/errors';
-import Cell from './model/Cell';
-import error from './error';
-import {Coord, ME, OPPONENT, PlayerNumber, PlayerOrTie, RESULT_TIE, UNPLAYED} from "./model/constants";
-import TTT from "./model/TTT";
-import { isInteger } from './utility';
+import errors from "./ErrorMessages";
+import Cell from "./Cell";
+import error from "./Error";
+import {Coord, ME, OPPONENT, PlayerNumber, PlayerOrTie, RESULT_TIE, UNPLAYED} from "./Constants";
+import Board from "./Board";
+import { isInteger } from "./Utility";
 
 /**
  * SubBoard for TicTacToe games
  * This class implements the traditional game of TicTacToe
  */
-export default class SubBoard extends TTT<Cell> {
+export default class SubBoard extends Board<Cell> {
   /**
    * Holds the state of the game board as a two dimensional array
    * each element of the inner array is a Cell
    */
-  public board: Array<Array<Cell>>;
+  public board: Cell[][];
 
-  constructor(size = 3){
+  constructor(size = 3) {
     super();
     this.size = size;
 
@@ -24,9 +24,9 @@ export default class SubBoard extends TTT<Cell> {
     this.board = [];
     this.moves = 0;
 
-    for(let x = 0; x < this.size; x++){
+    for (let x = 0; x < this.size; x++) {
       this.board[x] = [];
-      for(let y = 0; y < this.size; y++){
+      for (let y = 0; y < this.size; y++) {
         this.board[x][y] = new Cell([x, y]);
       }
     }
@@ -69,7 +69,7 @@ export default class SubBoard extends TTT<Cell> {
       move[0] > -1 &&
       move[1] > -1 &&
       move[0] < this.size &&
-      move[1] < this.size && 
+      move[1] < this.size &&
       !this.board[move[0]][move[1]].isPlayed();
   }
 
@@ -79,7 +79,7 @@ export default class SubBoard extends TTT<Cell> {
    * @param index which turn this was (to enable replaying UTTT games)
    * @returns {SubBoard}
    */
-  public addMyMove(move: Coord, index = -1): SubBoard{
+  public addMyMove(move: Coord, index = -1): SubBoard {
     return this.move(ME, move, false, index);
   }
 
@@ -90,7 +90,7 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {SubBoard}
    */
   public addOpponentMove(move: Coord, index = -1): SubBoard {
-    return this.move(OPPONENT, move, false, index)
+    return this.move(OPPONENT, move, false, index);
   }
 
   /**
@@ -103,7 +103,7 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {SubBoard} Updated copy of the current game with the move added and the state updated
    */
   public move(player: PlayerOrTie, move: Coord, allowTies: boolean = false, index: number = -1): SubBoard {
-    if(this.isFull() || this.isFinished()) {
+    if (this.isFull() || this.isFinished()) {
       throw error(errors.boardFinished);
     }
 
@@ -150,9 +150,9 @@ export default class SubBoard extends TTT<Cell> {
   /**
    * Get a list of all the valid moves in the board
    */
-  public getValidMoves(): Array<Coord> {
-    const moves: Array<Coord> = [];
-    for(let x = 0; x < this.size; x++) {
+  public getValidMoves(): Coord[] {
+    const moves: Coord[] = [];
+    for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         if (!this.board[x][y].isPlayed()) {
           moves.push([x, y]);
@@ -168,17 +168,17 @@ export default class SubBoard extends TTT<Cell> {
    * @returns {string}
    */
   public prettyPrint(printTies: boolean = false): string {
-    let ret = [];
-    for(let x = 0; x < this.size; x++) {
-      let line = '';
+    const ret = [];
+    for (let x = 0; x < this.size; x++) {
+      let line = "";
       for (let y = 0; y < this.size; y++) {
-        let player = '-';
+        let player = "-";
         if (printTies && this.board[x][y].player === RESULT_TIE) {
-          player = '+';
-        } else if(this.board[x][y].player !== UNPLAYED && this.board[x][y].player >= ME) {
+          player = "+";
+        } else if (this.board[x][y].player !== UNPLAYED && this.board[x][y].player >= ME) {
           player = `${this.board[x][y].player}`;
         }
-        line += player + ' ';
+        line += player + " ";
       }
       ret.push(line);
     }
@@ -193,12 +193,20 @@ export default class SubBoard extends TTT<Cell> {
     const copy = new SubBoard(this.size);
     copy.board = this.board.map(copyRow => copyRow.map(c => c.copy()));
     copy.moves = this.moves;
-    
+
     if (this.winner !== undefined) {
       copy.winner = this.winner;
     }
 
     return copy;
+  }
+
+  /**
+   * Same as isFinished()
+   * @returns {boolean}
+   */
+   public isFull(): boolean {
+    return this.moves >= this.maxMoves;
   }
 
   /**
@@ -216,25 +224,17 @@ export default class SubBoard extends TTT<Cell> {
   }
 
   /**
-   * Same as isFinished()
-   * @returns {boolean}
-   */
-  public isFull(): boolean {
-    return this.moves >= this.maxMoves;
-  }
-
-  /**
    * Check if a given row has been won
    * @param row Row index
    * @private
    */
   private checkRow(row: number): void {
     const player = this.board[row][0].player;
-    if(player < ME){
+    if (player < ME) {
       return;
     }
-    for(let i = 1; i < this.size; i++){
-      if(player !== this.board[row][i].player) {
+    for (let i = 1; i < this.size; i++) {
+      if (player !== this.board[row][i].player) {
         return;
       }
     }
@@ -249,11 +249,11 @@ export default class SubBoard extends TTT<Cell> {
    */
   private checkColumn(col: number): void {
     const player = this.board[0][col].player;
-    if(player < ME){
+    if (player < ME) {
       return;
     }
-    for(let i = 1; i < this.size; i++){
-      if(player !== this.board[i][col].player) {
+    for (let i = 1; i < this.size; i++) {
+      if (player !== this.board[i][col].player) {
         return;
       }
     }
@@ -267,11 +267,11 @@ export default class SubBoard extends TTT<Cell> {
    */
   private checkLtRDiagonal(): void {
     const player = this.board[0][0].player;
-    if(player < ME){
+    if (player < ME) {
       return;
     }
-    for(let i = 1; i < this.size; i++){
-      if(player !== this.board[i][i].player){
+    for (let i = 1; i < this.size; i++) {
+      if (player !== this.board[i][i].player) {
         return;
       }
     }
@@ -285,11 +285,11 @@ export default class SubBoard extends TTT<Cell> {
    */
   private checkRtLDiagonal(): void {
     const player = this.board[0][this.size - 1].player;
-    if(player < ME){
+    if (player < ME) {
       return;
     }
-    for(let i = this.size - 1; i >= 0; i--){
-      if(player !== this.board[this.size - 1 - i][i].player){
+    for (let i = this.size - 1; i >= 0; i--) {
+      if (player !== this.board[this.size - 1 - i][i].player) {
         return;
       }
     }

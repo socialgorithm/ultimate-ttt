@@ -1,10 +1,10 @@
-import {Coord, PlayerOrTie} from "./constants";
-abstract class TTT<CellType> {
+import {Coord, PlayerOrTie} from "./Constants";
+abstract class Board<CellType> {
     /**
      * Holds the state of the game board as a two dimensional array
      * each element of the inner array is a SubBoard
      */
-    public board: Array<Array<CellType>>;
+    public board: CellType[][];
 
     /**
      * Holds the coordinates of the board that should be played next
@@ -12,8 +12,6 @@ abstract class TTT<CellType> {
      * and you may choose any.
      */
     public nextBoard: Coord;
-
-    private _winner: PlayerOrTie = undefined;
 
     set winner(value: PlayerOrTie) {
         if (value !== undefined && value !== null) {
@@ -45,6 +43,9 @@ abstract class TTT<CellType> {
      */
     protected moves: number;
 
+    // tslint:disable-next-line:variable-name
+    private _winner: PlayerOrTie = undefined;
+
     /**
      * Returns true if the game is over
      */
@@ -75,7 +76,7 @@ abstract class TTT<CellType> {
      * Return a new UTTT board as a copy of this one
      * @returns {UTTT} Copy of the current game
      */
-    public abstract copy(): TTT<CellType>;
+    public abstract copy(): Board<CellType>;
 }
 
-export default TTT;
+export default Board;
