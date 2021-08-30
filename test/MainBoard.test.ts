@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import UTTT from '../src/MainBoard';
+import MainBoard from '../src/MainBoard';
 import { ME, OPPONENT, PlayerNumber } from '../src/Constants';
 
 const playerPairs = [['player 0', ME], ['player 1', OPPONENT]] as [string, PlayerNumber][];
@@ -19,7 +19,7 @@ const sequenceOfPairs = (...pairs: [number, number][]): [[number, number], [numb
 
 describe('MainBoard', () => {
 
-  let subject: UTTT;
+  let subject: MainBoard;
 
   const gameWinningSequence = sequenceOfPairs(
       [0, 0], [0, 0], [1, 0], [0, 0], [2, 0],
@@ -41,7 +41,7 @@ describe('MainBoard', () => {
   };
 
   beforeEach(() => {
-    subject = new UTTT();
+    subject = new MainBoard();
   });
 
   describe('#constructor()', () => {
