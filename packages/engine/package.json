@@ -1,9 +1,10 @@
 {
-  "name": "@socialgorithm/ultimate-ttt-engine",
+  "name": "@socialgorithm/ultimate-ttt",
   "version": "4.19.0",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
   "scripts": {
+    "build": "tsc",
     "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
     "docs": "gulp typedoc && gulp noJekyll"
   },
