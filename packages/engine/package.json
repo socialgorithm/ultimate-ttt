@@ -1,5 +1,5 @@
 {
-  "name": "@socialgorithm/ultimate-ttt",
+  "name": "@socialgorithm/ultimate-ttt-engine",
   "version": "4.19.0",
   "description": "Nodejs implementation of Ultimate Tic Tac Toe",
   "main": "dist/UTTT.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aurbano/ultimate-ttt.git"
+    "url": "git+https://github.com/socialgorithm/ultimate-ttt.git"
   },
   "typings": "dist/UTTT",
   "keywords": [
@@ -18,12 +18,12 @@
     "toe",
     "ultimate"
   ],
-  "author": "Alejandro U. Alvarez",
+  "author": "Socialgorithm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aurbano/ultimate-ttt/issues"
+    "url": "https://github.com/socialgorithm/ultimate-ttt/issues"
   },
-  "homepage": "https://github.com/aurbano/ultimate-ttt#readme",
+  "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.41",
