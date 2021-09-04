@@ -1,17 +1,50 @@
-# Ultimate Tic-Tac-Toe - Server
+# Ultimate Tic-Tac-Toe
 
-[![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt)
+An Ultimate Tic-Tac-Toe game engine and accompanying server that can run games compatible with a [Socialgorithm Tournament Server](https://www.npmjs.com/package/@socialgorithm/tournament-server) and [UI](https://play.socialgorithm.org/).
 
-An Ultimate Tic-Tac-Toe game server, used by the Socialgorithm Tournament server to run games. See more info at https://socialgorithm.org/docs.
+Usage Guides:
+* [Game Engine](packages/engine/README.md)
+* [Server](packages/server/README.md)
 
-## Run
+## Developer Guide
 
-Start the server locally by running
+### Add dependencies
+
+Add a dependency using lerna
 
 ```
-npm run start:dev
+npx lerna add <package> --scope=<package>
 ```
 
-### Deploy
+e.g. 
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/socialgorithm/ultimate-ttt/tree/master)
+```
+npx lerna add @socialgorithm/game-server --scope=@socialgorithm/ultimate-ttt-server
+```
+
+### Install dependencies
+
+```
+npm run bootstrap
+```
+
+### Build and Test
+
+```
+npm run build
+npm run test
+```
+
+### Publishing NPM package
+
+```
+npm run publish
+```
+
+This will publish to the latest tag in NPM.
+
+You can also publish a prerelease tag to test changes:
+
+```
+npm run publish:prerelease
+```
