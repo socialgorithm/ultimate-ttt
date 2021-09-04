@@ -1,12 +1,11 @@
 # Ultimate Tic Tac Toe
-> Ultimate Tick Tack Toe implementation for algorithmic battles & hackathons :)
+> Ultimate Tic Tac Toe implementation for algorithmic battles & hackathons :)
 
 [![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-js.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-js)
 [![npm](https://img.shields.io/npm/v/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
 [![Coverage Status](https://coveralls.io/repos/github/socialgorithm/ultimate-ttt-js/badge.svg?branch=master)](https://coveralls.io/github/socialgorithm/ultimate-ttt-js?branch=master)
 [![npm](https://img.shields.io/npm/dm/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
 [![npm](https://img.shields.io/npm/l/ultimate-ttt.svg)](https://www.npmjs.com/package/ultimate-ttt)
-[![Codacy grade](https://img.shields.io/codacy/grade/62cc5c03fbd648f983ef2df8398d2c98.svg)](https://www.codacy.com/app/aurbano/ultimate-ttt-js)
 
 This is a JavaScript implementation of the [Ultimate Tic Tac Toe](https://mathwithbaddrawings.com/2013/06/16/ultimate-tic-tac-toe/) game.
 
@@ -61,5 +60,5 @@ const game = new UTTT();
 
 ## Projects using this
 
-* [**uttt-player-js**](https://github.com/socialgorithm/uttt-player-js) UTTT Algorithm that plays at random, provided as a base for your own algorithms!
-* [**Ultimate-ttt-server**](https://github.com/socialgorithm/ultimate-ttt-server): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
+* [**ultimate-ttt-player-js**](https://github.com/socialgorithm/ultimate-ttt-player-js) UTTT Algorithm that plays at random, provided as a base for your own algorithms!
+* [**ultimate-ttt/server**](https://github.com/socialgorithm/ultimate-ttt/tree/master/server): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
