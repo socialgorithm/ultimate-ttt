@@ -8,6 +8,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test",
-    "publish": "lerna publish"
+    "publish": "lerna publish",
+    "publish:prerelease": "lerna publish --dist-tag prerelease"
   }
 }
