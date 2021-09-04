@@ -1,6 +1,6 @@
 {
   "name": "@socialgorithm/ultimate-ttt-server",
-  "version": "10.0.1-alpha.0",
+  "version": "10.0.1",
   "description": "Ultimate Tic Tac Toe Game Server",
   "main": "dist/index.js",
   "bin": "bin/index.js",
@@ -39,7 +39,7 @@
   "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
   "dependencies": {
     "@socialgorithm/game-server": "^8.2.0",
-    "@socialgorithm/ultimate-ttt": "^10.0.1-alpha.0",
+    "@socialgorithm/ultimate-ttt": "^10.0.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^5.0.5",
     "debug": "^4.1.1",
