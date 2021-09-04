@@ -1,4 +1,4 @@
-# Ultimate Tic Tac Toe
+# Ultimate Tic Tac Toe - Game Engine
 > Ultimate Tic Tac Toe implementation for algorithmic battles & hackathons :)
 
 [![Travis](https://img.shields.io/travis/socialgorithm/ultimate-ttt-js.svg)](https://travis-ci.org/socialgorithm/ultimate-ttt-js)
@@ -61,4 +61,4 @@ const game = new UTTT();
 ## Projects using this
 
 * [**ultimate-ttt-player-js**](https://github.com/socialgorithm/ultimate-ttt-player-js) UTTT Algorithm that plays at random, provided as a base for your own algorithms!
-* [**ultimate-ttt/server**](https://github.com/socialgorithm/ultimate-ttt/tree/master/server): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
+* [**ultimate-ttt/server**](../server/README.md): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
