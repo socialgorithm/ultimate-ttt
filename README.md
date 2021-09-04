@@ -6,3 +6,15 @@ Usage Guides:
 * [Game Engine](packages/engine/README.md)
 * [Server](packages/server/README.md)
 
+## Build and Test
+
+```
+npm run build
+npm run test
+```
+
+## Publishing NPM package
+
+```
+npm run publish
+```
