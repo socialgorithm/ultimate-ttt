@@ -4,6 +4,7 @@
   "description": "Ultimate Tic Tac Toe Game Server",
   "main": "dist/index.js",
   "bin": "bin/index.js",
+  "private": "true",
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "nodemon",
