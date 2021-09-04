@@ -1,68 +1,14 @@
 {
-  "name": "@socialgorithm/ultimate-ttt",
-  "version": "9.0.0",
-  "description": "Ultimate Tic Tac Toe Game Server",
-  "main": "dist/index.js",
-  "bin": "bin/index.js",
-  "scripts": {
-    "start": "node dist/index.js",
-    "start:dev": "nodemon",
-    "dev": "tsc && ts-node -r tsconfig-paths/register --files src/index.ts",
-    "start:opts": "tsc && ts-node bin/index.js",
-    "build": "tsc -w",
-    "test": "npm run lint && cross-env TS_NODE_FILES=true nyc mocha -r ts-node/register -r tsconfig-paths/register --recursive 'test/**/*.test.ts'",
-    "lint": "tslint -p tsconfig.json -t stylish 'src/**/*.ts'",
-    "docs": "typedoc --out docs/ --mode modules ./src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/socialgorithm/ultimate-ttt.git"
-  },
-  "keywords": [
-    "ultimate",
-    "tic",
-    "tac",
-    "toe",
-    "server",
-    "algorithm",
-    "battle"
-  ],
-  "engines": {
-    "node": ">= 8"
-  },
-  "author": "Socialgorithm",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/socialgorithm/ultimate-ttt/issues"
-  },
-  "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
-  "dependencies": {
-    "@socialgorithm/game-server": "^8.2.0",
-    "@socialgorithm/ultimate-ttt": "^4.19.0",
-    "command-line-args": "^5.1.1",
-    "command-line-usage": "^5.0.5",
-    "debug": "^4.1.1",
-    "socket.io": "^2.2.0"
-  },
+  "name": "root",
+  "private": true,
   "devDependencies": {
-    "@types/chai": "^4.2.3",
-    "@types/command-line-args": "^5.0.0",
-    "@types/command-line-usage": "^5.0.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.0.7",
-    "@types/sinon": "^7.0.13",
-    "@types/socket.io": "^2.1.2",
-    "@types/socket.io-client": "^1.4.32",
-    "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
-    "mocha": "^6.1.4",
-    "nodemon": "^1.19.1",
-    "nyc": "^14.1.1",
-    "sinon": "^7.5.0",
-    "ts-node": "^8.2.0",
-    "tsconfig-paths": "^3.8.0",
-    "tslint": "^5.17.0",
-    "typedoc": "^0.15.0",
-    "typescript": "^3.5.1"
+    "lerna": "^4.0.0"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "publish": "lerna publish",
+    "publish:prerelease": "lerna publish --dist-tag prerelease"
   }
 }
