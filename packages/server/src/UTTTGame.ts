@@ -7,11 +7,11 @@ import { Coords } from "@socialgorithm/ultimate-ttt/dist/model/constants";
 import { MatchOptions } from "@socialgorithm/model";
 
 export default class UTTTGame {
+  public hasTimedOut: boolean;
   private board: UTTT;
   private nextPlayerIndex: number;
   private startTime: number;
   private timeout: NodeJS.Timeout;
-  public hasTimedOut: boolean;
 
   constructor(
     private players: Player[],
