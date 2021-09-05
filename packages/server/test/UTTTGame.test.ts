@@ -61,11 +61,7 @@ const sequenceOfPairs = (pairs: Coord[]): Array<[Coord, Coord]> => {
     }).slice(1);
   };
 
-  const sleep = (ms : number) : Promise<NodeJS.Timeout> => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }  
+const sleep = (ms : number) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe("UTTTGame", () => {
     it("start() sends relevant messages", () => {

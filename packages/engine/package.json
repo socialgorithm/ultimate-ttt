@@ -5,7 +5,7 @@
   "main": "dist/UTTT.js",
   "scripts": {
     "build": "tsc",
-    "test": "nyc mocha --recursive --compilers ts:ts-node/register --bail",
+    "test": "cross-env TS_NODE_FILES=true nyc mocha --recursive --require ts-node/register --bail test/**/*.test.ts",
     "docs": "gulp typedoc && gulp noJekyll"
   },
   "repository": {
@@ -26,21 +26,23 @@
   },
   "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
   "devDependencies": {
-    "@types/chai": "^3.5.2",
-    "@types/mocha": "^2.2.41",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.7.10",
     "chai": "^4.0.0",
-    "coveralls": "^2.11.15",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-file": "^0.3.0",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-typedoc": "^2.0.2",
-    "mocha": "^3.4.2",
-    "nyc": "^10.1.2",
-    "source-map-support": "^0.4.15",
-    "ts-node": "^3.0.4",
-    "typedoc": "^0.7.1",
-    "typescript": "^2.3.3"
+    "coveralls": "^3.1.1",
+    "cross-env": "^7.0.3",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-file": "^0.4.0",
+    "gulp-load-plugins": "^2.0.7",
+    "gulp-typedoc": "^3.0.1",
+    "mocha": "^9.1.1",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^10.2.1",
+    "typedoc": "^0.21.9",
+    "typescript": "^4.4.2"
   },
   "nyc": {
     "extension": [
