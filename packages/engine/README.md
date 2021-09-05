@@ -61,4 +61,4 @@ const game = new UTTT();
 ## Projects using this
 
 * [**ultimate-ttt-player-js**](https://github.com/socialgorithm/ultimate-ttt-player-js) UTTT Algorithm that plays at random, provided as a base for your own algorithms!
-* [**ultimate-ttt/server**](../server/README.md): Game server that uses this package as a game engine to pitch two playing algorithms agains each other.
+* [**ultimate-ttt/server**](../server/README.md): Game server that uses this package as a game engine to pitch two playing algorithms against each other.
