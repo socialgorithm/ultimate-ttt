@@ -65,5 +65,6 @@
     "presets": [
       "@ava/stage-4"
     ]
-  }
+  },
+  "gitHead": "ed3417711056cbf8593e9c656ef0442745f15ea4"
 }
