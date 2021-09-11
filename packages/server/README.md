@@ -4,6 +4,20 @@
 
 An Ultimate Tic-Tac-Toe game server wrapping [a game engine](../engine/README.md), used by the Socialgorithm Tournament server to run games. See more info at https://socialgorithm.org/docs.
 
+## Build
+
+If running from source, you must build this package at the root of the monorepo:
+
+```
+ultimate-ttt # <-- RUN THE NEXT COMMAND HERE
+  - packages
+    - engine
+    - server # <-- The readme is here
+
+```
+npm run build
+```
+
 ## Run
 
 Start the server locally by running
