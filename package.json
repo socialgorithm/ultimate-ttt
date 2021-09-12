@@ -7,7 +7,9 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
+    "start": "lerna run start --stream",
     "test": "lerna run test",
+    "postinstall": "npm run bootstrap && npm run build",
     "publish": "lerna publish",
     "publish:prerelease": "lerna publish --dist-tag prerelease"
   }
