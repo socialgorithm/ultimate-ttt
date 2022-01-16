@@ -29,7 +29,7 @@
     "battle"
   ],
   "engines": {
-    "node": ">= 8"
+    "node": ">= 16"
   },
   "author": "Socialgorithm",
   "license": "MIT",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/socialgorithm/ultimate-ttt#readme",
   "dependencies": {
-    "@socialgorithm/game-server": "^8.3.0",
+    "@socialgorithm/game-server": "^10.6.0",
     "@socialgorithm/ultimate-ttt": "^10.2.1",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^5.0.5",
