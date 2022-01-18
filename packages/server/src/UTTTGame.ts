@@ -35,6 +35,10 @@ export default class UTTTGame {
     this.onPlayerMove(player, payload);
   }
 
+  public getNextPlayerIndex(): number {
+    return this.nextPlayerIndex;
+  }
+
   public getNextPlayer(): Player {
     return this.players[this.nextPlayerIndex];
   }
@@ -71,7 +75,7 @@ export default class UTTTGame {
     } catch (e) {
       debug(
         `Player ${player} played a move that cause the board to be in an unsteady state.
-        To preserve the server, we will ignore this command and forfit this user`,
+        To preserve the server, we will ignore this command and forfeit this user`,
       );
       this.handleGameEnd(undefined, 1 - this.players.indexOf(player));
     }
