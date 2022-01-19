@@ -90,7 +90,7 @@ describe("UTTTGame", () => {
             [1, 1], [1, 1], [0, 0], [2, 0], [1, 1], [1, 2],
             [2, 2], [2, 0], [2, 2], [2, 1], [2, 2], [2, 2],
         ]);
-        let nextPlayer = 0;
+        let nextPlayer = testGame.game.getNextPlayerIndex();
 
         winningMoves.forEach((move, index) => {
             const moveStr = printCoords(move);
@@ -103,16 +103,12 @@ describe("UTTTGame", () => {
             nextPlayer = 1 - nextPlayer;
 
             expect(testGame.channel.sendMessageToPlayer.lastCall.args[0]).to.equal(players[nextPlayer]);
-            if (index === 0) { // First move returns move keyword
-                expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`move`);
-            } else {
-                expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
-            }
+            expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`opponent ${moveStr}`);
         });
 
         // Game should be over now
         const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
-        expect(stats.winner).to.equal(players[0]);
+        expect(stats.winner).to.equal(players[nextPlayer]);
         expect(stats.tie).to.be.false;
     });
 
@@ -121,7 +117,7 @@ describe("UTTTGame", () => {
 
         testGame.game.start();
 
-        let nextPlayer = 0;
+        let nextPlayer = testGame.game.getNextPlayerIndex();
         const moveStr = printCoords([[0, 0], [0, 0]]);
         testGame.game.onMessageFromPlayer(players[nextPlayer], moveStr);
         nextPlayer = 1 - nextPlayer;
@@ -135,7 +131,7 @@ describe("UTTTGame", () => {
         expect(testGame.channel.sendMessageToPlayer.lastCall.args[1]).to.equal(`timeout`);
         // // Game should be over now
         const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
-        expect(stats.winner).to.equal(players[0]);
+        expect(stats.winner).to.equal(players[1-nextPlayer]);
         expect(stats.tie).to.be.false;
         
     });
@@ -145,7 +141,7 @@ describe("UTTTGame", () => {
 
         testGame.game.start();
 
-        let nextPlayer = 0;
+        let nextPlayer = testGame.game.getNextPlayerIndex();
         const moveStr = printCoords([[0, 0], [0, 0]]);
         testGame.game.onMessageFromPlayer(players[nextPlayer], moveStr);
         nextPlayer = 1 - nextPlayer;
@@ -156,7 +152,7 @@ describe("UTTTGame", () => {
         testGame.game.onMessageFromPlayer(players[nextPlayer], respondStr);
         // // Game should be over now
         const stats: Messages.GameEndedMessage = testGame.channel.sendGameEnded.lastCall.args[0];
-        expect(stats.winner).to.equal(players[1]);
+        expect(stats.winner).to.equal(players[1-nextPlayer]);
         expect(stats.tie).to.be.false;
         
     });
